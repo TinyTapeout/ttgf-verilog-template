@@ -24,14 +24,24 @@ Then run:
 make -B GATES=yes
 ```
 
-## How to view the VCD file
+If you wish to save the waveform in VCD format instead of FST format, edit tb.v to use `$dumpfile("tb.vcd");` and then run:
+
+```sh
+make -B FST=
+```
+
+This will generate `tb.vcd` instead of `tb.fst`.
+
+## How to view the waveform file
 
 Using GTKWave
+
 ```sh
-gtkwave tb.vcd tb.gtkw
+gtkwave tb.fst tb.gtkw
 ```
 
 Using Surfer
+
 ```sh
-surfer tb.vcd
+surfer tb.fst
 ```

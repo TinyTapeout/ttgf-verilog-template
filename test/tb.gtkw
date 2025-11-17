@@ -2,7 +2,7 @@
 [*] GTKWave Analyzer v3.4.0 (w)1999-2022 BSI
 [*] Mon Nov 20 16:00:28 2023
 [*]
-[dumpfile] "/home/uri/p/tt-new-template-proto/test/tb.vcd"
+[dumpfile] "/home/uri/p/tt-new-template-proto/test/tb.fst"
 [dumpfile_mtime] "Mon Nov 20 15:58:34 2023"
 [dumpfile_size] 1110
 [savefile] "/home/uri/p/tt-new-template-proto/test/tb.gtkw"

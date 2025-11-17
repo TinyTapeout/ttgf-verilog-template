@@ -1,6 +1,8 @@
 .DS_Store
 .idea
 *.vcd
+*.fst
+*.fst.hier
 runs
 tt_submission
 src/user_config.json
