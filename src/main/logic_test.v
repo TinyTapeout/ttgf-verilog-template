@@ -84,7 +84,7 @@ end
     wire nti_ternary_wire;
     wire nti_res_ternary_wire;
     wire [1:0] nti_binary_result;
-    native_b2t_secure nti_b2t
+    native_b2t nti_b2t
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[1:0]),
@@ -106,7 +106,7 @@ end
     wire pti_ternary_wire;
     wire pti_res_ternary_wire;
     wire [1:0] pti_binary_result;
-    native_b2t_secure pti_b2t
+    native_b2t pti_b2t
     (
         .binary_input(uio_in[1:0]),
         .ternary_result(pti_ternary_wire)
@@ -128,7 +128,7 @@ end
     wire sti_ternary_wire;
     wire sti_res_ternary_wire;
     wire [1:0] sti_binary_result;
-    native_b2t_secure sti_b2t
+    native_b2t sti_b2t
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[1:0]),
@@ -152,13 +152,13 @@ end
     wire max_ternary_wire_b;
     wire max_res_ternary_wire;
     wire [1:0] max_binary_result;
-    native_b2t_secure max_b2t_a
+    native_b2t max_b2t_a
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[1:0]),
         .ternary_result(max_ternary_wire_a)
     );
-    native_b2t_secure max_b2t_b
+    native_b2t max_b2t_b
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[3:2]),
@@ -183,13 +183,13 @@ end
     wire min_ternary_wire_b;
     wire min_res_ternary_wire;
     wire [1:0] min_binary_result;
-    native_b2t_secure min_b2t_a
+    native_b2t min_b2t_a
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[1:0]),
         .ternary_result(min_ternary_wire_a)
     );
-    native_b2t_secure min_b2t_b
+    native_b2t min_b2t_b
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[3:2]),
@@ -214,13 +214,13 @@ end
     wire con_ternary_wire_b;
     wire con_res_ternary_wire;
     wire [1:0] con_binary_result;
-    native_b2t_secure con_b2t_a
+    native_b2t con_b2t_a
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[1:0]),
         .ternary_result(con_ternary_wire_a)
     );
-    native_b2t_secure con_b2t_b
+    native_b2t con_b2t_b
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[3:2]),
@@ -248,13 +248,13 @@ end
     wire add_ternary_wire_carry;
     wire [1:0] add_binary_result;
     wire [1:0] add_binary_carry;
-    native_b2t_secure add_b2t_a
+    native_b2t add_b2t_a
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[1:0]),
         .ternary_result(add_ternary_wire_a)
     );
-    native_b2t_secure add_b2t_b
+    native_b2t add_b2t_b
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[3:2]),
@@ -285,7 +285,7 @@ end
     wire ram_ternary_wire;
     wire ram_ternary_res;
     wire [1:0] ram_binary_result;
-    native_b2t_secure ram_b2t
+    native_b2t ram_b2t
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[1:0]),
@@ -314,13 +314,13 @@ end
     wire [1:0] mux_binary_result_a;
     wire [1:0] mux_binary_result_b;
     wire [1:0] mux_binary_result_c;
-    native_b2t_secure mux_b2t_a
+    native_b2t mux_b2t_a
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[1:0]),
         .ternary_result(mux_ternary_wire_a)
     );
-    native_b2t_secure mux_b2t_b
+    native_b2t mux_b2t_b
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[3:2]),
@@ -357,7 +357,7 @@ end
     wire sti_ternary_wire_e;
     wire sti_res_ternary_wire_e;
     wire [1:0] sti_binary_result_e;
-    native_b2t_secure sti_b2t_e
+    native_b2t sti_b2t_e
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[1:0]),
