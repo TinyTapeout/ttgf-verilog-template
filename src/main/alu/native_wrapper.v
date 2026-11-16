@@ -217,24 +217,22 @@ module native_wrapper (
         assign trit4_out_2 = (active_cmd_t2 == 3'd1) ? bin_adder_sum :
                             (active_cmd_t2 == 3'd7) ? bin_shift_res : OV_ZERO_4T;
 
-        // 1-Trit Output (Driven by Adder Carry-Out [cmd=1] or Tritwise 1..4 [cmd=3..6])
+        //(i exploded tritwise 4)
+        // 1-Trit Output (Driven by Adder Carry-Out [cmd=1] or Tritwise 1..3 [cmd=3..5])
         assign trit4_out_cout_0 = (active_cmd_t0 == 3'd1) ? bin_adder_cout :
-                                (active_cmd_t0 == 3'd3) ? bin_tw1_out    :
-                                (active_cmd_t0 == 3'd4) ? bin_tw2_out    :
-                                (active_cmd_t0 == 3'd5) ? bin_tw3_out    :
-                                (active_cmd_t0 == 3'd6) ? bin_tw4_out    : OV_ZERO_1T;
+                                  (active_cmd_t0 == 3'd3) ? bin_tw1_out    :
+                                  (active_cmd_t0 == 3'd4) ? bin_tw2_out    :
+                                  (active_cmd_t0 == 3'd5) ? bin_tw3_out    : OV_ZERO_1T;
 
         assign trit4_out_cout_1 = (active_cmd_t1 == 3'd1) ? bin_adder_cout :
-                                (active_cmd_t1 == 3'd3) ? bin_tw1_out    :
-                                (active_cmd_t1 == 3'd4) ? bin_tw2_out    :
-                                (active_cmd_t1 == 3'd5) ? bin_tw3_out    :
-                                (active_cmd_t1 == 3'd6) ? bin_tw4_out    : OV_ZERO_1T;
+                                  (active_cmd_t1 == 3'd3) ? bin_tw1_out    :
+                                  (active_cmd_t1 == 3'd4) ? bin_tw2_out    :
+                                  (active_cmd_t1 == 3'd5) ? bin_tw3_out    : OV_ZERO_1T;
 
         assign trit4_out_cout_2 = (active_cmd_t2 == 3'd1) ? bin_adder_cout :
-                                (active_cmd_t2 == 3'd3) ? bin_tw1_out    :
-                                (active_cmd_t2 == 3'd4) ? bin_tw2_out    :
-                                (active_cmd_t2 == 3'd5) ? bin_tw3_out    :
-                                (active_cmd_t2 == 3'd6) ? bin_tw4_out    : OV_ZERO_1T;
+                                  (active_cmd_t2 == 3'd3) ? bin_tw1_out    :
+                                  (active_cmd_t2 == 3'd4) ? bin_tw2_out    :
+                                  (active_cmd_t2 == 3'd5) ? bin_tw3_out    : OV_ZERO_1T;
 
         // 8-Trit Multiplier Output (Driven by Multiplier [cmd=2])
         assign multiplier_out_0 = (active_cmd_t0 == 3'd2) ? bin_mult_out : OV_ZERO_8T;

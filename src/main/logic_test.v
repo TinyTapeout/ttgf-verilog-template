@@ -1,113 +1,77 @@
 module logic_tester(
-    
     inout VDD_1V65,
     input clk,
     input rst_n,
 
     input  wire [7:0] ui_in,    // Dedicated inputs (Pins 0-7)
-    output wire [7:0] uo_out,   // Dedicated outputs (Pins 16-23)
+    output reg  [7:0] uo_out,   // Dedicated outputs (Pins 16-23)
     input  wire [7:0] uio_in,   // IOs: Input path (Pins 8-15)
     output wire [7:0] uio_out,  // IOs: Output path (Pins 8-15)
-    output wire [7:0] uio_oe   // IOs: Enable path (active high: 1=drive, 0=high-Z)
+    output wire [7:0] uio_oe    // IOs: Enable path (active high: 1=drive, 0=high-Z)
 );
 
-assign uio_oe = 8'd0; //no output enable
+assign uio_oe  = 8'd0; // no output enable
+assign uio_out = 8'd0;
 
-//only use input [7:4] for control (thats still 16 addresses!)
-//io is only reading in
-//uo is results
-wire decode_0000_error;//passthrough
-wire decode_0001_error;//nti
-wire decode_0010_error;//pti
-wire decode_0011_error;//sti
-wire decode_1000_error;//sram
-wire decode_1010_error;//experimental sti
-
-wire decode_0100_a_error;//max
-wire decode_0100_b_error;
-wire decode_0101_a_error;//min
-wire decode_0101_b_error;
-wire decode_0110_a_error;//consensus
-wire decode_0110_b_error;
-wire decode_1001_a_error;//mux
-wire decode_1001_b_error;
-
-wire decode_0111_a_error;//adder
-wire decode_0111_b_error;
-wire decode_0111_c_error;
+// only use input [7:4] for control (thats still 16 addresses!)
+// io is only reading in
+// uo is results
 always @(*) begin
-    if(ui_in[2:0] == 3'b000)begin
-    case(ui_in[7:3])
-        4'b0000: begin
-            uo_out[1:0] = passthrough_binary_result;
-            uo_out[6:2] = 5'd0;
-            uo_out[7]   = decode_0000_error;
-        end
-        4'b0001: begin
-            uo_out[1:0] = nti_binary_result;
-            uo_out[6:2] = 5'd0;
-            uo_out[7]   = decode_0001_error;
-        end
-        4'b0010: begin
-            uo_out[1:0] = pti_binary_result;
-            uo_out[6:2] = 5'd0;
-            uo_out[7]   = decode_0010_error;
-        end
-        4'b0011: begin
-            uo_out[1:0] = pti_binary_result;
-            uo_out[6:2] = 5'd0;
-            uo_out[7]   = decode_0011_error;
-        end
-        4'b0100: begin
-            uo_out[1:0] = max_binary_result;
-            uo_out[6:2] = 5'd0;
-            uo_out[7]   = decode_0100_a_error | decode_0100_b_error;
-        end
-        4'b0101: begin
-            uo_out[1:0] = min_binary_result;
-            uo_out[6:2] = 5'd0;
-            uo_out[7]   = decode_0101_a_error | decode_0101_b_error;
-        end
-        4'b0110: begin
-            uo_out[1:0] = con_binary_result;
-            uo_out[6:2] = 5'd0;
-            uo_out[7]   = decode_0110_a_error | decode_0110_b_error;
-        end
-        4'b0111: begin
-            uo_out[1:0] = add_binary_result;
-            uo_out[3:2] = add_binary_carry;
-            uo_out[6:4] = 3'd0;
-            uo_out[7]   = decode_0111_a_error | decode_0111_b_error   | decode_0111_c_error;
-        end
-        4'b1000: begin
-            uo_out[1:0] = ram_binary_result;
-            uo_out[6:2] = 5'd0;
-            uo_out[7]   = decode_1000_error;
-        end
-        4'b1001: begin
-            uo_out[1:0] = mux_binary_result_a;
-            uo_out[3:2] = mux_binary_result_b;
-            uo_out[5:4] = mux_binary_result_c;
-            uo_out[6]   = 1'd0;
-            uo_out[7]   = decode_1001_a_error | decode_1001_b_error;
-        end
-        4'b1010: begin
-            uo_out[1:0] = sti_binary_result_e;
-            uo_out[6:2] = 5'd0;
-            uo_out[7]   = decode_1010_error;
-        end
-    endcase
+    uo_out = 8'd0;
+    if (ui_in[2:0] == 3'b000) begin
+        case (ui_in[7:4])
+            4'b0000: begin
+                uo_out[1:0] = passthrough_binary_result;
+            end
+            4'b0001: begin
+                uo_out[1:0] = nti_binary_result;
+            end
+            4'b0010: begin
+                uo_out[1:0] = pti_binary_result;
+            end
+            4'b0011: begin
+                uo_out[1:0] = sti_binary_result;
+            end
+            4'b0100: begin
+                uo_out[1:0] = max_binary_result;
+            end
+            4'b0101: begin
+                uo_out[1:0] = min_binary_result;
+            end
+            4'b0110: begin
+                uo_out[1:0] = con_binary_result;
+            end
+            4'b0111: begin
+                uo_out[1:0] = add_binary_result;
+                uo_out[3:2] = add_binary_carry;
+            end
+            4'b1000: begin
+                uo_out[1:0] = ram_binary_result;
+            end
+            4'b1001: begin
+                uo_out[1:0] = mux_binary_result_a;
+                uo_out[3:2] = mux_binary_result_b;
+                uo_out[5:4] = mux_binary_result_c;
+            end
+            //no time for experimental stuff
+            // 4'b1010: begin
+            //     uo_out[1:0] = sti_binary_result_e;
+            // end
+            default: begin
+                uo_out = 8'd0;
+            end
+        endcase
     end
-end 
-//passthrough
+end
+
+// passthrough
     wire passthrough_ternary_wire;
     wire [1:0] passthrough_binary_result;
-    native_b2t_secure passthrough_b2t
+    native_b2t passthrough_b2t
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[1:0]),
-        .ternary_result(passthrough_ternary_wire),
-        .decode_error(decode_0000_error)
+        .ternary_result(passthrough_ternary_wire)
     );
     native_t2b passthrough_t2b
     (
@@ -115,7 +79,8 @@ end
         .binary_result(passthrough_binary_result),
         .ternary_input(passthrough_ternary_wire)
     );
-//nti
+
+// nti
     wire nti_ternary_wire;
     wire nti_res_ternary_wire;
     wire [1:0] nti_binary_result;
@@ -123,8 +88,7 @@ end
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[1:0]),
-        .ternary_result(nti_ternary_wire),
-        .decode_error(decode_0001_error)
+        .ternary_result(nti_ternary_wire)
     );
     nti nti_module
     (
@@ -137,15 +101,15 @@ end
         .binary_result(nti_binary_result),
         .ternary_input(nti_res_ternary_wire)
     );
-//pti
+
+// pti
     wire pti_ternary_wire;
     wire pti_res_ternary_wire;
     wire [1:0] pti_binary_result;
     native_b2t_secure pti_b2t
     (
         .binary_input(uio_in[1:0]),
-        .ternary_result(pti_ternary_wire),
-        .decode_error(decode_0010_error)
+        .ternary_result(pti_ternary_wire)
     );
     pti pti_module
     (
@@ -159,7 +123,8 @@ end
         .binary_result(pti_binary_result),
         .ternary_input(pti_res_ternary_wire)
     );
-//sti
+
+// sti
     wire sti_ternary_wire;
     wire sti_res_ternary_wire;
     wire [1:0] sti_binary_result;
@@ -167,8 +132,7 @@ end
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[1:0]),
-        .ternary_result(sti_ternary_wire),
-        .decode_error(decode_0011_error)
+        .ternary_result(sti_ternary_wire)
     );
     sti sti_module
     (
@@ -182,7 +146,8 @@ end
         .binary_result(sti_binary_result),
         .ternary_input(sti_res_ternary_wire)
     );
-//max gate
+
+// max gate
     wire max_ternary_wire_a;
     wire max_ternary_wire_b;
     wire max_res_ternary_wire;
@@ -191,15 +156,13 @@ end
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[1:0]),
-        .ternary_result(max_ternary_wire_a),
-        .decode_error(decode_0100_a_error)
+        .ternary_result(max_ternary_wire_a)
     );
     native_b2t_secure max_b2t_b
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[3:2]),
-        .ternary_result(max_ternary_wire_b),
-        .decode_error(decode_0100_b_error)
+        .ternary_result(max_ternary_wire_b)
     );
     max_gate max_module
     (
@@ -214,7 +177,8 @@ end
         .binary_result(max_binary_result),
         .ternary_input(max_res_ternary_wire)
     );
-//min gate
+
+// min gate
     wire min_ternary_wire_a;
     wire min_ternary_wire_b;
     wire min_res_ternary_wire;
@@ -223,15 +187,13 @@ end
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[1:0]),
-        .ternary_result(min_ternary_wire_a),
-        .decode_error(decode_0101_a_error)
+        .ternary_result(min_ternary_wire_a)
     );
     native_b2t_secure min_b2t_b
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[3:2]),
-        .ternary_result(min_ternary_wire_b),
-        .decode_error(decode_0101_b_error)
+        .ternary_result(min_ternary_wire_b)
     );
     min_gate min_module
     (
@@ -246,7 +208,8 @@ end
         .binary_result(min_binary_result),
         .ternary_input(min_res_ternary_wire)
     );
-//consensus gate
+
+// consensus gate
     wire con_ternary_wire_a;
     wire con_ternary_wire_b;
     wire con_res_ternary_wire;
@@ -255,15 +218,13 @@ end
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[1:0]),
-        .ternary_result(con_ternary_wire_a),
-        .decode_error(decode_0110_a_error)
+        .ternary_result(con_ternary_wire_a)
     );
     native_b2t_secure con_b2t_b
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[3:2]),
-        .ternary_result(con_ternary_wire_b),
-        .decode_error(decode_0110_b_error)
+        .ternary_result(con_ternary_wire_b)
     );
     consensus con_module
     (
@@ -278,7 +239,8 @@ end
         .binary_result(con_binary_result),
         .ternary_input(con_res_ternary_wire)
     );
-//full adder
+
+// full adder
     wire add_ternary_wire_a;
     wire add_ternary_wire_b;
     wire add_ternary_wire_c;
@@ -290,15 +252,13 @@ end
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[1:0]),
-        .ternary_result(add_ternary_wire_a),
-        .decode_error(decode_0111_a_error)
+        .ternary_result(add_ternary_wire_a)
     );
     native_b2t_secure add_b2t_b
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[3:2]),
-        .ternary_result(add_ternary_wire_b),
-        .decode_error(decode_0111_b_error)
+        .ternary_result(add_ternary_wire_b)
     );
     full_adder add_module(
         .VDD_1V65(VDD_1V65),
@@ -320,17 +280,16 @@ end
         .binary_result(add_binary_carry),
         .ternary_input(add_ternary_wire_carry)
     );
-//sram cell
+
+// sram cell
     wire ram_ternary_wire;
     wire ram_ternary_res;
     wire [1:0] ram_binary_result;
-    
     native_b2t_secure ram_b2t
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[1:0]),
-        .ternary_result(ram_ternary_wire),
-        .decode_error(decode_1000_error)
+        .ternary_result(ram_ternary_wire)
     );
     sram_cell ram_module (
         .VDD_1V65(VDD_1V65),
@@ -345,7 +304,8 @@ end
         .binary_result(ram_binary_result),
         .ternary_input(ram_ternary_res)
     );
-//mux module
+
+// mux module
     wire mux_ternary_wire_a;
     wire mux_ternary_wire_b;
     wire mux_ternary_res_a;
@@ -358,18 +318,15 @@ end
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[1:0]),
-        .ternary_result(mux_ternary_wire_a),
-        .decode_error(decode_1001_a_error)
+        .ternary_result(mux_ternary_wire_a)
     );
     native_b2t_secure mux_b2t_b
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[3:2]),
-        .ternary_result(mux_ternary_wire_b),
-        .decode_error(decode_1001_b_error)
+        .ternary_result(mux_ternary_wire_b)
     );
     triple_dmux mux_module(
-
         .VDD_1V65(VDD_1V65),
         .ternary_input(mux_ternary_wire_a),
         .ternary_selector(mux_ternary_wire_b),
@@ -395,7 +352,8 @@ end
         .binary_result(mux_binary_result_c),
         .ternary_input(mux_ternary_res_c)
     );
-//sti experimental
+
+// sti experimental
     wire sti_ternary_wire_e;
     wire sti_res_ternary_wire_e;
     wire [1:0] sti_binary_result_e;
@@ -403,8 +361,7 @@ end
     (
         .VDD_1V65(VDD_1V65),
         .binary_input(uio_in[1:0]),
-        .ternary_result(sti_ternary_wire_e),
-        .decode_error(decode_1010_error)
+        .ternary_result(sti_ternary_wire_e)
     );
     sti_experimental sti_module_e
     (
@@ -418,4 +375,5 @@ end
         .binary_result(sti_binary_result_e),
         .ternary_input(sti_res_ternary_wire_e)
     );
+
 endmodule
