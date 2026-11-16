@@ -1,7 +1,9 @@
 //the primary commander for the thread responsible for decoding operations 
 /*
 todo: add error and overflow warns outwards
-
+ask for clarification whenever things are poorly defined
+warn me of ambiguity, state and explain how the code was interpreted and also modify any and all accompanying modules
+warn me of micro ops that may be operating over multiple clock cycles
 */
 
 
@@ -243,15 +245,15 @@ reg [23:0] debug_reg_cache;
 
 
 //operation parameters and states for the main loop
-reg write_allow = 1'b1;
+reg write_allow = 1'b1; //need to finish later
 
 reg single_m_12t = 1'b0;
 reg single_m_4t = 1'b0;
 reg single_m_1t = 1'b0;
 reg [1:0] stallReason = 2'b0;
 localparam  NOTSTALL        = 2'b00,
-            WAIT_PIPEFULL    = 2'b01;
-            WAIT_REGUPDAT    = 2'b10;
+            WAIT_PIPEFULL   = 2'b01,
+            WAIT_REGUPDAT   = 2'b10;
 
 
 
@@ -546,7 +548,6 @@ always @(posedge clk or negedge rst_n) begin
                             //if there was a jump previously, use a flush and make sure action counter and param counter are visible
                             // then command_req_new is inverted to show new request
                             command_req_new = ~command_req_new;
-
                         end else if(command_data_sent && execute_stage == 2'b0) begin
                             //read command input 
                             execute_done = 1'b0;
@@ -609,7 +610,7 @@ always @(posedge clk or negedge rst_n) begin
                                                 stall = WAIT_PIPEFULL;
                                             end
 
-                                            //unfinished need calls on the other side to ask for more instructions
+                                            //unfinished: need calls on the other side to ask for more instructions
                                         end
                                     end
                                     4'b1010: begin
@@ -635,10 +636,11 @@ always @(posedge clk or negedge rst_n) begin
                                         /*
                                         if the 12 trits are not scratchpad, they are copied out first, then that section is replaced with the mac overflow and rewritten
                                         */
+                                        //param 1 here is the 4 bit trit address
                                     end
                                     4'b0010: begin
                                         //mac ladder pump, 4 trit chunk source address 
-                                        // Xxx0: fill normally
+                                        // Xxx0: fill normally, using xxx as the address to source 4 trits
                                         // Xxx1: fill with 0s
                                         //mac pumps do not shift the destination register trits, 
                                         //instead a counter keeps track of where each segment should go and overwrite that segment 
@@ -649,7 +651,6 @@ always @(posedge clk or negedge rst_n) begin
                                         //4 trit chunk address
                                         // Xxx0: clear scratchpads
                                         // Xxx1: clear mac ladder section
-                                        
                                     end
                                     4'b0100: begin
                                         //hold until register change
@@ -659,10 +660,12 @@ always @(posedge clk or negedge rst_n) begin
                                     4'b0101: begin
                                         //set single use mask for 12 trits
                                         //the value at that 12t address will be copied into the mask buffer
+                                        //param 1 is the addresss of the 12 trits that will be copied into the mask
                                     end
                                     4'b0110: begin
                                         //mask will not clear automatically for 12 trits
                                         //the value at that 12t address will be copied into the mask buffer
+                                        //param 1 is the addresss of the 12 trits that will be copied into the mask
                                     end
                                     4'b0111: begin
                                         //4t mask
@@ -684,7 +687,7 @@ always @(posedge clk or negedge rst_n) begin
                                         //hop micro op 4 trit address
                                         //xxx0 : action
                                         //xxx1 : param
-                                        
+                                        //xxx is the address of the 4 trit chunk
                                         if(param_0[0] == 1'b0) begin
                                             //xxx0 : action
                                         end else begin
@@ -696,47 +699,77 @@ always @(posedge clk or negedge rst_n) begin
                                         //this works in conjunction to provide memory read writes
                                         //this needs to work in conjunction with the memory bus
                                     end
+                                    4'b1011: begin
+                                        //alu hogging
+                                        //for big operations that need alu max priority on all processes
+                                        //param 1 is a binary number up to 16
+                                    end
                                 endcase
                             end 
                             else if(command == 4'b0010) begin 
                                 // 2 parameters
                                 case(param_0)
+                                    4'b0000: begin
+                                        //register A copy to register B (12 trits) without mask
+                                        //param1 regA addr
+                                        //param2 regB addr
+                                    end
                                     4'b0001: begin
                                         //1 trit reg write
                                         //param1 xx00, xx is the immediate value, 01 means normal register space, 10 means that write into carry reg
                                         //param2 xxx0, xxx is the address, and 1 here means the mask is used
                                     end
                                     4'b0010: begin
-                                        //register A copy to register B (12 trits)
+                                        //register A copy to register B (12 trits) with mask
                                         //param1 regA addr
                                         //param2 regB addr
                                     end
                                     4'b0011: begin
                                         //1 trit reg move
+                                        //param 1 (addr from) xxx0 : use mask
+                                        //param 1 (addr from) xxx1 : skip mask
+                                        //param 2 (addr to)   xxx0
                                     end
                                     4'b0100: begin
                                         //4 trit reg move
+                                        //param 1 (addr from) xxx0 : use mask
+                                        //param 1 (addr from) xxx1 : skip mask
+                                        //param 2 (addr to)   xxx0
                                     end
                                     4'b0101: begin
+                                        //due to the shoddy construction of things, you cant swap and mask
                                         //reg swap 12t
+                                        //param 1 and 2 : addresses of A and B
                                     end
                                     4'b0110: begin
                                         //reg swap 4t
+                                        //param 1 and 2 : addresses of A and B
                                     end
                                     4'b0111: begin
                                         //reg swap 1t
+                                        //param 1 and 2 : addresses of A and B
                                     end
                                     4'b1000: begin
-                                        //read extended register
+                                        //read extended register (the extended register is basically just ram stored on another fpga)
+                                        //param 1 Local reg addr 12T
+                                        //param 2 Extended reg addr 12t
                                     end
                                     4'b1001: begin
                                         //write extended register
+                                        //param 1 Local reg addr 12T
+                                        //param 2 Extended reg addr 12t
                                     end
                                     4'b1010: begin
                                         //hop parameter counter using immediate
+                                        //param 1 t3 t2
+                                        //param 2 t1 t0
+                                        //trits are encoded into 2 bits, using override encoding
                                     end
                                     4'b1011: begin
                                         //hop action counter using immediate
+                                        //param 1 t3 t2
+                                        //param 2 t1 t0
+                                        //trits are encoded into 2 bits, using override encoding
                                     end
                                     4'b1100: begin
                                         //Generate mask
@@ -750,11 +783,14 @@ always @(posedge clk or negedge rst_n) begin
                                     end
                                     4'b1101: begin
                                         //generate value
-                                        //1 trit fill value, 2 bits to distinguish 00 = 12 trits 01 = 4 trits 10 = 1 trit
+                                        //param1 : 1 trit fill value, 2 bits to distinguish 00 = 12 trits 01 = 4 trits 10 = 1 trit
                                         //param2 target addresses
+                                        //for only 3 bit addresses, the last bit can be anythhing: xxx0 / xxx1 are both ok 
                                     end
                                     4'b1110: begin
                                         //write 12 trits to the next command space
+                                        //param 1: ADDR from
+                                        //param 2: ADDR to 
                                     end
                                     4'b1111: begin
                                         //read mac ladder,
@@ -772,19 +808,107 @@ always @(posedge clk or negedge rst_n) begin
                                 case(command)
                                     4'b0011: begin
                                         // trit add/subtract using the alu
+                                        /*
+                                        Operand A address 4 trit
+                                        xxx0: add
+                                        xxx1: sub
+                                        Operand B address 4 trit
+                                        0xxx:regular store
+                                        1xxx:invert store
+
+                                        Result store address 4 trit
+                                        0xxx: skip mask
+                                        1xxx: masked
+                                        */
                                     end
                                     4'b0100: begin
-                                        //mac
+                                        //multiply,accumulate, pump A * B + C
+                                        /*
+                                        param 1 Operand A address 4 trit aaab
+                                        param 2 Operand B address 4 trit bbcc
+                                        param 3 operand C address 4 trit cddd
+                                        the 3 bits are the address 4 trits of a 4t overflow. set it to 000
+                                         (000 is still a valid 4t address but idc)
+                                        to *not* pump and store the overflow 
+                                        if you really want to store it in 000, too bad!
+                                        */
                                     end
                                     4'b0101: begin
-                                        //  
+                                        //add 3 A + B + C = D
+                                        /*
+                                        param 1 Operand A address 4 trit aaab
+                                        param 2 Operand B address 4 trit bbcc
+                                        param 3 operand C address 4 trit cddd
+                                        result stored at address D
+                                        */
                                     end
                                     4'b0110: begin
-                                        
+                                        //trit shift
+                                        /*
+                                        remember to modify alu to support this
+                                        address A (original) : xxx , address B (shift amt): yyy (yyy is the 1 trit register address (here the balanced ternary instead is more like 1,2,3))
+                                        00xxxyyy : local
+                                        01xxxyyy : overflow 
+                                        10xxxyyy : underflow
+                                        Result address (4 trits) zzz0 : shift towards infinity, zzz1 : shift towards 0
+                                        */
                                     end
                                     4'b0111: begin
-                                        
+                                        /*
+                                        single instruction conditional
+                                        param 0:
+                                        xxx is 1 trit logical evaluation address
+                                        1xxx: execute if equal
+                                        0xxx: execute if unequal
+                                        param 1&2 action rom addresses are aaa and param rom is ppp
+                                        aaap ppt0
+                                        t0 here is an immediate trit, where it checks if the evaluation address equals to this and writes the action and params when equal or unequal
+                                        use override encoding 00 : -1 , 01 :  1 , 10|11 : 0
+
+                                        */
                                     end
+                                    4'b1000: begin
+                                        //tritwise 1
+                                        //params 012 , a against b , store value at c
+                                        /*
+                                            aaab bbb ccc0 : skip mask
+                                            aaab bbb ccc1 : use mask
+                                        */
+                                    end
+                                    4'b1001: begin
+                                        //tritwise 2
+                                        //params 012 , a against b , store value at c
+                                        /*
+                                            aaab bbb ccc0 : skip mask
+                                            aaab bbb ccc1 : use mask
+                                        */
+                                    end
+                                    4'b1010: begin
+                                        //tritwise 3
+                                        //params 012 , a against b , store value at c
+                                        /*
+                                            aaab bbb ccc0 : skip mask
+                                            aaab bbb ccc1 : use mask
+                                        */
+                                    end
+                                    4'b1011: begin
+                                        /*
+                                        4 trit imm conversion
+                                            param 012
+                                            t3t2 t1t0 xxx0 : no mask
+                                            t3t2 t1t0 xxx0 : use mask
+                                            xxx is store address
+                                        */
+                                    end
+                                    4'b1100: begin
+                                        /*
+                                        12t to 4t transfer or 4t to 1t
+                                            param 0: 12t addr
+                                            param 1: 4/1t addr (if the lsb is 0, its a 12-4 trit; if the lsb is 1, its a 4-1)
+                                            param 2:Which trit to copy (2 bits) + mask result bit + direction bit
+                                        */
+                                    end
+                                    //we have 3 left over. maybe one day it can do something
                                 endcase
                             end
 
@@ -936,6 +1060,8 @@ always @(posedge clk or negedge rst_n) begin
         
 end
 
+
+//this is native. will switch out for binary soon
     native_12t_ladder ladder_reg(
         .VDD_1V65(VDD_1V65),
         .r_enable(),
@@ -954,7 +1080,7 @@ end
         inout [3:0]  data_out_4T
     );
 
-
+//this is binary dont worry
     secondary_register secondary_register_inst (
         .clk                  (clk),
         .rst_n                (rst_n),
@@ -974,6 +1100,7 @@ end
         .collision            (reg_collision)
     );
 
+//this is also binary
     ternary_pc_4t parameter_microcode_pc (
 
         .clk        (clk),
@@ -987,6 +1114,8 @@ end
         .overflow   (p_ctr_overflow)
     );
 
+
+    //remember to remove these later as everything is using override based 2 bit trit encoding
     native_4t4t4t scratchpad0 (
         .VDD_1V65     (VDD_1V65),
         .r_enable     (sp0_re),
