@@ -248,7 +248,10 @@ reg write_allow = 1'b1;
 reg single_m_12t = 1'b0;
 reg single_m_4t = 1'b0;
 reg single_m_1t = 1'b0;
-
+reg [1:0] stallReason = 2'b0;
+localparam  NOTSTALL        = 2'b00,
+            WAIT_PIPEFULL    = 2'b01;
+            WAIT_REGUPDAT    = 2'b10;
 
 
 
@@ -376,7 +379,7 @@ always @(posedge clk or negedge rst_n) begin
                     //anything else goes like normal
                     //triple read stages
                     //
-                    if(register_address < 4'15) begin
+                    if(register_address < 5'd15) begin
                         debug_reg_cache = reg_data_from;
                         reg_r_en = 1'b1;
                         reg_addr = 5'd5;
@@ -440,83 +443,85 @@ always @(posedge clk or negedge rst_n) begin
                     //best clock for housekeeping btw
                     //make sure that the aliased buffers that write into the command parameter addresses are written into the new command parameter space
                     //excellent for doing carry over stuff, which is intended behaviou
-                    if(alias_addr_12t != 4'b0000) begin
+                    if(write_allow) begin
+                        if(alias_addr_12t != 4'b0000) begin
 
-                        if(alias_addr_12t >= 4'd5) begin
-                        reg_data_to = am_buff_12t;
-                        reg_w_en = 1'b1; // pull this to high for a single clock
-                        override_cmd_sel_en = 1'b1; //1 clock
-                        override_cmd_sel <= ~using_macroop_1;
-                        end 
-                        else begin
-                            case(alias_addr_12t)
-                                4'd1: begin
-                                    //scratchpad 0
-                                    //fill scratchpad 
-                                    sp0_full12t = 1'b1;
-                                    sp0_we = 1'b1;
-                                    sp0_reg_bin_b2t = am_buff_12t;
-                                end
-                                4'd2: begin
-                                    //scratchpad 1
-                                    sp1_full12t = 1'b1;
-                                    sp1_we = 1'b1;
-                                    sp1_reg_bin_b2t = am_buff_12t;
-                                end
-                                4'd3: begin
-                                    //flags 
-                                    flag_full12t = 1'b1;
-                                    flag_we = 1'b1;
-                                    flag_reg_bin_b2t = am_buff_12t;
-                                end
-                                4'd4: begin
-                                    //ladder register
-                                    ladder_full12t = 1'b1;
-                                    ladder_we = 1'b1;
-                                    ladd_reg_bin_b2t = am_buff_12t;
-                                end
+                            if(alias_addr_12t >= 4'd5) begin
+                            reg_data_to = am_buff_12t;
+                            reg_w_en = 1'b1; // pull this to high for a single clock
+                            override_cmd_sel_en = 1'b1; //1 clock
+                            override_cmd_sel <= ~using_macroop_1;
+                            end 
+                            else begin
+                                case(alias_addr_12t)
+                                    4'd1: begin
+                                        //scratchpad 0
+                                        //fill scratchpad 
+                                        sp0_full12t = 1'b1;
+                                        sp0_we = 1'b1;
+                                        sp0_reg_bin_b2t = am_buff_12t;
+                                    end
+                                    4'd2: begin
+                                        //scratchpad 1
+                                        sp1_full12t = 1'b1;
+                                        sp1_we = 1'b1;
+                                        sp1_reg_bin_b2t = am_buff_12t;
+                                    end
+                                    4'd3: begin
+                                        //flags 
+                                        flag_full12t = 1'b1;
+                                        flag_we = 1'b1;
+                                        flag_reg_bin_b2t = am_buff_12t;
+                                    end
+                                    4'd4: begin
+                                        //ladder register
+                                        ladder_full12t = 1'b1;
+                                        ladder_we = 1'b1;
+                                        ladd_reg_bin_b2t = am_buff_12t;
+                                    end
+                                endcase
+                            end
+                            alias_addr_12t <= 4'b0000;
+                            //also check if this falls into the scratchpad registers /flag registers cause they are different
+                        end
+                        if(alias_active_4t) begin
+                            alias_active_4t <= 1'b0;
+                            //4t write
+                            if(alias_addr_4t <= 3'd2) begin
+                                // 0-2
+                                //scratchpad 0
+                                sp0_reg_bin_b2t = am_buff_4t;
+                                sp0_we = 1'b1;
+                            end else if (alias_addr_4t <= 3'd5) begin
+                                //3-5
+                                //scratchpad 1
+                                sp1_reg_bin_b2t = am_buff_4t;
+                                sp1_we = 1'b1;
+                            end
+                            else begin
+                                //flag register sections
+                                flag_we = 1'b1;
+                                flag_reg_bin_b2t = am_buff_4t;
+                            end
+                            case(alias_addr_4t)
+                                3'd0: sp0_pos  = 2'b01;
+                                3'd1: sp0_pos  = 2'b10;
+                                3'd2: sp0_pos  = 2'b11;
+                                3'd3: sp1_pos  = 2'b01;
+                                3'd4: sp1_pos  = 2'b10;
+                                3'd5: sp1_pos  = 2'b11;
+                                3'd6: flag_pos = 4'b0001;
+                                3'd7: flag_pos = 4'b0010;
                             endcase
                         end
-                        alias_addr_12t <= 4'b0000;
-                        //also check if this falls into the scratchpad registers /flag registers cause they are different
-                    end
-                    if(alias_active_4t) begin
-                        alias_active_4t <= 1'b0;
-                        //4t write
-                        if(alias_addr_4t <= 3'd2) begin
-                            // 0-2
-                            //scratchpad 0
-                            sp0_reg_bin_b2t = am_buff_4t;
-                            sp0_we = 1'b1;
-                        end else if (alias_addr_4t <= 3'd5) begin
-                            //3-5
-                            //scratchpad 1
-                            sp1_reg_bin_b2t = am_buff_4t;
-                            sp1_we = 1'b1;
-                        end
-                        else begin
-                            //flag register sections
+                        if(alias_active_1t) begin
+                            alias_active_1t <= 1'b0;
+                            //1t write
+                            flag_reg_bin_b2t_1t = am_buff_1t;
+                            flag_pos[3] = 1'b1;
+                            flag_pos[2:0] = alias_active_1t;
                             flag_we = 1'b1;
-                            flag_reg_bin_b2t = am_buff_4t;
                         end
-                        case(alias_addr_4t)
-                            3'd0: sp0_pos  = 2'b01;
-                            3'd1: sp0_pos  = 2'b10;
-                            3'd2: sp0_pos  = 2'b11;
-                            3'd3: sp1_pos  = 2'b01;
-                            3'd4: sp1_pos  = 2'b10;
-                            3'd5: sp1_pos  = 2'b11;
-                            3'd6: flag_pos = 4'b0001;
-                            3'd7: flag_pos = 4'b0010;
-                        endcase
-                    end
-                    if(alias_active_1t) begin
-                        alias_active_1t <= 1'b0;
-                        //1t write
-                        flag_reg_bin_b2t_1t = am_buff_1t;
-                        flag_pos[3] = 1'b1;
-                        flag_pos[2:0] = alias_active_1t;
-                        flag_we = 1'b1;
                     end
                     //end of housekeeping
                 end
@@ -572,6 +577,10 @@ always @(posedge clk or negedge rst_n) begin
                                     end
                                     4'b0100: begin
                                         //return
+                                        ret_micro <= 1'b1;
+                                        //unfinished
+                                        //purge all cached microcode on the handler side
+
                                     end
                                     4'b0101: begin
                                         //disable write
@@ -579,16 +588,29 @@ always @(posedge clk or negedge rst_n) begin
                                     end
                                     4'b0110: begin
                                         //enable write
-                                        write_allow = 1'b1; //do not clear
+                                        write_allow = 1'b1; //do not clear on a clockly basis 
                                     end
                                     4'b0111: begin
                                         //clear scratchpads
+                                        if(write_allow) begin
+                                            sp0_reg_bin_b2t = 24'd0;
+                                            sp0_we = 1'b1;
+                                            sp0_full12t = 1'b1; 
+                                        end
                                     end
                                     4'b1000: begin
                                         //clear general purpose registers
                                     end
                                     4'b1001: begin
                                         //stall until next macro command is in
+                                        if(!direct_instr) begin
+                                            //to prevent a permanent stall, do nothing if direct instr is up
+                                            if(threadstate != THREAD_FULL) begin
+                                                stall = WAIT_PIPEFULL;
+                                            end
+
+                                            //unfinished need calls on the other side to ask for more instructions
+                                        end
                                     end
                                     4'b1010: begin
                                         //alu priority step up, housekeep
@@ -913,7 +935,6 @@ always @(posedge clk or negedge rst_n) begin
     end
         
 end
-
 
     native_12t_ladder ladder_reg(
         .VDD_1V65(VDD_1V65),

@@ -1,471 +1,244 @@
-//this is the wrapper that handles signal routing between the 3 threads and funnels them into the base modules
-
-/*
-0 : adder
-1 : multiply
-2 : trit shift
-
-*/
-
 (* keep_hierarchy = "true" *)
 module native_wrapper (
+    inout  wire        VDD_1V65,
 
-    inout VDD_1V65,
-    
-    input wire [1:0] adder_mux,
-    input wire [1:0] multi_mux,
-    input wire [1:0] shift_mux,
-    input wire [1:0] tritwise_1_mux,
-    input wire [1:0] tritwise_2_mux,
-    input wire [1:0] tritwise_3_mux,
-    input wire [1:0] tritwise_4_mux,
+    input  wire [2:0]  active_cmd_t0,
+    input  wire [2:0]  active_cmd_t1,
+    input  wire [2:0]  active_cmd_t2,
 
+    input  wire [1:0]  adder_mux,
+    input  wire [1:0]  multi_mux,
+    input  wire [1:0]  shift_mux,
+    input  wire [1:0]  tritwise_1_mux,
+    input  wire [1:0]  tritwise_2_mux,
+    input  wire [1:0]  tritwise_3_mux,
 
-    inout [3:0] trit4_in_a_0,
-    inout [3:0] trit4_in_b_0,
-    input [2:0] tritwise_control_0,
-    inout [7:0] multiplier_out_0,
-    
-    inout       trit4_in_cin_0,
-    inout       trit1_in_b_0,
+    // Thread 0 (2-bit Override Ternary per trit)
+    input  wire [7:0]  trit4_in_a_0,
+    input  wire [7:0]  trit4_in_b_0,
+    input  wire [2:0]  tritwise_control_0,
+    input  wire [2:0]  shift_control_0,
+    input  wire [1:0]  trit4_in_cin_0,
+    input  wire [1:0]  trit1_in_b_0,
+    output wire [7:0]  trit4_out_0,
+    output wire [1:0]  trit4_out_cout_0,
+    output wire [15:0] multiplier_out_0,
 
-    inout [3:0] trit4_out_0,
-    inout       trit4_out_cout_0,
+    // Thread 1 (2-bit Override Ternary per trit)
+    input  wire [7:0]  trit4_in_a_1,
+    input  wire [7:0]  trit4_in_b_1,
+    input  wire [2:0]  tritwise_control_1,
+    input  wire [2:0]  shift_control_1,
+    input  wire [1:0]  trit4_in_cin_1,
+    input  wire [1:0]  trit1_in_b_1,
+    output wire [7:0]  trit4_out_1,
+    output wire [1:0]  trit4_out_cout_1,
+    output wire [15:0] multiplier_out_1,
 
-    input [2:0] tritwise_control_1,
-    inout [3:0] trit4_in_a_1,
-    inout [3:0] trit4_in_b_1,
-    inout       trit4_in_cin_1,
-    inout       trit1_in_b_1,
-
-    inout [3:0] trit4_out_1,
-    inout       trit4_out_cout_1,
-    inout [7:0] multiplier_out_1,
-
-
-    input [2:0] tritwise_control_2,
-    inout [3:0] trit4_in_a_2,
-    inout [3:0] trit4_in_b_2,
-    inout       trit4_in_cin_2,
-    inout       trit1_in_b_2,
-
-    inout [3:0] trit4_out_2,
-    inout       trit4_out_cout_2,
-
-    inout [7:0] multiplier_out_2
+    // Thread 2 (2-bit Override Ternary per trit)
+    input  wire [7:0]  trit4_in_a_2,
+    input  wire [7:0]  trit4_in_b_2,
+    input  wire [2:0]  tritwise_control_2,
+    input  wire [2:0]  shift_control_2,
+    input  wire [1:0]  trit4_in_cin_2,
+    input  wire [1:0]  trit1_in_b_2,
+    output wire [7:0]  trit4_out_2,
+    output wire [1:0]  trit4_out_cout_2,
+    output wire [15:0] multiplier_out_2
 );
 
-//remember to cut stuff with transmission gates if theres no data coming through, 
-//and use a common transistor to pull down to ground
+    //ternary representation constants
+    localparam [1:0]  OV_ZERO_1T = 2'b10;
+    localparam [7:0]  OV_ZERO_4T = {4{OV_ZERO_1T}}; // 8'b10_10_10_10
+    localparam [15:0] OV_ZERO_8T = {8{OV_ZERO_1T}}; // 16'b1010_1010_1010_1010
 
-wire [3:0] adder_operand_a;
-wire [3:0] adder_operand_b;
-wire [3:0] mult_operand_a;
-wire [3:0] mult_operand_b;
-wire [3:0] adder_result;
-wire [7:0] multiplier_result;
-wire       carry_in;
-wire       carry_out;
+    //4 trit full adder with mux. remember to construct 
+    wire [7:0] bin_adder_a   = (adder_mux == 2'd0) ? trit4_in_a_0   :
+                               (adder_mux == 2'd1) ? trit4_in_a_1   :
+                               (adder_mux == 2'd2) ? trit4_in_a_2   : OV_ZERO_4T;
 
-native_3i_9t_mux ternary_adder_mux(
+    wire [7:0] bin_adder_b   = (adder_mux == 2'd0) ? trit4_in_b_0   :
+                               (adder_mux == 2'd1) ? trit4_in_b_1   :
+                               (adder_mux == 2'd2) ? trit4_in_b_2   : OV_ZERO_4T;
 
-    .VDD_1V65(VDD_1V65),
+    wire [1:0] bin_adder_cin = (adder_mux == 2'd0) ? trit4_in_cin_0 :
+                               (adder_mux == 2'd1) ? trit4_in_cin_1 :
+                               (adder_mux == 2'd2) ? trit4_in_cin_2 : OV_ZERO_1T;
 
-    .mux_line0 (adder_mux[0]), //flex that 3 level logic while you still can
-    .mux_line1 (adder_mux[1]),
-    // Ternary Inputs (4 trits each)
-    .trit_in_a_0(trit4_in_a_0),
-    .trit_in_a_1(trit4_in_a_1),
-    .trit_in_a_2(trit4_in_a_2),
+    // Native ternary nets (strictly local point-to-point inside macro island!)
+    wire [3:0] nat_adder_a, nat_adder_b, nat_adder_sum;
+    wire       nat_adder_cin, nat_adder_cout;
+    wire [7:0] bin_adder_sum;
+    wire [1:0] bin_adder_cout;
 
-    .trit_in_b_0(trit4_in_b_0),
-    .trit_in_b_1(trit4_in_b_1),
-    .trit_in_b_2(trit4_in_b_2),
+    b2t_override_4t u_adder_b2t_a   (.VDD_1V65(VDD_1V65), .bin_in(bin_adder_a),   .trit_out(nat_adder_a));
+    b2t_override_4t u_adder_b2t_b   (.VDD_1V65(VDD_1V65), .bin_in(bin_adder_b),   .trit_out(nat_adder_b));
+    b2t_override_1t u_adder_b2t_cin (.VDD_1V65(VDD_1V65), .bin_in(bin_adder_cin), .trit_out(nat_adder_cin));
 
-    .trit_in_cin_0(trit4_in_cin_0),
-    .trit_in_cin_1(trit4_in_cin_1),
-    .trit_in_cin_2(trit4_in_cin_2),
+    native_full_adder_4t ternary_adder (
+        .VDD_1V65       (VDD_1V65),
+        .trit_in_a      (nat_adder_a),
+        .trit_in_b      (nat_adder_b),
+        .trit_carry_in  (nat_adder_cin),
+        .trit_carry_out (nat_adder_cout),
+        .trit_out       (nat_adder_sum)
+    );
 
-    .trit_out_a(adder_operand_a),
-    .trit_out_b(adder_operand_b),
-    .trit_out_cin(carry_in)
-);
-native_3o_5t_mux ternary_adder_demux(
+    t2b_override_4t u_adder_t2b_sum  (.VDD_1V65(VDD_1V65), .trit_in(nat_adder_sum),  .bin_out(bin_adder_sum));
+    t2b_override_1t u_adder_t2b_cout (.VDD_1V65(VDD_1V65), .trit_in(nat_adder_cout), .bin_out(bin_adder_cout));
 
-     
-    .VDD_1V65(VDD_1V65),
 
-    .mux_line0 (adder_mux[0]), //flex that 3 level logic while you still can
-    .mux_line1 (adder_mux[1]),
-    .trit_in(adder_result),
-    .trit_in_cout(carry_out),
-    // Ternary outputs (4 trits each)
-    .trit_out_0(trit4_out_0),
-    .trit_out_1(trit4_out_1),
-    .trit_out_2(trit4_out_2),
-    .trit_out_cout_0(trit4_out_cout_0),
-    .trit_out_cout_1(trit4_out_cout_1),
-    .trit_out_cout_2(trit4_out_cout_2)
-);
-native_full_adder_4t ternary_adder(
-     
+    //multiplier
+    wire [7:0] bin_mult_a = (multi_mux == 2'd0) ? trit4_in_a_0 :
+                            (multi_mux == 2'd1) ? trit4_in_a_1 :
+                            (multi_mux == 2'd2) ? trit4_in_a_2 : OV_ZERO_4T;
+
+    wire [7:0] bin_mult_b = (multi_mux == 2'd0) ? trit4_in_b_0 :
+                            (multi_mux == 2'd1) ? trit4_in_b_1 :
+                            (multi_mux == 2'd2) ? trit4_in_b_2 : OV_ZERO_4T;
+
+    wire [3:0]  nat_mult_a, nat_mult_b;
+    wire [7:0]  nat_mult_out;
+    wire [15:0] bin_mult_out;
+
+    b2t_override_4t u_mult_b2t_a (.VDD_1V65(VDD_1V65), .bin_in(bin_mult_a), .trit_out(nat_mult_a));
+    b2t_override_4t u_mult_b2t_b (.VDD_1V65(VDD_1V65), .bin_in(bin_mult_b), .trit_out(nat_mult_b));
+
+    native_multiplier ternary_multiplier (
+        .VDD_1V65  (VDD_1V65),
+        .trit_in_a (nat_mult_a),
+        .trit_in_b (nat_mult_b),
+        .trit_out  (nat_mult_out)
+    );
+
+    t2b_override_8t u_mult_t2b_out (.VDD_1V65(VDD_1V65), .trit_in(nat_mult_out), .bin_out(bin_mult_out));
+
+    //due to time constraints, tritwise components are all simulated in standard binary
+        //tragic i know
+
+            wire [1:0] bin_tw2_a    = (tritwise_2_mux == 2'd0) ? trit4_in_cin_0     :
+                                (tritwise_2_mux == 2'd1) ? trit4_in_cin_1     :
+                                (tritwise_2_mux == 2'd2) ? trit4_in_cin_2     : OV_ZERO_1T;
+        wire [1:0] bin_tw2_b    = (tritwise_2_mux == 2'd0) ? trit1_in_b_0       :
+                                (tritwise_2_mux == 2'd1) ? trit1_in_b_1       :
+                                (tritwise_2_mux == 2'd2) ? trit1_in_b_2       : OV_ZERO_1T;
+        wire [2:0] bin_tw2_ctrl = (tritwise_2_mux == 2'd0) ? tritwise_control_0 :
+                                (tritwise_2_mux == 2'd1) ? tritwise_control_1 :
+                                (tritwise_2_mux == 2'd2) ? tritwise_control_2 : 3'd0;
+
+        wire [1:0] bin_tw3_a    = (tritwise_3_mux == 2'd0) ? trit4_in_cin_0     :
+                                (tritwise_3_mux == 2'd1) ? trit4_in_cin_1     :
+                                (tritwise_3_mux == 2'd2) ? trit4_in_cin_2     : OV_ZERO_1T;
+        wire [1:0] bin_tw3_b    = (tritwise_3_mux == 2'd0) ? trit1_in_b_0       :
+                                (tritwise_3_mux == 2'd1) ? trit1_in_b_1       :
+                                (tritwise_3_mux == 2'd2) ? trit1_in_b_2       : OV_ZERO_1T;
+        wire [2:0] bin_tw3_ctrl = (tritwise_3_mux == 2'd0) ? tritwise_control_0 :
+                                (tritwise_3_mux == 2'd1) ? tritwise_control_1 :
+                                (tritwise_3_mux == 2'd2) ? tritwise_control_2 : 3'd0;
+
+        wire [1:0] bin_tw1_a    = (tritwise_1_mux == 2'd0) ? trit4_in_cin_0     :
+                                (tritwise_1_mux == 2'd1) ? trit4_in_cin_1     :
+                                (tritwise_1_mux == 2'd2) ? trit4_in_cin_2     : OV_ZERO_1T;
+        wire [1:0] bin_tw1_b    = (tritwise_1_mux == 2'd0) ? trit1_in_b_0       :
+                                (tritwise_1_mux == 2'd1) ? trit1_in_b_1       :
+                                (tritwise_1_mux == 2'd2) ? trit1_in_b_2       : OV_ZERO_1T;
+        wire [2:0] bin_tw1_ctrl = (tritwise_1_mux == 2'd0) ? tritwise_control_0 :
+                                (tritwise_1_mux == 2'd1) ? tritwise_control_1 :
+                                (tritwise_1_mux == 2'd2) ? tritwise_control_2 : 3'd0;
+        wire [1:0] bin_tw1_out;
+
+        tritwise_1 u_tritwise_1 (
+            .bin_in_a   (bin_tw1_a),
+            .bin_in_b   (bin_tw1_b),
+            .control_sig(bin_tw1_ctrl),
+            .bin_out    (bin_tw1_out)
+        );
+        wire [1:0] bin_tw2_out;
+
+        tritwise_2 u_tritwise_2 (
+            .bin_in_a   (bin_tw2_a),
+            .bin_in_b   (bin_tw2_b),
+            .control_sig(bin_tw2_ctrl),
+            .bin_out    (bin_tw2_out)
+        );
+
+        wire [1:0] bin_tw3_out;
+
+        tritwise_3 u_tritwise_3 (
+            .bin_in_a   (bin_tw3_a),
+            .bin_in_b   (bin_tw3_b),
+            .control_sig(bin_tw3_ctrl),
+            .bin_out    (bin_tw3_out)
+        );
+
+    //digital trit shifting
+        //cause shifting trits and picking a 4-trit window (-1=Left, 0=Center, +1=Right)
+        //is pure wire routing, doing this directly in 2-bit Override Ternary saves two B2T/T2B conversions
+        wire [7:0] bin_shift_data = (shift_mux == 2'd0) ? trit4_in_a_0      :
+                                    (shift_mux == 2'd1) ? trit4_in_a_1      :
+                                    (shift_mux == 2'd2) ? trit4_in_a_2      : OV_ZERO_4T;
+
+        wire [1:0] bin_shift_sel  = (shift_mux == 2'd0) ? trit4_in_cin_0    :
+                                    (shift_mux == 2'd1) ? trit4_in_cin_1    :
+                                    (shift_mux == 2'd2) ? trit4_in_cin_2    : OV_ZERO_1T;
+
+        // Fixed bug: connected to shift_control_0/1/2 instead of tritwise_control_0/1/2
+        wire [2:0] bin_shift_amt  = (shift_mux == 2'd0) ? shift_control_0   :
+                                    (shift_mux == 2'd1) ? shift_control_1   :
+                                    (shift_mux == 2'd2) ? shift_control_2   : 3'd0;
+
+        // Build 12-trit (24-bit) padded canvas initialized with Override Ternary Zeroes:
+        // Center [15:8] holds the 4-trit input data; [23:16] is Left overflow, [7:0] is Right overflow
+        wire [23:0] base_canvas = {OV_ZERO_4T, bin_shift_data, OV_ZERO_4T};
+        reg  [23:0] shifted_canvas;
+
+        always @(*) begin
+            case (bin_shift_amt[1:0])
+                2'd0: shifted_canvas = base_canvas;
+                2'd1: shifted_canvas = bin_shift_amt[2] ? {base_canvas[21:0], OV_ZERO_1T} : {OV_ZERO_1T, base_canvas[23:2]};
+                2'd2: shifted_canvas = bin_shift_amt[2] ? {base_canvas[19:0], {2{OV_ZERO_1T}}} : {{2{OV_ZERO_1T}}, base_canvas[23:4]};
+                2'd3: shifted_canvas = bin_shift_amt[2] ? {base_canvas[17:0], {3{OV_ZERO_1T}}} : {{3{OV_ZERO_1T}}, base_canvas[23:6]};
+            endcase
+        end
+
+        // Window Selector using Override Ternary on bin_shift_sel:
+        // 2'b00 = -1 (Left [23:16]), 2'b01 = +1 (Right [7:0]), 2'b10 or 2'b11 = 0 (Center [15:8])
+        wire [7:0] bin_shift_res = (bin_shift_sel[1])  ? shifted_canvas[15:8] : // 2'b10 or 2'b11 -> 0 (Center)
+                                (bin_shift_sel[0])  ? shifted_canvas[7:0]  : // 2'b01          -> +1 (Right)
+                                                        shifted_canvas[23:16]; // 2'b00          -> -1 (Left)
     
-    .VDD_1V65(VDD_1V65),
-    
-    .trit_in_a(adder_operand_a),
-    .trit_in_b(adder_operand_b),
-    
-    .trit_carry_in(carry_in),
-    .trit_carry_out(carry_out),
-    
-    .trit_out(adder_result)
-);
+    //readout demuxing
+        assign trit4_out_0 = (active_cmd_t0 == 3'd1) ? bin_adder_sum :
+                            (active_cmd_t0 == 3'd7) ? bin_shift_res : OV_ZERO_4T;
 
-native_3i_8t_mux ternary_multiplier_mux(
-     
-    
-    .VDD_1V65(VDD_1V65),
-    .mux_line0 (multi_mux[0]), //flex that 3 level logic while you still can
-    .mux_line1 (multi_mux[1]),
-    // Ternary Inputs (4 trits each)
-    .trit_in_a_0(trit4_in_a_0),
-    .trit_in_a_1(trit4_in_a_1),
-    .trit_in_a_2(trit4_in_a_2),
+        assign trit4_out_1 = (active_cmd_t1 == 3'd1) ? bin_adder_sum :
+                            (active_cmd_t1 == 3'd7) ? bin_shift_res : OV_ZERO_4T;
 
-    .trit_in_b_0(trit4_in_b_0),
-    .trit_in_b_1(trit4_in_b_1),
-    .trit_in_b_2(trit4_in_b_2),
+        assign trit4_out_2 = (active_cmd_t2 == 3'd1) ? bin_adder_sum :
+                            (active_cmd_t2 == 3'd7) ? bin_shift_res : OV_ZERO_4T;
 
-    .trit_out_a(mult_operand_a),
-    .trit_out_b(mult_operand_b)
-);
-native_multiplier ternary_multiplier(
-     
-    
-    .VDD_1V65(VDD_1V65),
-    
-    .trit_in_a(mult_operand_a),
-    .trit_in_b(mult_operand_b),
-    
-    .trit_out(multiplier_result)
-);
-native_3o_8t_demux ternary_multiplier_demux(
-    // Power & Mid-Rail
-     
-    
-    .VDD_1V65(VDD_1V65),
+        // 1-Trit Output (Driven by Adder Carry-Out [cmd=1] or Tritwise 1..4 [cmd=3..6])
+        assign trit4_out_cout_0 = (active_cmd_t0 == 3'd1) ? bin_adder_cout :
+                                (active_cmd_t0 == 3'd3) ? bin_tw1_out    :
+                                (active_cmd_t0 == 3'd4) ? bin_tw2_out    :
+                                (active_cmd_t0 == 3'd5) ? bin_tw3_out    :
+                                (active_cmd_t0 == 3'd6) ? bin_tw4_out    : OV_ZERO_1T;
 
-    .mux_line0 (multi_mux[0]), //flex that 3 level logic while you still can
-    .mux_line1 (multi_mux[1]),
+        assign trit4_out_cout_1 = (active_cmd_t1 == 3'd1) ? bin_adder_cout :
+                                (active_cmd_t1 == 3'd3) ? bin_tw1_out    :
+                                (active_cmd_t1 == 3'd4) ? bin_tw2_out    :
+                                (active_cmd_t1 == 3'd5) ? bin_tw3_out    :
+                                (active_cmd_t1 == 3'd6) ? bin_tw4_out    : OV_ZERO_1T;
 
-    .trit_in(multiplier_result),
-    //Ternary outputs (4 trits each)
-    .trit_out_0(multiplier_out_0),
-    .trit_out_1(multiplier_out_1),
-    .trit_out_2(multiplier_out_2 )
-);
+        assign trit4_out_cout_2 = (active_cmd_t2 == 3'd1) ? bin_adder_cout :
+                                (active_cmd_t2 == 3'd3) ? bin_tw1_out    :
+                                (active_cmd_t2 == 3'd4) ? bin_tw2_out    :
+                                (active_cmd_t2 == 3'd5) ? bin_tw3_out    :
+                                (active_cmd_t2 == 3'd6) ? bin_tw4_out    : OV_ZERO_1T;
 
-wire        tritwise1_operand_a;
-wire        tritwise1_operand_b;
-wire        tritwise1_result;
-wire [2:0]  tritwise1_controller;
-
-native_3i_5t_mux ternary_tritwise_1_mux(
-    // Power & Mid-Rail
-     
-    
-    .VDD_1V65(VDD_1V65),
-    .mux_line0 (tritwise_1_mux[0]), //flex that 3 level logic while you still can
-    .mux_line1 (tritwise_1_mux[1]),
-
-    // Ternary Inputs (4 trits each)
-    .trit_in_a_0(trit4_in_cin_0),
-    .trit_in_b_0(trit4_in_b_0),
-    .control_pass_in_0(tritwise_control_0), //make sure this is binary pass
-
-    .trit_in_a_1(trit4_in_cin_1),
-    .trit_in_b_1(trit4_in_b_1),
-    .control_pass_in_1(tritwise_control_1), //make sure this is binary pass
-
-    .trit_in_a_2(trit4_in_cin_2),
-    .trit_in_b_2(trit4_in_b_2),
-    .control_pass_in_2(tritwise_control_2), //make sure this is binary pass
-
-    .trit_out_a(tritwise1_operand_a),
-    .trit_out_b(tritwise1_operand_b),
-    .control_pass_out(tritwise1_controller)
-);
-
-native_tritwise_1 ternary_tritwise_1(
-    // Power & Mid-Rail
-     
-    
-    .VDD_1V65(VDD_1V65),
-    
-    // Ternary Inputs (1 trit each)
-    .trit_in_a(tritwise1_operand_a),
-    .trit_in_b(tritwise1_operand_b),
-    .control_sig(tritwise1_controller),
-    // Ternary Output
-    .trit_out(tritwise1_result)
-);
-
-native_3o_1t_demux ternary_tritwise_1_demux(
-    // Power & Mid-Rail
-     
-    
-    .VDD_1V65(VDD_1V65),
-    .mux_line0 (tritwise_1_mux[0]), //flex that 3 level logic while you still can
-    .mux_line1 (tritwise_1_mux[1]),
-
-    .trit_out_0(trit4_out_cout_0),
-    .trit_out_1(trit4_out_cout_1),
-    .trit_out_2(trit4_out_cout_2),
-    .trit_in(tritwise1_result)
-);
-
-wire        tritwise2_operand_a;
-wire        tritwise2_operand_b;
-wire        tritwise2_result;
-wire [2:0]  tritwise2_controller;
-
-native_3i_5t_mux ternary_tritwise_2_mux(
-    // Power & Mid-Rail
-     
-    
-    .VDD_1V65(VDD_1V65),
-    .mux_line0 (tritwise_2_mux[0]), //flex that 3 level logic while you still can
-    .mux_line1 (tritwise_2_mux[1]),
-
-    // Ternary Inputs (4 trits each)
-    .trit_in_a_0(trit4_in_cin_0),
-    .trit_in_b_0(trit4_in_b_0),
-    .control_pass_in_0(tritwise_control_0), //make sure this is binary pass
-
-    .trit_in_a_1(trit4_in_cin_1),
-    .trit_in_b_1(trit4_in_b_1),
-    .control_pass_in_1(tritwise_control_1), //make sure this is binary pass
-
-    .trit_in_a_2(trit4_in_cin_2),
-    .trit_in_b_2(trit4_in_b_2),
-    .control_pass_in_2(tritwise_control_2), //make sure this is binary pass
-
-    .trit_out_a(tritwise2_operand_a),
-    .trit_out_b(tritwise2_operand_b),
-    .control_pass_out(tritwise2_controller)
-);
-
-native_tritwise_2 ternary_tritwise_2(
-    // Power & Mid-Rail
-     
-    
-    .VDD_1V65(VDD_1V65),
-    
-    // Ternary Inputs (1 trit each)
-    .trit_in_a(tritwise2_operand_a),
-    .trit_in_b(tritwise2_operand_b),
-    .control_sig(tritwise2_controller),
-    // Ternary Output
-    .trit_out(tritwise2_result)
-);
-
-native_3o_1t_demux ternary_tritwise_2_demux(
-    // Power & Mid-Rail
-     
-    
-    .VDD_1V65(VDD_1V65),
-    .mux_line0 (tritwise_2_mux[0]), //flex that 3 level logic while you still can
-    .mux_line1 (tritwise_2_mux[1]),
-
-    .trit_out_0(trit4_out_cout_0),
-    .trit_out_1(trit4_out_cout_1),
-    .trit_out_2(trit4_out_cout_2),
-    .trit_in(tritwise2_result)
-);
-
-wire        tritwise3_operand_a;
-wire        tritwise3_operand_b;
-wire        tritwise3_result;
-wire [2:0]  tritwise3_controller;
-
-native_3i_5t_mux ternary_tritwise_3_mux(
-    // Power & Mid-Rail
-     
-    
-    .VDD_1V65(VDD_1V65),
-    .mux_line0 (tritwise_3_mux[0]), //flex that 3 level logic while you still can
-    .mux_line1 (tritwise_3_mux[1]),
-
-    // Ternary Inputs (4 trits each)
-    .trit_in_a_0(trit4_in_cin_0),
-    .trit_in_b_0(trit4_in_b_0),
-    .control_pass_in_0(tritwise_control_0), //make sure this is binary pass
-
-    .trit_in_a_1(trit4_in_cin_1),
-    .trit_in_b_1(trit4_in_b_1),
-    .control_pass_in_1(tritwise_control_1), //make sure this is binary pass
-
-    .trit_in_a_2(trit4_in_cin_2),
-    .trit_in_b_2(trit4_in_b_2),
-    .control_pass_in_2(tritwise_control_2), //make sure this is binary pass
-
-    .trit_out_a(tritwise3_operand_a),
-    .trit_out_b(tritwise3_operand_b),
-    .control_pass_out(tritwise3_controller)
-);
-native_tritwise_3 ternary_tritwise_3(
-    // Power & Mid-Rail
-     
-    
-    .VDD_1V65(VDD_1V65),
-    
-    // Ternary Inputs (1 trit each)
-    .trit_in_a(tritwise3_operand_a),
-    .trit_in_b(tritwise3_operand_b),
-    .control_sig(tritwise3_controller),
-    // Ternary Output
-    .trit_out(tritwise3_result)
-);
-native_3o_1t_demux ternary_tritwise_3_demux(
-    // Power & Mid-Rail
-     
-    
-    .VDD_1V65(VDD_1V65),
-    .mux_line0 (tritwise_3_mux[0]), //flex that 3 level logic while you still can
-    .mux_line1 (tritwise_3_mux[1]),
-
-    .trit_out_0(trit4_out_cout_0),
-    .trit_out_1(trit4_out_cout_1),
-    .trit_out_2(trit4_out_cout_2),
-    .trit_in(tritwise3_result)
-);
-
-wire        tritwise4_operand_a;
-wire        tritwise4_operand_b;
-wire        tritwise4_result;
-wire [2:0]  tritwise4_controller;
-
-native_3i_5t_mux ternary_tritwise_4_mux(
-    // Power & Mid-Rail
-     
-    
-    .VDD_1V65(VDD_1V65),
-    .mux_line0 (tritwise_4_mux[0]), //flex that 3 level logic while you still can
-    .mux_line1 (tritwise_4_mux[1]),
-
-    // Ternary Inputs (4 trits each)
-    .trit_in_a_0(trit4_in_cin_0),
-    .trit_in_b_0(trit4_in_b_0),
-    .control_pass_in_0(tritwise_control_0), //make sure this is binary pass
-
-    .trit_in_a_1(trit4_in_cin_1),
-    .trit_in_b_1(trit4_in_b_1),
-    .control_pass_in_1(tritwise_control_1), //make sure this is binary pass
-
-    .trit_in_a_2(trit4_in_cin_2),
-    .trit_in_b_2(trit4_in_b_2),
-    .control_pass_in_2(tritwise_control_2), //make sure this is binary pass
-
-    .trit_out_a(tritwise4_operand_a),
-    .trit_out_b(tritwise4_operand_b),
-    .control_pass_out(tritwise4_controller)
-);
-native_tritwise_4 ternary_tritwise_4 (
-    // Power & Mid-Rail
-     
-    
-    .VDD_1V65(VDD_1V65),
-    
-    // Ternary Inputs (1 trit each)
-    .trit_in_a(tritwise4_operand_a),
-    .trit_in_b(tritwise4_operand_b),
-    .control_sig(tritwise4_controller),
-    // Ternary Output
-    .trit_out(tritwise4_result)
-);
-native_3o_1t_demux ternary_tritwise_4_demux(
-    // Power & Mid-Rail
-     
-    
-    .VDD_1V65(VDD_1V65),
-    .mux_line0 (tritwise_4_mux[0]), //flex that 3 level logic while you still can
-    .mux_line1 (tritwise_4_mux[1]),
-
-    .trit_out_0(trit4_out_cout_0),
-    .trit_out_1(trit4_out_cout_1),
-    .trit_out_2(trit4_out_cout_2),
-    .trit_in(tritwise4_result)
-);
-
-wire [3:0] shift_data;
-wire [3:0] shift_res;
-wire select_result;
-wire [2:0] select_amt;
-wire [11:0] shift_result;
-native_3i_8t_shift_mux ternary_tritshift_mux(
-    // Power & Mid-Rail
-     
-    
-    .VDD_1V65(VDD_1V65),
-
-    .mux_line0 (shift_mux[0]), //flex that 3 level logic while you still can
-    .mux_line1 (shift_mux[1]),
-
-    .in_res_sel_0(trit4_in_cin_0),
-    .in_data_0(trit4_in_a_0), 
-    .in_shift_amt_0(tritwise_control_0), //shift amount
-
-    .in_res_sel_1(trit4_in_cin_1),
-    .in_data_1(trit4_in_a_1), 
-    .in_shift_amt_1(tritwise_control_1), //shift amount
-
-    .in_res_sel_2(trit4_in_cin_2),
-    .in_data_2(trit4_in_a_2), 
-    .in_shift_amt_2(tritwise_control_2), //shift amount
-
-    .out_res_sel(select_result),
-    .out_data(shift_data), 
-    .out_shift_amt(select_amt)
-);
-
-native_full_adder_4t ternary_tritshift (
-    // Power & Mid-Rail
-     
-    
-    .VDD_1V65(VDD_1V65),
-    
-    // Ternary Inputs (4 trits each)
-    .trit_in_a(shift_data),
-    .trit_shift_amount(select_amt[1:0]),
-    .direction(select_amt[2]), //left,right
-    // Ternary Output
-    .trit_out(shift_result)
-);
-
-native_shift_selector ternary_shiftselector (
-
-    .VDD_1V65(VDD_1V65),
-    
-    .selector(select_result), // -1 is left, 0 is center , 1 is right 
-
-    .trit_in(shift_result),
-    .trit_out(shift_res)
-);
-
-native_3o_4t_demux ternary_shift_demux (
-     
-    .VDD_1V65(VDD_1V65),
-
-    .mux_line0 (shift_mux[0]), //flex that 3 level logic while you still can
-    .mux_line1 (shift_mux[1]),
-
-    .trit_in(shift_res),
-    // Ternary outputs (4 trits each)
-    .trit_out_0(trit4_out_0),
-    .trit_out_1(trit4_out_1),
-    .trit_out_2(trit4_out_2)
-);
+        // 8-Trit Multiplier Output (Driven by Multiplier [cmd=2])
+        assign multiplier_out_0 = (active_cmd_t0 == 3'd2) ? bin_mult_out : OV_ZERO_8T;
+        assign multiplier_out_1 = (active_cmd_t1 == 3'd2) ? bin_mult_out : OV_ZERO_8T;
+        assign multiplier_out_2 = (active_cmd_t2 == 3'd2) ? bin_mult_out : OV_ZERO_8T;
 
 endmodule
-
-
