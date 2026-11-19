@@ -1,42 +1,36 @@
-![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg) ![](../../workflows/fpga/badge.svg)
+this is a asic
 
-# Tiny Tapeout Verilog Project Template
+dear god
 
-- [Read the documentation for project](docs/info.md)
+theres more
 
-## What is Tiny Tapeout?
+no
 
-Tiny Tapeout is an educational project that aims to make it easier and cheaper than ever to get your digital and analog designs manufactured on a real chip.
 
-To learn more and get started, visit https://tinytapeout.com.
+uh anyways this is a ternary cpu
+3 threads, 12 trits, infinite possibilities
+technically more efficient than a binary chip but i'm the one designing it so no
+pretty innovative if you ask me
 
-## Set up your Verilog project
 
-1. Add your Verilog files to the `src` folder.
-2. Edit the [info.yaml](info.yaml) and update information about your project, paying special attention to the `source_files` and `top_module` properties. If you are upgrading an existing Tiny Tapeout project, check out our [online info.yaml migration tool](https://tinytapeout.github.io/tt-yaml-upgrade-tool/).
-3. Edit [docs/info.md](docs/info.md) and add a description of your project.
-4. Adapt the testbench to your design. See [test/README.md](test/README.md) for more information.
+can access up to ~1.5GB of ram, but the very poorly thought out design leaves much to be desired
 
-The GitHub action will automatically build the ASIC files using [LibreLane](https://www.zerotoasiccourse.com/terminology/librelane/).
+has it's own isa and microcode architecture, with 7+1 modes designed to run in conjunction with an fpga to act as the chipset/ bridge, or can act standalone by reading spi flash
 
-## Enable GitHub actions to build the results page
+will update isa but it's in a google doc for now so until i do, this is where i get off
 
-- [Enabling GitHub Pages](https://tinytapeout.com/faq/#my-github-action-is-failing-on-the-pages-part)
 
-## Resources
+actual specs below
 
-- [FAQ](https://tinytapeout.com/faq/)
-- [Digital design lessons](https://tinytapeout.com/digital_design/)
-- [Learn how semiconductors work](https://tinytapeout.com/siliwiz/)
-- [Join the community](https://tinytapeout.com/discord)
-- [Build your design locally](https://www.tinytapeout.com/guides/local-hardening/)
+per thread:
+16 registers of 12 trits each
+2 registers can be addressed as 3x4 trit chunks
+1 register can be addressed as 8x1+4 trits (flag register)
 
-## What next?
+additionally up to 6 12t registers can be submitted with each command,
+each thread holds up to 2 commands, thus the real register count is 22+A-E hidden registers
+it gets more confusing
 
-- [Submit your design to the next shuttle](https://app.tinytapeout.com/).
-- Edit [this README](README.md) and explain your design, how it works, and how to test it.
-- Share your project on your social network of choice:
-  - LinkedIn [#tinytapeout](https://www.linkedin.com/search/results/content/?keywords=%23tinytapeout) [@TinyTapeout](https://www.linkedin.com/company/100708654/)
-  - Mastodon [#tinytapeout](https://chaos.social/tags/tinytapeout) [@matthewvenn](https://chaos.social/@matthewvenn)
-  - X (formerly Twitter) [#tinytapeout](https://twitter.com/hashtag/tinytapeout) [@tinytapeout](https://twitter.com/tinytapeout)
-  - Bluesky [@tinytapeout.com](https://bsky.app/profile/tinytapeout.com)
+leveraging the advantages of balanced ternary logic, the alu can process addition, subtraction, multiplication in discrete 4 trit chunks, while an arbiter distributes requests from the 3 threads evenly to maximize uptime
+
+below is a list of sub muxes that the core uses to set internal operation modes
