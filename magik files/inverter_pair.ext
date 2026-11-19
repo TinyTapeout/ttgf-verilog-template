@@ -1,0 +1,45 @@
+timestamp 1794286391
+version 8.3
+tech gf180mcuD
+style ngspice()
+scale 1000 1 0.5
+resistclasses 1000000 3250000 6300 7000 6300 7000 7300 1000000 60000 185000 60000 185000 6300 7000 6300 7000 6800 7300 350000 310000 1000000 90 90 90 90 60
+parameters nfet_10v0_asym l=l w=w a1=as p1=ps a2=ad p2=pd
+parameters nfet_06v0_dss l=l w=w a1=as p1=ps a2=ad p2=pd l1=s_sab l2=d_sab
+parameters nfet_06v0 l=l w=w a1=as p1=ps a2=ad p2=pd
+parameters pfet_10v0_asym l=l w=w a1=as p1=ps a2=ad p2=pd
+parameters pfet_06v0_dss l=l w=w a1=as p1=ps a2=ad p2=pd l1=s_sab l2=d_sab
+parameters pfet_06v0 l=l w=w a1=as p1=ps a2=ad p2=pd
+port "VSS" 4 -352 -116 840 4 m1
+port "pti" 3 198 326 676 417 m1
+port "nti" 2 -331 201 -238 513 m1
+port "VDD_3V3" 5 -556 668 840 788 m1
+port "in" 1 -106 236 101 416 m1
+node "VSS" 18 435.841 -352 -116 m1 0 0 0 0 0 0 0 0 12956 510 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 153292 2932 0 0 0 0 0 0 0 0
+node "pti" 60 100.252 198 326 m1 0 0 0 0 0 0 0 0 6336 320 52704 1408 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 83554 2540 0 0 0 0 0 0 0 0
+node "nti" 16 97.0323 -331 201 m1 0 0 0 0 0 0 0 0 12700 454 9696 394 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 41050 1270 0 0 0 0 0 0 0 0
+node "VDD_3V3" 59 340.023 -556 668 m1 0 0 0 0 0 0 0 0 0 0 52852 1482 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 191416 3916 0 0 0 0 0 0 0 0
+node "in" 187 825.764 -106 236 m1 0 0 0 0 0 0 0 0 0 0 0 0 341280 6128 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 106500 2040 0 0 0 0 0 0 0 0
+node "w_n556_296#" 2859 2301.47 -556 296 nw 767158 3998 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+substrate "VSUBS" 0 0 -1073741817 -1073741817 space 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+cap "w_n556_296#" "nti" 42.1188
+cap "VSS" "in" 218.71
+cap "VSS" "pti" 45.4067
+cap "VSS" "VDD_3V3" 6.47325
+cap "in" "pti" 443.563
+cap "VSS" "nti" 47.421
+cap "in" "VDD_3V3" 222.463
+cap "VDD_3V3" "pti" 230.002
+cap "VSS" "w_n556_296#" 9.02233
+cap "in" "nti" 161.991
+cap "nti" "pti" 2.31361
+cap "VDD_3V3" "nti" 39.2544
+cap "in" "w_n556_296#" 642.907
+cap "w_n556_296#" "pti" 63.608
+cap "VDD_3V3" "w_n556_296#" 194.392
+device msubckt nfet_06v0 38 77 39 78 l=578 w=72 "VSUBS" "in" 1156 0 "VSS" 72 6478,255 "pti" 72 6336,320
+device msubckt nfet_06v0 -210 43 -209 44 l=120 w=127 "VSUBS" "in" 240 0 "nti" 127 12700,454 "VSS" 127 6478,255
+device msubckt pfet_06v0 497 416 498 417 l=100 w=244 "w_n556_296#" "in" 200 0 "VDD_3V3" 244 12810,349 "pti" 244 27328,712
+device msubckt pfet_06v0 292 416 293 417 l=100 w=244 "w_n556_296#" "in" 200 0 "pti" 244 12688,348 "VDD_3V3" 244 12810,349
+device msubckt pfet_06v0 88 416 89 417 l=100 w=244 "w_n556_296#" "in" 200 0 "VDD_3V3" 244 13616,392 "pti" 244 12688,348
+device msubckt pfet_06v0 -210 499 -209 500 l=150 w=96 "w_n556_296#" "in" 300 0 "nti" 96 9696,394 "VDD_3V3" 96 13616,392

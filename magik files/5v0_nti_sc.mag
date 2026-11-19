@@ -1,0 +1,104 @@
+magic
+tech gf180mcuD
+magscale 1 10
+timestamp 1793089120
+<< nwell >>
+rect -253 296 589 814
+<< pwell >>
+rect -253 4 589 296
+rect -253 -1 383 4
+rect 392 -1 589 4
+rect -253 -142 589 -1
+<< mvnmos >>
+rect 38 43 158 170
+<< mvpmos >>
+rect 38 499 188 595
+<< mvndiff >>
+rect -51 138 38 170
+rect -51 56 -37 138
+rect 9 56 38 138
+rect -51 43 38 56
+rect 158 157 258 170
+rect 158 63 187 157
+rect 234 63 258 157
+rect 158 43 258 63
+<< mvpdiff >>
+rect -55 582 38 595
+rect -55 515 -37 582
+rect 9 515 38 582
+rect -55 499 38 515
+rect 188 580 289 595
+rect 188 513 219 580
+rect 265 513 289 580
+rect 188 499 289 513
+<< mvndiffc >>
+rect -37 56 9 138
+rect 187 63 234 157
+<< mvpdiffc >>
+rect -37 515 9 582
+rect 219 513 265 580
+<< mvpsubdiff >>
+rect -210 102 -124 129
+rect -210 42 -194 102
+rect -140 42 -124 102
+rect -210 13 -124 42
+<< mvnsubdiff >>
+rect -211 422 -125 460
+rect -211 417 -83 422
+rect -211 357 -193 417
+rect -139 357 -83 417
+rect -211 343 -83 357
+<< mvpsubdiffcont >>
+rect -194 42 -140 102
+<< mvnsubdiffcont >>
+rect -193 357 -139 417
+<< polysilicon >>
+rect 38 595 188 660
+rect 38 425 188 499
+rect 38 418 158 425
+rect 38 251 54 418
+rect 125 251 158 418
+rect 38 170 158 251
+rect 38 -1 158 43
+<< polycontact >>
+rect 54 251 125 418
+<< metal1 >>
+rect -168 668 504 788
+rect -182 667 15 668
+rect -218 582 15 667
+rect -218 515 -37 582
+rect 9 515 15 582
+rect -218 504 15 515
+rect 209 580 275 587
+rect 209 513 219 580
+rect 265 513 275 580
+rect -218 466 -56 504
+rect -208 417 -83 466
+rect 209 446 275 513
+rect -208 357 -193 417
+rect -139 357 -83 417
+rect -208 345 -83 357
+rect 38 418 140 446
+rect 38 251 54 418
+rect 125 251 140 418
+rect 38 236 140 251
+rect 187 201 279 446
+rect -37 138 9 176
+rect -213 102 -120 137
+rect -213 42 -194 102
+rect -140 42 -120 102
+rect -213 4 -120 42
+rect -37 4 9 56
+rect 187 157 234 201
+rect 187 52 234 63
+rect -168 -116 504 4
+<< labels >>
+rlabel metal1 187 201 279 321 1 ternary_output
+port 11 n signal bidirectional
+rlabel metal1 38 236 140 446 1 ternary_input
+port 15 n signal bidirectional
+rlabel metal1 -168 668 504 788 1 VDD_3V3
+port 14 n power bidirectional
+rlabel metal1 -168 -116 504 4 1 VSS
+port 16 n ground bidirectional
+<< end >>

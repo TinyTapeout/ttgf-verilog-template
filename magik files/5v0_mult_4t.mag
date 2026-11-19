@@ -1,0 +1,9 @@
+magic
+tech gf180mcuD
+magscale 1 10
+timestamp 1794995827
+use 5v0_mult_1t_tile  5v0_mult_1t_b_0
+timestamp 1794995811
+transform 1 0 2 0 1 -10
+box -2398 -2124 1019 -384
+<< end >>

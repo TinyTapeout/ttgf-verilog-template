@@ -1,0 +1,217 @@
+magic
+tech gf180mcuD
+magscale 1 10
+timestamp 1794880704
+<< nwell >>
+rect -2398 -701 -2199 -384
+rect -1994 -1724 -1830 -1606
+rect -1767 -1629 -251 -1606
+rect -236 -1629 126 -1606
+rect -1767 -1693 126 -1629
+rect 275 -1693 799 -1606
+rect -1767 -2124 799 -1693
+<< pwell >>
+rect -1091 -1340 -1034 -1322
+rect -1001 -1340 -770 -1322
+rect -1091 -1486 -803 -1340
+<< mvnmos >>
+rect -1011 -1486 -891 -1322
+<< mvndiff >>
+rect -1099 -1375 -1011 -1322
+rect -1099 -1469 -1086 -1375
+rect -1040 -1469 -1011 -1375
+rect -1099 -1486 -1011 -1469
+rect -891 -1400 -803 -1322
+rect -891 -1446 -862 -1400
+rect -816 -1446 -803 -1400
+rect -891 -1486 -803 -1446
+<< mvndiffc >>
+rect -1086 -1469 -1040 -1375
+rect -862 -1446 -816 -1400
+<< mvpsubdiff >>
+rect -1277 -1295 -1176 -1262
+rect -1277 -1386 -1264 -1295
+rect -1189 -1386 -1176 -1295
+rect -1277 -1400 -1176 -1386
+<< mvnsubdiff >>
+rect -2339 -442 -2256 -427
+rect -2339 -605 -2326 -442
+rect -2269 -605 -2256 -442
+rect -2339 -627 -2256 -605
+rect -1064 -1986 -952 -1969
+rect -1064 -2072 -1048 -1986
+rect -968 -2072 -952 -1986
+rect -1064 -2089 -952 -2072
+<< mvpsubdiffcont >>
+rect -1264 -1386 -1189 -1295
+<< mvnsubdiffcont >>
+rect -2326 -605 -2269 -442
+rect -1048 -2072 -968 -1986
+<< polysilicon >>
+rect -1011 -1322 -891 -1276
+rect -1011 -1519 -891 -1486
+rect -1011 -1568 -998 -1519
+rect -909 -1568 -891 -1519
+rect -1011 -1581 -891 -1568
+<< polycontact >>
+rect -998 -1568 -909 -1519
+<< metal1 >>
+rect -2320 -431 743 -410
+rect -2326 -442 743 -431
+rect -2269 -530 743 -442
+rect -2326 -616 -2269 -605
+rect -2079 -1018 -2018 -590
+rect -776 -816 -683 -685
+rect -1803 -896 -1497 -828
+rect -963 -902 -683 -816
+rect -1903 -1044 -1901 -992
+rect -776 -997 -683 -902
+rect -215 -963 129 -783
+rect 180 -884 483 -814
+rect 180 -892 437 -884
+rect -2220 -1295 769 -1194
+rect -2220 -1314 -1264 -1295
+rect -1189 -1314 769 -1295
+rect -1264 -1397 -1189 -1386
+rect -1092 -1375 -1040 -1360
+rect -1092 -1469 -1086 -1464
+rect -1092 -1487 -1040 -1469
+rect -862 -1400 -816 -1365
+rect -862 -1486 -816 -1446
+rect -998 -1519 -909 -1508
+rect -998 -1590 -909 -1578
+rect -1796 -1702 -1269 -1636
+rect -1129 -1702 -1117 -1636
+rect -635 -1739 -572 -1452
+rect -1288 -1932 -763 -1760
+rect -99 -1811 531 -1726
+rect -2073 -1986 769 -1978
+rect -2073 -2072 -1048 -1986
+rect -968 -2072 769 -1986
+rect -2073 -2098 769 -2072
+<< via1 >>
+rect -1232 -752 -1164 -637
+rect 548 -706 614 -594
+rect -1972 -1044 -1903 -992
+rect 437 -996 502 -884
+rect -1092 -1464 -1086 -1375
+rect -1086 -1464 -1040 -1375
+rect -1931 -1677 -1866 -1537
+rect -998 -1568 -909 -1525
+rect -998 -1578 -909 -1568
+rect -1269 -1702 -1129 -1636
+rect -221 -1615 -145 -1512
+rect 443 -1678 500 -1608
+<< metal2 >>
+rect 536 -594 627 -592
+rect -1244 -637 -1152 -634
+rect -1244 -752 -1232 -637
+rect -1164 -649 -1152 -637
+rect 536 -649 548 -594
+rect -1164 -706 548 -649
+rect 614 -706 627 -594
+rect -1164 -752 -1152 -706
+rect -1244 -756 -1152 -752
+rect -1974 -992 -1901 -980
+rect -1974 -1044 -1972 -992
+rect -1903 -1044 -1901 -992
+rect -1974 -1046 -1901 -1044
+rect -1972 -1116 -1903 -1046
+rect -1972 -1183 -716 -1116
+rect -1933 -1537 -1864 -1183
+rect -1933 -1677 -1931 -1537
+rect -1866 -1677 -1864 -1537
+rect -1416 -1375 -1027 -1361
+rect -1416 -1464 -1092 -1375
+rect -1040 -1464 -1027 -1375
+rect -1416 -1466 -1027 -1464
+rect -1416 -1578 -1068 -1466
+rect -772 -1499 -716 -1183
+rect 290 -1386 347 -706
+rect 546 -708 627 -706
+rect 434 -884 506 -872
+rect 434 -996 437 -884
+rect 502 -996 506 -884
+rect 434 -1014 506 -996
+rect -199 -1443 347 -1386
+rect -199 -1496 -142 -1443
+rect 290 -1444 347 -1443
+rect -772 -1512 -683 -1499
+rect -225 -1512 -142 -1496
+rect -1011 -1525 -897 -1522
+rect -1011 -1578 -998 -1525
+rect -909 -1578 -897 -1525
+rect -1011 -1580 -897 -1578
+rect -1933 -1694 -1864 -1677
+rect -1281 -1636 -1117 -1634
+rect -1281 -1702 -1269 -1636
+rect -1129 -1638 -1117 -1636
+rect -953 -1638 -897 -1580
+rect -225 -1615 -221 -1512
+rect -145 -1615 -142 -1512
+rect 443 -1606 500 -1014
+rect 441 -1608 502 -1606
+rect -225 -1627 -142 -1615
+rect -1129 -1694 -669 -1638
+rect 431 -1678 443 -1608
+rect 500 -1678 512 -1608
+rect 441 -1680 502 -1678
+rect -1129 -1702 -1117 -1694
+rect -1281 -1704 -1117 -1702
+rect -764 -1706 -763 -1694
+use gf180mcu_fd_sc_mcu7t5v0__and2_1  gf180mcu_fd_sc_mcu7t5v0__and2_1_0 $PDKPATH/libs.ref/gf180mcu_fd_sc_mcu7t5v0/mag
+timestamp 1723858470
+transform -1 0 -808 0 1 -1254
+box -86 -86 982 870
+use gf180mcu_fd_sc_mcu7t5v0__nor2_1  gf180mcu_fd_sc_mcu7t5v0__nor2_1_0 $PDKPATH/libs.ref/gf180mcu_fd_sc_mcu7t5v0/mag
+timestamp 1723858470
+transform 1 0 -2220 0 1 -1254
+box -86 -86 758 870
+use inverter_pair_short  inverter_pair_short_0
+timestamp 1794293999
+transform -1 0 -63 0 1 -1198
+box -556 -142 925 814
+use mux_2_mult_custom  mux2_mult_custom_0
+timestamp 1794840517
+transform 1 0 -687 0 -1 -1254
+box -86 -86 1542 870
+use not_internal_4  not_internal_4_0
+timestamp 1794325009
+transform 1 0 -2073 0 -1 -1254
+box -86 -86 534 870
+use not_internal_4  not_internal_4_1
+timestamp 1794325009
+transform 1 0 295 0 1 -1254
+box -86 -86 534 870
+use tg_component_cut  tg_component_0
+timestamp 1794880704
+transform 1 0 -911 0 -1 -1254
+box -86 -86 534 760
+<< labels >>
+rlabel metal2 -1416 -1578 -1092 -1361 1 VDD_1V65
+port 9 n signal bidirectional
+rlabel metal1 -1288 -1932 -763 -1760 1 res
+port 5 n signal bidirectional
+rlabel metal2 290 -1444 347 -804 1 original
+port 10 n signal bidirectional
+rlabel metal1 -776 -997 -683 -685 1 nti
+port 12 n
+rlabel metal1 -215 -963 129 -783 1 in
+port 1 n signal bidirectional
+rlabel metal2 -1933 -1537 -1903 -1044 1 nor
+port 14 n signal bidirectional
+rlabel metal1 -2220 -1314 769 -1194 1 VSS
+port 15 n ground bidirectional
+rlabel metal1 -2269 -530 743 -410 1 VDD_3V3_1
+port 16 n power bidirectional
+rlabel metal1 -2073 -2098 769 -1978 1 VDD_3V3_0
+port 17 n power bidirectional
+rlabel metal1 -2079 -1018 -2018 -590 1 over
+port 18 n signal bidirectional
+rlabel metal2 443 -1608 500 -996 1 inv
+port 11 n signal bidirectional
+rlabel metal1 -99 -1811 531 -1726 1 sign
+port 7 n signal bidirectional
+rlabel metal1 -635 -1739 -572 -1452 1 mux_res
+port 13 n signal bidirectional
+<< end >>

@@ -1,0 +1,61 @@
+magic
+tech gf180mcuD
+magscale 1 10
+timestamp 1794900793
+<< nwell >>
+rect -86 352 534 870
+<< pwell >>
+rect -86 -73 500 352
+rect -86 -86 534 -73
+<< mvnmos >>
+rect 124 68 244 232
+<< mvpmos >>
+rect 144 472 244 716
+<< mvndiff >>
+rect 36 192 124 232
+rect 36 146 49 192
+rect 95 146 124 192
+rect 36 68 124 146
+rect 244 192 332 232
+rect 244 146 273 192
+rect 319 146 332 192
+rect 244 68 332 146
+<< mvpdiff >>
+rect 56 665 144 716
+rect 56 525 69 665
+rect 115 525 144 665
+rect 56 472 144 525
+rect 244 665 332 716
+rect 244 525 273 665
+rect 319 525 332 665
+rect 244 472 332 525
+<< mvndiffc >>
+rect 49 146 95 192
+rect 273 146 319 192
+<< mvpdiffc >>
+rect 69 525 115 665
+rect 273 525 319 665
+<< polysilicon >>
+rect 144 716 244 760
+rect 144 405 244 472
+rect 124 232 244 283
+rect 124 24 244 68
+<< metal1 >>
+rect 69 665 115 724
+rect 69 506 115 525
+rect 253 665 319 678
+rect 253 525 273 665
+rect 49 192 95 232
+rect 49 60 95 146
+rect 253 192 319 525
+rect 253 146 273 192
+rect 253 106 319 146
+<< properties >>
+string FIXED_BBOX 0 0 448 784
+string GDS_END 476332
+string GDS_FILE $PDKPATH/libs.ref/gf180mcu_fd_sc_mcu7t5v0/gds/gf180mcu_fd_sc_mcu7t5v0.gds
+string GDS_START 474136
+string LEFclass core
+string LEFsite GF018hv5v_mcu_sc7
+string LEFsymmetry X Y
+<< end >>

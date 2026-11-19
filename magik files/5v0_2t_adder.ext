@@ -1,0 +1,825 @@
+timestamp 1794493908
+version 8.3
+tech gf180mcuD
+style ngspice()
+scale 1000 1 0.5
+resistclasses 1000000 3250000 6300 7000 6300 7000 7300 1000000 60000 185000 60000 185000 6300 7000 6300 7000 6800 7300 350000 310000 1000000 90 90 90 90 60
+use 5v0_addf_rev2 5v0_addf_sc_rev2_0 1 0 -208 0 1 -3
+use 5v0_addf_rev2 5v0_addf_sc_rev2_1 1 0 -4943 0 1 -3
+port "in_C_over" 20 -1705 -1301 -115 -1236 m3
+port "in_A_0" 8 278 16 769 500 m3
+port "in_A_1" 9 -4457 16 -3966 500 m3
+port "res_0" 14 -1920 -4842 -464 -4506 m2
+port "res_1" 13 -6655 -4842 -5199 -4506 m2
+port "in_B_0" 21 1304 -3274 1826 -2602 m2
+port "in_B_1" 22 -3431 -3274 -2909 -2602 m2
+port "VDD_1V65_2" 7 -600 -821 -282 -694 m2
+port "VDD_1V65_1" 6 -5335 -821 -5017 -694 m2
+port "in_C_sign" 19 -1316 705 1192 789 m2
+port "VDD_1V65" 5 -5080 -4702 -2037 -4395 m1
+port "VDD_3V3_1" 12 1304 -4204 1416 620 m1
+port "carry_interim_sign" 17 -2720 -2475 -2277 -2376 m1
+port "VSS" 3 -221 -2247 325 -1731 m1
+port "VDD_3V3" 1 -3431 -3274 -2909 -1594 m1
+port "carry_sign" 16 -7443 -2475 -7012 -2376 m1
+port "VSS_1" 4 -4956 -2247 -4410 -1731 m1
+port "carry_interim_over" 18 -3092 -1475 -1832 -1417 m1
+port "carry_over" 15 -7452 -1475 -6567 -1417 m1
+node "in_C_over" 2 432.455 -1705 -1301 m3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 103350 3310 0 0 0 0
+node "in_A_0" 0 345.074 278 16 m3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 237644 1950 0 0 0 0
+node "in_A_1" 0 304.634 -4457 16 m3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 237644 1950 0 0 0 0
+node "res_0" 0 645.876 -1920 -4842 m2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 489216 3584 0 0 0 0 0 0
+node "res_1" 0 673.641 -6655 -4842 m2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 489216 3584 0 0 0 0 0 0
+node "in_B_0" 0 473.511 1304 -3274 m2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 350784 2388 0 0 0 0 0 0
+node "in_B_1" 0 273.837 -3431 -3274 m2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 350784 2388 0 0 0 0 0 0
+node "VDD_1V65_2" 0 142.361 -600 -821 m2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 40386 890 0 0 0 0 0 0
+node "VDD_1V65_1" 0 150.791 -5335 -821 m2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 40386 890 0 0 0 0 0 0
+node "in_C_sign" 3 927.195 -1316 705 m2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 210672 5184 0 0 0 0 0 0
+node "VDD_1V65" 3 2759.78 -5080 -4702 m1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1190940 12898 0 0 0 0 0 0 0 0
+node "VDD_3V3_1" 4 2274.04 1304 -4204 m1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 540288 9872 0 0 0 0 0 0 0 0
+node "carry_interim_sign" 5 1260.54 -2720 -2475 m1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 43857 1084 275762 7452 0 0 0 0 0 0
+node "VSS" 0 603.432 -221 -2247 m1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 281736 2124 0 0 0 0 0 0 0 0
+node "VDD_3V3" 1 1819.06 -3431 -3274 m1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1165260 6264 0 0 0 0 0 0 0 0
+node "carry_sign" 0 220.656 -7443 -2475 m1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 42669 1060 0 0 0 0 0 0 0 0
+node "VSS_1" 0 626.397 -4956 -2247 m1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 300494 2350 0 0 0 0 0 0 0 0
+node "carry_interim_over" 7 1397.01 -3092 -1475 m1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 78880 2836 7812 376 228895 7222 0 0 0 0
+node "carry_over" 1 389.851 -7452 -1475 m1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 51330 1886 0 0 0 0 0 0 0 0
+node "m1_n1410_n1457#" 2 1429.2 -1410 -1457 m1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 126934 3368 12325 460 623099 4152 0 0 0 0
+node "w_n7980_n4424#" 32057 8926.12 -7980 -4424 nw 2975374 20142 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+node "w_n4851_n1440#" 2557 4142.62 -4851 -1440 nw 1380873 5228 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+substrate "VSUBS" 0 0 -1073741817 -1073741817 space 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+cap "VDD_3V3" "VSS_1" 12.4832
+cap "VDD_1V65_2" "VDD_3V3_1" 0.029744
+cap "in_A_0" "VDD_3V3_1" 13.5663
+cap "VDD_1V65_2" "in_C_over" 5.98817
+cap "in_A_1" "carry_interim_over" 12.8334
+cap "VDD_3V3" "VDD_1V65" 38.5578
+cap "VSS" "VDD_3V3_1" 10.7865
+cap "w_n4851_n1440#" "carry_interim_over" 186.364
+cap "in_C_over" "VSS" 5.04053
+cap "VDD_3V3" "carry_interim_sign" 200.309
+cap "VDD_3V3" "in_B_1" 693.895
+cap "carry_interim_sign" "VSS_1" 0.335148
+cap "w_n4851_n1440#" "VDD_1V65_1" 12.5464
+cap "in_B_0" "VDD_3V3_1" 240.311
+cap "carry_interim_sign" "m1_n1410_n1457#" 52.6836
+cap "w_n7980_n4424#" "in_B_0" 2.26392
+cap "in_B_1" "VDD_1V65" 2.5217
+cap "VDD_3V3" "w_n7980_n4424#" 114.599
+cap "carry_over" "carry_sign" 9.79836
+cap "carry_interim_sign" "in_B_1" 4.08205
+cap "res_1" "VDD_1V65" 231.94
+cap "VDD_3V3" "w_n4851_n1440#" 23.5353
+cap "m1_n1410_n1457#" "VDD_3V3_1" 7.02865
+cap "VDD_1V65_1" "carry_interim_over" 5.98817
+cap "w_n4851_n1440#" "VSS_1" 31.8451
+cap "w_n7980_n4424#" "VDD_1V65" 606.483
+cap "in_C_over" "m1_n1410_n1457#" 150.784
+cap "carry_interim_sign" "in_C_over" 0.346283
+cap "w_n4851_n1440#" "m1_n1410_n1457#" 27.9928
+cap "w_n7980_n4424#" "in_B_1" 10.3605
+cap "carry_interim_sign" "in_A_1" 7.37127
+cap "VDD_1V65" "res_0" 437.7
+cap "w_n4851_n1440#" "carry_interim_sign" 153.964
+cap "w_n4851_n1440#" "in_B_1" 2.73484
+cap "w_n7980_n4424#" "res_1" 62.33
+cap "VDD_3V3" "carry_interim_over" 108.258
+cap "in_C_over" "VDD_3V3_1" 0.288001
+cap "w_n7980_n4424#" "VDD_3V3_1" 31.8179
+cap "VSS_1" "carry_interim_over" 28.9503
+cap "in_C_sign" "VDD_1V65_2" 5.12838
+cap "in_C_sign" "in_A_0" 38.0198
+cap "carry_interim_over" "m1_n1410_n1457#" 86.5012
+cap "w_n4851_n1440#" "in_A_1" 13.3679
+cap "w_n7980_n4424#" "res_0" 62.33
+cap "VDD_1V65_2" "m1_n1410_n1457#" 13.0496
+cap "carry_interim_sign" "carry_interim_over" 129.808
+cap "in_B_1" "carry_interim_over" 5.18449
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/mux_2_1/a_66_n88#" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 4.80263
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/half_tgate_0/a_56_472#" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 15.1583
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_1/carry1_over_probe" 18.4731
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/mux_2_1/a_n2_360#" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 1.43609
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_1/sum" -2.25394
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/half_tgate_0/a_124_24#" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 5.01864
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/mux_2_1/a_390_360#" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 0.241933
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/ctrl_over" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 11.8239
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_1/int_sign" 4.11866
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/VDD_3V3" "5v0_addf_sc_rev2_1/sum" 7.85222
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/VDD_3V3" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/upstepper_test" 8.00208
+cap "5v0_addf_sc_rev2_1/VDD_1V65_2" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0" 11.7401
+cap "5v0_addf_sc_rev2_1/sum" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" -0.0387443
+cap "5v0_addf_sc_rev2_1/sum" "5v0_addf_sc_rev2_1/int_over" -0.659051
+cap "5v0_addf_sc_rev2_1/sum" "5v0_addf_sc_rev2_1/VDD_1V65_2" 22.8453
+cap "5v0_addf_sc_rev2_1/VDD_1V65_2" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/upstepper_test" 7.25867
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/VDD_3V3" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" 0.655594
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/VDD_3V3" "5v0_addf_sc_rev2_1/int_over" 11.728
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/VDD_3V3" "5v0_addf_sc_rev2_1/VDD_1V65_2" 3.59585
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/VDD_3V3" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_nti_1" 0.328452
+cap "5v0_addf_sc_rev2_1/VDD_1V65_2" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" 0.0596968
+cap "5v0_addf_sc_rev2_1/int_over" "5v0_addf_sc_rev2_1/VDD_1V65_2" 6.71927
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/downstepper_test" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/VDD_3V3" 7.50852
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/VDD_3V3" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/half_tgate_0/a_124_24#" 8.76996
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/VDD_3V3" "5v0_addf_sc_rev2_1/in_B" 7.40435
+cap "5v0_addf_sc_rev2_1/VDD_1V65_2" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_nti_1" 0.254007
+cap "5v0_addf_sc_rev2_1/sum" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0" -2.71864
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/downstepper_test" "5v0_addf_sc_rev2_1/VDD_1V65_2" 1.83189
+cap "5v0_addf_sc_rev2_1/VSS_uq0" "5v0_addf_sc_rev2_1/VDD_1V65_2" 0.0206439
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_1/VDD_1V65_2" 0.700494
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/VDD_3V3" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0" 6.87017
+cap "5v0_addf_sc_rev2_1/sum" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/upstepper_test" -1.14344
+cap "5v0_addf_sc_rev2_1/VDD_1V65_2" "5v0_addf_sc_rev2_1/VDD_3V3_uq0" 170.862
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_nti_1" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_56_472#" 0.00430392
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/pti" "5v0_addf_sc_rev2_1/VDD_3V3_uq0" 0.828524
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_56_472#" "5v0_addf_sc_rev2_1/int_over" 1.42916
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_nti_1" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_124_24#" 0.00845884
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/downstepper_test" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_144_405#" 0.502345
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_124_24#" "5v0_addf_sc_rev2_1/int_over" 1.91136
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/downstepper_test" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" -1.77636e-15
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS" 0.566472
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_1/VDD_1V65_2" 0.0552954
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_nti_1" "5v0_addf_sc_rev2_1/VDD_1V65_2" 4.20267
+cap "5v0_addf_sc_rev2_1/int_over" "5v0_addf_sc_rev2_1/VDD_1V65_2" 30.0629
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_1/VDD_3V3_uq0" -0.237877
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_nti_1" "5v0_addf_sc_rev2_1/VDD_3V3_uq0" 9.28706
+cap "5v0_addf_sc_rev2_1/int_over" "5v0_addf_sc_rev2_1/VDD_3V3_uq0" 21.8561
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_nti_1" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_390_360#" 0.00350152
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_n2_360#" "5v0_addf_sc_rev2_1/int_over" 3.66074
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_nti_1" "5v0_addf_sc_rev2_0/carry1_over_probe" 0.0152013
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_390_360#" "5v0_addf_sc_rev2_1/int_over" 0.889947
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_pti" "5v0_addf_sc_rev2_1/VDD_1V65_2" 5.4156
+cap "5v0_addf_sc_rev2_0/carry1_over_probe" "5v0_addf_sc_rev2_1/int_over" 2.17042
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" "5v0_addf_sc_rev2_1/VDD_1V65_2" 2.87389
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_pti" "5v0_addf_sc_rev2_1/VDD_3V3_uq0" 6.58199
+cap "5v0_addf_sc_rev2_1/VDD_1V65_2" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/a_n1205_n937#" 1.13036
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" "5v0_addf_sc_rev2_1/VDD_3V3_uq0" 12.9149
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/downstepper_test" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_56_472#" 0.0602057
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_nti_1" "5v0_addf_sc_rev2_1/int_over" -2.84217e-14
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_nti_1" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_144_405#" 0.0574555
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_144_405#" "5v0_addf_sc_rev2_1/int_over" 1.96925
+cap "5v0_addf_sc_rev2_1/sum" "5v0_addf_sc_rev2_1/VDD_1V65_2" 3.01506
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/downstepper_test" "5v0_addf_sc_rev2_1/VDD_1V65_2" 22.4869
+cap "5v0_addf_sc_rev2_1/VDD_1V65_2" "5v0_addf_sc_rev2_1/VSS_uq0" 0.325355
+cap "5v0_addf_sc_rev2_1/sum" "5v0_addf_sc_rev2_1/VDD_3V3_uq0" -0.31153
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/downstepper_test" "5v0_addf_sc_rev2_1/VDD_3V3_uq0" 15.2241
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/upstepper_test" "5v0_addf_sc_rev2_1/VDD_1V65_2" 2.04021
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_290_n88#" "5v0_addf_sc_rev2_1/int_over" 0.48997
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/downstepper_test" "5v0_addf_sc_rev2_0/carry1_over_probe" 0.965519
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/upstepper_test" "5v0_addf_sc_rev2_1/VDD_3V3_uq0" 2.30077
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/pti" "5v0_addf_sc_rev2_1/VDD_1V65_2" 0.538551
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VSS" 3.55271e-15
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" "5v0_addf_sc_rev2_0/carry1_over_probe" 2.63515
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_124_24#" 4.31833
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_nti_1" "5v0_addf_sc_rev2_0/carry1_over_probe" 0.751215
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_56_472#" "5v0_addf_sc_rev2_1/VDD_1V65_2" 87.6096
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_n2_360#" "5v0_addf_sc_rev2_1/int_over" 3.42009
+cap "5v0_addf_sc_rev2_1/int_over" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/ctrl_over" 1.46496
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" "5v0_addf_sc_rev2_1/VDD_1V65_2" 2.5602
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_56_472#" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 15.7829
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_nti_1" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_124_24#" 0.0752893
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 17.8504
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/ctrl_over" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/downstepper_test" 0.398793
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VSS" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_124_24#" 0.489549
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_66_n88#" 0.276164
+cap "5v0_addf_sc_rev2_0/carry1_over_probe" "5v0_addf_sc_rev2_1/VDD_1V65_2" 70.8132
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_0/carry1_over_probe" 1.12147
+cap "5v0_addf_sc_rev2_0/carry1_over_probe" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 219.445
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_124_24#" "5v0_addf_sc_rev2_1/VDD_1V65_2" 2.06376
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_124_24#" 0.0357681
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_n2_360#" 6.14149
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_124_24#" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 9.26696
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/ctrl_over" 1.36749
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/ctrl_sign" 0.604836
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_390_360#" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" 0.9944
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_1/VDD_1V65_2" 0.814342
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/ctrl_over" "5v0_addf_sc_rev2_0/carry_sign" 0.170843
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_nti_1" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_n2_360#" 0.895001
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_nti_1" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/ctrl_over" 1.1826
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/pti" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_124_24#" 0.0340655
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VSS" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_n2_360#" 0.611902
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/ctrl_over" "5v0_addf_sc_rev2_0/carry1_over_probe" -2.84217e-14
+cap "5v0_addf_sc_rev2_1/int_over" "5v0_addf_sc_rev2_0/carry1_over_probe" 0.28062
+cap "5v0_addf_sc_rev2_0/carry1_over_probe" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/downstepper_test" 0.831191
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_124_24#" "5v0_addf_sc_rev2_1/int_over" 0.0526545
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/ctrl_over" "5v0_addf_sc_rev2_1/VDD_1V65_2" 28.6785
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/ctrl_sign" "5v0_addf_sc_rev2_1/VDD_1V65_2" 2.81697
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_56_472#" 1.18457
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/ctrl_over" 1.14595
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_n2_360#" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 13.516
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/ctrl_sign" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 4.66189
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/ctrl_over" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 33.7392
+cap "5v0_addf_sc_rev2_0/VDD_1V65_2" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/inv_pti" 0.0179034
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/VSS" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_390_360#" 0.0600746
+cap "5v0_addf_sc_rev2_0/sum" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/in_reg" -1.2226
+cap "5v0_addf_sc_rev2_0/sum" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_124_24#" -1.42851
+cap "5v0_addf_sc_rev2_0/VDD_1V65_2" "5v0_addf_sc_rev2_0/int_sign" 0.10264
+cap "5v0_addf_sc_rev2_0/sum" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/ctrl_over" -0.81489
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_66_n88#" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 4.58134
+cap "5v0_addf_sc_rev2_0/VDD_1V65_2" "5v0_addf_sc_rev2_0/sum" 25.5759
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_390_360#" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/VDD_3V3" 0.343698
+cap "5v0_addf_sc_rev2_0/VSS_uq0" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 8.88178e-16
+cap "5v0_addf_sc_rev2_0/VDD_1V65_2" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/in_reg" 5.54883
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/VDD_3V3" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 0.0102049
+cap "5v0_addf_sc_rev2_0/VDD_1V65_2" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_124_24#" 11.5648
+cap "5v0_addf_sc_rev2_0/VDD_1V65_2" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/ctrl_over" 16.6303
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 0.340503
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_390_360#" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 0.491013
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_56_472#" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 1.80372
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/pti" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 0.970335
+cap "5v0_addf_sc_rev2_0/carry1_over_probe" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 6.99972
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_390_360#" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" 0.439736
+cap "5v0_addf_sc_rev2_0/VDD_1V65_2" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_66_n88#" 14.407
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0" "5v0_addf_sc_rev2_0/sum" -0.219604
+cap "5v0_addf_sc_rev2_0/int_sign" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 0.0806598
+cap "5v0_addf_sc_rev2_0/sum" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 7.38784
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_124_24#" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/VDD_3V3" 0.242913
+cap "5v0_addf_sc_rev2_0/carry1_sign_probe" "5v0_addf_sc_rev2_0/VDD_1V65_2" 0.0471862
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/ctrl_over" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/VDD_3V3" 0.386724
+cap "5v0_addf_sc_rev2_0/VDD_1V65_2" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0" 1.62756
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/in_reg" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 5.56216
+cap "5v0_addf_sc_rev2_0/VDD_1V65_2" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_390_360#" 1.42921
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_124_24#" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 13.5292
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/ctrl_over" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 12.1917
+cap "5v0_addf_sc_rev2_0/VDD_1V65_2" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_56_472#" 19.2543
+cap "5v0_addf_sc_rev2_0/VDD_1V65_2" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 3.06932
+cap "5v0_addf_sc_rev2_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_0/VDD_1V65_2" 0.0239133
+cap "5v0_addf_sc_rev2_0/VDD_1V65_2" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/pti" 8.44516
+cap "5v0_addf_sc_rev2_0/VDD_1V65_2" "5v0_addf_sc_rev2_0/carry1_over_probe" 45.1453
+cap "5v0_addf_sc_rev2_0/in_B" "5v0_addf_sc_rev2_0/VDD_1V65_2" 0.306676
+cap "5v0_addf_sc_rev2_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/inv_nti_1" 6.12443
+cap "5v0_addf_sc_rev2_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_0/sum" -12.1477
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/inv_nti_1" "5v0_addf_sc_rev2_0/VDD_1V65_2" 0.209088
+cap "5v0_addf_sc_rev2_0/int_over" "5v0_addf_sc_rev2_0/sum" -0.137279
+cap "5v0_addf_sc_rev2_0/sum" "5v0_addf_sc_rev2_0/VDD_1V65_2" 3.01506
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0" "5v0_addf_sc_rev2_0/sum" -2.60884
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/inv_pti" "5v0_addf_sc_rev2_0/VDD_3V3_uq0" 6.67646
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/a_n1205_n937#" "5v0_addf_sc_rev2_0/VDD_1V65_2" 0.0173322
+cap "5v0_addf_sc_rev2_0/in_B" "5v0_addf_sc_rev2_0/5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS" 0.566472
+cap "5v0_addf_sc_rev2_0/int_over" "5v0_addf_sc_rev2_0/VDD_3V3_uq0" 10.1766
+cap "5v0_addf_sc_rev2_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_0/VDD_1V65_2" 24.5177
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/upstepper_test" "5v0_addf_sc_rev2_0/sum" -1.14344
+cap "5v0_addf_sc_rev2_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0" 6.52966
+cap "5v0_addf_sc_rev2_0/int_over" "5v0_addf_sc_rev2_0/VDD_1V65_2" 1.70305
+cap "5v0_addf_sc_rev2_0/VSS_uq0" "5v0_addf_sc_rev2_0/VDD_1V65_2" 0.0206439
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/nti" "5v0_addf_sc_rev2_0/sum" -0.0387443
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0" "5v0_addf_sc_rev2_0/VDD_1V65_2" 10.9263
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/pti" "5v0_addf_sc_rev2_0/VDD_3V3_uq0" 0.828524
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/upstepper_test" "5v0_addf_sc_rev2_0/VDD_3V3_uq0" 10.3029
+cap "5v0_addf_sc_rev2_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/nti" 13.1199
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/upstepper_test" "5v0_addf_sc_rev2_0/VDD_1V65_2" 9.29888
+cap "5v0_addf_sc_rev2_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/downstepper_test" 23.6202
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/nti" "5v0_addf_sc_rev2_0/VDD_1V65_2" 2.81643
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/downstepper_test" "5v0_addf_sc_rev2_0/VDD_1V65_2" 7.48172
+cap "5v0_addf_sc_rev2_0/in_B" "5v0_addf_sc_rev2_0/VDD_3V3_uq0" 1.60431
+cap "5v0_addf_sc_rev2_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_0/int_over" 6.83323
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/nti" "5v0_addf_sc_rev2_0/VDD_3V3_uq0" 7.84099
+cap "5v0_addf_sc_rev2_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/inv_nti_1" 3.45318
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_1/carry1_sign_probe" -1.73472e-17
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/mux_2_1/a_66_n88#" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 0.0579005
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_1/carry1_over_probe" 0.0841741
+cap "5v0_addf_sc_rev2_1/carry_over" "5v0_addf_sc_rev2_1/carry_sign" -4.89918
+cap "5v0_addf_sc_rev2_1/VSS" "5v0_addf_sc_rev2_1/VDD_3V3_uq0" -5.23436
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/upstepper_test" "5v0_addf_sc_rev2_1/VDD_1V65_2" 0.344083
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_pti" "5v0_addf_sc_rev2_1/sum" -0.00837082
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_pti" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/VDD_3V3" 0.0511114
+cap "5v0_addf_sc_rev2_1/carry1_over_probe" "5v0_addf_sc_rev2_1/VDD_3V3_uq0" -1.02576
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/upstepper_test" "5v0_addf_sc_rev2_1/sum" -0.0811274
+cap "5v0_addf_sc_rev2_1/VSS" "5v0_addf_sc_rev2_1/carry1_over_probe" 1.45462
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/upstepper_test" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/VDD_3V3" 0.117776
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/downstepper_test" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/VDD_3V3" 0.181482
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_pti" "5v0_addf_sc_rev2_1/VDD_1V65_2" 0.00730022
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_nti_1" "5v0_addf_sc_rev2_0/carry1_over_probe" 0.00442909
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_0/w_n2500_n3004#" 0.0771789
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_1/int_over" 1.4637
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/pti" "5v0_addf_sc_rev2_1/VDD_3V3" -1.92408
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/pti" "5v0_addf_sc_rev2_1/VSS" 7.20428
+cap "5v0_addf_sc_rev2_1/int_over" "5v0_addf_sc_rev2_0/5v0_add_ccal_sc_r1_0/a_n22_n44#" 0.0543997
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/pti" "5v0_addf_sc_rev2_0/carry_over" 0.0294142
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_1/VDD_1V65_2" 0.862179
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_nti_1" "5v0_addf_sc_rev2_1/VDD_3V3" 0.026871
+cap "5v0_addf_sc_rev2_1/VSS" "5v0_addf_sc_rev2_1/VDD_3V3" 184.534
+cap "5v0_addf_sc_rev2_0/w_n2500_n3004#" "5v0_addf_sc_rev2_1/int_over" 3.13724
+cap "5v0_addf_sc_rev2_1/VSS" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_nti_1" 0.184671
+cap "5v0_addf_sc_rev2_1/int_sum_1" "5v0_addf_sc_rev2_1/int_over" -0.489182
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" "5v0_addf_sc_rev2_1/VDD_1V65_2" 2.25854
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_0/carry1_sign_probe" 0.00330527
+cap "5v0_addf_sc_rev2_1/int_sign" "5v0_addf_sc_rev2_1/VDD_3V3" -15.4609
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_n2_360#" 0.0163123
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/nti" "5v0_addf_sc_rev2_1/VDD_3V3" -17.1068
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_390_360#" 0.0351898
+cap "5v0_addf_sc_rev2_1/int_sign" "5v0_addf_sc_rev2_1/VSS" 61.7504
+cap "5v0_addf_sc_rev2_1/VSS" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/nti" 99.864
+cap "5v0_addf_sc_rev2_1/int_sign" "5v0_addf_sc_rev2_0/carry_over" 0.152174
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/pti" "5v0_addf_sc_rev2_1/VDD_1V65_2" 0.110192
+cap "5v0_addf_sc_rev2_1/int_over" "5v0_addf_sc_rev2_0/carry1_sign_probe" 0.538464
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_1/int_over" 3.05071
+cap "5v0_addf_sc_rev2_1/int_over" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_n2_360#" 3.32456
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_390_360#" "5v0_addf_sc_rev2_1/int_over" 1.68023
+cap "5v0_addf_sc_rev2_1/VSS" "5v0_addf_sc_rev2_1/VDD_1V65_2" 0.325355
+cap "5v0_addf_sc_rev2_1/int_over" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_124_24#" 0.138582
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_0/a_n2_360#" 0.00980861
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_1/int_over" -5.68434e-14
+cap "5v0_addf_sc_rev2_1/5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93#" "5v0_addf_sc_rev2_1/VDD_3V3" -3.98297
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_0/carry1_over_probe" 0.0649641
+cap "5v0_addf_sc_rev2_1/VSS" "5v0_addf_sc_rev2_1/5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93#" 35.6513
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_nti_1" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_124_24#" 0.0296059
+cap "5v0_addf_sc_rev2_1/int_over" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_0/a_n2_360#" 0.541056
+cap "5v0_addf_sc_rev2_1/5v0_add_ccal_sc_r1_0/ctrl_over" "5v0_addf_sc_rev2_1/VSS" 4.94534
+cap "5v0_addf_sc_rev2_1/int_sign" "5v0_addf_sc_rev2_0/carry_sign" 0.547835
+cap "5v0_addf_sc_rev2_1/int_over" "5v0_addf_sc_rev2_0/carry1_over_probe" 2.60941
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_290_n88#" 0.097499
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_1/VDD_3V3" 1.4595
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/nti" "5v0_addf_sc_rev2_1/5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93#" -3.23732
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_pti" "5v0_addf_sc_rev2_1/VDD_3V3" -0.204299
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_1/VSS" 1.87803
+cap "5v0_addf_sc_rev2_1/int_over" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" 0.183613
+cap "5v0_addf_sc_rev2_1/5v0_add_ccal_sc_r1_0/ctrl_over" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/nti" -0.0495354
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_pti" "5v0_addf_sc_rev2_1/VSS" 3.62792
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_0/carry_over" 0.154078
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" "5v0_addf_sc_rev2_1/VDD_3V3" 3.60167
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_290_n88#" "5v0_addf_sc_rev2_1/int_over" 1.40368
+cap "5v0_addf_sc_rev2_1/int_over" "5v0_addf_sc_rev2_1/VDD_3V3" 10.6946
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/ctrl_sign" 1.78363
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_n2_360#" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 4.33019
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_1/VDD_1V65_2" -0.456973
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" "5v0_addf_sc_rev2_0/carry_sign" 3.07808
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_390_360#" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" 1.56548
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_124_24#" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 3.91347
+cap "5v0_addf_sc_rev2_0/5v0_add_ccal_sc_r1_0/a_n22_n44#" "5v0_addf_sc_rev2_0/carry_sign" 13.5385
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_66_n88#" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" 0.0788662
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VSS" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" -2.14266
+cap "5v0_addf_sc_rev2_0/carry1_over_probe" "5v0_addf_sc_rev2_0/m1_n1202_n1454#" -0.130477
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_0/carry_over" -3.87168
+cap "5v0_addf_sc_rev2_0/carry1_sign_probe" "5v0_addf_sc_rev2_0/carry_sign" 15.6702
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" "5v0_addf_sc_rev2_1/VDD_1V65_2" 0.72479
+cap "5v0_addf_sc_rev2_0/carry1_over_probe" "5v0_addf_sc_rev2_1/int_over" 0.0432949
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_56_472#" 0.00302789
+cap "5v0_addf_sc_rev2_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_0/carry_sign" 17.0578
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 38.1403
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/pti" "5v0_addf_sc_rev2_0/carry_sign" 7.65076
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_0/carry_over" 0.192649
+cap "5v0_addf_sc_rev2_0/carry1_over_probe" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 243.195
+cap "5v0_addf_sc_rev2_0/carry1_sign_probe" "5v0_addf_sc_rev2_1/in_B" 1.38021
+cap "5v0_addf_sc_rev2_0/5v0_add_ccal_sc_r1_0/a_n260_n44#" "5v0_addf_sc_rev2_0/carry_sign" 1.60078
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_0/VDD_3V3_uq0" 6.62501
+cap "5v0_addf_sc_rev2_0/carry1_over_probe" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" -3.51198e-16
+cap "5v0_addf_sc_rev2_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" 7.10543e-15
+cap "5v0_addf_sc_rev2_0/m1_n1202_n1454#" "5v0_addf_sc_rev2_0/carry_sign" -0.975082
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VSS" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_390_360#" 0.153867
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/pti" 0.183668
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_124_24#" "5v0_addf_sc_rev2_0/carry_sign" 1.74257
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/pti" "5v0_addf_sc_rev2_0/5v0_add_ccal_sc_r1_0/a_n22_n44#" 0.178449
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_n2_360#" "5v0_addf_sc_rev2_0/carry_sign" -0.0580216
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_1/int_over" 2.01228
+cap "5v0_addf_sc_rev2_0/carry1_sign_probe" "5v0_addf_sc_rev2_0/VDD_3V3_uq0" -0.120348
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VSS" "5v0_addf_sc_rev2_0/carry_sign" -0.13315
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_390_360#" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 1.47443
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/ctrl_sign" 3.59606
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/pti" "5v0_addf_sc_rev2_0/carry_over" 0.0116333
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_nti_1" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_124_24#" 0.0296059
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/inv_nti_1" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_n2_360#" 0.0475712
+cap "5v0_addf_sc_rev2_0/carry1_sign_probe" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/pti" 0.217231
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 3.5159
+cap "5v0_addf_sc_rev2_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/pti" 1.57447
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_n2_360#" 5.1597
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_124_24#" 5.40165
+cap "5v0_addf_sc_rev2_1/VDD_1V65_2" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" -1.23068
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/ctrl_sign" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" 0.304865
+cap "5v0_addf_sc_rev2_1/int_sign" "5v0_addf_sc_rev2_0/carry_sign" 1.30629
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" "5v0_addf_sc_rev2_0/carry_sign" 5.5311
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" "5v0_addf_sc_rev2_1/int_over" 0.0208299
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_0/a_n2_360#" "5v0_addf_sc_rev2_1/in_B" 30.2645
+cap "5v0_addf_sc_rev2_0/carry1_over_probe" "5v0_addf_sc_rev2_0/carry_sign" 46.5219
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" -241.872
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_124_24#" 0.65135
+cap "5v0_addf_sc_rev2_0/carry1_over_probe" "5v0_addf_sc_rev2_1/VDD_1V65_2" 0.264918
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_n2_360#" 0.968784
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 2.04699
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VSS" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" 5.68434e-14
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" "5v0_addf_sc_rev2_1/in_B" -31.6334
+cap "5v0_addf_sc_rev2_0/5v0_add_ccal_sc_r1_0/a_n22_n44#" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 17.6219
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" "5v0_addf_sc_rev2_1/int_sign" 0.0205578
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" 0.273583
+cap "5v0_addf_sc_rev2_0/carry1_over_probe" "5v0_addf_sc_rev2_1/in_B" 35.7646
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 5.15302
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 0.078298
+cap "5v0_addf_sc_rev2_0/carry1_sign_probe" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 1.16226
+cap "5v0_addf_sc_rev2_0/carry1_over_probe" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" -0.40786
+cap "5v0_addf_sc_rev2_0/carry1_over_probe" "5v0_addf_sc_rev2_0/5v0_add_ccal_sc_r1_0/a_n22_n44#" -4.28365
+cap "5v0_addf_sc_rev2_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 15.0409
+cap "5v0_addf_sc_rev2_0/carry1_over_probe" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" 0.882422
+cap "5v0_addf_sc_rev2_0/carry1_over_probe" "5v0_addf_sc_rev2_0/carry_over" 0.654806
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/pti" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 12.0058
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/ctrl_sign" "5v0_addf_sc_rev2_1/int_over" -2.19863e-18
+cap "5v0_addf_sc_rev2_0/carry1_over_probe" "5v0_addf_sc_rev2_0/carry1_sign_probe" -0.697552
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VSS" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/ctrl_sign" 0.114394
+cap "5v0_addf_sc_rev2_0/carry1_over_probe" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_56_472#" -0.00194722
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/in_upstep" "5v0_addf_sc_rev2_1/in_B" 0.0244585
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472#" "5v0_addf_sc_rev2_0/carry_sign" 0.0295547
+cap "5v0_addf_sc_rev2_0/carry1_over_probe" "5v0_addf_sc_rev2_0/VDD_3V3_uq0" -4.95421
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/nti" "5v0_addf_sc_rev2_0/carry_sign" 0.0180705
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_390_360#" 14.6896
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/ctrl_sign" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 4.13189
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_66_n88#" "5v0_addf_sc_rev2_1/in_B" 1.48599
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_124_24#" "5v0_addf_sc_rev2_1/int_over" 0.00759962
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_n2_360#" "5v0_addf_sc_rev2_1/int_over" 3.32456
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VSS" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_n2_360#" 1.63875
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VSS" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/half_tgate_0/a_124_24#" 0.129684
+cap "5v0_addf_sc_rev2_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/inv_pti" 2.84217e-14
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/inv_pti" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" 2.34616
+cap "5v0_addf_sc_rev2_0/carry1_sign_probe" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" -1.73472e-17
+cap "5v0_addf_sc_rev2_0/carry1_over_probe" "5v0_addf_sc_rev2_1/VDD_3V3" 0.886331
+cap "5v0_addf_sc_rev2_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_0/carry1_over_probe" -1.02576
+cap "5v0_addf_sc_rev2_0/carry1_sign_probe" "5v0_addf_sc_rev2_1/VDD_3V3" 1.03501
+cap "5v0_addf_sc_rev2_0/carry1_over_probe" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" 0.146797
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" 0.00891246
+cap "5v0_addf_sc_rev2_0/carry1_over_probe" "5v0_addf_sc_rev2_0/VSS" 1.45462
+cap "5v0_addf_sc_rev2_1/VDD_3V3" "5v0_addf_sc_rev2_0/VSS" 0.038079
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_390_360#" "in_B_1" 0.0281882
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_0/carry1_over_probe" 3.11777
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_1/VDD_3V3" 1.94624
+cap "5v0_addf_sc_rev2_0/carry1_sign_probe" "5v0_addf_sc_rev2_0/carry_sign" 0.440598
+cap "5v0_addf_sc_rev2_0/VDD_1V65_2" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_66_n88#" 0.0791812
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/inv_pti" 0.338365
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/a_66_n88#" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 0.0515911
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_0/carry_sign" -1.1708
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/inv_pti" 0.22322
+cap "in_B_1" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/inv_pti" 5.26234
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" "5v0_addf_sc_rev2_1/VDD_3V3" 0.0144736
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/inv_pti" "5v0_addf_sc_rev2_1/VDD_3V3" 2.52433
+cap "5v0_addf_sc_rev2_0/VDD_3V3" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/pti" -1.94761
+cap "5v0_addf_sc_rev2_0/VSS" "5v0_addf_sc_rev2_0/in_B" 1.87803
+cap "5v0_addf_sc_rev2_0/VSS" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/inv_pti" 3.42483
+cap "5v0_addf_sc_rev2_0/VDD_3V3" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/downstepper_test" 0.181482
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" "5v0_addf_sc_rev2_0/VSS" 4.94534
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/inv_pti" "5v0_addf_sc_rev2_0/sum" -0.00837082
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" "5v0_addf_sc_rev2_0/5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93#" -2.84217e-14
+cap "5v0_addf_sc_rev2_0/5v0_nter2oter_code_sc_0/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" -0.0495354
+cap "5v0_addf_sc_rev2_0/int_sign" "5v0_addf_sc_rev2_0/VSS" 55.012
+cap "5v0_addf_sc_rev2_0/VDD_3V3" "5v0_addf_sc_rev2_0/in_B" -0.143507
+cap "5v0_addf_sc_rev2_0/VSS" "5v0_addf_sc_rev2_0/5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93#" 35.6513
+cap "5v0_addf_sc_rev2_0/VDD_3V3" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/inv_pti" -0.153188
+cap "5v0_addf_sc_rev2_0/5v0_nter2oter_code_sc_0/nti" "5v0_addf_sc_rev2_0/VSS" 99.864
+cap "5v0_addf_sc_rev2_0/5v0_nter2oter_code_sc_0/nti" "5v0_addf_sc_rev2_0/5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93#" -3.23732
+cap "5v0_addf_sc_rev2_0/VSS" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/inv_nti_1" 0.184671
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/upstepper_test" "5v0_addf_sc_rev2_0/sum" -0.0811274
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/inv_pti" "5v0_addf_sc_rev2_0/VDD_1V65_2" 0.00730022
+cap "5v0_addf_sc_rev2_0/VSS" "5v0_addf_sc_rev2_0/VDD_3V3" 179.334
+cap "5v0_addf_sc_rev2_0/int_sign" "5v0_addf_sc_rev2_0/VDD_3V3" -10.6505
+cap "5v0_addf_sc_rev2_0/VDD_3V3" "5v0_addf_sc_rev2_0/5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93#" -3.98297
+cap "5v0_addf_sc_rev2_0/VSS" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/pti" 7.20428
+cap "5v0_addf_sc_rev2_0/5v0_nter2oter_code_sc_0/nti" "5v0_addf_sc_rev2_0/VDD_3V3" -17.1068
+cap "5v0_addf_sc_rev2_0/VDD_3V3" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/upstepper_test" 0.117776
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/upstepper_test" "5v0_addf_sc_rev2_0/VDD_1V65_2" 0.344083
+cap "5v0_addf_sc_rev2_0/int_sign" "5v0_addf_sc_rev2_0/5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" -5.50082
+cap "5v0_addf_sc_rev2_0/int_sign" "5v0_addf_sc_rev2_0/VSS" 6.51922
+cap "5v0_addf_sc_rev2_0/VSS" "5v0_addf_sc_rev2_0/VDD_3V3" -2.14266
+cap "5v0_addf_sc_rev2_0/VDD_3V3" "5v0_addf_sc_rev2_0/in_B" -239.259
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/nti" "5v0_addf_sc_rev2_0/VDD_3V3" 5.4908
+cap "5v0_addf_sc_rev2_1/carry_over" "5v0_addf_sc_rev2_1/carry_sign" -4.89918
+cap "5v0_addf_sc_rev2_1/VSS" "5v0_addf_sc_rev2_1/carry_over" 0.509183
+cap "5v0_addf_sc_rev2_1/VSS" "5v0_addf_sc_rev2_1/carry1_over_probe" 1.06922
+cap "5v0_addf_sc_rev2_1/VSS" "5v0_addf_sc_rev2_1/VDD_3V3_uq0" -0.765926
+cap "5v0_addf_sc_rev2_1/carry1_over_probe" "5v0_addf_sc_rev2_1/VDD_3V3_uq0" -0.546694
+cap "5v0_addf_sc_rev2_1/in_C_over" "5v0_addf_sc_rev2_1/int_sum_1" 0.502206
+cap "5v0_addf_sc_rev2_1/VSS" "5v0_addf_sc_rev2_1/5v0_addh_sc_0/carry_0_probe" 0.264506
+cap "5v0_addf_sc_rev2_1/VDD_3V3_uq0" "5v0_addf_sc_rev2_1/5v0_addh_sc_0/carry_0_probe" -0.00473765
+cap "5v0_addf_sc_rev2_1/in_C_over" "5v0_addf_sc_rev2_1/VDD_1V65" -2.91876
+cap "5v0_addf_sc_rev2_1/5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93#" "5v0_addf_sc_rev2_1/VSS" 148.364
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/nti" "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_nti_1" -4.69368
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_1/VDD_3V3" 3.27076
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/nti" "5v0_addf_sc_rev2_1/VSS" 58.1216
+cap "5v0_addf_sc_rev2_1/int_sign" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" 0.0937016
+cap "5v0_addf_sc_rev2_1/int_sign" "5v0_addf_sc_rev2_1/VDD_3V3" 0.214042
+cap "5v0_addf_sc_rev2_1/int_over" "5v0_addf_sc_rev2_0/carry_over" 4.23103
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/pti" "5v0_addf_sc_rev2_0/carry_over" 0.647778
+cap "5v0_addf_sc_rev2_1/VDD_3V3" "5v0_addf_sc_rev2_0/carry_sign" 0.115032
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_sign_probe" "5v0_addf_sc_rev2_1/int_sum_1" 0.0456365
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" "5v0_addf_sc_rev2_0/carry_over" 1.01607
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/nti" "5v0_addf_sc_rev2_0/carry_over" 21.0882
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_nti_1" "5v0_addf_sc_rev2_1/int_sum_1" -6.52452
+cap "5v0_addf_sc_rev2_1/int_over" "5v0_addf_sc_rev2_1/VDD_3V3" -0.51168
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_sign_probe" "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_nti_1" 0.0569275
+cap "5v0_addf_sc_rev2_1/VSS" "5v0_addf_sc_rev2_1/int_sum_1" 17.2462
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_1/pti" "5v0_addf_sc_rev2_1/VDD_3V3" -0.34846
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_pti" "5v0_addf_sc_rev2_1/VSS" 0.555192
+cap "5v0_addf_sc_rev2_1/5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93#" "5v0_addf_sc_rev2_1/VDD_3V3" -2.90403
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472#" "5v0_addf_sc_rev2_0/carry_over" 0.778146
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_nti_1" "5v0_addf_sc_rev2_1/VSS" -3.62677
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/nti" "5v0_addf_sc_rev2_1/VDD_3V3" -3.41785
+cap "5v0_addf_sc_rev2_1/int_over" "5v0_addf_sc_rev2_1/5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93#" -1.25394
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_0/carry_over" 3.36752
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_1/int_sum_1" 80.7637
+cap "5v0_addf_sc_rev2_1/int_sum_1" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_144_405#" 0.0365572
+cap "5v0_addf_sc_rev2_1/VSS" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/pti" 1.42109e-14
+cap "5v0_addf_sc_rev2_1/int_sign" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_sign_probe" 0.0141426
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_nti_1" 37.5591
+cap "5v0_addf_sc_rev2_1/5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93#" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/nti" -0.844265
+cap "5v0_addf_sc_rev2_1/int_sum_1" "5v0_addf_sc_rev2_0/carry_sign" 0.233821
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_nti_1" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_1/a_390_360#" 0.0271534
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_nti_1" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_144_405#" 0.0163039
+cap "5v0_addf_sc_rev2_0/5v0_add_ccal_sc_r1_0/in_sign" "5v0_addf_sc_rev2_1/int_sign" 0.0173048
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_1/VSS" 89.0452
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/upstepper_test" "5v0_addf_sc_rev2_1/VDD_3V3" -8.88178e-16
+cap "5v0_addf_sc_rev2_1/in_B" "5v0_addf_sc_rev2_1/VDD_3V3" -0.00816716
+cap "5v0_addf_sc_rev2_1/VDD_3V3" "5v0_addf_sc_rev2_1/int_sum_1" -4.38686
+cap "5v0_addf_sc_rev2_1/int_sign" "5v0_addf_sc_rev2_0/w_n2500_n3004#" 0.0232543
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" "5v0_addf_sc_rev2_1/int_sum_1" 0.0636853
+cap "5v0_addf_sc_rev2_1/int_sign" "5v0_addf_sc_rev2_1/VSS" -1.45008
+cap "5v0_addf_sc_rev2_1/5v0_add_ccal_sc_r1_0/in_over" "5v0_addf_sc_rev2_1/VSS" 0.217437
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/pti" 12.6711
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_1/in_A" 1.09583
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_nti_1" "5v0_addf_sc_rev2_0/carry_sign" 0.0643457
+cap "5v0_addf_sc_rev2_1/int_sign" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/pti" 5.55112e-17
+cap "5v0_addf_sc_rev2_1/VSS" "5v0_addf_sc_rev2_0/carry_sign" 9.96314
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_1/VDD_1V65" -1.97106
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_nti_1" "5v0_addf_sc_rev2_1/VDD_3V3" -5.69186
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_nti_1" 0.0621947
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_56_472#" "5v0_addf_sc_rev2_1/int_sum_1" 0.00378069
+cap "5v0_addf_sc_rev2_1/VSS" "5v0_addf_sc_rev2_1/5v0_add_ccal_sc_r1_0/ctrl_over" 9.39542
+cap "5v0_addf_sc_rev2_1/VSS" "5v0_addf_sc_rev2_1/VDD_3V3" -66.5153
+cap "5v0_addf_sc_rev2_1/int_sign" "5v0_addf_sc_rev2_0/carry_over" 7.27402
+cap "5v0_addf_sc_rev2_1/5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_272_93#" "5v0_addf_sc_rev2_1/VSS" 0.0464209
+cap "5v0_addf_sc_rev2_1/int_over" "5v0_addf_sc_rev2_1/VSS" 5.32692
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_56_472#" "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_nti_1" 0.0330513
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/downstepper_test" "5v0_addf_sc_rev2_0/carry_over" 11.9374
+cap "5v0_addf_sc_rev2_1/int_sign" "5v0_addf_sc_rev2_0/carry_sign" 0.0252662
+cap "5v0_addf_sc_rev2_1/VDD_3V3" "5v0_addf_sc_rev2_1/VDD_1V65" -12.5464
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VSS" "5v0_addf_sc_rev2_0/in_C_over" 0.283311
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_sign_probe" "5v0_addf_sc_rev2_0/VDD_3V3_uq0" -0.471425
+cap "5v0_addf_sc_rev2_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_0/m1_n1202_n1454#" 1.77636e-15
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_0/VDD_3V3_uq0" 0.820383
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 1.08482
+cap "5v0_addf_sc_rev2_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" -7.10543e-15
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/ctrl_sign" 0.118
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_1/in_A" 1.54076
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" "5v0_addf_sc_rev2_0/in_C_over" 0.725568
+cap "5v0_addf_sc_rev2_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 0.856212
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_56_472#" 0.0647412
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/pti" "5v0_addf_sc_rev2_0/VDD_3V3_uq0" 0.0556613
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/in" 8.96998
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_sign_probe" 64.0714
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_0/m1_n1202_n1454#" -24.8306
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_1/a_n2_360#" 3.83929
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_0/carry_sign" -11.5452
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" 0.815698
+cap "5v0_addf_sc_rev2_0/m1_n1202_n1454#" "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_nti_1" 0.540681
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_nti_1" 2.22575
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_sign_probe" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/in" 0.239974
+cap "5v0_addf_sc_rev2_0/m1_n1202_n1454#" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/in" 1.96626
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/in" 5.09465
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_sign_probe" "5v0_addf_sc_rev2_0/m1_n1202_n1454#" -0.912272
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_1/a_n2_360#" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" -0.400147
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 23.7896
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_sign_probe" 158.91
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_0/m1_n1202_n1454#" -30.0114
+cap "5v0_addf_sc_rev2_0/carry1_sign_probe" "5v0_addf_sc_rev2_0/carry_sign" 26.5178
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_0/carry1_over_probe" 0.723462
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VSS" 8.33206
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/in" 0.230498
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_sign_probe" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" -2.23544
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/pti" 27.5033
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/downstepper_test" "5v0_addf_sc_rev2_0/in_C_over" 0.164046
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" 82.1373
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_1/a_390_360#" 0.518068
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" 3.82434
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/nti" 0.301852
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_0/in_C_over" 1.25406
+cap "5v0_addf_sc_rev2_1/int_sign" "5v0_addf_sc_rev2_0/carry_over" 0.978016
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/in" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 3.98393
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_sign_probe" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 122.398
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_nti_1" "5v0_addf_sc_rev2_0/in_C_over" 0.762612
+cap "5v0_addf_sc_rev2_0/m1_n1202_n1454#" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" -11.3571
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_1/in_B" 1.28834
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 39.6447
+cap "5v0_addf_sc_rev2_0/carry1_over_probe" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_sign_probe" -2.43966
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VSS" "5v0_addf_sc_rev2_0/m1_n1202_n1454#" 0.589819
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_sign_probe" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/ctrl_sign" 6.93889e-18
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VSS" 11.5406
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/pti" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_sign_probe" 0.0373585
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_1/a_n2_360#" 0.0276088
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/ctrl_sign" 0.0395671
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" 6.28666
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/pti" "5v0_addf_sc_rev2_0/m1_n1202_n1454#" 1.06702
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" -0.598954
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/pti" "5v0_addf_sc_rev2_0/carry_sign" 20.1434
+cap "5v0_addf_sc_rev2_0/carry1_sign_probe" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/pti" 0.0400019
+cap "5v0_addf_sc_rev2_0/carry1_over_probe" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" -0.40786
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VSS" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" 0.120857
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/in" "5v0_addf_sc_rev2_0/in_C_over" 0.213277
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_sign_probe" "5v0_addf_sc_rev2_0/in_C_over" -0.266828
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/pti" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" 0.300364
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_0/in_C_over" 15.3738
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_56_472#" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/in" 0.0191844
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_56_472#" 1.08002
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_56_472#" "5v0_addf_sc_rev2_0/m1_n1202_n1454#" -3.55271e-15
+cap "5v0_addf_sc_rev2_1/int_sign" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" 0.162288
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VSS" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" -3.56181
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_sign_probe" 0.149617
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/nti" 0.0230729
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/ctrl_sign" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 0.218393
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" "5v0_addf_sc_rev2_0/m1_n1202_n1454#" 0.753194
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" 4.82063
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/pti" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 17.5484
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/pti" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VSS" 0.0264254
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" 0.140048
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_0/in_C_over" 12.6005
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_1/a_390_360#" 0.0300711
+cap "5v0_addf_sc_rev2_0/in_C_over" "5v0_addf_sc_rev2_0/VDD_1V65" -118.695
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_124_24#" 0.00192691
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_0/carry_over" -1.1708
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" "5v0_addf_sc_rev2_0/VSS" 0.264506
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_0/VDD_1V65" -1.18045
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_0/in_C_over" 0.100165
+cap "5v0_addf_sc_rev2_0/carry1_over_probe" "5v0_addf_sc_rev2_0/VSS" 0.0246545
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_124_24#" "5v0_addf_sc_rev2_0/5v0_nter2oter_code_sc_0/VDD_3V3" 0.00570447
+cap "5v0_addf_sc_rev2_1/VDD_3V3" "5v0_addf_sc_rev2_0/VSS" 0.537145
+cap "5v0_addf_sc_rev2_0/VSS" "5v0_addf_sc_rev2_0/carry_over" 0.464444
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_sign_probe" "5v0_addf_sc_rev2_0/VSS" 3.55271e-15
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" "5v0_addf_sc_rev2_0/VDD_3V3_uq0" -0.00473765
+cap "5v0_addf_sc_rev2_1/VDD_3V3" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_124_24#" 0.0017389
+cap "5v0_addf_sc_rev2_0/in_C_over" "5v0_addf_sc_rev2_0/5v0_nter2oter_code_sc_0/VDD_3V3" 0.00208302
+cap "5v0_addf_sc_rev2_0/carry_sign" "5v0_addf_sc_rev2_0/VSS" 0.134147
+cap "5v0_addf_sc_rev2_0/in_C_over" "5v0_addf_sc_rev2_1/VDD_3V3" 0.0025299
+cap "5v0_addf_sc_rev2_0/carry1_over_probe" "5v0_addf_sc_rev2_0/VDD_3V3_uq0" -0.0124433
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_0/VDD_1V65" -46.5327
+cap "5v0_addf_sc_rev2_0/VSS" "5v0_addf_sc_rev2_0/VDD_3V3" -32.3545
+cap "5v0_addf_sc_rev2_0/5v0_add_ccal_sc_r1_0/in_over" "5v0_addf_sc_rev2_0/VSS" 1.04456
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/inv_nti_1" "5v0_addf_sc_rev2_0/VDD_3V3" -1.08114
+cap "5v0_addf_sc_rev2_0/5v0_nter2oter_code_sc_0/nti" "5v0_addf_sc_rev2_0/VDD_3V3" -3.41785
+cap "5v0_addf_sc_rev2_0/5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93#" "5v0_addf_sc_rev2_0/VSS" 142.202
+cap "5v0_addf_sc_rev2_0/int_sum_1" "5v0_addf_sc_rev2_0/VSS" 15.7023
+cap "5v0_addf_sc_rev2_0/5v0_nter2oter_code_sc_0/nti" "5v0_addf_sc_rev2_0/5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93#" -0.844265
+cap "5v0_addf_sc_rev2_0/in_C_over" "5v0_addf_sc_rev2_0/VDD_1V65" -38.0769
+cap "5v0_addf_sc_rev2_0/int_over" "5v0_addf_sc_rev2_0/VSS" 2.84225
+cap "5v0_addf_sc_rev2_0/5v0_add_ccal_sc_r1_0/in_over" "5v0_addf_sc_rev2_0/VDD_3V3" -0.534251
+cap "5v0_addf_sc_rev2_0/VDD_1V65" "5v0_addf_sc_rev2_0/in_C_sign" -2.56419
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" "5v0_addf_sc_rev2_0/VSS" 8.37707
+cap "5v0_addf_sc_rev2_0/in_C_over" "5v0_addf_sc_rev2_0/VSS" -0.962402
+cap "5v0_addf_sc_rev2_0/5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93#" "5v0_addf_sc_rev2_0/VDD_3V3" -2.90403
+cap "5v0_addf_sc_rev2_0/int_sum_1" "5v0_addf_sc_rev2_0/VDD_3V3" -4.03933
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/inv_pti" "5v0_addf_sc_rev2_0/VSS" 0.467229
+cap "5v0_addf_sc_rev2_0/in_C_over" "5v0_addf_sc_rev2_0/VDD_3V3" -1.93822
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/inv_nti_1" "5v0_addf_sc_rev2_0/VSS" 3.7953
+cap "5v0_addf_sc_rev2_0/int_over" "5v0_addf_sc_rev2_0/5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93#" -0.630061
+cap "5v0_addf_sc_rev2_0/5v0_nter2oter_code_sc_0/nti" "5v0_addf_sc_rev2_0/VSS" 57.7276
+cap "5v0_addf_sc_rev2_0/int_sign" "5v0_addf_sc_rev2_0/VSS" -1.45008
+cap "5v0_addf_sc_rev2_0/VDD_1V65" "5v0_addf_sc_rev2_0/VDD_3V3" -3.5321
+cap "5v0_addf_sc_rev2_0/in_C_over" "5v0_addf_sc_rev2_0/VDD_3V3" -0.114581
+cap "5v0_addf_sc_rev2_0/5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93#" "5v0_addf_sc_rev2_0/int_over" -0.623874
+cap "5v0_addf_sc_rev2_0/VSS" "5v0_addf_sc_rev2_0/5v0_nter2oter_code_sc_0/pti" 0.0264254
+cap "5v0_addf_sc_rev2_0/VDD_3V3" "5v0_addf_sc_rev2_0/VDD_1V65" -3.5263
+cap "5v0_addf_sc_rev2_0/VSS" "5v0_addf_sc_rev2_0/VDD_3V3" -3.25058
+cap "5v0_addf_sc_rev2_0/5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" "5v0_addf_sc_rev2_0/int_over" -0.51168
+cap "5v0_addf_sc_rev2_0/VSS" "5v0_addf_sc_rev2_0/int_over" 2.48467
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" 0.350907
+cap "5v0_addf_sc_rev2_1/in_A" "5v0_addf_sc_rev2_1/VSS" -0.506818
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_pti" "5v0_addf_sc_rev2_1/VSS" 0.0311998
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_nti_1" "5v0_addf_sc_rev2_1/VSS" 0.187968
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_1/a_n2_360#" "5v0_addf_sc_rev2_1/in_A" 0.0163123
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/pti" "5v0_addf_sc_rev2_1/in_C_sign" 0.0150082
+cap "5v0_addf_sc_rev2_1/in_A" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_sign_probe" 0.901045
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_sign_probe" "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_nti_1" 0.120383
+cap "5v0_addf_sc_rev2_1/in_A" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_1/a_390_360#" 0.0351898
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_nti_1" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_1/a_390_360#" 0.0543068
+cap "5v0_addf_sc_rev2_1/in_A" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" 0.0890264
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/pti" "5v0_addf_sc_rev2_0/carry_over" 0.0333612
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_nti_1" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" 0.123514
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_1/VSS" 0.00128773
+cap "5v0_addf_sc_rev2_1/in_A" "5v0_addf_sc_rev2_1/VDD_3V3" -14.9077
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_nti_1" "5v0_addf_sc_rev2_1/VDD_3V3" -0.0741581
+cap "5v0_addf_sc_rev2_1/in_A" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_124_24#" 0.385103
+cap "5v0_addf_sc_rev2_1/in_C_sign" "5v0_addf_sc_rev2_1/in_A" -1.55375
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_nti_1" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_124_24#" 0.181589
+cap "5v0_addf_sc_rev2_1/in_C_sign" "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_nti_1" 0.14347
+cap "5v0_addf_sc_rev2_1/in_A" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_0/a_n2_360#" 0.00980861
+cap "5v0_addf_sc_rev2_1/in_A" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/pti" -1.37895
+cap "5v0_addf_sc_rev2_1/in_A" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_1/a_290_n88#" 0.097499
+cap "5v0_addf_sc_rev2_1/in_A" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_56_472#" 0.0326664
+cap "5v0_addf_sc_rev2_1/in_A" "5v0_addf_sc_rev2_0/carry_over" -0.0645726
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_nti_1" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_56_472#" 0.0661027
+cap "5v0_addf_sc_rev2_1/in_A" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_0/w_n144_240#" 0.0771789
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_nti_1" "5v0_addf_sc_rev2_0/carry_over" 0.117444
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/pti" "5v0_addf_sc_rev2_1/VSS" 0.0124799
+cap "5v0_addf_sc_rev2_1/in_C_sign" "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" 0.0211284
+cap "5v0_addf_sc_rev2_1/in_A" "5v0_addf_sc_rev2_1/int_sum_1" -3.23133
+cap "5v0_addf_sc_rev2_1/in_C_sign" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_0/a_n2_360#" 15.0782
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_124_24#" "5v0_addf_sc_rev2_1/5v0_addh_sc_0/pti" 0.0340655
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_1/a_390_360#" "5v0_addf_sc_rev2_1/in_C_sign" 9.74262
+cap "5v0_addf_sc_rev2_1/in_A" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/ctrl_sign" 2.97715
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" "5v0_addf_sc_rev2_1/in_C_sign" 6.4852
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/ctrl_sign" 2.64815
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3" "5v0_addf_sc_rev2_1/in_A" 3.07486
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" "5v0_addf_sc_rev2_0/carry_over" 0.150595
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 3.83598
+cap "5v0_addf_sc_rev2_1/in_A" "5v0_addf_sc_rev2_1/in_C_sign" 5.08293
+cap "5v0_addf_sc_rev2_1/in_A" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_1/a_66_n88#" 1.20562
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_56_472#" 0.132668
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_1/in_C_sign" 97.2503
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VSS" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/ctrl_sign" 0.114394
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/ctrl_sign" 0.376963
+cap "5v0_addf_sc_rev2_1/in_A" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_sign_probe" 2.62976
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_sign_probe" 94.6376
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VSS" "5v0_addf_sc_rev2_1/in_C_sign" 5.7345
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_124_24#" "5v0_addf_sc_rev2_1/in_A" 0.0357681
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_1/in_C_sign" -0.0442969
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_1/a_66_n88#" 0.0497697
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" "5v0_addf_sc_rev2_1/in_C_sign" 38.7099
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_124_24#" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 2.17724
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_56_472#" "5v0_addf_sc_rev2_1/in_C_sign" 2.92194
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_sign_probe" 0.388444
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/pti" "5v0_addf_sc_rev2_1/in_A" -0.529795
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/ctrl_sign" "5v0_addf_sc_rev2_1/in_C_sign" 2.37418
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VSS" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_124_24#" 0.276129
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_124_24#" "5v0_addf_sc_rev2_0/carry_over" 0.0178284
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_1/a_n2_360#" "5v0_addf_sc_rev2_1/in_A" 0.371669
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_124_24#" 0.562845
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3" "5v0_addf_sc_rev2_1/in_C_sign" 5.28892
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_1/a_n2_360#" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" 4.06324
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_124_24#" "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_nti_1" 0.104895
+cap "5v0_addf_sc_rev2_1/in_A" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_0/a_n2_360#" 3.11292
+cap "5v0_addf_sc_rev2_1/in_C_sign" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_1/a_66_n88#" 1.25865
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_0/a_n2_360#" 4.0281
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_1/a_390_360#" "5v0_addf_sc_rev2_1/in_A" 1.96784
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VSS" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_1/a_n2_360#" 3.3299
+cap "5v0_addf_sc_rev2_1/in_C_sign" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_sign_probe" 46.4015
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_1/a_n2_360#" 2.59823
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_1/a_n2_360#" "5v0_addf_sc_rev2_1/5v0_addh_sc_0/inv_nti_1" 0.759896
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_124_24#" "5v0_addf_sc_rev2_1/in_C_sign" 12.8171
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_1/in_A" -0.819849
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_1/a_390_360#" "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" 0.132142
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/carry_0_probe" 0.278126
+cap "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/in" "5v0_addf_sc_rev2_1/in_A" -0.28639
+cap "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_1/in_A" 1.24152
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_1/a_n2_360#" "5v0_addf_sc_rev2_1/in_C_sign" 10.3961
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" "5v0_addf_sc_rev2_1/in_A" -2.84217e-14
+cap "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" -0.193012
+cap "5v0_addf_sc_rev2_0/in_C_over" "5v0_addf_sc_rev2_1/VDD_3V3" 0.00259161
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/inv_pti" "5v0_addf_sc_rev2_1/5v0_addh_sc_0/nti" 0.41454
+cap "5v0_addf_sc_rev2_1/in_C_sign" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/inv_pti" 1.25481
+cap "5v0_addf_sc_rev2_1/in_C_sign" "5v0_addf_sc_rev2_0/in_C_over" 0.0426217
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_1/a_390_360#" "5v0_addf_sc_rev2_1/in_C_sign" 0.624983
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/half_tgate_0/a_124_24#" "5v0_addf_sc_rev2_1/in_C_sign" 0.49985
+cap "5v0_addf_sc_rev2_1/in_A" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/inv_pti" 1.97613
+cap "5v0_addf_sc_rev2_1/VDD_3V3" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3" 0.753011
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/inv_pti" "5v0_addf_sc_rev2_1/VDD_3V3" 5.64411
+cap "5v0_addf_sc_rev2_0/in_C_over" "5v0_addf_sc_rev2_0/5v0_nter2oter_code_sc_0/VDD_3V3" 0.0552315
+cap "5v0_addf_sc_rev2_0/VSS" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/pti" 0.0124799
+cap "5v0_addf_sc_rev2_0/in_C_sign" "5v0_addf_sc_rev2_0/in_A" -10.9956
+cap "5v0_addf_sc_rev2_0/5v0_addh_sc_0/inv_nti_1" "5v0_addf_sc_rev2_0/VSS" 0.187968
+cap "5v0_addf_sc_rev2_0/VSS" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/inv_pti" 0.0311998
+cap "5v0_addf_sc_rev2_0/in_C_sign" "5v0_addf_sc_rev2_0/VDD_1V65" -2.56419
+cap "5v0_addf_sc_rev2_0/in_A" "5v0_addf_sc_rev2_0/VDD_3V3" -13.5663
+cap "5v0_addf_sc_rev2_0/in_A" "5v0_addf_sc_rev2_0/in_C_sign" -27.0243
+merge "5v0_addf_sc_rev2_0/VDD_1V65" "VDD_1V65_2" -1619.97 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -126934 -3368 -52711 -1350 -623099 -4152 0 0 0 0
+merge "VDD_1V65_2" "5v0_addf_sc_rev2_0/m1_n1202_n1454#"
+merge "5v0_addf_sc_rev2_0/m1_n1202_n1454#" "m1_n1410_n1457#"
+merge "5v0_addf_sc_rev2_0/VSUBS" "5v0_addf_sc_rev2_1/VSUBS" 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+merge "5v0_addf_sc_rev2_1/VSUBS" "VSUBS"
+merge "5v0_addf_sc_rev2_0/5v0_addh_sc_0/VDD_3V3" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/w_294_n1048#" -13959.4 -3028969 -29516 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -832608 -15316 0 0 0 0 0 0 0 0
+merge "5v0_addf_sc_rev2_0/5v0_addh_sc_0/w_294_n1048#" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_1/w_n144_240#"
+merge "5v0_addf_sc_rev2_0/5v0_addh_sc_0/mux_2_1/w_n144_240#" "5v0_addf_sc_rev2_0/VDD_3V3"
+merge "5v0_addf_sc_rev2_0/VDD_3V3" "5v0_addf_sc_rev2_1/5v0_addh_sc_0/VDD_3V3"
+merge "5v0_addf_sc_rev2_1/5v0_addh_sc_0/VDD_3V3" "5v0_addf_sc_rev2_0/5v0_nter2oter_code_sc_0/VDD_3V3"
+merge "5v0_addf_sc_rev2_0/5v0_nter2oter_code_sc_0/VDD_3V3" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3_uq0"
+merge "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_0/5v0_nter2oter_code_sc_0/VDD_3V3_uq0"
+merge "5v0_addf_sc_rev2_0/5v0_nter2oter_code_sc_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_0/w_n3037_n1288#"
+merge "5v0_addf_sc_rev2_0/w_n3037_n1288#" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/VDD_3V3"
+merge "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/VDD_3V3" "w_n4851_n1440#"
+merge "w_n4851_n1440#" "5v0_addf_sc_rev2_0/VDD_3V3_uq0"
+merge "5v0_addf_sc_rev2_0/VDD_3V3_uq0" "VDD_3V3_1"
+merge "VDD_3V3_1" "5v0_addf_sc_rev2_1/VDD_3V3"
+merge "5v0_addf_sc_rev2_1/VDD_3V3" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/VDD_3V3_uq0"
+merge "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0"
+merge "5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" "5v0_addf_sc_rev2_1/VDD_3V3_uq0"
+merge "5v0_addf_sc_rev2_1/VDD_3V3_uq0" "VDD_3V3"
+merge "VDD_3V3" "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/w_n144_240#"
+merge "5v0_addf_sc_rev2_0/5v0_addh_sc_1/mux_2_1/w_n144_240#" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/VDD_3V3"
+merge "5v0_addf_sc_rev2_1/5v0_addh_sc_1/VDD_3V3" "5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0"
+merge "5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/VDD_3V3_uq0" "w_n7980_n4424#"
+merge "5v0_addf_sc_rev2_0/5v0_addh_sc_0/ternary_input" "5v0_addf_sc_rev2_0/in_A" -345.074 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -237644 -1950 0 0 0 0
+merge "5v0_addf_sc_rev2_0/in_A" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/in_reg"
+merge "5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/in_reg" "in_A_0"
+merge "5v0_addf_sc_rev2_1/in_C_sign" "5v0_addf_sc_rev2_0/carry_sign" -1079.55 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -42669 -1060 -25788 -782 0 0 0 0 0 0
+merge "5v0_addf_sc_rev2_0/carry_sign" "carry_interim_sign"
+merge "5v0_addf_sc_rev2_0/in_C_over" "in_C_over" -464.758 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -103350 -3310 0 0 0 0
+merge "5v0_addf_sc_rev2_0/VSS" "5v0_addf_sc_rev2_0/5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS" -568.144 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -60168 -1454 0 0 0 0 0 0 0 0
+merge "5v0_addf_sc_rev2_0/5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS" "VSS"
+merge "5v0_addf_sc_rev2_0/sum" "res_0" -825.617 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -489216 -3584 0 0 0 0 0 0
+merge "5v0_addf_sc_rev2_1/5v0_add_ccal_sc_r1_0/res_over" "5v0_addf_sc_rev2_1/carry_over" -391.012 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -51330 -1886 0 0 0 0 0 0 0 0
+merge "5v0_addf_sc_rev2_1/carry_over" "carry_over"
+merge "5v0_addf_sc_rev2_0/carry_over" "5v0_addf_sc_rev2_1/in_C_over" -1153.04 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -51330 -1886 0 0 -103350 -3310 0 0 0 0
+merge "5v0_addf_sc_rev2_1/in_C_over" "carry_interim_over"
+merge "5v0_addf_sc_rev2_1/VDD_1V65" "VDD_1V65_1" -150.791 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -40386 -890 0 0 0 0 0 0
+merge "5v0_addf_sc_rev2_0/in_C_sign" "5v0_addf_sc_rev2_0/5v0_addh_sc_0/ctrl_sign" -933.448 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -210672 -5184 0 0 0 0 0 0
+merge "5v0_addf_sc_rev2_0/5v0_addh_sc_0/ctrl_sign" "in_C_sign"
+merge "5v0_addf_sc_rev2_1/5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/VSS" "5v0_addf_sc_rev2_1/VSS" -652.527 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -74579 -1818 0 0 0 0 0 0 0 0
+merge "5v0_addf_sc_rev2_1/VSS" "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS"
+merge "5v0_addf_sc_rev2_1/5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS" "VSS_1"
+merge "5v0_addf_sc_rev2_1/in_A" "in_A_1" -373.371 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -237644 -1950 0 0 0 0
+merge "5v0_addf_sc_rev2_1/m2_163_n2886#" "5v0_addf_sc_rev2_1/in_B" -554.982 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -350784 -2388 0 0 0 0 0 0
+merge "5v0_addf_sc_rev2_1/in_B" "in_B_1"
+merge "5v0_addf_sc_rev2_1/sum" "res_1" -819.142 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -489216 -3584 0 0 0 0 0 0
+merge "5v0_addf_sc_rev2_1/carry_sign" "carry_sign" -220.656 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -42669 -1060 0 0 0 0 0 0 0 0
+merge "5v0_addf_sc_rev2_0/VDD_1V65_2" "5v0_addf_sc_rev2_1/VDD_1V65_2" -594.12 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -6314 -472 0 0 0 0 0 0 0 0
+merge "5v0_addf_sc_rev2_1/VDD_1V65_2" "VDD_1V65"
+merge "5v0_addf_sc_rev2_0/in_B" "in_B_0" -479.683 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -350784 -2388 0 0 0 0 0 0

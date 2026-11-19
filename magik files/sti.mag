@@ -1,0 +1,13 @@
+magic
+tech gf180mcuD
+magscale 1 10
+timestamp 1793089510
+use 5v0_nti_sc_f  5v0_nti_sc_f_0
+timestamp 1793089189
+transform 1 0 -139 0 1 -26
+box -253 -142 589 814
+use 5v0_pti_sc  5v0_pti_sc_0
+timestamp 1793027373
+transform 1 0 -139 0 -1 -138
+box -253 -142 925 814
+<< end >>

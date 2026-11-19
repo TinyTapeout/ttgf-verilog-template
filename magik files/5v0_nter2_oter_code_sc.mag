@@ -1,0 +1,226 @@
+magic
+tech gf180mcuD
+magscale 1 10
+timestamp 1794972223
+<< error_s >>
+rect 591 -532 711 -528
+rect 739 -532 831 -408
+rect 591 -652 756 -532
+<< nwell >>
+rect -504 296 925 814
+rect -504 -430 -9 -408
+rect -504 -926 97 -430
+rect 522 -532 711 -408
+rect 739 -532 926 -408
+rect 522 -926 926 -532
+<< pwell >>
+rect -504 4 925 296
+rect -504 -391 -230 4
+rect -125 -55 925 4
+rect -125 -275 78 -55
+rect 362 -142 925 -55
+rect -125 -384 50 -275
+rect -125 -391 78 -384
+rect -504 -408 -9 -391
+<< mvnmos >>
+rect -210 43 -90 170
+rect 38 77 616 149
+<< mvpmos >>
+rect -210 499 -60 595
+rect 88 416 188 660
+rect 292 416 392 660
+rect 497 416 597 660
+<< mvndiff >>
+rect -310 157 -210 170
+rect -310 63 -286 157
+rect -239 63 -210 157
+rect -310 43 -210 63
+rect -90 149 -22 170
+rect -90 136 38 149
+rect -90 90 -61 136
+rect 9 90 38 136
+rect -90 77 38 90
+rect 616 136 704 149
+rect 616 90 645 136
+rect 691 90 704 136
+rect 616 77 704 90
+rect -90 43 -22 77
+<< mvpdiff >>
+rect 0 609 88 660
+rect 0 595 13 609
+rect -311 580 -210 595
+rect -311 513 -287 580
+rect -241 513 -210 580
+rect -311 499 -210 513
+rect -60 499 13 595
+rect 0 469 13 499
+rect 59 469 88 609
+rect 0 416 88 469
+rect 188 609 292 660
+rect 188 469 217 609
+rect 263 469 292 609
+rect 188 416 292 469
+rect 392 609 497 660
+rect 392 469 422 609
+rect 468 469 497 609
+rect 392 416 497 469
+rect 597 609 709 660
+rect 597 469 627 609
+rect 673 469 709 609
+rect 597 416 709 469
+<< mvndiffc >>
+rect -286 63 -239 157
+rect -61 90 9 136
+rect 645 90 691 136
+<< mvpdiffc >>
+rect -287 513 -241 580
+rect 13 469 59 609
+rect 217 469 263 609
+rect 422 469 468 609
+rect 627 469 673 609
+<< polysilicon >>
+rect 88 660 188 704
+rect 292 660 392 704
+rect 497 660 597 704
+rect -210 595 -60 660
+rect -210 425 -60 499
+rect -210 418 -90 425
+rect -210 251 -177 418
+rect -106 251 -90 418
+rect 88 367 188 416
+rect 88 330 101 367
+rect -210 170 -90 251
+rect 68 227 101 330
+rect 147 227 188 367
+rect 68 202 188 227
+rect 292 276 392 416
+rect 497 311 597 416
+rect 292 211 313 276
+rect 375 211 392 276
+rect 292 202 392 211
+rect 466 276 597 311
+rect 466 211 487 276
+rect 549 243 597 276
+rect 549 211 616 243
+rect 466 202 616 211
+rect 68 199 616 202
+rect 38 149 616 199
+rect -210 -1 -90 43
+rect 38 33 616 77
+<< polycontact >>
+rect -177 251 -106 418
+rect 101 227 147 367
+rect 313 211 375 276
+rect 487 211 549 276
+<< metal1 >>
+rect -392 668 840 788
+rect 13 609 59 668
+rect 198 609 263 622
+rect -297 580 -231 587
+rect -297 513 -287 580
+rect -241 513 -231 580
+rect -323 492 -231 513
+rect -323 216 -238 492
+rect 2 469 13 609
+rect 59 469 70 609
+rect 198 469 217 609
+rect 422 609 468 668
+rect 411 469 422 583
+rect 627 609 676 622
+rect 468 469 479 583
+rect 673 469 676 609
+rect -192 418 -90 446
+rect -192 251 -177 418
+rect -106 416 -90 418
+rect 198 417 263 469
+rect 627 417 676 469
+rect -106 367 152 416
+rect -106 251 101 367
+rect -192 236 101 251
+rect 86 227 101 236
+rect 147 276 152 367
+rect 198 326 676 417
+rect 147 227 313 276
+rect -323 201 -234 216
+rect -286 158 -234 201
+rect 86 211 313 227
+rect 375 211 487 276
+rect 549 211 566 276
+rect 86 184 566 211
+rect 625 224 676 326
+rect 625 209 691 224
+rect -72 90 -61 136
+rect 9 90 20 136
+rect -239 63 -234 64
+rect -286 52 -234 63
+rect -61 5 9 90
+rect 625 50 691 68
+rect -392 4 9 5
+rect -392 -116 840 4
+rect -37 -305 43 -292
+rect -37 -378 43 -366
+rect 267 -466 287 -414
+rect 256 -482 287 -466
+rect 290 -482 298 -414
+rect 323 -482 558 -414
+rect -392 -900 840 -780
+<< via1 >>
+rect -286 157 -234 158
+rect -286 64 -239 157
+rect -239 64 -234 157
+rect 625 136 691 209
+rect 625 90 645 136
+rect 645 90 691 136
+rect 625 68 691 90
+rect -37 -366 43 -305
+rect 206 -466 267 -333
+rect 605 -483 670 -341
+<< metal2 >>
+rect 622 209 694 224
+rect -298 159 -216 160
+rect -298 158 -214 159
+rect -298 64 -286 158
+rect -234 118 -214 158
+rect -234 64 17 118
+rect -298 62 17 64
+rect -39 -292 17 62
+rect 622 68 625 209
+rect 691 68 694 209
+rect 622 50 694 68
+rect 635 -89 691 50
+rect 607 -145 691 -89
+rect -39 -305 45 -292
+rect -39 -366 -37 -305
+rect 43 -366 45 -305
+rect -39 -378 45 -366
+rect 203 -333 270 -318
+rect 607 -329 663 -145
+rect 203 -466 206 -333
+rect 267 -466 270 -333
+rect 203 -478 270 -466
+rect 603 -341 672 -329
+rect 603 -483 605 -341
+rect 670 -483 672 -341
+rect 603 -509 672 -483
+use nor_mod  gf180mcu_fd_sc_mcu7t5v0__nor2_1_0 /home/eclipse
+timestamp 1794362611
+transform 1 0 -159 0 -1 -56
+box -86 -86 758 870
+use not_internal_variant_pair_nteroter  not_internal_0 /home/eclipse
+timestamp 1794902315
+transform -1 0 812 0 -1 -56
+box -86 -86 534 844
+<< labels >>
+rlabel metal1 -106 236 101 416 1 in
+port 1 n signal bidirectional
+rlabel metal1 -323 201 -238 513 1 nti
+port 2 n signal bidirectional
+rlabel metal1 198 326 676 417 1 pti
+port 3 n signal bidirectional
+rlabel metal1 -392 668 840 788 1 VDD_3V3
+port 5 n power bidirectional
+rlabel metal1 -392 -116 -230 4 1 VSS
+port 4 n ground bidirectional
+rlabel metal1 -392 -900 840 -780 1 VDD_3V3
+port 5 n power bidirectional
+<< end >>

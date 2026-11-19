@@ -1,3 +1,27 @@
+/*
+checklist
+1: all valid addresses when doing read or write op should check for aliases first
+2: make sure there are no deadlocks
+3: listen to thread overlord
+4: double check command intake is working
+5: microcode too
+6: make sure yosys doesn't optimise stuff away (very important!!!!)
+7: reset single clock values
+8: check command intake again
+9: verify all interactions with other modules
+10: check aliasing
+11: check program counter functionality
+12: check command first loading and microcode parsing
+13: check micro op stages
+14: ensure compliance
+15: check non blocking and blocking assignments
+16: verify state machine
+17: check timing delays and verify everything is ok
+18: probably simulate on an fpga
+19: from 18, i'll need an even bigger wrapper that does the work for me
+20: ladder reg aliasing
+*/
+
 
 module thread_command(
     input wire clk,
@@ -461,47 +485,50 @@ endfunction
         reg [1:0]  op_read_state; // 00: idle, 01: byte 0, 10: byte 1, 11: byte 2 & write
 
 task execute_alias_write;
-    // Control & Alias State Inputs
+    // ctrl
     input        write_allow;
     input        active;
     input        using_macroop_1;
     input        sel_cmd1;
-    // 12-trit Alias Inputs
     input [3:0]  addr_12t_in;
-    input [23:0] buff_12t;
-    // 4-trit Alias Inputs
     input        active_4t_in;
     input [2:0]  addr_4t;
-    input [7:0]  buff_4t;
-    // 1-trit Alias Inputs
     input        active_1t_in;
     input [2:0]  addr_1t;
-    input [1:0]  buff_1t;
-    // Command Pipe Background Inputs
+    
+    //pipe tasks
     input        pipe_w_en;
     input [2:0]  pipe_addr;
     input [23:0] bin_trit_in;
 
-    //Next-state alias flags & PC write strobe
+    // next state
     output reg [3:0]  addr_12t_next;
     output reg        active_4t_next;
     output reg        active_1t_next;
     output reg        pc_w_en;
     output reg [23:0] pc_w_data;
+    //special handling for program counter
 
-    //Direct Top-Level Registers
+    // Alias Buffers (cleared after release)
+    inout [23:0] buff_12t;
+    inout [7:0]  buff_4t;
+    inout [1:0]  buff_1t;
+
+    //top registers
     inout [7:0]  sp0_t0, sp0_t1, sp0_t2;
     inout [7:0]  sp1_t0, sp1_t1, sp1_t2;
     inout [1:0]  f0, f1, f2, f3, f4, f5, f6, f7;
+    inout [7:0]  spf_t2;
     inout [7:0]  lad_t0, lad_t1, lad_t2;
     inout [23:0] gp6, gp7, gp8;
     inout [23:0] c0_0, c0_1, c0_2, c0_3, c0_4, c0_5;
     inout [23:0] c1_0, c1_1, c1_2, c1_3, c1_4, c1_5;
 
-    // Internal control signals for secondary registers
-    reg sec_w_en;
-    reg ovr_en;
-    reg ovr_sel;
+    // internal controls
+    reg        sec_w_en;
+    reg        ovr_en;
+    reg        ovr_sel;
+    reg [23:0] sec_w_data;
 
     begin
         // Hold current alias flags by default; clear single-cycle strobes
@@ -514,61 +541,76 @@ task execute_alias_write;
         sec_w_en       = 1'b0;
         ovr_en         = 1'b0;
         ovr_sel        = 1'b0;
+        sec_w_data     = buff_12t;
 
         if (active) begin
-            
+            // 12t
             if (addr_12t_in != 4'b0000) begin
-                if (addr_12t_in >= 4'd5) begin
-                    if (addr_12t_in == 4'd5) begin
-                        pc_w_en   = 1'b1;
-                        pc_w_data = buff_12t;
+                if (write_allow) begin
+                    if (addr_12t_in >= 4'd5) begin
+                        if (addr_12t_in == 4'd5) begin
+                            pc_w_en   = 1'b1;
+                            pc_w_data = buff_12t;
+                        end else begin
+                            sec_w_en   = 1'b1;
+                            ovr_en     = 1'b1;
+                            ovr_sel    = ~using_macroop_1;
+                            sec_w_data = buff_12t;
+                        end
                     end else begin
-                        sec_w_en = 1'b1;
-                        ovr_en   = 1'b1;
-                        ovr_sel  = ~using_macroop_1;
+                        case (addr_12t_in)
+                            4'd1: {sp0_t2, sp0_t1, sp0_t0} = buff_12t;
+                            4'd2: {sp1_t2, sp1_t1, sp1_t0} = buff_12t;
+                            4'd3: {spf_t2, f7, f6, f5, f4, f3, f2, f1, f0} = buff_12t;
+                            4'd4: {lad_t2, lad_t1, lad_t0} = buff_12t;
+                        endcase
                     end
-                end else begin
-                    case (addr_12t_in)
-                        4'd1: {sp0_t2, sp0_t1, sp0_t0} = buff_12t;
-                        4'd2: {sp1_t2, sp1_t1, sp1_t0} = buff_12t;
-                        4'd3: {f7, f6, f5, f4, f3, f2, f1, f0} = buff_12t[15:0];
-                        4'd4: {lad_t2, lad_t1, lad_t0} = buff_12t;
+                end
+                // Clear alias address & buffer regardless of write_allow
+                addr_12t_next = 4'b0000;
+                buff_12t      = 24'b0;
+            end
+
+            //4t
+            if (active_4t_in) begin
+                if (write_allow) begin
+                    case (addr_4t)
+                        3'd0: sp0_t0 = buff_4t;
+                        3'd1: sp0_t1 = buff_4t;
+                        3'd2: sp0_t2 = buff_4t;
+                        3'd3: sp1_t0 = buff_4t;
+                        3'd4: sp1_t1 = buff_4t;
+                        3'd5: sp1_t2 = buff_4t;
+                        3'd6: {f3, f2, f1, f0} = buff_4t; // spf_trib0
+                        3'd7: {f7, f6, f5, f4} = buff_4t; // spf_trib1
                     endcase
                 end
-                addr_12t_next = 4'b0000;
-            end
-
-            if (active_4t_in) begin
                 active_4t_next = 1'b0;
-                case (addr_4t)
-                    3'd0: sp0_t0 = buff_4t;
-                    3'd1: sp0_t1 = buff_4t;
-                    3'd2: sp0_t2 = buff_4t;
-                    3'd3: sp1_t0 = buff_4t;
-                    3'd4: sp1_t1 = buff_4t;
-                    3'd5: sp1_t2 = buff_4t;
-                    3'd6: {f3, f2, f1, f0} = buff_4t; // spf_trib0
-                    3'd7: {f7, f6, f5, f4} = buff_4t; // spf_trib1
-                endcase
+                buff_4t        = 8'b0;
             end
 
+            //1trit
             if (active_1t_in) begin
+                if (write_allow) begin
+                    case (addr_1t)
+                        3'd0: f0 = buff_1t;
+                        3'd1: f1 = buff_1t;
+                        3'd2: f2 = buff_1t;
+                        3'd3: f3 = buff_1t;
+                        3'd4: f4 = buff_1t;
+                        3'd5: f5 = buff_1t;
+                        3'd6: f6 = buff_1t;
+                        3'd7: f7 = buff_1t;
+                    endcase
+                end
                 active_1t_next = 1'b0;
-                case (addr_1t)
-                    3'd0: f0 = buff_1t;
-                    3'd1: f1 = buff_1t;
-                    3'd2: f2 = buff_1t;
-                    3'd3: f3 = buff_1t;
-                    3'd4: f4 = buff_1t;
-                    3'd5: f5 = buff_1t;
-                    3'd6: f6 = buff_1t;
-                    3'd7: f7 = buff_1t;
-                endcase
+                buff_1t        = 2'b0;
             end
         end
 
+        //always process background command pipe writes (overrides alias on collision)
         update_secondary_regs(
-            sec_w_en, addr_12t_in, buff_12t, sel_cmd1, ovr_en, ovr_sel,
+            sec_w_en, addr_12t_in, sec_w_data, sel_cmd1, ovr_en, ovr_sel,
             pipe_w_en, pipe_addr, bin_trit_in,
             gp6, gp7, gp8,
             c0_0, c0_1, c0_2, c0_3, c0_4, c0_5,
@@ -577,10 +619,20 @@ task execute_alias_write;
     end
 endtask
 
+
+
+
+
 reg can_execute_this_clock = 1'b1;
+reg [3:0]  exec_cmd_lat, exec_p0_lat, exec_p1_lat, exec_p2_lat;
+reg [7:0]  alu_res_4t_lat;
+reg [1:0]  alu_res_1t_lat;
+reg [15:0] alu_res_mul_lat;
+reg [3:0]  mac_ovf_target_12t; // Set by 1param:0001
+reg [3:0]  hold_reg_addr;      // Set by 1param:0100
+reg        hold_reg_active;
 
-
-//fix later
+//i should find a use for them later
 assign pc_r_enable = (register_address == 5'd5) || (r_enable && t_addr_in == 4'd5);
 
 assign collision = check_reg_collision(
@@ -589,12 +641,12 @@ assign collision = check_reg_collision(
     command_write_enable, commandpipe_address
 );
 
-reg do_housekeeping = 1'b1;
+reg do_housekeeping = 1'b0;
 
 always @(posedge clk or negedge rst_n) begin
     //this is the main loop of the system
     if (!rst_n) begin
-        // Control & FSM state
+        //control & state        
         threadstate        <= THREAD_EMPTY;
         macroop_register   <= 16'b0;
         using_macroop_1    <= 1'b0;
@@ -606,7 +658,7 @@ always @(posedge clk or negedge rst_n) begin
         execute_stage      <= 2'b00;
         command_req_new    <= 1'b0;
 
-        // Pulses & Handshakes
+        // pulses and handshakes
         cmd_buf_clr_ack    <= 1'b0;
         single_execute_ack <= 1'b0;
         pc_increment       <= 1'b0;
@@ -618,7 +670,7 @@ always @(posedge clk or negedge rst_n) begin
         debug_reg_cache    <= 24'b0;
         dbg_dout           <= 8'b0;
 
-        // Counters & Alias state
+        //aliases
         action_ctr         <= 8'b0;
         param_ctr          <= 8'b0;
         alias_addr_12t     <= 4'b0;
@@ -630,7 +682,7 @@ always @(posedge clk or negedge rst_n) begin
         am_buff_4t         <= 8'b0;
         am_buff_1t         <= 2'b0;
 
-        // Top-level registers
+        //top reggies
         {sp0_trib2, sp0_trib1, sp0_trib0} <= 24'b0;
         {sp1_trib2, sp1_trib1, sp1_trib0} <= 24'b0;
         {spf_flag7, spf_flag6, spf_flag5, spf_flag4,
@@ -642,6 +694,19 @@ always @(posedge clk or negedge rst_n) begin
         cmd0_reg_3 <= 24'b0; cmd0_reg_4 <= 24'b0; cmd0_reg_5 <= 24'b0;
         cmd1_reg_0 <= 24'b0; cmd1_reg_1 <= 24'b0; cmd1_reg_2 <= 24'b0;
         cmd1_reg_3 <= 24'b0; cmd1_reg_4 <= 24'b0; cmd1_reg_5 <= 24'b0;
+
+
+        //execution state resets
+        exec_cmd_lat <= 4'b0;
+        exec_p0_lat <= 4'b0;
+        exec_p1_lat <= 4'b0;
+        exec_p2_lat <= 4'b0;
+        alu_res_4t_lat <= 8'b0;
+        alu_res_1t_lat <= 2'b0;
+        alu_res_mul_lat <= 16'b0;
+        mac_ovf_target_12t <= 4'b0;
+        hold_reg_addr <= 4'b0;
+        hold_reg_active <= 1'b0;
     end else begin
         
         can_execute_this_clock = 1'b0; // Blocking temp var
@@ -679,6 +744,8 @@ always @(posedge clk or negedge rst_n) begin
                         // (Note: PC read enable pc_r_enable should be high when register_address == 5'd5)
                         debug_reg_cache <= read_any_reg_12t(
                             register_address[3:0], using_macroop_1, // or sel_cmd1 (see Note 2)
+                            alias_addr_12t,
+                            am_buff_12t,
                             sp0_trib0, sp0_trib1, sp0_trib2,
                             sp1_trib0, sp1_trib1, sp1_trib2,
                             spf_trib0, spf_trib1, spf_trib2,
@@ -789,6 +856,12 @@ always @(posedge clk or negedge rst_n) begin
                             command_req_new <= 1'b1;
                         end else if(command_data_sent && execute_stage == 2'b0) begin
                             //read command input
+                            execute_done <= 1'b0;
+                            //latch command/params for multi-stage use
+                            exec_cmd_lat <= command;
+                            exec_p0_lat  <= param_0;
+                            exec_p1_lat  <= param_1;
+                            exec_p2_lat  <= param_2;
                             execute_done <= 1'b0;
                             //for some single clock stuff you can non block it back to 1 later
                             
@@ -949,6 +1022,8 @@ always @(posedge clk or negedge rst_n) begin
                                             if(alias_addr_12t == 4'd0) begin
                                                 am_buff_12t <= read_any_reg_12t(
                                                     param_1, using_macroop_1,
+                                                    alias_addr_12t,
+                                                    am_buff_12t,
                                                     sp0_trib0, sp0_trib1, sp0_trib2,
                                                     sp1_trib0, sp1_trib1, sp1_trib2,
                                                     spf_trib0, spf_trib1, spf_trib2,
@@ -974,6 +1049,8 @@ always @(posedge clk or negedge rst_n) begin
                                             if(alias_addr_12t != 4'd0) begin
                                                 am_buff_12t <= read_any_reg_12t(
                                                     param_1, using_macroop_1,
+                                                    alias_addr_12t,
+                                                    am_buff_12t,
                                                     sp0_trib0, sp0_trib1, sp0_trib2,
                                                     sp1_trib0, sp1_trib1, sp1_trib2,
                                                     spf_trib0, spf_trib1, spf_trib2,
@@ -1346,7 +1423,6 @@ always @(posedge clk or negedge rst_n) begin
                             //for data to be written, check if the command can skip data masking then either mask or write
                             //data masking stage
                             //write stage
-                            
 
                         end else if(command_data_sent) begin
                             //this is for multi stage execution
@@ -1476,21 +1552,20 @@ always @(posedge clk or negedge rst_n) begin
         end
 
         execute_alias_write(
-            write_allow, do_housekeeping && can_execute_this_clock, using_macroop_1, sel_cmd1,
-            alias_addr_12t, am_buff_12t,
-            alias_active_4t, alias_addr_4t, am_buff_4t,
-            alias_active_1t, alias_addr_1t, am_buff_1t,
+            write_allow, (do_housekeeping && can_execute_this_clock), using_macroop_1, sel_cmd1,
+            alias_addr_12t, alias_active_4t, alias_addr_4t, alias_active_1t, alias_addr_1t,
             command_write_enable, commandpipe_address, binary_trit_in,
-            // Next-state alias flags
+            // Next-state alias flags & PC write port
             alias_addr_12t, alias_active_4t, alias_active_1t,
-            // PC write port
             pc_w_enable, pc_w_data,
-            // Scratchpad 0/1, Flag, Ladder ports
-            sp0_we, sp0_full12t, sp0_pos, sp0_reg_bin_b2t,
-            sp1_we, sp1_full12t, sp1_pos, sp1_reg_bin_b2t,
-            flag_we, flag_full12t, flag_pos, flag_reg_bin_b2t, flag_reg_bin_b2t_1t,
-            ladder_we, ladder_full12t, ladd_reg_bin_b2t,
-            // Secondary registers
+            // Alias buffers (cleared on release)
+            am_buff_12t, am_buff_4t, am_buff_1t,
+            // Direct Top-Level Registers
+            sp0_trib0, sp0_trib1, sp0_trib2,
+            sp1_trib0, sp1_trib1, sp1_trib2,
+            spf_flag0, spf_flag1, spf_flag2, spf_flag3, spf_flag4, spf_flag5, spf_flag6, spf_flag7,
+            spf_trib2,
+            ladder_trib0, ladder_trib1, ladder_trib2,
             gp_reg_6, gp_reg_7, gp_reg_8,
             cmd0_reg_0, cmd0_reg_1, cmd0_reg_2, cmd0_reg_3, cmd0_reg_4, cmd0_reg_5,
             cmd1_reg_0, cmd1_reg_1, cmd1_reg_2, cmd1_reg_3, cmd1_reg_4, cmd1_reg_5

@@ -1,0 +1,201 @@
+magic
+tech gf180mcuD
+magscale 1 10
+timestamp 1794988983
+<< mvpsubdiffcont >>
+rect -17551 874 2073 1277
+<< metal1 >>
+rect -18272 1277 2758 1354
+rect -19413 -5181 -18409 990
+rect -18272 874 -17551 1277
+rect 2073 874 2758 1277
+rect -18272 796 2758 874
+rect -18272 -5030 -17704 796
+rect -17528 -1401 -17079 -1400
+rect -17528 -1512 -15967 -1401
+rect -7867 -1505 -6607 -1447
+rect 1473 -1476 1557 -1464
+rect 1624 -1476 2072 -1400
+rect -17528 -1736 -17079 -1512
+rect 1557 -1624 2072 -1476
+rect -17528 -2406 -17079 -2184
+rect -14466 -2277 -13920 -1761
+rect -17528 -2505 -16871 -2406
+rect -17528 -2520 -17079 -2505
+rect -12941 -3304 -12419 -1624
+rect -9731 -2277 -9185 -1761
+rect -8206 -3304 -7684 -1624
+rect -4996 -2277 -4450 -1761
+rect -7483 -2505 -7052 -2406
+rect -3471 -3304 -2949 -1624
+rect 1473 -1636 1557 -1624
+rect 1624 -1736 2072 -1624
+rect -261 -2277 285 -1761
+rect 1624 -2017 1848 -2005
+rect 1624 -2165 1653 -2017
+rect 1737 -2165 1848 -2017
+rect 1624 -2184 1848 -2165
+rect 1624 -2520 2072 -2184
+rect -12941 -4234 -12631 -3304
+rect -8206 -4234 -7896 -3304
+rect -3471 -4234 -3161 -3304
+rect 2370 -4114 2758 796
+rect -14590 -4648 -11547 -4425
+rect -9855 -4648 -6812 -4425
+rect -5120 -4648 -2077 -4425
+rect -15408 -4732 -2077 -4648
+rect -226 -5030 2758 -4114
+rect 2895 -5181 3899 1012
+rect -19413 -5562 3900 -5181
+<< via1 >>
+rect 1473 -1624 1557 -1476
+rect 1653 -2165 1737 -2017
+<< metal2 >>
+rect 1068 85 1737 169
+rect 1471 -1476 1559 -1464
+rect 1471 -1624 1473 -1476
+rect 1557 -1624 1559 -1476
+rect 1471 -1636 1559 -1624
+rect 1653 -2015 1737 85
+rect 1636 -2017 1754 -2015
+rect 1636 -2165 1653 -2017
+rect 1737 -2165 1754 -2017
+rect 1636 -2168 1754 -2165
+rect -14290 -2919 -12419 -2632
+rect -9555 -2919 -7684 -2632
+rect -4820 -2919 -2949 -2632
+rect -85 -2919 1786 -2632
+rect -12941 -3304 -12419 -2919
+rect -8206 -3304 -7684 -2919
+rect -3471 -3304 -2949 -2919
+rect 1264 -3304 1786 -2919
+rect -16165 -4872 -14709 -4536
+rect -11430 -4872 -9974 -4536
+rect -6695 -4872 -5239 -4536
+rect -1960 -4872 -504 -4536
+<< via2 >>
+rect 1473 -1624 1557 -1476
+<< metal3 >>
+rect -13967 -14 -13195 471
+rect -9232 -14 -8460 470
+rect -4497 -14 -3725 470
+rect 238 -14 1010 470
+rect -16954 -1487 -16055 -850
+rect -12219 -1487 -11320 -850
+rect -7484 -1487 -6585 -850
+rect -2749 -1487 -1850 -850
+rect -1745 -1331 1557 -1266
+rect 1473 -1476 1557 -1331
+rect 1473 -1636 1557 -1624
+use 5v0_2t_adder  5v0_2t_adder_0
+timestamp 1794894921
+transform 1 0 -40 0 1 -30
+box -7980 -4842 1826 849
+use 5v0_2t_adder  5v0_2t_adder_1
+timestamp 1794894921
+transform 1 0 -4775 0 1 -30
+box -7980 -4842 1826 849
+use 5v0_2t_adder  5v0_2t_adder_2
+timestamp 1794894921
+transform 1 0 -9510 0 1 -30
+box -7980 -4842 1826 849
+use guard_ring_4t_adder  GR_NMOS_0
+timestamp 1794553132
+transform 1 0 -17755 0 1 -4822
+box -1789 -834 21749 9990
+<< labels >>
+rlabel metal1 -17528 -2520 -17079 -2184 1 carry_sign
+port 11 n signal output
+rlabel metal1 1624 -2520 2072 -2184 1 in_C_sign
+port 12 n signal input
+rlabel metal1 1624 -1736 2072 -1400 1 in_C_over
+port 13 n signal input
+rlabel metal2 -1960 -4872 -504 -4536 1 res_0
+port 6 n signal bidirectional
+rlabel metal2 -6695 -4872 -5239 -4536 1 res_1
+port 7 n signal bidirectional
+rlabel metal2 -11430 -4872 -9974 -4536 1 res_2
+port 8 n signal bidirectional
+rlabel metal2 -16165 -4872 -14709 -4536 1 res_3
+port 9 n signal bidirectional
+rlabel metal1 -17528 -1736 -17079 -1400 1 carry_over
+port 10 n signal output
+rlabel metal1 -261 -2277 285 -1761 1 VSS_0
+port 15 n ground bidirectional
+rlabel metal3 -2749 -1487 -1850 -850 1 VDD_1V65_1
+port 19 n signal bidirectional
+rlabel metal3 -7484 -1487 -6585 -850 1 VDD_1V65_2
+port 18 n signal bidirectional
+rlabel metal3 -12219 -1487 -11320 -850 1 VDD_1V65_3
+port 17 n signal bidirectional
+rlabel metal3 -16954 -1487 -16055 -850 1 VDD_1V65_4
+port 16 n signal bidirectional
+rlabel metal3 238 -14 1010 470 1 in_0
+port 23 n signal bidirectional
+rlabel metal3 -4497 -14 -3725 470 1 in_1
+port 22 n signal bidirectional
+rlabel metal3 -9232 -14 -8460 470 1 in_2
+port 21 n signal bidirectional
+rlabel metal3 -13967 -14 -13195 471 1 in_3
+port 20 n signal bidirectional
+rlabel metal2 1264 -3304 1786 -2632 1 in_B_0
+port 32 n signal bidirectional
+rlabel metal2 -85 -2919 1786 -2632 1 in_B_0
+port 32 n signal bidirectional
+rlabel metal2 -4820 -2919 -2949 -2632 1 in_B_1
+port 33 n signal bidirectional
+rlabel metal2 -9555 -2919 -7684 -2632 1 in_B_2
+port 34 n signal bidirectional
+rlabel metal2 -14290 -2919 -12419 -2632 1 in_B_3
+port 35 n signal bidirectional
+rlabel metal1 -4996 -2277 -4450 -1761 1 VSS_1
+port 36 n ground bidirectional
+rlabel metal1 -9731 -2277 -9185 -1761 1 VSS_2
+port 37 n ground bidirectional
+rlabel metal1 -14466 -2277 -13920 -1761 1 VSS_3
+port 38 n ground bidirectional
+rlabel metal1 -14590 -4732 -11547 -4425 1 VDD_1V65
+port 5 n signal bidirectional
+rlabel metal1 -9855 -4732 -6812 -4425 1 VDD_1V65
+port 5 n signal bidirectional
+rlabel metal1 -5120 -4732 -2077 -4425 1 VDD_1V65
+port 5 n signal bidirectional
+rlabel metal1 -8206 -3304 -7684 -1624 1 VDD_3V3_2
+port 40 n power bidirectional
+rlabel metal1 -8206 -4234 -7896 -1624 1 VDD_3V3_2
+port 40 n power bidirectional
+rlabel metal1 -3471 -3304 -2949 -1624 1 VDD_3V3_1
+port 41 n power bidirectional
+rlabel metal1 -3471 -4234 -3161 -1624 1 VDD_3V3_1
+port 41 n power bidirectional
+rlabel metal1 -12941 -3304 -12419 -1624 1 VDD_3V3_3
+port 39 n power bidirectional
+rlabel metal1 -12941 -4234 -12631 -1624 1 VDD_3V3_3
+port 39 n power bidirectional
+rlabel metal2 -12941 -3304 -12419 -2632 1 in_B_3
+port 35 n signal bidirectional
+rlabel metal2 -8206 -3304 -7684 -2632 1 in_B_2
+port 34 n signal bidirectional
+rlabel metal2 -3471 -3304 -2949 -2632 1 in_B_1
+port 33 n signal bidirectional
+rlabel metal1 -7483 -2505 -7052 -2406 1 carry_sign_01
+port 42 n signal bidirectional
+rlabel metal1 -7867 -1505 -6607 -1447 1 carry_over_01
+port 43 n signal bidirectional
+rlabel metal1 -226 -5030 2758 -4114 1 VDD_3V3_0
+port 44 n power bidirectional
+rlabel metal1 -19413 -5562 3900 -5181 1 VSS_GR
+port 45 n ground bidirectional
+rlabel metal1 -19413 -5562 -18409 990 1 VSS_GR
+port 45 n ground bidirectional
+rlabel metal1 2896 -5562 3899 1012 1 VSS_GR
+port 45 n ground bidirectional
+rlabel metal1 2370 -5030 2758 985 1 VDD_3V3_0
+port 44 n power bidirectional
+rlabel metal1 -18272 796 2758 1354 1 VDD_3V3_0
+port 44 n power bidirectional
+rlabel metal1 -18272 -5030 -17704 873 1 VDD_3V3_0
+port 44 n power bidirectional
+<< properties >>
+string FIXED_BBOX 23632 8288
+<< end >>

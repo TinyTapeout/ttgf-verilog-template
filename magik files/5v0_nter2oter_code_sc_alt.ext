@@ -1,0 +1,122 @@
+timestamp 1794907176
+version 8.3
+tech gf180mcuD
+style ngspice()
+scale 1000 1 0.5
+resistclasses 1000000 3250000 6300 7000 6300 7000 7300 1000000 60000 185000 60000 185000 6300 7000 6300 7000 6800 7300 350000 310000 1000000 90 90 90 90 60
+use not_internal_variant_pair_nteroter not_internal_0 -1 0 840 0 -1 -56
+use nor_mod gf180mcu_fd_sc_mcu7t5v0__nor2_1_0 1 0 -131 0 -1 -56
+parameters nfet_10v0_asym l=l w=w a1=as p1=ps a2=ad p2=pd
+parameters nfet_06v0_dss l=l w=w a1=as p1=ps a2=ad p2=pd l1=s_sab l2=d_sab
+parameters nfet_06v0 l=l w=w a1=as p1=ps a2=ad p2=pd
+parameters pfet_10v0_asym l=l w=w a1=as p1=ps a2=ad p2=pd
+parameters pfet_06v0_dss l=l w=w a1=as p1=ps a2=ad p2=pd l1=s_sab l2=d_sab
+parameters pfet_06v0 l=l w=w a1=as p1=ps a2=ad p2=pd
+port "VDD_3V3_uq0" 6 -392 -900 840 -780 m1
+port "VSS" 4 -392 -116 -230 4 m1
+port "pti" 3 198 326 676 417 m1
+port "nti" 2 -323 201 -238 513 m1
+port "VDD_3V3" 5 -392 668 840 788 m1
+port "in" 1 -106 236 101 416 m1
+node "VDD_3V3_uq0" 1 378.089 -392 -900 m1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 147840 2704 0 0 0 0 0 0 0 0
+node "m1_234_n466#" 1 130.142 234 -466 v 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 26277 950 10720 454 0 0 0 0 0 0
+node "VSS" 18 320.177 -392 -116 m1 0 0 0 0 0 0 0 0 12956 510 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 158423 3012 0 0 0 0 0 0 0 0
+node "pti" 62 301.201 198 326 m1 0 0 0 0 0 0 0 0 6336 320 52704 1408 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 92784 2954 46172 1636 0 0 0 0 0 0
+node "nti" 18 312.805 -323 201 m1 0 0 0 0 0 0 0 0 12700 454 9696 394 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 46239 1594 49782 1818 0 0 0 0 0 0
+node "VDD_3V3" 59 287.519 -392 668 m1 0 0 0 0 0 0 0 0 0 0 52852 1482 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 171736 3588 0 0 0 0 0 0 0 0
+node "in" 187 822.538 -106 236 m1 0 0 0 0 0 0 0 0 0 0 0 0 341280 6128 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 106500 2040 0 0 0 0 0 0 0 0
+node "w_522_n926#" 1282 627.816 522 -926 nw 209272 1844 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+node "w_n504_n926#" 1257 926.958 -504 -926 nw 308986 2238 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+node "w_n504_296#" 2759 2220.67 -504 296 nw 740222 3894 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+substrate "VSUBS" 0 0 -1073741817 -1073741817 space 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+cap "m1_234_n466#" "pti" 44.5867
+cap "VDD_3V3_uq0" "pti" 6.53549
+cap "w_522_n926#" "in" 1.64129
+cap "w_522_n926#" "pti" 25.9805
+cap "VSS" "VDD_3V3" 7.96505
+cap "w_n504_296#" "m1_234_n466#" 0.250924
+cap "VDD_3V3_uq0" "m1_234_n466#" 24.1857
+cap "VSS" "w_n504_n926#" 19.8143
+cap "nti" "VSS" 173.541
+cap "nti" "VDD_3V3" 43.537
+cap "w_522_n926#" "VDD_3V3_uq0" 66.3316
+cap "w_522_n926#" "m1_234_n466#" 8.03617
+cap "VSS" "in" 218.893
+cap "nti" "w_n504_n926#" 20.6552
+cap "VSS" "pti" 107.494
+cap "in" "VDD_3V3" 222.273
+cap "VDD_3V3" "pti" 230.84
+cap "in" "w_n504_n926#" 3.48679
+cap "nti" "in" 209.827
+cap "pti" "w_n504_n926#" 1.23154
+cap "nti" "pti" 19.8566
+cap "VSS" "w_n504_296#" 11.2466
+cap "in" "pti" 465.295
+cap "VSS" "m1_234_n466#" 27.1267
+cap "VSS" "VDD_3V3_uq0" 23.5701
+cap "VDD_3V3" "w_n504_296#" 166.094
+cap "VDD_3V3" "m1_234_n466#" 0.184237
+cap "nti" "w_n504_296#" 40.5191
+cap "w_522_n926#" "VSS" 10.5256
+cap "m1_234_n466#" "w_n504_n926#" 10.5437
+cap "VDD_3V3_uq0" "w_n504_n926#" 102.875
+cap "nti" "VDD_3V3_uq0" 6.31178
+cap "nti" "m1_234_n466#" 13.0338
+cap "in" "w_n504_296#" 640.972
+cap "in" "m1_234_n466#" 3.1772
+cap "w_n504_296#" "pti" 64.2506
+cap "in" "VDD_3V3_uq0" 1.2081
+device msubckt nfet_06v0 38 77 39 78 l=578 w=72 "VSUBS" "in" 1156 0 "VSS" 72 6478,255 "pti" 72 6336,320
+device msubckt nfet_06v0 -210 43 -209 44 l=120 w=127 "VSUBS" "in" 240 0 "nti" 127 12700,454 "VSS" 127 6478,255
+device msubckt pfet_06v0 497 416 498 417 l=100 w=244 "w_n504_296#" "in" 200 0 "VDD_3V3" 244 12810,349 "pti" 244 27328,712
+device msubckt pfet_06v0 292 416 293 417 l=100 w=244 "w_n504_296#" "in" 200 0 "pti" 244 12688,348 "VDD_3V3" 244 12810,349
+device msubckt pfet_06v0 88 416 89 417 l=100 w=244 "w_n504_296#" "in" 200 0 "VDD_3V3" 244 13616,392 "pti" 244 12688,348
+device msubckt pfet_06v0 -210 499 -209 500 l=150 w=96 "w_n504_296#" "in" 300 0 "nti" 96 9696,394 "VDD_3V3" 96 13616,392
+cap "not_internal_0/a_124_24#" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS" -0.545489
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472#" 0.0488533
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS" -24.5238
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A2" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/ZN" 13.582
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A2" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VDD" -0.910167
+cap "not_internal_0/a_124_24#" "in" 1.07748
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A2" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1" 4.66362
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" "in" 3.75587
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS" "in" 0.858937
+cap "not_internal_0/a_124_24#" "not_internal_0/a_36_68#" 2.74084
+cap "VDD_3V3" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A2" 0.227772
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A2" "w_n504_296#" 0.861904
+cap "not_internal_0/a_56_472#" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VDD" 0.176729
+cap "not_internal_0/a_124_24#" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/ZN" 1.78913
+cap "not_internal_0/a_36_68#" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS" 0.635178
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VDD" "not_internal_0/a_124_24#" -4.17253
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VDD" -95.623
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/ZN" -7.40007
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1" "not_internal_0/a_124_24#" 8.0383
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1" -3.41154
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VDD" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS" -23.27
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS" 6.20048
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/ZN" "in" 2.15626
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VDD" "in" -0.316326
+cap "VDD_3V3" "not_internal_0/a_124_24#" 0.193897
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1" "in" 6.06032
+cap "not_internal_0/a_124_24#" "w_n504_296#" 2.18129
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A2" "not_internal_0/a_124_24#" 2.27812
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A2" 1.00585
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A2" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS" 6.7793
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A2" "in" 3.12428
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VDD" -16.7687
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/ZN" 55.1442
+cap "not_internal_0/a_56_472#" "not_internal_0/a_124_24#" 0.175905
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" "not_internal_0/a_124_24#" 21.3912
+merge "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VDD" "not_internal_0/m1_0_724#" -456.321 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -134400 -2720 0 0 0 0 0 0 0 0
+merge "not_internal_0/m1_0_724#" "VDD_3V3_uq0"
+merge "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS" "not_internal_0/m1_0_n60#" -541.244 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -134400 -2720 0 0 0 0 0 0 0 0
+merge "not_internal_0/m1_0_n60#" "VSS"
+merge "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VPW" "not_internal_0/VSUBS" 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+merge "not_internal_0/VSUBS" "VSUBS"
+merge "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1" "not_internal_0/a_244_68#" -244.49 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -20769 -924 0 0 0 0 0 0 0 0
+merge "not_internal_0/a_244_68#" "m1_234_n466#"
+merge "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A2" "nti" -82.4691 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -5246 -294 0 0 0 0 0 0 0 0
+merge "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" "w_n504_n926#" -1087.36 -362452 -4456 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+merge "w_n504_n926#" "not_internal_0/w_109_352#"
+merge "not_internal_0/w_109_352#" "w_522_n926#"
+merge "not_internal_0/a_124_24#" "pti" -119.402 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -9230 -414 0 0 0 0 0 0 0 0

@@ -1,0 +1,143 @@
+magic
+tech gf180mcuD
+magscale 1 10
+timestamp 1793088740
+<< nwell >>
+rect -86 352 534 870
+<< pwell >>
+rect -86 -86 534 352
+<< mvnmos >>
+rect 124 68 244 232
+<< mvpmos >>
+rect 144 472 244 716
+<< mvndiff >>
+rect 36 192 124 232
+rect 36 146 49 192
+rect 95 146 124 192
+rect 36 68 124 146
+rect 244 192 332 232
+rect 244 146 273 192
+rect 319 146 332 192
+rect 244 68 332 146
+<< mvpdiff >>
+rect 56 665 144 716
+rect 56 525 69 665
+rect 115 525 144 665
+rect 56 472 144 525
+rect 244 665 332 716
+rect 244 525 273 665
+rect 319 525 332 665
+rect 244 472 332 525
+<< mvndiffc >>
+rect 49 146 95 192
+rect 273 146 319 192
+<< mvpdiffc >>
+rect 69 525 115 665
+rect 273 525 319 665
+<< mvpsubdiff >>
+rect -168 144 -55 164
+rect -168 98 -134 144
+rect -85 98 -55 144
+rect -168 73 -55 98
+<< mvnsubdiff >>
+rect -212 807 -104 834
+rect -212 756 -186 807
+rect -130 756 -104 807
+rect -212 731 -104 756
+<< mvpsubdiffcont >>
+rect -134 98 -85 144
+<< mvnsubdiffcont >>
+rect -186 756 -130 807
+<< polysilicon >>
+rect 144 828 244 845
+rect 144 781 167 828
+rect 223 781 244 828
+rect 144 716 244 781
+rect 144 428 244 472
+rect 124 232 244 276
+rect 124 26 244 68
+rect 124 -22 154 26
+rect 211 -22 244 26
+rect 124 -37 244 -22
+<< polycontact >>
+rect 167 781 223 828
+rect 154 -22 211 26
+<< metal1 >>
+rect -68 830 227 845
+rect -68 828 240 830
+rect -204 807 -117 819
+rect -204 756 -186 807
+rect -130 756 -117 807
+rect -204 743 -117 756
+rect -68 781 167 828
+rect 223 781 240 828
+rect -68 677 -4 781
+rect 148 769 240 781
+rect -367 613 -4 677
+rect 49 665 115 724
+rect 49 525 69 665
+rect 49 506 115 525
+rect 253 665 319 678
+rect 253 525 273 665
+rect 49 434 95 506
+rect -562 390 -478 403
+rect -562 338 -548 390
+rect -493 338 -478 390
+rect -562 326 -478 338
+rect -364 317 -279 324
+rect -18 317 95 434
+rect -364 240 -363 317
+rect -301 240 -279 317
+rect -364 233 -279 240
+rect 49 192 95 317
+rect -144 147 -70 154
+rect -220 144 -70 147
+rect -220 98 -134 144
+rect -85 98 -70 144
+rect 49 102 95 146
+rect 253 433 319 525
+rect 253 316 366 433
+rect 253 192 319 316
+rect 253 146 273 192
+rect 253 106 319 146
+rect -220 86 -70 98
+rect -220 56 -107 86
+rect -56 26 229 37
+rect -56 25 154 26
+rect -56 -27 -44 25
+rect 11 -22 154 25
+rect 211 -22 229 26
+rect 11 -27 229 -22
+rect -56 -39 229 -27
+<< via1 >>
+rect -548 338 -493 390
+rect -44 -27 11 25
+<< metal2 >>
+rect -522 403 49 404
+rect -562 390 49 403
+rect -562 338 -548 390
+rect -493 338 49 390
+rect -562 326 49 338
+rect -522 324 49 326
+rect -56 25 24 324
+rect -56 -27 -44 25
+rect 11 -27 23 25
+rect -56 -39 23 -27
+use gf180mcu_fd_sc_mcu7t5v0__inv_1  gf180mcu_fd_sc_mcu7t5v0__inv_1_0 $PDKPATH/libs.ref/gf180mcu_fd_sc_mcu7t5v0/mag
+timestamp 1723858470
+transform 1 0 -620 0 1 -1
+box -86 -86 534 870
+<< labels >>
+rlabel metal1 253 316 366 433 1 out
+port 8 n signal bidirectional
+rlabel metal1 -18 317 95 434 1 In
+port 7 n signal bidirectional
+<< properties >>
+string FIXED_BBOX 0 0 448 784
+string GDS_END 476332
+string GDS_FILE $PDKPATH/libs.ref/gf180mcu_fd_sc_mcu7t5v0/gds/gf180mcu_fd_sc_mcu7t5v0.gds
+string GDS_START 474136
+string LEFclass core
+string LEFsite GF018hv5v_mcu_sc7
+string LEFsymmetry X Y
+<< end >>

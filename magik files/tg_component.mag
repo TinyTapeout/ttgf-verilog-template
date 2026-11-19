@@ -1,0 +1,79 @@
+magic
+tech gf180mcuD
+magscale 1 10
+timestamp 1794576512
+<< pwell >>
+rect -86 333 534 352
+rect -86 324 124 333
+rect 244 324 534 333
+rect -86 -86 534 324
+<< mvnmos >>
+rect 124 68 244 232
+<< mvpmos >>
+rect 144 472 244 716
+<< mvndiff >>
+rect 36 192 124 232
+rect 36 146 49 192
+rect 95 146 124 192
+rect 36 68 124 146
+rect 244 68 332 232
+<< mvpdiff >>
+rect 56 665 144 716
+rect 56 525 69 665
+rect 115 525 144 665
+rect 56 472 144 525
+rect 244 472 332 716
+<< mvndiffc >>
+rect 49 146 95 192
+<< mvpdiffc >>
+rect 69 525 115 665
+<< polysilicon >>
+rect 144 716 244 760
+rect 144 439 244 472
+rect 144 393 157 439
+rect 230 393 244 439
+rect 144 373 244 393
+rect 124 311 244 324
+rect 124 265 141 311
+rect 230 265 244 311
+rect 124 232 244 265
+rect 124 23 244 68
+<< polycontact >>
+rect 157 393 230 439
+rect 141 265 230 311
+<< metal1 >>
+rect 49 665 115 678
+rect 49 525 69 665
+rect 49 506 115 525
+rect 49 192 95 506
+rect 157 439 230 458
+rect 157 373 230 387
+rect 141 311 230 323
+rect 141 245 230 257
+rect 49 111 95 146
+<< via1 >>
+rect 157 393 230 439
+rect 157 387 230 393
+rect 141 265 230 311
+rect 141 257 230 265
+<< metal2 >>
+rect 145 439 242 452
+rect 145 387 157 439
+rect 230 387 242 439
+rect 145 385 242 387
+rect 139 311 232 323
+rect 139 257 141 311
+rect 230 257 232 311
+rect 139 245 232 257
+<< labels >>
+rlabel metal1 49 317 95 434 1 In
+port 7 n signal bidirectional
+<< properties >>
+string FIXED_BBOX 0 0 448 784
+string GDS_END 476332
+string GDS_FILE $PDKPATH/libs.ref/gf180mcu_fd_sc_mcu7t5v0/gds/gf180mcu_fd_sc_mcu7t5v0.gds
+string GDS_START 474136
+string LEFclass core
+string LEFsite GF018hv5v_mcu_sc7
+string LEFsymmetry X Y
+<< end >>

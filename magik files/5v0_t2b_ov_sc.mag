@@ -1,0 +1,61 @@
+magic
+tech gf180mcuD
+magscale 1 10
+timestamp 1794886324
+<< metal1 >>
+rect -3336 -1456 -1210 -1336
+rect -3088 -1708 -2849 -1644
+rect -2919 -1822 -2683 -1754
+rect -2504 -1888 -2297 -1708
+rect -1773 -1900 -1503 -1853
+rect -3336 -2240 -1210 -2120
+<< via1 >>
+rect -3195 -1835 -3134 -1712
+rect -1405 -1848 -1339 -1726
+<< metal2 >>
+rect -3197 -1712 -3131 -1700
+rect -3197 -1835 -3195 -1712
+rect -3134 -1791 -3131 -1712
+rect -1407 -1726 -1337 -1714
+rect -1407 -1735 -1405 -1726
+rect -2266 -1791 -1405 -1735
+rect -3134 -1835 -2684 -1791
+rect -3197 -1847 -2684 -1835
+rect -2740 -1903 -2684 -1847
+rect -2266 -1903 -2210 -1791
+rect -1407 -1848 -1405 -1791
+rect -1339 -1848 -1337 -1726
+rect -1407 -1861 -1337 -1848
+rect -2740 -1959 -2210 -1903
+use gf180mcu_fd_sc_mcu7t5v0__nor2_1  gf180mcu_fd_sc_mcu7t5v0__nor2_1_0 $PDKPATH/libs.ref/gf180mcu_fd_sc_mcu7t5v0/mag
+timestamp 1723858470
+transform 1 0 -3336 0 1 -2180
+box -86 -86 758 870
+use inverter_pair_short  inverter_pair_short_0 /home/eclipse
+timestamp 1794293999
+transform 1 0 -2398 0 1 -2124
+box -556 -142 925 814
+use not_internal_4  not_internal_4_0 /home/eclipse
+timestamp 1794325009
+transform 1 0 -1658 0 1 -2180
+box -86 -86 534 870
+<< labels >>
+rlabel metal1 -3088 -1708 -2849 -1644 1 over
+port 3 n signal bidirectional
+rlabel metal2 -3134 -1847 -2684 -1791 1 sign
+port 1 n signal bidirectional
+rlabel metal2 -2740 -1959 -2684 -1791 1 sign
+port 1 n signal bidirectional
+rlabel metal2 -2740 -1959 -2210 -1903 1 sign
+port 1 n signal bidirectional
+rlabel metal2 -2266 -1959 -2210 -1735 1 sign
+port 1 n signal bidirectional
+rlabel metal2 -2266 -1791 -1405 -1735 1 sign
+port 1 n signal bidirectional
+rlabel metal1 -2504 -1888 -2297 -1708 1 in
+port 2 n signal bidirectional
+rlabel metal1 -3336 -2240 -1210 -2120 1 VSS
+port 4 n ground bidirectional
+rlabel metal1 -3336 -1456 -1210 -1336 1 VDD_3V3
+port 5 n power bidirectional
+<< end >>

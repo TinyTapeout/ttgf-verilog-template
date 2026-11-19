@@ -1,0 +1,134 @@
+magic
+tech gf180mcuD
+magscale 1 10
+timestamp 1793773640
+<< nwell >>
+rect -188 840 0 841
+rect -188 734 4 840
+rect -184 733 4 734
+rect -168 724 -26 733
+<< mvpsubdiff >>
+rect -168 -132 -56 -116
+rect -168 -214 -155 -132
+rect -69 -214 -56 -132
+rect -168 -228 -56 -214
+<< mvnsubdiff >>
+rect -155 773 -43 789
+rect -155 691 -142 773
+rect -56 691 -43 773
+rect -155 677 -43 691
+<< mvpsubdiffcont >>
+rect -155 -214 -69 -132
+<< mvnsubdiffcont >>
+rect -142 691 -56 773
+<< metal1 >>
+rect -142 773 -56 784
+rect -504 691 -142 732
+rect -504 612 -56 691
+rect 56 670 504 840
+rect -10 597 58 612
+rect -10 409 -3 597
+rect 50 409 58 597
+rect -10 394 58 409
+rect -361 141 -355 182
+rect -302 141 -297 182
+rect -249 167 91 289
+rect 144 167 147 289
+rect -361 139 -297 141
+rect -10 67 98 81
+rect -504 -132 -56 -52
+rect -10 -67 -3 67
+rect 93 -67 98 67
+rect -10 -79 98 -67
+rect -504 -172 -155 -132
+rect -69 -172 -56 -132
+rect -155 -225 -69 -214
+rect 195 -222 280 670
+rect 412 617 624 622
+rect 412 508 425 617
+rect 612 508 624 617
+rect 412 504 624 508
+rect 419 394 616 504
+rect 327 141 334 166
+rect 387 141 392 166
+rect 327 128 392 141
+rect 439 -54 454 120
+rect 507 -54 519 120
+rect 439 -67 519 -54
+rect 56 -392 504 -222
+<< via1 >>
+rect -3 409 50 597
+rect -355 141 -302 316
+rect -3 -67 93 67
+rect 425 508 612 617
+rect 334 141 387 315
+rect 454 -54 507 120
+<< metal2 >>
+rect -10 597 348 647
+rect -10 409 -3 597
+rect 50 444 348 597
+rect 412 617 624 622
+rect 412 508 425 617
+rect 612 552 624 617
+rect 612 508 625 552
+rect 412 504 625 508
+rect 50 409 509 444
+rect -10 385 509 409
+rect -362 316 -297 328
+rect -362 141 -355 316
+rect -302 315 -297 316
+rect 326 315 393 328
+rect -302 168 334 315
+rect -302 141 -297 168
+rect -362 128 -297 141
+rect 326 141 334 168
+rect 387 141 393 315
+rect 326 128 393 141
+rect 452 120 509 385
+rect 568 297 625 504
+rect -10 67 98 81
+rect -10 -67 -3 67
+rect 93 14 98 67
+rect 93 13 305 14
+rect 93 -67 392 13
+rect 452 -54 454 120
+rect 507 -54 509 120
+rect 452 -67 509 -54
+rect 567 228 625 297
+rect -10 -123 392 -67
+rect 567 -123 624 228
+rect -10 -180 625 -123
+use half_gate_0  gf180mcu_fd_sc_mcu7t5v0__inv_1_0
+timestamp 1793762187
+transform 1 0 -58 0 1 -112
+box -86 -86 534 870
+use half_gate_0  half_tgate_0
+timestamp 1793762187
+transform -1 0 534 0 1 -112
+box -86 -86 534 870
+use not_internal_mod  not_internal_0
+timestamp 1793632077
+transform 1 0 -504 0 1 -112
+box -86 -86 534 870
+<< labels >>
+rlabel metal2 50 385 348 647 1 input_A
+port 1 n signal bidirectional
+rlabel metal2 82 -180 392 13 1 input_B
+port 2 n signal bidirectional
+rlabel metal1 56 -392 504 -222 1 result
+port 3 n signal bidirectional
+rlabel metal1 56 670 504 840 1 result
+port 3 n signal bidirectional
+rlabel metal2 -302 168 334 315 1 select
+port 5 n signal input
+rlabel metal1 -504 612 -56 732 1 VDD_3V3
+port 6 n power bidirectional
+rlabel space -251 80 -185 413 1 not_test
+port 7 n signal output
+rlabel metal1 -504 -172 -69 -52 1 VSS
+port 4 n ground bidirectional
+rlabel metal2 -10 -180 -3 -40 1 input_B
+port 2 n signal bidirectional
+rlabel metal2 -10 -180 392 -67 1 input_B
+port 2 n signal bidirectional
+<< end >>
