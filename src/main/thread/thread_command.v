@@ -90,34 +90,39 @@ module thread_command(
 function [23:0] read_any_reg_12t;
     input [3:0]  addr;
     input        sel_cmd1;
-    // Scratchpad 0 & 1 Tribbles
+    // Alias check inputs
+    input [3:0]  alias_addr_12t;
+    input [23:0] am_buff_12t;
+    // Scratchpads, Flags (with spf_trib2), Ladder
     input [7:0]  sp0_t0, sp0_t1, sp0_t2;
     input [7:0]  sp1_t0, sp1_t1, sp1_t2;
-    // Flags (8 x 2-bit)
-    input [1:0]  f0, f1, f2, f3, f4, f5, f6, f7;
-    // Ladder Tribbles
+    input [7:0]  spf_t0, spf_t1, spf_t2;
     input [7:0]  lad_t0, lad_t1, lad_t2;
-    // PC & Secondary Registers (5-14)
+    // PC & Secondary Registers
     input [23:0] pc_val;
     input [23:0] gp6, gp7, gp8;
     input [23:0] c0_0, c0_1, c0_2, c0_3, c0_4, c0_5;
     input [23:0] c1_0, c1_1, c1_2, c1_3, c1_4, c1_5;
     begin
-        case (addr)
-            4'd0: read_any_reg_12t = 24'b0;
-            4'd1: read_any_reg_12t = {sp0_t2, sp0_t1, sp0_t0};
-            4'd2: read_any_reg_12t = {sp1_t2, sp1_t1, sp1_t0};
-            4'd3: read_any_reg_12t = {8'b0, f7, f6, f5, f4, f3, f2, f1, f0};
-            4'd4: read_any_reg_12t = {lad_t2, lad_t1, lad_t0};
-            default: begin
-                read_any_reg_12t = read_secondary_reg(
+        if (addr == 4'd0) begin
+            read_any_reg_12t = 24'b0;
+        end else if (alias_addr_12t == addr) begin
+            // Active 12t alias intercept
+            read_any_reg_12t = am_buff_12t;
+        end else begin
+            case (addr)
+                4'd1: read_any_reg_12t = {sp0_t2, sp0_t1, sp0_t0};
+                4'd2: read_any_reg_12t = {sp1_t2, sp1_t1, sp1_t0};
+                4'd3: read_any_reg_12t = {spf_t2, spf_t1, spf_t0};
+                4'd4: read_any_reg_12t = {lad_t2, lad_t1, lad_t0};
+                default: read_any_reg_12t = read_secondary_reg(
                     1'b1, addr, sel_cmd1, pc_val,
                     gp6, gp7, gp8,
                     c0_0, c0_1, c0_2, c0_3, c0_4, c0_5,
                     c1_0, c1_1, c1_2, c1_3, c1_4, c1_5
                 );
-            end
-        endcase
+            endcase
+        end
     end
 endfunction
 
@@ -150,41 +155,54 @@ function [23:0] read_secondary_reg;
     end
 endfunction
 
-//4t read func
 function [7:0] read_any_reg_4t;
     input [2:0] addr_4t;
+    input       alias_active_4t;
+    input [2:0] alias_addr_4t;
+    input [7:0] am_buff_4t;
     input [7:0] sp0_t0, sp0_t1, sp0_t2;
     input [7:0] sp1_t0, sp1_t1, sp1_t2;
-    input [7:0] spf_t0, spf_t1; //packed flag wires
+    input [7:0] spf_t0, spf_t1;
     begin
-        case (addr_4t)
-            3'd0: read_any_reg_4t = sp0_t0;
-            3'd1: read_any_reg_4t = sp0_t1;
-            3'd2: read_any_reg_4t = sp0_t2;
-            3'd3: read_any_reg_4t = sp1_t0;
-            3'd4: read_any_reg_4t = sp1_t1;
-            3'd5: read_any_reg_4t = sp1_t2;
-            3'd6: read_any_reg_4t = spf_t0;
-            3'd7: read_any_reg_4t = spf_t1;
-        endcase
+        if (alias_active_4t && (alias_addr_4t == addr_4t)) begin
+            read_any_reg_4t = am_buff_4t;
+        end else begin
+            case (addr_4t)
+                3'd0: read_any_reg_4t = sp0_t0;
+                3'd1: read_any_reg_4t = sp0_t1;
+                3'd2: read_any_reg_4t = sp0_t2;
+                3'd3: read_any_reg_4t = sp1_t0;
+                3'd4: read_any_reg_4t = sp1_t1;
+                3'd5: read_any_reg_4t = sp1_t2;
+                3'd6: read_any_reg_4t = spf_t0;
+                3'd7: read_any_reg_4t = spf_t1;
+            endcase
+        end
     end
 endfunction
 
 //read 1t func
 function [1:0] read_any_reg_1t;
     input [2:0] addr_1t;
+    input       alias_active_1t;
+    input [2:0] alias_addr_1t;
+    input [1:0] am_buff_1t;
     input [1:0] f0, f1, f2, f3, f4, f5, f6, f7;
     begin
-        case (addr_1t)
-            3'd0: read_any_reg_1t = f0;
-            3'd1: read_any_reg_1t = f1;
-            3'd2: read_any_reg_1t = f2;
-            3'd3: read_any_reg_1t = f3;
-            3'd4: read_any_reg_1t = f4;
-            3'd5: read_any_reg_1t = f5;
-            3'd6: read_any_reg_1t = f6;
-            3'd7: read_any_reg_1t = f7;
-        endcase
+        if (alias_active_1t && (alias_addr_1t == addr_1t)) begin
+            read_any_reg_1t = am_buff_1t;
+        end else begin
+            case (addr_1t)
+                3'd0: read_any_reg_1t = f0;
+                3'd1: read_any_reg_1t = f1;
+                3'd2: read_any_reg_1t = f2;
+                3'd3: read_any_reg_1t = f3;
+                3'd4: read_any_reg_1t = f4;
+                3'd5: read_any_reg_1t = f5;
+                3'd6: read_any_reg_1t = f6;
+                3'd7: read_any_reg_1t = f7;
+            endcase
+        end
     end
 endfunction
 
@@ -407,6 +425,7 @@ endfunction
         wire [7:0] spf_trib1;
         assign spf_trib1 = {spf_flag7, spf_flag6, spf_flag5, spf_flag4};
 
+        reg  [7:0] spf_trib2; // cannot be accessed normally. basically just to keep the data there to prevent losing it
 
         reg [7:0] ladder_trib0;
         reg [7:0] ladder_trib1;
@@ -444,6 +463,7 @@ endfunction
 task execute_alias_write;
     // Control & Alias State Inputs
     input        write_allow;
+    input        active;
     input        using_macroop_1;
     input        sel_cmd1;
     // 12-trit Alias Inputs
@@ -495,7 +515,7 @@ task execute_alias_write;
         ovr_en         = 1'b0;
         ovr_sel        = 1'b0;
 
-        if (write_allow) begin
+        if (active) begin
             
             if (addr_12t_in != 4'b0000) begin
                 if (addr_12t_in >= 4'd5) begin
@@ -630,6 +650,7 @@ always @(posedge clk or negedge rst_n) begin
         cmd_we                <= 1'b0;
         pipe_empty            <= (threadstate == THREAD_EMPTY);
         command_req_new       <= 1'b0;
+        do_housekeeping = 1'b0;
         //this block executes beforehand to do... something    
             if(cmd_buf_clr) begin
                 //this wipes the macro ops and puts the bus at empty
@@ -660,8 +681,7 @@ always @(posedge clk or negedge rst_n) begin
                             register_address[3:0], using_macroop_1, // or sel_cmd1 (see Note 2)
                             sp0_trib0, sp0_trib1, sp0_trib2,
                             sp1_trib0, sp1_trib1, sp1_trib2,
-                            spf_flag0, spf_flag1, spf_flag2, spf_flag3,
-                            spf_flag4, spf_flag5, spf_flag6, spf_flag7,
+                            spf_trib0, spf_trib1, spf_trib2,
                             ladder_trib0, ladder_trib1, ladder_trib2,
                             pc_r_data, gp_reg_6, gp_reg_7, gp_reg_8,
                             cmd0_reg_0, cmd0_reg_1, cmd0_reg_2, cmd0_reg_3, cmd0_reg_4, cmd0_reg_5,
@@ -793,7 +813,7 @@ always @(posedge clk or negedge rst_n) begin
                                         //reset mask/alias
                                         if(write_allow) begin
                                             am_buff_12t <= 24'd0;
-                                            am_buff_4t <= 7'd0;
+                                            am_buff_4t <= 8'd0;
                                             am_buff_1t <= 2'd0;
                                             alias_active_1t <= 1'b0;
                                             alias_active_4t <= 1'b0;
@@ -925,76 +945,101 @@ always @(posedge clk or negedge rst_n) begin
                                         //12t register address
                                     end
                                     4'b0101: begin
-                                        if(alias_addr_12t != 4'd0) begin
-                                            am_buff_12t <= read_any_reg_12t(
-                                                param_1, using_macroop_1,
-                                                sp0_trib0, sp0_trib1, sp0_trib2,
-                                                sp1_trib0, sp1_trib1, sp1_trib2,
-                                                spf_flag0, spf_flag1, spf_flag2, spf_flag3,
-                                                spf_flag4, spf_flag5, spf_flag6, spf_flag7,
-                                                ladder_trib0, ladder_trib1, ladder_trib2,
-                                                pc_r_data, gp_reg_6, gp_reg_7, gp_reg_8,
-                                                cmd0_reg_0, cmd0_reg_1, cmd0_reg_2, cmd0_reg_3, cmd0_reg_4, cmd0_reg_5,
-                                                cmd1_reg_0, cmd1_reg_1, cmd1_reg_2, cmd1_reg_3, cmd1_reg_4, cmd1_reg_5
-                                            );
+                                        if(write_allow) begin
+                                            if(alias_addr_12t == 4'd0) begin
+                                                am_buff_12t <= read_any_reg_12t(
+                                                    param_1, using_macroop_1,
+                                                    sp0_trib0, sp0_trib1, sp0_trib2,
+                                                    sp1_trib0, sp1_trib1, sp1_trib2,
+                                                    spf_trib0, spf_trib1, spf_trib2,
+                                                    ladder_trib0, ladder_trib1, ladder_trib2,
+                                                    pc_r_data, gp_reg_6, gp_reg_7, gp_reg_8,
+                                                    cmd0_reg_0, cmd0_reg_1, cmd0_reg_2, cmd0_reg_3, cmd0_reg_4, cmd0_reg_5,
+                                                    cmd1_reg_0, cmd1_reg_1, cmd1_reg_2, cmd1_reg_3, cmd1_reg_4, cmd1_reg_5
+                                                );
+                                            end
+                                            else begin
+                                                //housekeep to clear aliases first
+                                            end
+                                            mask_12t_singleuse <= 1'b1;
+                                            //remember for masks if aliasing is active remember they share the same registers so clear the aliases first
+                                            //set single use mask for 12 trits
+                                            //the value at that 12t address will be copied into the mask buffer
+                                            //param 1 is the addresss of the 12 trits that will be copied into the mask
                                         end
-                                        else begin
-                                            //housekeep to clear aliases first
-                                        end
-                                        mask_12t_singleuse <= 1'b1;
-                                        //remember for masks if aliasing is active remember they share the same registers so clear the aliases first
-                                        //set single use mask for 12 trits
-                                        //the value at that 12t address will be copied into the mask buffer
-                                        //param 1 is the addresss of the 12 trits that will be copied into the mask
                                     end
                                     4'b0110: begin
-                                        if(alias_addr_12t != 4'd0) begin
-                                            am_buff_12t <= read_any_reg_12t(
-                                                param_1, using_macroop_1,
-                                                sp0_trib0, sp0_trib1, sp0_trib2,
-                                                sp1_trib0, sp1_trib1, sp1_trib2,
-                                                spf_flag0, spf_flag1, spf_flag2, spf_flag3,
-                                                spf_flag4, spf_flag5, spf_flag6, spf_flag7,
-                                                ladder_trib0, ladder_trib1, ladder_trib2,
-                                                pc_r_data, gp_reg_6, gp_reg_7, gp_reg_8,
-                                                cmd0_reg_0, cmd0_reg_1, cmd0_reg_2, cmd0_reg_3, cmd0_reg_4, cmd0_reg_5,
-                                                cmd1_reg_0, cmd1_reg_1, cmd1_reg_2, cmd1_reg_3, cmd1_reg_4, cmd1_reg_5
-                                            );
+                                        //*ignores write enable like a boss* (nevermind)
+                                        if(write_allow) begin
+                                            if(alias_addr_12t != 4'd0) begin
+                                                am_buff_12t <= read_any_reg_12t(
+                                                    param_1, using_macroop_1,
+                                                    sp0_trib0, sp0_trib1, sp0_trib2,
+                                                    sp1_trib0, sp1_trib1, sp1_trib2,
+                                                    spf_trib0, spf_trib1, spf_trib2,
+                                                    ladder_trib0, ladder_trib1, ladder_trib2,
+                                                    pc_r_data, gp_reg_6, gp_reg_7, gp_reg_8,
+                                                    cmd0_reg_0, cmd0_reg_1, cmd0_reg_2, cmd0_reg_3, cmd0_reg_4, cmd0_reg_5,
+                                                    cmd1_reg_0, cmd1_reg_1, cmd1_reg_2, cmd1_reg_3, cmd1_reg_4, cmd1_reg_5
+                                                );
+                                            end
+                                            else begin
+                                                //housekeep to clear aliases first
+                                                //if write enable is off, it should still run through
+                                            end
+                                            mask_12t_singleuse <= 1'b0;
+                                            //mask will not clear automatically for 12 trits
+                                            //the value at that 12t address will be copied into the mask buffer
+                                            //param 1 is the addresss of the 12 trits that will be copied into the mask
                                         end
-                                        else begin
-                                            //housekeep to clear aliases first
-                                        end
-                                        mask_12t_singleuse <= 1'b0;
-                                        //mask will not clear automatically for 12 trits
-                                        //the value at that 12t address will be copied into the mask buffer
-                                        //param 1 is the addresss of the 12 trits that will be copied into the mask
                                     end
                                     4'b0111: begin
                                         //4t mask
-                                        if(!alias_active_4t) begin
-                                            am_4t <= read_any_reg_4t(
-                                                src_addr_4t,
-                                                sp0_trib0, sp0_trib1, sp0_trib2,
-                                                sp1_trib0, sp1_trib1, sp1_trib2,
-                                                spf_trib0, spf_trib1
-                                            );
-                                            if(param_0[0] == 1'b0) begin
-                                                //xxx0 : single use
-                                                mask_4t_singleuse <= 1'b1;
+                                        if(write_allow) begin
+                                            if(!alias_active_4t) begin
+                                                am_4t <= read_any_reg_4t(
+                                                    param_1[3:1],
+                                                    alias_active_4t,
+                                                    alias_addr_4t,
+                                                    am_buff_4t,
+                                                    sp0_trib0, sp0_trib1, sp0_trib2,
+                                                    sp1_trib0, sp1_trib1, sp1_trib2,
+                                                    spf_trib0, spf_trib1
+                                                );
+                                                if(param_1[0] == 1'b0) begin
+                                                    //xxx0 : single use
+                                                    mask_4t_singleuse <= 1'b1;
+                                                end else begin
+                                                    //xxx1 : will not clear
+                                                    mask_4t_singleuse <= 1'b0;
+                                                end
                                             end else begin
-                                                //xxx1 : will not clear
-                                                mask_4t_singleuse <= 1'b0;
+                                                //housekeep
                                             end
-                                        end else begin
-                                            //housekeep
                                         end
                                     end
                                     4'b1000: begin
                                         //1t mask
-                                        if(param_0[0] == 1'b0) begin
-                                            //xxx0 : single use
-                                        end else begin
-                                            //xxx1 : will not clear
+                                        if(write_allow) begin
+                                            if(!alias_active_1t) begin
+                                                read_any_reg_1t(
+                                                    param_1[3:1],
+                                                    alias_active_1t,
+                                                    alias_addr_1t,
+                                                    am_buff_1t,
+                                                    spf_flag0, spf_flag1, spf_flag2, spf_flag3, spf_flag4, spf_flag5, spf_flag6, spf_flag7
+                                                );
+                                                if(param_1[0] == 1'b0) begin
+                                                    //xxx0 : single use
+                                                    mask_1t_singleuse <= 1'b1;
+                                                end else begin
+                                                    //xxx1 : will not clear
+                                                    mask_1t_singleuse <= 1'b0;
+                                                end
+                                            end
+                                            else begin
+                                                
+                                            end
                                         end
                                     end
                                     4'b1001: begin
@@ -1002,16 +1047,43 @@ always @(posedge clk or negedge rst_n) begin
                                         //xxx0 : action
                                         //xxx1 : param
                                         //xxx is the address of the 4 trit chunk
-                                        if(param_0[0] == 1'b0) begin
-                                            //xxx0 : action
-                                        end else begin
-                                            //xxx1 : param
+                                        if(write_allow) begin
+                                            if(param_1[0] == 1'b0) begin
+                                                //xxx0 : action
+                                                case(param_1[3:1])
+                                                    3'b000: action_ctr <= sp0_trib0;
+                                                    3'b001: action_ctr <= sp0_trib1;
+                                                    3'b010: action_ctr <= sp0_trib2;
+                                                    
+                                                    3'b011: action_ctr <= sp1_trib0;
+                                                    3'b100: action_ctr <= sp1_trib1;
+                                                    3'b101: action_ctr <= sp1_trib2;
+
+                                                    3'b110: action_ctr <= spf_trib0;
+                                                    3'b111: action_ctr <= spf_trib1;
+                                                endcase
+                                            end else begin
+                                                //xxx1 : param
+                                                case(param_1[3:1])
+                                                    3'b000: param_ctr <= sp0_trib0;
+                                                    3'b001: param_ctr <= sp0_trib1;
+                                                    3'b010: param_ctr <= sp0_trib2;
+                                                    
+                                                    3'b011: param_ctr <= sp1_trib0;
+                                                    3'b100: param_ctr <= sp1_trib1;
+                                                    3'b101: param_ctr <= sp1_trib2;
+
+                                                    3'b110: param_ctr <= spf_trib0;
+                                                    3'b111: param_ctr <= spf_trib1;
+                                                endcase
+                                            end
                                         end
                                     end
                                     4'b1010: begin
                                         //read 12 trits of memory to that address (the memory address is overwritten from there)
-                                        //this works in conjunction to provide memory read writes
+                                        //this works to provide memory read writes
                                         //this needs to work in conjunction with the memory bus
+                                        //need 2 finish
                                     end
                                     4'b1011: begin
                                         //alu hogging
@@ -1019,7 +1091,7 @@ always @(posedge clk or negedge rst_n) begin
                                         //param 1 is a binary number up to 16
                                     end
                                     4'b1100: begin
-                                        //save the extended memory address (so you can get up to 263GiB of addressable ram)
+                                        //save to the extended memory address (so you can get up to 263GiB of addressable ram)
                                         //this gets sent to the thread manager and saved there
                                         //each thread has their own little memory address
                                     end
@@ -1027,10 +1099,10 @@ always @(posedge clk or negedge rst_n) begin
                                         //show register data on bus
                                         //param 1 is reg addr
                                     end
-                                    4'b1101: begin
+                                    4'b1110: begin
                                         //use the singular spi to do stuff i guess
                                         //param 1 is reg addr for spi, read as 24 bits
-                                        //remember to add ownership stuff
+                                        //remember to add ownership stuff. send data to the thread control
                                     end
                                 endcase
                             end 
@@ -1041,6 +1113,7 @@ always @(posedge clk or negedge rst_n) begin
                                         //register A copy to register B (12 trits) without mask
                                         //param1 regA addr
                                         //param2 regB addr
+                                        //we are strapped for addresses so this will have to do
                                     end
                                     4'b0001: begin
                                         //1 trit reg write
@@ -1089,6 +1162,9 @@ always @(posedge clk or negedge rst_n) begin
                                     end
                                     4'b1010: begin
                                         //hop parameter counter using immediate
+                                        if(write_allow) begin
+                                            param_ctr <= {param_1,param_2};
+                                        end
                                         //param 1 t3 t2
                                         //param 2 t1 t0
                                         //trits are encoded into 2 bits, using override encoding
@@ -1098,6 +1174,9 @@ always @(posedge clk or negedge rst_n) begin
                                         //param 1 t3 t2
                                         //param 2 t1 t0
                                         //trits are encoded into 2 bits, using override encoding
+                                        if(write_allow) begin
+                                            action_ctr <= {param_1,param_2};
+                                        end
                                     end
                                     4'b1100: begin
                                         //Generate mask
@@ -1131,8 +1210,6 @@ always @(posedge clk or negedge rst_n) begin
                                 endcase
                             end
                             else begin
-
-                                //will fill this in later
                                 case(command)
                                     4'b0011: begin
                                         // trit add/subtract using the alu
@@ -1398,6 +1475,27 @@ always @(posedge clk or negedge rst_n) begin
             do_housekeeping = 1'b0;
         end
 
+        execute_alias_write(
+            write_allow, do_housekeeping && can_execute_this_clock, using_macroop_1, sel_cmd1,
+            alias_addr_12t, am_buff_12t,
+            alias_active_4t, alias_addr_4t, am_buff_4t,
+            alias_active_1t, alias_addr_1t, am_buff_1t,
+            command_write_enable, commandpipe_address, binary_trit_in,
+            // Next-state alias flags
+            alias_addr_12t, alias_active_4t, alias_active_1t,
+            // PC write port
+            pc_w_enable, pc_w_data,
+            // Scratchpad 0/1, Flag, Ladder ports
+            sp0_we, sp0_full12t, sp0_pos, sp0_reg_bin_b2t,
+            sp1_we, sp1_full12t, sp1_pos, sp1_reg_bin_b2t,
+            flag_we, flag_full12t, flag_pos, flag_reg_bin_b2t, flag_reg_bin_b2t_1t,
+            ladder_we, ladder_full12t, ladd_reg_bin_b2t,
+            // Secondary registers
+            gp_reg_6, gp_reg_7, gp_reg_8,
+            cmd0_reg_0, cmd0_reg_1, cmd0_reg_2, cmd0_reg_3, cmd0_reg_4, cmd0_reg_5,
+            cmd1_reg_0, cmd1_reg_1, cmd1_reg_2, cmd1_reg_3, cmd1_reg_4, cmd1_reg_5
+        );
+        //housekeep here?
     end
 end
 
