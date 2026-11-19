@@ -1,21 +1,16 @@
 //the primary commander for the thread responsible for decoding operations 
 /*
 todo: add error and overflow warns outwards
+finish this section for me because i am running out of time
+when in doubt prioritise safety over efficiency
+mark all changes and annotate them, explaining each section of the code and interpretation of previously laid out code
 ask for clarification whenever things are poorly defined
 warn me of ambiguity, state and explain how the code was interpreted and also modify any and all accompanying modules
 warn me of micro ops that may be operating over multiple clock cycles
 */
-
-
-
-
-
-
 module thread_command(
     input wire clk,
     input wire rst_n,
-    inout wire VDD_1V65,
-
     //from the microcode parsers
         output wire [7:0] macro_op,
         output wire [7:0] action_counter,
@@ -40,9 +35,10 @@ module thread_command(
         output  wire [2:0] tritshift_tritwise_command, //trit shifts up to 3 front and back
         output  wire cmd_ready,
         input   wire res_ready_in,
-        //4 trit
+        //4 trit. replace these with binary coding
         inout [3:0] t4_a_out,
         inout [3:0] t4_b_out,
+        inout [3:0] t4_c_out,
         inout       t1_a_out,
         inout       t1_b_out,
 
@@ -185,60 +181,10 @@ reg [1:0] execute_stage;
 
 reg can_execute_this_clock = 1'b1;
 
-//conversion 
-reg [1:0] flag_reg_bin_b2t_1t;
-wire      flag_reg_ter_b2t_1t;
-wire      flag_reg_error_1t;
 
 
-reg [1:0] carry_bin_b2t_1t;
-wire      carry_ter_b2t_1t;
-wire      carry_reg_error_1t;
+//todo: remove all conversion stuff because its binary at the alu, replace native scratchpads with normal registers
 
-
-reg     [7:0] flag_reg_bin_b2t_4t;
-wire    [3:0] flag_reg_ter_b2t_4t;
-wire    flag_reg_b2t_error_4t;
-
-reg     [7:0] sp0_reg_bin_b2t_4t;
-wire    [3:0] sp0_reg_ter_b2t_4t;
-wire    sp0_reg_b2t_error_4t;
-
-reg     [7:0] sp1_reg_bin_b2t_4t;
-wire    [3:0] sp1_reg_ter_b2t_4t;
-wire    sp1_reg_b2t_error_4t;
-
-reg     [23:0] flag_reg_bin_b2t;
-wire    [11:0] flag_reg_ter_b2t;
-wire    flag_reg_b2t_error;
-
-reg     [23:0] sp0_reg_bin_b2t;
-wire    [11:0] sp0_reg_ter_b2t;
-wire    sp0_reg_b2t_error;
-
-reg     [23:0] sp1_reg_bin_b2t;
-wire    [11:0] sp1_reg_ter_b2t;
-wire    sp1_reg_b2t_error;
-
-
-reg     [23:0] ladd_reg_bin_b2t;
-wire    [11:0] ladd_reg_ter_b2t;
-wire    ladd_reg_b2t_error;
-
-//conversion binds
-
-assign flag_din_1T = flag_reg_ter_b2t_1t;
-assign c_trit_din = carry_ter_b2t_1t;
-
-assign flag_din_4T = flag_reg_ter_b2t_4t;
-assign sp0_din_4T = sp0_reg_ter_b2t;
-assign sp1_din_4T = sp1_reg_ter_b2t;
-
-
-assign flag_din_12T = flag_reg_ter_b2t;
-assign sp0_din_12T = sp0_reg_ter_b2t;
-assign sp1_din_12T = sp1_reg_ter_b2t;
-assign ladder_din_12T = ladd_reg_ter_b2t;
 
 reg [23:0] debug_reg_cache;
 
@@ -1153,81 +1099,12 @@ end
         .data_out_4T  (flag_dout_4T),
         .data_out_1T  (flag_dout_1T)
     );
-
-
     native_1t_storage carry_bit(
     .VDD_1V65(VDD_1V65),
     .r_enable(c_trit_re),
     .w_enable(c_trit_we),
     .data_in(c_trit_din),
     .data_out(c_trit_dout)
-    );
-
-
-    native_b2t_secure flag_1t_converter(
-    .VDD_1V65(VDD_1V65),
-    .B_in_0(flag_reg_bin_b2t_1t[0]),
-    .B_in_1(flag_reg_bin_b2t_1t[1]),
-    .ternary_result(flag_reg_ter_b2t_1t),
-    .decode_error(flag_reg_error_1t),
-    );
-
-    native_b2t_secure carry_1t_converter(
-    .VDD_1V65(VDD_1V65),
-    .B_in_0(carry_bin_b2t_1t[0]),
-    .B_in_1(carry_bin_b2t_1t[1]),
-    .ternary_result(carry_ter_b2t_1t),
-    .decode_error(carry_reg_error_1t),
-    );
-
-    //these should NEVER be muxed
-    bin_to_4t_secure flag_4t_converter(
-    .binary_bits(flag_reg_bin_b2t_4t),
-    .ternary_bits(flag_reg_ter_b2t_4t),
-    .error(flag_reg_b2t_error_4t),
-    .VDD_1V65(VDD_1V65)
-    );
-
-    bin_to_4t_secure sp0_4t_converter(
-    .binary_bits(sp0_reg_bin_b2t_4t),
-    .ternary_bits(sp0_reg_ter_b2t_4t),
-    .error(sp0_reg_b2t_error_4t),
-    .VDD_1V65(VDD_1V65)
-    );
-    
-    bin_to_4t_secure sp1_4t_converter(
-    .binary_bits(sp1_reg_bin_b2t_4t),
-    .ternary_bits(sp1_reg_ter_b2t_4t),
-    .error(sp1_reg_b2t_error_4t),
-    .VDD_1V65(VDD_1V65)
-    );
-
-    bin_to_12t_secure flag_12t_converter(
-    .binary_bits(flag_reg_bin_b2t),
-    .ternary_bits(flag_reg_ter_b2t),
-    .error(flag_reg_b2t_error),
-    .VDD_1V65(VDD_1V65) 
-    );
-
-    bin_to_12t_secure sp0_12t_converter(
-    .binary_bits(sp0_reg_bin_b2t),
-    .ternary_bits(sp0_reg_ter_b2t),
-    .error(sp0_reg_b2t_error),
-    .VDD_1V65(VDD_1V65) 
-    );
-
-    bin_to_12t_secure sp1_12t_converter(
-    .binary_bits(sp1_reg_bin_b2t),
-    .ternary_bits(sp1_reg_ter_b2t),
-    .error(sp1_reg_b2t_error),
-    .VDD_1V65(VDD_1V65) 
-    );
-
-    bin_to_12t_secure ladd_12t_converter(
-    .binary_bits(ladd_reg_bin_b2t),
-    .ternary_bits(ladd_reg_ter_b2t),
-    .error(ladd_reg_b2t_error),
-    .VDD_1V65(VDD_1V65) 
     );
 
 endmodule

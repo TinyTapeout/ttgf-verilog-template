@@ -32,22 +32,22 @@ always @(*) begin
             4'b0011: begin
                 uo_out[1:0] = sti_binary_result;
             end
-            4'b0100: begin
-                uo_out[1:0] = max_binary_result;
-            end
-            4'b0101: begin
-                uo_out[1:0] = min_binary_result;
-            end
+            // 4'b0100: begin
+            //     uo_out[1:0] = max_binary_result;
+            // end
+            // 4'b0101: begin
+            //     uo_out[1:0] = min_binary_result;
+            // end
             4'b0110: begin
-                uo_out[1:0] = con_binary_result;
+                uo_out[1:0] = mul_binary_result;
             end
             4'b0111: begin
                 uo_out[1:0] = add_binary_result;
                 uo_out[3:2] = add_binary_carry;
             end
-            4'b1000: begin
-                uo_out[1:0] = ram_binary_result;
-            end
+            // 4'b1000: begin
+            //     uo_out[1:0] = ram_binary_result;
+            // end
             4'b1001: begin
                 uo_out[1:0] = mux_binary_result_a;
                 uo_out[3:2] = mux_binary_result_b;
@@ -147,67 +147,67 @@ end
         .ternary_input(sti_res_ternary_wire)
     );
 
-// max gate
-    wire max_ternary_wire_a;
-    wire max_ternary_wire_b;
-    wire max_res_ternary_wire;
-    wire [1:0] max_binary_result;
-    native_b2t max_b2t_a
-    (
-        .VDD_1V65(VDD_1V65),
-        .binary_input(uio_in[1:0]),
-        .ternary_result(max_ternary_wire_a)
-    );
-    native_b2t max_b2t_b
-    (
-        .VDD_1V65(VDD_1V65),
-        .binary_input(uio_in[3:2]),
-        .ternary_result(max_ternary_wire_b)
-    );
-    max_gate max_module
-    (
-        .VDD_1V65(VDD_1V65),
-        .input_1(max_ternary_wire_a),
-        .input_2(max_ternary_wire_b),
-        .result(max_res_ternary_wire)
-    );
-    native_t2b max_t2b
-    (
-        .VDD_1V65(VDD_1V65),
-        .binary_result(max_binary_result),
-        .ternary_input(max_res_ternary_wire)
-    );
+// // max gate
+//     wire max_ternary_wire_a;
+//     wire max_ternary_wire_b;
+//     wire max_res_ternary_wire;
+//     wire [1:0] max_binary_result;
+//     native_b2t max_b2t_a
+//     (
+//         .VDD_1V65(VDD_1V65),
+//         .binary_input(uio_in[1:0]),
+//         .ternary_result(max_ternary_wire_a)
+//     );
+//     native_b2t max_b2t_b
+//     (
+//         .VDD_1V65(VDD_1V65),
+//         .binary_input(uio_in[3:2]),
+//         .ternary_result(max_ternary_wire_b)
+//     );
+//     max_gate max_module
+//     (
+//         .VDD_1V65(VDD_1V65),
+//         .input_1(max_ternary_wire_a),
+//         .input_2(max_ternary_wire_b),
+//         .result(max_res_ternary_wire)
+//     );
+//     native_t2b max_t2b
+//     (
+//         .VDD_1V65(VDD_1V65),
+//         .binary_result(max_binary_result),
+//         .ternary_input(max_res_ternary_wire)
+//     );
 
-// min gate
-    wire min_ternary_wire_a;
-    wire min_ternary_wire_b;
-    wire min_res_ternary_wire;
-    wire [1:0] min_binary_result;
-    native_b2t min_b2t_a
-    (
-        .VDD_1V65(VDD_1V65),
-        .binary_input(uio_in[1:0]),
-        .ternary_result(min_ternary_wire_a)
-    );
-    native_b2t min_b2t_b
-    (
-        .VDD_1V65(VDD_1V65),
-        .binary_input(uio_in[3:2]),
-        .ternary_result(min_ternary_wire_b)
-    );
-    min_gate min_module
-    (
-        .VDD_1V65(VDD_1V65),
-        .input_1(min_ternary_wire_a),
-        .input_2(min_ternary_wire_b),
-        .result(min_res_ternary_wire)
-    );
-    native_t2b min_t2b
-    (
-        .VDD_1V65(VDD_1V65),
-        .binary_result(min_binary_result),
-        .ternary_input(min_res_ternary_wire)
-    );
+// // min gate
+//     wire min_ternary_wire_a;
+//     wire min_ternary_wire_b;
+//     wire min_res_ternary_wire;
+//     wire [1:0] min_binary_result;
+//     native_b2t min_b2t_a
+//     (
+//         .VDD_1V65(VDD_1V65),
+//         .binary_input(uio_in[1:0]),
+//         .ternary_result(min_ternary_wire_a)
+//     );
+//     native_b2t min_b2t_b
+//     (
+//         .VDD_1V65(VDD_1V65),
+//         .binary_input(uio_in[3:2]),
+//         .ternary_result(min_ternary_wire_b)
+//     );
+//     min_gate min_module
+//     (
+//         .VDD_1V65(VDD_1V65),
+//         .input_1(min_ternary_wire_a),
+//         .input_2(min_ternary_wire_b),
+//         .result(min_res_ternary_wire)
+//     );
+//     native_t2b min_t2b
+//     (
+//         .VDD_1V65(VDD_1V65),
+//         .binary_result(min_binary_result),
+//         .ternary_input(min_res_ternary_wire)
+//     );
 
 // consensus gate
     wire con_ternary_wire_a;
@@ -281,30 +281,6 @@ end
         .ternary_input(add_ternary_wire_carry)
     );
 
-// sram cell
-    wire ram_ternary_wire;
-    wire ram_ternary_res;
-    wire [1:0] ram_binary_result;
-    native_b2t ram_b2t
-    (
-        .VDD_1V65(VDD_1V65),
-        .binary_input(uio_in[1:0]),
-        .ternary_result(ram_ternary_wire)
-    );
-    sram_cell ram_module (
-        .VDD_1V65(VDD_1V65),
-        .wr_en(uio_in[2]),
-        .r_en(uio_in[3]),
-        .input_1(ram_ternary_wire),
-        .result(ram_ternary_res)
-    );
-    native_t2b ram_t2b
-    (
-        .VDD_1V65(VDD_1V65),
-        .binary_result(ram_binary_result),
-        .ternary_input(ram_ternary_res)
-    );
-
 // mux module
     wire mux_ternary_wire_a;
     wire mux_ternary_wire_b;
@@ -353,7 +329,35 @@ end
         .ternary_input(mux_ternary_res_c)
     );
 
+
+/*
+// sram cell
+    wire ram_ternary_wire;
+    wire ram_ternary_res;
+    wire [1:0] ram_binary_result;
+    native_b2t ram_b2t
+    (
+        .VDD_1V65(VDD_1V65),
+        .binary_input(uio_in[1:0]),
+        .ternary_result(ram_ternary_wire)
+    );
+    sram_cell ram_module (
+        .VDD_1V65(VDD_1V65),
+        .wr_en(uio_in[2]),
+        .r_en(uio_in[3]),
+        .input_1(ram_ternary_wire),
+        .result(ram_ternary_res)
+    );
+    native_t2b ram_t2b
+    (
+        .VDD_1V65(VDD_1V65),
+        .binary_result(ram_binary_result),
+        .ternary_input(ram_ternary_res)
+    );
+
+
 // sti experimental
+
     wire sti_ternary_wire_e;
     wire sti_res_ternary_wire_e;
     wire [1:0] sti_binary_result_e;
@@ -375,5 +379,7 @@ end
         .binary_result(sti_binary_result_e),
         .ternary_input(sti_res_ternary_wire_e)
     );
+
+    */
 
 endmodule
