@@ -8,6 +8,9 @@ module tt_um_core_commander (
     input  wire       clk,
     input  wire       rst_n,
 
+
+    
+
     // Telemetry bus to external MUX (routes selected error counter to uio_out when show_tracker=1)
     output reg  [7:0] tracker,
     output reg        show_tracker,

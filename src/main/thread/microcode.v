@@ -49,7 +49,9 @@ module microcode #(
     input  wire [7:0]  bus, //la controller uses this
     output reg  [11:0] address,
     output wire         cycle_threads,
-    output wire        microcode_idle
+    output wire        microcode_idle,
+
+    input wire [2:0] min_wait_cycles//can wait for up to 7 cycles. start at 4 unless explicitly changed later
 );
 
     // 1. Sector Base Address Calculation
@@ -185,6 +187,10 @@ module microcode #(
     //(also stays high if a thread is only hitting straight cache)
     wire bus_needed = any_request && !(has_cached_odd[winning_thread] && !flush_vec[winning_thread]);
     assign cycle_threads = (state == ST_IDLE) && !bus_needed;
+
+    reg [2:0] wait_cnt;//count up i guess
+    wire data_arrived = (wait_cnt >= min_wait_cycles) && (bus != 8'hFF);
+
     //logik
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
@@ -214,7 +220,7 @@ module microcode #(
             microcode_action_offset_t2_res <= 7'd0;
             microcode_param_offset_t2_res  <= 7'd0;
 
-
+            wait_cnt <= 3'd0;
 
             //synths into physical stuff
             for (i = 0; i < 3; i = i + 1) begin
@@ -227,7 +233,7 @@ module microcode #(
                 cached_p2_odd[i]  <= 4'd0;
             end
         end else begin
-            cycle_threads <= 1'b0;//goes up when no work is needed
+            
             //removed toggle based request for traditional pulse based request
             if (flush_t0) begin
                 microcode_action_offset_t0_res <= microcode_action_offset_t0;
@@ -286,7 +292,7 @@ module microcode #(
                             has_cached_odd[winning_thread] <= 1'b0;
                             request_data[winning_thread]   <= 1'b0;
                             importance[winning_thread]     <= 6'd0;
-                            cycle_threads                  <= 1'b1;
+                            
 
                             case (winning_thread)
                                 2'd0: begin
@@ -320,27 +326,32 @@ module microcode #(
                             cur_prm_off <= next_prm_off;
                             address     <= {2'b00, calc_sector_base(sel_macro_op)} + {5'b00000, next_act_off};
                             state       <= ST_WAIT_ACT;
-                            state   <= ST_WAIT_ACT;
                         end
                     end
                 end
 
-                // Cycle 1: Latch Action Byte, Drive First Parameter Byte Address (+1024 offset)
                 ST_WAIT_ACT: begin
                     if (flush_vec[active_t]) begin
-                        state <= ST_IDLE;
+                        wait_cnt <= 3'd0;
+                        state    <= ST_IDLE;
+                    end else if (!data_arrived) begin
+                        if (wait_cnt != 3'd7) wait_cnt <= wait_cnt + 3'd1;// Hold address steady for FPGA BRAM + pad delay
                     end else begin
+                        wait_cnt         <= 3'd0;
                         latched_act_byte <= bus;
                         address          <= 12'd1024 + {2'b00, active_base} + {5'b00000, cur_prm_off};
                         state            <= ST_WAIT_PRM0;
                     end
                 end
-
-                // Cycle 2: Latch First Param Byte (p_byte0)
+    
                 ST_WAIT_PRM0: begin
                     if (flush_vec[active_t]) begin
+                        wait_cnt <= 3'd0;
                         state <= ST_IDLE;
+                    end else if (!data_arrived) begin
+                       if (wait_cnt != 3'd7) wait_cnt <= wait_cnt + 3'd1;// Hold address steady for FPGA BRAM + pad delay
                     end else begin
+                        wait_cnt <= 3'd0;
                         latched_prm0 <= bus;
                         // Optimization: if both Op0 and Op1 are 0000 (1+1 = 1 byte 'p p'), no 2nd byte needed
                         if (latched_act_byte[7:4] == 4'b0000 && latched_act_byte[3:0] == 4'b0000 && bus[3:0] != PAD_NIBBLE) begin
@@ -356,8 +367,12 @@ module microcode #(
                 // Cycle 3: Latch Second Param Byte (p_byte1) & Check if a 3rd Byte is Required
                 ST_WAIT_PRM1: begin
                     if (flush_vec[active_t]) begin
+                        wait_cnt <= 3'd0;
                         state <= ST_IDLE;
+                    end else if (!data_arrived) begin
+                        if (wait_cnt != 3'd7) wait_cnt <= wait_cnt + 3'd1;// Hold address steady for FPGA BRAM + pad delay
                     end else begin
+                        wait_cnt <= 3'd0;
                         latched_prm1 <= bus;
                         if (bus[7:4] == PAD_NIBBLE) begin
                             extra_reads_needed <= 2'd3;
@@ -373,13 +388,18 @@ module microcode #(
                 // Cycle 4: Latch Third Param Byte (p_byte2)
                 ST_WAIT_PRM2: begin
                     if (flush_vec[active_t]) begin
+                        wait_cnt <= 3'd0;
                         state <= ST_IDLE;
+                    end else if (!data_arrived) begin
+                        if (wait_cnt != 3'd7) wait_cnt <= wait_cnt + 3'd1; // Hold address steady for FPGA BRAM + pad delay
                     end else begin
+                        wait_cnt <= 3'd0;
                         latched_prm2 <= bus;
                         state        <= ST_COMMIT;
                     end
                 end
 
+                //this stage needs no bus waits
                 // Commit Stage: Output Op0, Cache Op1, and Advance Offsets Past the Pair
                 ST_COMMIT: begin
                     if (flush_vec[active_t]) begin
@@ -387,7 +407,6 @@ module microcode #(
                     end else begin
                         request_data[active_t]   <= 1'b0;
                         importance[active_t]     <= 6'd0;
-                        cycle_threads            <= 1'b1;
                         has_cached_odd[active_t] <= 1'b1;
                         cached_act_odd[active_t] <= op1_cmd;
 
