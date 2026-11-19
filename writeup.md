@@ -55,33 +55,33 @@ standalone specs:
 
 ## ALU specs
 
-full adder   : 4+4   in, 5 out
-multiplier   : 4+4   in, 8 out
-Add3         : 4+4+4 in, 5 out
+full adder   : 4+4   in, 5 out<br>
+multiplier   : 4+4   in, 8 out<br>
+Add3         : 4+4+4 in, 5 out<br>
 
-multiplication : yes, with software fallback
-subtraction    : yes
-tritshifting   : yes
-signed math    : yes
-tritwise       : 21 unique operations
+multiplication : yes, with software fallback<br>
+subtraction    : yes<br>
+tritshifting   : yes<br>
+signed math    : yes<br>
+tritwise       : 21 unique operations<br>
 
 # theoretical performance
-90 MIPS
-10 megaflops
+90 MIPS<br>
+10 megaflops<br>
 
 ## videocore specs
-color depth : 20 trits, 5 trits RGBA
-depth testing : 18 trits available depth
-max fill rate : 120 megapixels/s
-anistropic filtering : no
-anti aliasing  : MXAA
-max texture size : 243x243
-mipmapping levels: 2. solid color and full texture
-shader cores : 2
-geometry cores : 0
-ray tracing cores : 0
-texture sampling rate : every so or often
-video memory : 1.5KB, 0.5KB shared with threads
+color depth : 20 trits, 5 trits RGBA<br>
+depth testing : 18 trits available depth<br>
+max fill rate : 120 megapixels/s<br>
+anistropic filtering : no<br>
+anti aliasing  : MXAA<br>
+max texture size : 243x243<br>
+mipmapping levels: 2. solid color and full texture<br>
+shader cores : 2<br>
+geometry cores : 0<br>
+ray tracing cores : 0<br>
+texture sampling rate : every so or often<br>
+video memory : 1.5KB, 0.5KB shared with threads<br>
 
 ## design use cases
 ~no clue~
