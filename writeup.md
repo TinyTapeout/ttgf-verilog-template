@@ -2,54 +2,56 @@
 
 ## operation information and design specifications
 
-*clock speed*
-targeted clock speed: 50MHz
-theoretical overclock (before total alu corruption) : ~135MHz
+*clock speed*<br>
+targeted clock speed: 50MHz<br>
+theoretical overclock (before total alu corruption) : ~135MHz<br>
 
 *voltage range*
-designed       : 5v0, 2v5
-minimum viable : 3v3, 1v65 
-maximum        : 8v0, 4v0
+designed       : 5v0, 2v5<br>
+minimum viable : 3v3, 1v65<br>
+maximum        : 8v0, 4v0<br>
 
 *power draw*
-static         : ~23mA
-transient peak : ~0.3A
+static         : ~23mA<br>
+transient peak : ~0.3A<br>
 
 
 
 # specifications
-1 core, 3 threads
-up to 2 macro-ops per thread
+1 core, 3 threads<br>
+up to 2 macro-ops per thread<br>
 
 ## register information
-4 trit scratchpads : 2x3 + 1 hidden (part of 12t gp)
-1 trit flags       : 8 + 1 carry (part of 12t gp)
-12 trit mac ladder : 1 , 3x4 trit slices
-program counter    : 1, 12 trits, up to ~531k
-12 trit gp regs    : 4
-macro-op parameter : 6+6 , 1 per macro op
+4 trit scratchpads : 2x3 + 1 hidden (part of 12t gp)<br>
+1 trit flags       : 8 + 1 carry (part of 12t gp)<br>
+12 trit mac ladder : 1 , 3x4 trit slices<br>
+program counter    : 1, 12 trits, up to ~531k<br>
+12 trit gp regs    : 4<br>
+macro-op parameter : 6+6 , 1 per macro op<br>
 
 *addressless registers*
-12 trit mask / alias register
-4 trit mask / alias register
-1 trit mask / alias register
-4t microcode action counter, microcode parameter counter
+12 trit mask / alias register<br>
+4 trit mask / alias register<br>
+1 trit mask / alias register<br>
+4t microcode action counter, microcode parameter counter<br>
 
-fetching (per thread)
-2 macro op prefetch
-2 micro op prefetch
+fetching (per thread)<br>
+2 macro op prefetch<br>
+2 micro op prefetch<br>
 
-profiling support : error tracker, fencing, breakpoints, overflow trackers
-analysis          : register extraction, register write, deterministic execution
-word length       : 12 trits, ~531k values
-address length    : 48 bits, 256 TiB addressable memory space
-maximum word length : unlimited (given enough swap)
+
+profiling support : error tracker, fencing, breakpoints, overflow trackers<br>
+analysis          : register extraction, register write, deterministic execution<br>
+word length       : 12 trits, ~531k values<br>
+address length    : 48 bits, 256 TiB addressable memory space<br>
+maximum word length : unlimited (given enough swap)<br>
 
 standalone specs:
-512 bytes + up to 1.5kb from shared video memory ram (for firmware)
-1x spi
-3x kind of spi kind of normal gpio
-5x io pins
+
+512 bytes + up to 1.5kb from shared video memory ram (for firmware)<br>
+1x spi<br>
+3x kind of spi kind of normal gpio<br>
+5x io pins<br>
 
 ## ALU specs
 
