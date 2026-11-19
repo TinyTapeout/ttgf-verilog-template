@@ -1,0 +1,31 @@
+* NGSPICE file created from 5v0_tgate_sel_2_sc.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 result m1_144_167# input_B half_tgate_0/VSUBS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X1 result m1_144_167# input_A w_n188_734# pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X2 m1_144_167# select half_tgate_0/VSUBS half_tgate_0/VSUBS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X3 m1_144_167# select w_n188_734# w_n188_734# pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X4 result select input_A half_tgate_0/VSUBS nfet_06v0 ad=17.057n pd=0.537m as=14.432n ps=0.504m w=164 l=120
+X5 result select input_B w_n188_734# pfet_06v0 ad=25.377n pd=0.697m as=21.472n ps=0.664m w=244 l=100
+C0 w_n188_734# input_B 0.0574f
+C1 w_n188_734# result 0.10087f
+C2 m1_144_167# select 0.30973f
+C3 m1_144_167# input_B 0.11187f
+C4 m1_144_167# result 0.20735f
+C5 w_n188_734# input_A 0.06007f
+C6 select input_B 0.10138f
+C7 m1_144_167# input_A 0.0873f
+C8 select result 0.25332f
+C9 input_B result 0.2813f
+C10 w_n188_734# m1_144_167# 0.26804f
+C11 select input_A 0.17299f
+C12 input_B input_A 0.26009f
+C13 input_A result 0.21489f
+C14 w_n188_734# select 0.33939f
+C15 input_A half_tgate_0/VSUBS 0.15517f
+C16 result half_tgate_0/VSUBS 0.47358f
+C17 input_B half_tgate_0/VSUBS 0.47508f
+C18 m1_144_167# half_tgate_0/VSUBS 0.29272f ; **FLOATING
+C19 select half_tgate_0/VSUBS 0.59547f
+C20 w_n188_734# half_tgate_0/VSUBS 2.05715f ; **FLOATING

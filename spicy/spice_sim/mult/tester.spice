@@ -1,0 +1,101 @@
+* ==============================================================================
+* Ternary Logic/Mux Component Truth-Table Testbench (5V0 Domain - GF180MCU)
+* Tests all 12 states: 2 (over: 0V, 5V) x 2 (sign: 0V, 5V) x 3 (in: 0V, 2.5V, 5V)
+* State duration = 20ns -> Total simulation time = 240ns
+* ==============================================================================
+
+* 1. PDK Models (GF180MCU)
+.include "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice"
+.lib "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice" typical
+
+* 2. Include your Magic-extracted netlist
+* (Update filename below to match your extracted .spice file!)
+.include "5v0_mult_1t_v26.spice"
+
+* 3. Power Supplies (5.0V Domain)
+Vdd  VDD_3V3_0    0 DC 5.0
+Vdd2  VDD_3V3_1  0 DC 5.0
+Vhf  VDD_1V65   0 DC 2.5
+Vss  VSS        0 DC 0.0
+Vnw VNW		0 DC 5.0
+Vpw VPW		0 DC 0.0
+
+* 4. Input Stimuli (20ns per state, 12 states = 240ns total)
+* ------------------------------------------------------------------------------
+* 'in' cycles: 0.0V (0-20n) -> 2.5V (20-40n) -> 5.0V (40-60n) [60ns period]
+Vin_1 in_int 0      PULSE(0.0 2.5 20n  250p 250p 39.75n  60n)
+Vin_2 in     in_int PULSE(0.0 2.5 40n  250p 250p 19.75n  60n)
+
+* 'sign' toggles: 0.0V (0-60n) -> 5.0V (60-120n) [120ns period]
+Vsign sign   0      PULSE(0.0 5.0 60n  250p 250p 59.75n  120n)
+
+* 'over' toggles: 0.0V (0-120n) -> 5.0V (120-240n) [240ns period]
+Vover over   0      PULSE(0.0 5.0 120n 250p 250p 119.75n 240n)
+
+* 5. DUT Instantiation
+* (If your .spice file is a flat netlist without .subckt, keep Xdut commented out.
+*  If it has a .subckt line, uncomment Xdut and match the port order!)
+*Xdut in over sign res VDD_3V3 VDD_1V65 VSS tg_component
+
+* 6. Output Capacitive Load
+CLoad_res res 0 10ff
+
+* 7. Simulation & Human-Readable Truth Table Readout
+.tran 20p 240n
+.op
+
+.control
+  run
+
+  * --- PLOT 1: Stacked Analog Waveforms (Vertical Offset by 7V per track) ---
+  * Track 0 (0V-5V)   : in   (3-level: 0V, 2.5V, 5V)
+  * Track 1 (7V-12V)  : sign (2-level: 0V, 5V)
+  * Track 2 (14V-19V) : over (2-level: 0V, 5V)
+  * Track 3 (21V-26V) : res  (Output response)
+  plot v(in) v(sign)+7 v(over)+14 v(res) title "Stacked Waveforms: in, sign, over -> res (7V Offset)" xlabel "Time (s)" ylabel "Stacked Voltage Tracks (V)"
+plot i(VSS)
+
+ * --- PLOT 2: Decoded Ternary Levels (-1, 0, +1) ---
+  let trit_in   = (v(in) - 2.5) / 2.5
+  let trit_res  = (v(res) - 2.5) / 2.5
+  let bit_sign  = (v(sign) > 2.5)
+  let bit_over  = (v(over) > 2.5)
+  plot trit_in bit_sign+3 bit_over+6 trit_res+9 title "Decoded Levels: trit_in, bit_sign, bit_over, trit_res" xlabel "Time (s)" ylabel "Decoded Tracks"
+
+  * --- HUMAN-READABLE TRUTH TABLE IN TERMINAL ---
+  echo ""
+  echo "================================================================================"
+  echo "  HUMAN-READABLE TRUTH TABLE: (over, sign, in) -> res"
+  echo "  Ternary Encoding: 0.0V = -1 | 2.5V = 0 | 5.0V = +1"
+  echo "================================================================================"
+  echo " State | Time(ns) | over (V) | sign (V) |  in (V) [Trit] ||  res (V) | res [Trit]"
+  echo "--------------------------------------------------------------------------------"
+
+  let idx = 0
+  while idx < 12
+    * Sample right in the stable middle of each 20ns window (10ns, 30ns, 50ns, ...)
+    let t_sample = (idx * 20n) + 10n
+
+    meas tran v_over_m FIND v(over) AT=t_sample
+    meas tran v_sign_m FIND v(sign) AT=t_sample
+    meas tran v_in_m   FIND v(in)   AT=t_sample
+    meas tran v_res_m  FIND v(res)  AT=t_sample
+
+    * Convert voltages to rounded integer trits (-1, 0, +1)
+    let t_in_raw  = (v_in_m - 2.5) / 2.5
+    let t_res_raw = (v_res_m - 2.5) / 2.5
+
+    * Round to nearest trit (-1, 0, +1) for clean display
+    let t_in_trit  = (v_in_m > 3.75) * 1 + (v_in_m < 1.25) * (-1)
+    let t_res_trit = (v_res_m > 3.75) * 1 + (v_res_m < 1.25) * (-1)
+
+    let t_ns = (idx * 20) + 10
+    echo "  $&idx    |   $&t_ns     |   $&v_over_m    |   $&v_sign_m    |  $&v_in_m  [ $&t_in_trit ]  ||  $&v_res_m  |   [ $&t_res_trit ]"
+
+    let idx = idx + 1
+  end
+
+  echo "================================================================================"
+  echo ""
+.endc
+.end

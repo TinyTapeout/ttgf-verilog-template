@@ -1,0 +1,70 @@
+* Transmission Gate (TG) Comprehensive 9-State Testbench (5V0)
+
+.include "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice"
+.lib "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice" typical
+
+* Include the flattened Magic-extracted netlist
+.include "5v0_tg_sc_v2.spice"
+
+* --- Power Supply and Wells ---
+* Using the explicit flattened hierarchical node names from the netlist
+Vdd gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD 0 DC 5.0
+Vss gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSS 0 DC 0.0
+* Tie the N-Well explicitly to 5V to prevent forward-biasing the PFET bulk
+Vnw gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VNW 0 DC 5.0
+
+* --- Input Stimulus ---
+* Signal I (Control Gate): Steps through 0V, 2.5V, and 5.0V every 30ns
+V_I gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I 0 PWL(
++   0.0n  0.0
++  29.8n  0.0
++  30.0n  2.5
++  59.8n  2.5
++  60.0n  5.0
++  90.0n  5.0
++ )
+
+* Signal In (Transmission Source): Cycles 0V, 2.5V, 5.0V every 10ns within each control state
+V_In In 0 PWL(
++   0.0n  0.0
++   9.8n  0.0
++  10.0n  2.5
++  19.8n  2.5
++  20.0n  5.0
++  29.8n  5.0
++  30.0n  0.0
++  39.8n  0.0
++  40.0n  2.5
++  49.8n  2.5
++  50.0n  5.0
++  59.8n  5.0
++  60.0n  0.0
++  69.8n  0.0
++  70.0n  2.5
++  79.8n  2.5
++  80.0n  5.0
++  90.0n  5.0
++ )
+
+* --- Loads ---
+* Adding realistic 10fF loads to prevent instantaneous non-physical switching 
+* and to observe High-Z floating drift on the TG output
+C_out out 0 10ff
+
+* --- Simulation Commands ---
+.tran 10p 180n
+.op
+
+.control
+run
+
+* Plot 1: Input Control vs Inverter Output (ZN)
+plot v(gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I) v(gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN)
+
+* Plot 2: Transmission Input (In) vs Transmission Output (out)
+plot v(In) v(out)
+
+* Plot 3: Current draw to observe crowbar states in the inverter and TG
+plot i(Vdd)
+.endc
+.end

@@ -1,0 +1,12 @@
+* NGSPICE file created from not_gate_first.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 Y A VDD VDD pfet_06v0 ad=52n pd=1.24m as=52n ps=1.24m w=520 l=120
+X1 Y A VSS VSS nfet_06v0 ad=20n pd=0.6m as=20n ps=0.6m w=200 l=120
+C0 VDD A 0.3041f
+C1 Y VDD 0.15977f
+C2 Y A 0.08747f
+C3 Y VSS 0.33416f
+C4 A VSS 0.47085f
+C5 VDD VSS 1.47667f

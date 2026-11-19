@@ -1,0 +1,27 @@
+* Pass-Transistor Transmissive Properties Test (5V0)
+
+
+.include "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice"
+.lib "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice" typical
+
+* 2. Include your Magic-extracted netlist
+.include "5v0_nti_nmos_only.spice"
+
+* Absolute power rails for transistor gates and bulk/wells
+Vdd VDD_1V65  0 DC 2.5
+Vss VSS 0 DC 0.0
+
+* Slowly increasing voltage on Input A: 0V to 5V over 100us
+Vin A 0 PWL(0 0 180n 5.0)
+
+
+
+* 6. Simulation Commands
+.tran 1p 200n
+.op
+.control
+run
+plot v(A) v(Y)
+plot i(Vdd)
+.endc
+.end

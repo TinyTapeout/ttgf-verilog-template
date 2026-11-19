@@ -1,0 +1,97 @@
+* Ternary Adder Full Truth-Table Testbench (5V0 Domain)
+* Tests 3 ternary_input states (0V, 2.5V, 5.0V) x 4 (ctrl_over, ctrl_sign) states
+
+* 1. PDK Models (GF180MCU)
+.include "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice"
+.lib "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice" typical
+
+* 2. Include your Magic-extracted netlist
+.include "5v0_addh_sc_v3.spice"
+
+* 3. Subcircuit Instantiation (Uncomment and verify pin order ONLY if your .spice file uses .subckt)
+* Xdut ternary_input ctrl_sign ctrl_over ternary_output VDD_3V3 VDD_1V65 VSS 5v0_add_q_sc_v0
+
+* 4. Power Rails (5.0V full rail, 2.5V half rail, 0.0V ground)
+Vdd VDD_3V3  0 DC 5.0
+Vhf VDD_1V65 0 DC 2.5
+Vss VSS      0 DC 0.0
+
+* 5. Stimulus Sources (12 states total, 5ns per state, 100ps transitions)
+
+* Fast axis: ternary_input cycles through 0V -> 2.5V -> 5.0V four times
+
+* Reference Ternary Input (0.0V -> 2.5V -> 5.0V per 15ns cycle)
+Vin_0 ternary_input 0 PWL(
+* --- Cycle 1: ctrl_over=0, ctrl_sign=0 ---
++  0.0n  0.0   5.0n  0.0
++  5.1n  2.5  10.0n  2.5
++ 10.1n  5.0  15.0n  5.0
+* --- Cycle 2: ctrl_over=0, ctrl_sign=1 ---
++ 15.1n  0.0  20.0n  0.0
++ 20.1n  2.5  25.0n  2.5
++ 25.1n  5.0  30.0n  5.0
+* --- Cycle 3: ctrl_over=1, ctrl_sign=0 ---
++ 30.1n  0.0  35.0n  0.0
++ 35.1n  2.5  40.0n  2.5
++ 40.1n  5.0  45.0n  5.0
+* --- Cycle 4: ctrl_over=1, ctrl_sign=1 ---
++ 45.1n  0.0  50.0n  0.0
++ 50.1n  2.5  55.0n  2.5
++ 55.1n  5.0  60.0n  5.0
++ )
+
+* Medium axis: ctrl_sign toggles every 15ns (0V for 15ns, 5V for 15ns)
+Vsign ctrl_sign 0 PWL(
++  0.0n  0.0  15.0n  0.0
++ 15.1n  5.0  30.0n  5.0
++ 30.1n  0.0  45.0n  0.0
++ 45.1n  5.0  60.0n  5.0
++ )
+
+* Slow axis: ctrl_over toggles at 30ns (0V for 30ns, 5V for 30ns)
+Vover ctrl_over 0 PWL(
++  0.0n  0.0  30.0n  0.0
++ 30.1n  5.0  60.0n  5.0
++ )
+
+
+* Output capacitive load
+CLoad ternary_output 0 10ff
+
+* 6. Automated Verification Measurements (Samples output at the middle of each 5ns window)
+.meas tran out_O0_S0_in0v0 FIND v(ternary_output) AT=2.5n
+.meas tran out_O0_S0_in2v5 FIND v(ternary_output) AT=7.5n
+.meas tran out_O0_S0_in5v0 FIND v(ternary_output) AT=12.5n
+
+.meas tran out_O0_S1_in0v0 FIND v(ternary_output) AT=17.5n
+.meas tran out_O0_S1_in2v5 FIND v(ternary_output) AT=22.5n
+.meas tran out_O0_S1_in5v0 FIND v(ternary_output) AT=27.5n
+
+.meas tran out_O1_S0_in0v0 FIND v(ternary_output) AT=32.5n
+.meas tran out_O1_S0_in2v5 FIND v(ternary_output) AT=37.5n
+.meas tran out_O1_S0_in5v0 FIND v(ternary_output) AT=42.5n
+
+.meas tran out_O1_S1_in0v0 FIND v(ternary_output) AT=47.5n
+.meas tran out_O1_S1_in2v5 FIND v(ternary_output) AT=52.5n
+.meas tran out_O1_S1_in5v0 FIND v(ternary_output) AT=57.5n
+
+* 7. Simulation & Plotting Commands
+.tran 10p 60n
+.op
+
+.control
+run
+* Stacked plot: Output vs Input on Plot 1, Control lines on Plot 2
+plot v(ternary_output) v(ternary_input) 
+plot v(ternary_input) v(upstepper_test)
+plot v(ternary_input) v(downstepper_test)
+plot v(ternary_input) v(pti) v(nti)
+plot v(ternary_output) v(carry_0_probe) v(carry_sign_probe)
+plot v(pti) v(inv_pti) 
+plot v(nti) v(inv_nti) 
+plot v(ctrl_over) v(ctrl_sign)
+
+plot i(Vss)
+.endc
+
+.end

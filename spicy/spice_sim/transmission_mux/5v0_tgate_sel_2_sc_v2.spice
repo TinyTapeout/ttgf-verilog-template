@@ -1,0 +1,31 @@
+* NGSPICE file created from 5v0_tgate_sel_2_sc.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 result m1_144_167# input_B VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X1 result m1_144_167# input_A VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X2 m1_144_167# select VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X3 m1_144_167# select VDD_3V3 VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X4 result select input_A VSS nfet_06v0 ad=17.057n pd=0.537m as=14.432n ps=0.504m w=164 l=120
+X5 result select input_B VDD_3V3 pfet_06v0 ad=25.377n pd=0.697m as=21.472n ps=0.664m w=244 l=100
+C0 result m1_144_167# 0.20468f
+C1 result VDD_3V3 0.10087f
+C2 result input_B 0.28871f
+C3 input_A result 0.21489f
+C4 select m1_144_167# 0.3097f
+C5 select VDD_3V3 0.33939f
+C6 select input_B 0.09587f
+C7 VDD_3V3 m1_144_167# 0.26804f
+C8 input_A select 0.17321f
+C9 m1_144_167# input_B 0.10347f
+C10 VDD_3V3 input_B 0.0574f
+C11 select result 0.25332f
+C12 input_A m1_144_167# 0.08742f
+C13 input_A VDD_3V3 0.06007f
+C14 input_A input_B 0.2588f
+C15 input_A VSS 0.15745f
+C16 result VSS 0.4703f
+C17 input_B VSS 0.47918f
+C18 m1_144_167# VSS 0.29246f ; **FLOATING
+C19 select VSS 0.59694f
+C20 VDD_3V3 VSS 2.05715f

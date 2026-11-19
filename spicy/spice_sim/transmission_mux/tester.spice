@@ -1,0 +1,65 @@
+* pass gate and mux Test (5V0)
+
+
+.include "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice"
+.lib "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice" typical
+
+* 2. Include your Magic-extracted netlist
+.include "5v0_tgate_sel_2_sc_v2.spice"
+
+* Absolute power rails for transistor gates and bulk/wells
+Vdd VDD_3V3 0 DC 5.0
+Vss VSS 0 DC 0.0
+
+Vin_0 select 0 PWL(
++   0.0n   0.0
++  10.0n   0.0
++  10.1n   5.0
++  25.0n   5.0
++  25.1n   0.0
++  30.0n   0.0
++ )
+
+Vin_1 input_A 0 PWL(
++   0.0n   0.0
++   5.0n   0.0
++   5.1n   2.5
++  10.0n   2.5
++  10.1n   0.0
++  11.0n   0.0
++  11.1n   5.0
++  15.0n   5.0
++  15.1n   0.0
++  20.0n   0.0
++  20.1n   2.5
++  25.0n   2.5
++  25.1n   5.0
++  30.0n   5.0
++ )
+
+Vin_2 input_B 0 PWL(
++   0.0n   0.0
++   0.1n   2.5
++  5.0n   2.5
++  5.1n   5.0
++  10.0n   5.0
++  10.1n   0.0
++  13.0n   0.0
++  13.1n   2.5
++  20.0n   2.5
++  20.1n   5.0
++  25.0n   5.0
++ )
+
+C_out result 0 10ff
+
+* 6. Simulation Commands
+.tran 1p 30n
+.op
+.control
+run
+plot v(select) v(input_A) v(input_B) v(result)
+plot i(Vdd) i(Vss)
+.endc
+.end
+

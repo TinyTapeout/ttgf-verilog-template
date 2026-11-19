@@ -1,0 +1,158 @@
+* ==============================================================================
+* 4-Trit Balanced Ternary Ripple-Carry Adder Testbench (5V0 Domain, 50 MHz)
+* ==============================================================================
+* Inputs:
+*   A[3:0] : in_0 (LSB, 3^0), in_1 (3^1), in_2 (3^2), in_3 (MSB, 3^3) [0V, 2.5V, 5V]
+*   B[3:0] : in_B_0 (LSB), in_B_1, in_B_2, in_B_3 (MSB)               [0V, 2.5V, 5V]
+*   Cin    : in_C_over, in_C_sign (2-wire: over=5V -> 0; else sign=0V -> -1, 5V -> +1)
+* Outputs:
+*   Sum[3:0] : res_0 (LSB), res_1, res_2, res_3 (MSB)                 [0V, 2.5V, 5V]
+*   Cout     : carry_over, carry_sign (Weight = 3^4 = 81)             [0V, 5V]
+* ==============================================================================
+
+* 1. PDK Models (GF180MCU)
+.include "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice"
+.lib "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice" typical
+
+* 2. Include your 4-Trit Adder Macro Netlist (Update filename if needed!)
+.include "5v0_adder_4t_macro_v3.spice"
+
+* 3. Power Supplies
+Vdd  VDD_3V3_0    0 DC 5.0
+Vdd1  VDD_3V3_1    0 DC 5.0
+Vdd2  VDD_3V3_2    0 DC 5.0
+Vdd3  VDD_3V3_3    0 DC 5.0
+Vhf  VDD_1V65   0 DC 2.5
+Vhf1 VDD_1V65_1 0 DC 2.5
+Vhf2 VDD_1V65_2 0 DC 2.5
+Vhf3 VDD_1V65_3 0 DC 2.5
+Vhf4 VDD_1V65_4 0 DC 2.5
+Vss  VSS_0        0 DC 0.0
+Vss1  VSS_1        0 DC 0.0
+Vss2  VSS_2        0 DC 0.0
+Vss3  VSS_3        0 DC 0.0
+
+* 4. Output Capacitive Loads (10fF per output pin)
+CLoad_r0    res_0      0 10ff
+CLoad_r1    res_1      0 10ff
+CLoad_r2    res_2      0 10ff
+CLoad_r3    res_3      0 10ff
+CLoad_csign carry_sign 0 10ff
+CLoad_cover carry_over 0 10ff
+
+* 5. Stimulus Generators (20ns per state = 50 MHz)
+* ------------------------------------------------------------------------------
+* Word A (in_0 to in_3): Exhaustively counts all 81 states (-40 to +40)
+* Every 81 states = 81 * 20ns = 1620ns (1.62us)
+* ------------------------------------------------------------------------------
+* in_0 (weight 1): period = 60ns (20ns per trit state)
+Vin_0a in_0_int 0        PULSE(0.0 2.5 20n   250p 250p 39.75n   60n)
+Vin_0b in_0     in_0_int PULSE(0.0 2.5 40n   250p 250p 19.75n   60n)
+
+* in_1 (weight 3): period = 180ns (60ns per trit state)
+Vin_1a in_1_int 0        PULSE(0.0 2.5 60n   250p 250p 119.75n  180n)
+Vin_1b in_1     in_1_int PULSE(0.0 2.5 120n  250p 250p 59.75n   180n)
+
+* in_2 (weight 9): period = 540ns (180ns per trit state)
+Vin_2a in_2_int 0        PULSE(0.0 2.5 180n  250p 250p 359.75n  540n)
+Vin_2b in_2     in_2_int PULSE(0.0 2.5 360n  250p 250p 179.75n  540n)
+
+* in_3 (weight 27): period = 1620ns (540ns per trit state)
+Vin_3a in_3_int 0        PULSE(0.0 2.5 540n  250p 250p 1079.75n 1620n)
+Vin_3b in_3     in_3_int PULSE(0.0 2.5 1080n 250p 250p 539.75n  1620n)
+
+* ------------------------------------------------------------------------------
+* Word B (in_B_0 to in_B_3) & Carry-In
+* ------------------------------------------------------------------------------
+* === MODE A (ACTIVE): Fast 972-State Sweep (19.44us total) ===
+* Sweeps all 81 A states x 3 B states (-40, 0, +40 + prime offsets) x 4 Cin states.
+* Here each B trit steps at coprime/shifted periods so all carry-chain ripples,
+* half-adder states, and full-adder states are exercised in 19.44us!
+*Vin_B0a in_B_0_int 0          PULSE(0.0 2.5 1620n 250p 250p 3239.75n 4860n)
+*Vin_B0b in_B_0     in_B_0_int PULSE(0.0 2.5 3240n 250p 250p 1619.75n 4860n)
+
+*Vin_B1a in_B_1_int 0          PULSE(0.0 2.5 40n   250p 250p 79.75n   120n)
+*Vin_B1b in_B_1     in_B_1_int PULSE(0.0 2.5 80n   250p 250p 39.75n   120n)
+
+*Vin_B2a in_B_2_int 0          PULSE(0.0 2.5 120n  250p 250p 239.75n  360n)
+*Vin_B2b in_B_2     in_B_2_int PULSE(0.0 2.5 240n  250p 250p 119.75n  360n)
+
+*Vin_B3a in_B_3_int 0          PULSE(0.0 2.5 1620n 250p 250p 3239.75n 4860n)
+*Vin_B3b in_B_3     in_B_3_int PULSE(0.0 2.5 3240n 250p 250p 1619.75n 4860n)
+
+* Cin toggles through all 4 states (-1, +1, 0_low, 0_high) across 19.44us
+*Vin_C_sign in_C_sign 0 PULSE(0.0 5.0 4860n 250p 250p 4859.75n 9720n)
+*Vin_C_over in_C_over 0 PULSE(0.0 5.0 9720n 250p 250p 9719.75n 19440n)
+
+* === MODE B (OPTIONAL): Full 26,244-State Exhaustive Sweep (524.88us) ===
+* (To run all 3^8 * 4 = 26,244 states, comment out Mode A above and uncomment below)
+ Vin_B0a in_B_0_int 0          PULSE(0.0 2.5 1620n   250p 250p 3239.75n   4860n)
+ Vin_B0b in_B_0     in_B_0_int PULSE(0.0 2.5 3240n   250p 250p 1619.75n   4860n)
+ Vin_B1a in_B_1_int 0          PULSE(0.0 2.5 4860n   250p 250p 9719.75n   14580n)
+ Vin_B1b in_B_1     in_B_1_int PULSE(0.0 2.5 9720n   250p 250p 4859.75n   14580n)
+ Vin_B2a in_B_2_int 0          PULSE(0.0 2.5 14580n  250p 250p 29159.75n  43740n)
+ Vin_B2b in_B_2     in_B_2_int PULSE(0.0 2.5 29160n  250p 250p 14579.75n  43740n)
+ Vin_B3a in_B_3_int 0          PULSE(0.0 2.5 43740n  250p 250p 87479.75n  131220n)
+ Vin_B3b in_B_3     in_B_3_int PULSE(0.0 2.5 87480n  250p 250p 43739.75n  131220n)
+ Vin_C_sign in_C_sign 0        PULSE(0.0 5.0 131220n 250p 250p 131219.75n 262440n)
+ Vin_C_over in_C_over 0        PULSE(0.0 5.0 262440n 250p 250p 262439.75n 524880n)
+
+* 6. Simulation Control
+.tran 5n 524880n
+.op
+
+.control
+  run
+
+  * ============================================================================
+  * HUMAN-READABLE BALANCED TERNARY DECODER (-121 to +121)
+  * ============================================================================
+  * Quantize each single-wire trit voltage (0V -> -1, 2.5V -> 0, 5V -> +1)
+  * Using threshold comparators (>3.75V is +1, <1.25V is -1, between is 0)
+  * so minor analog bobbing doesn't corrupt the integer readout!
+
+  let a0 = (v(in_0) > 3.75) - (v(in_0) < 1.25)
+  let a1 = (v(in_1) > 3.75) - (v(in_1) < 1.25)
+  let a2 = (v(in_2) > 3.75) - (v(in_2) < 1.25)
+  let a3 = (v(in_3) > 3.75) - (v(in_3) < 1.25)
+
+  let b0 = (v(in_B_0) > 3.75) - (v(in_B_0) < 1.25)
+  let b1 = (v(in_B_1) > 3.75) - (v(in_B_1) < 1.25)
+  let b2 = (v(in_B_2) > 3.75) - (v(in_B_2) < 1.25)
+  let b3 = (v(in_B_3) > 3.75) - (v(in_B_3) < 1.25)
+
+  let cin = (v(in_C_over) < 2.5) * ((v(in_C_sign) > 2.5) - (v(in_C_sign) <= 2.5))
+
+  * Decode outputs (res_0..res_3 and carry_over/carry_sign)
+  let r0 = (v(res_0) > 3.75) - (v(res_0) < 1.25)
+  let r1 = (v(res_1) > 3.75) - (v(res_1) < 1.25)
+  let r2 = (v(res_2) > 3.75) - (v(res_2) < 1.25)
+  let r3 = (v(res_3) > 3.75) - (v(res_3) < 1.25)
+  let cout = (v(carry_over) < 2.5) * ((v(carry_sign) > 2.5) - (v(carry_sign) <= 2.5))
+
+  * Combine into signed Base-10 Integers:
+  * Value = T0*(3^0) + T1*(3^1) + T2*(3^2) + T3*(3^3) + Cout*(3^4)
+  let val_A      = a0 + 3*a1 + 9*a2 + 27*a3
+  let val_B      = b0 + 3*b1 + 9*b2 + 27*b3
+  let Expected   = val_A + val_B + cin
+  let Actual     = r0 + 3*r1 + 9*r2 + 27*r3 + 81*cout
+  let Math_Error = Actual - Expected
+
+  * ============================================================================
+  * PLOT 1: Human-Readable Expected vs Actual Integer Value & Error
+  * ============================================================================
+  plot Expected Actual Math_Error title "4-Trit Adder Verification: Expected vs Actual Integer (-121 to +121) & Error" xlabel "Time (s)" ylabel "Decimal Value"
+
+  * ============================================================================
+  * PLOT 2: Individual Decoded Output Trits (Stair-Stepped for Easy Inspection)
+  * ============================================================================
+  * Offsets each decoded trit (-1, 0, +1) vertically by 4 units:
+  * r0 @ 0, r1 @ +4, r2 @ +8, r3 @ +12, cout @ +16
+  plot r0 (r1+4) (r2+8) (r3+12) (cout+16) title "Decoded Output Trits: r0(0), r1(+4), r2(+8), r3(+12), Cout(+16)" xlabel "Time (s)" ylabel "Trit State (-1, 0, +1 per track)"
+
+  * ============================================================================
+  * PLOT 3: Raw Analog Output Voltages (Stacked by 7V per track)
+  * ============================================================================
+  plot v(res_0) v(res_1)+7 v(res_2)+14 v(res_3)+21 v(carry_sign)+28 v(carry_over)+35 title "Raw Analog Output Waveforms (res_0..3, carry_sign, carry_over)" xlabel "Time (s)" ylabel "Stacked Voltage (V)"
+.endc
+.end

@@ -1,0 +1,40 @@
+* Pass-Transistor Transmissive Properties Test (5V0)
+
+
+.include "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice"
+.lib "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice" typical
+
+* 2. Include your Magic-extracted netlist
+.include "inverter_pair_v0.spice"
+
+
+* Absolute power rails for transistor gates and bulk/wells
+Vdd VDD_3V3  0 DC 5.0
+Vdd2 VDD_3V3_uq0 0 DC 5.0
+Vss VSS 0 DC 0.0
+
+Vin in 0 PWL(
++   0.0n  0.0
++   2.0n  0.0
++   2.1n  2.5
++   5.0n  2.5
++   5.1n  5.0
++   8.0n  5.0
++   8.1n  2.5
++  11.0n  2.5
++  11.1n  0.0
++  14.0n  0.0
++ )
+
+CLoad ternary_output 0 10ff
+
+* 6. Simulation Commands
+.tran 1p 20n
+.op
+.control
+run
+plot v(in) v(nti) v(pti)
+plot i(Vdd)
+.endc
+.end
+

@@ -1,0 +1,184 @@
+* NGSPICE file created from 5v0_add_q_sc.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 m1_n1654_59# ternary_input VSS VSS nfet_06v0 ad=6.336n pd=0.32m as=6.336n ps=0.32m w=72 l=578
+X1 VDD_3V3_uq0 ternary_input m1_n1654_59# VDD_3V3_uq0 pfet_06v0 ad=12.81n pd=0.349m as=12.688n ps=0.348m w=244 l=100
+X2 m1_n1654_59# ternary_input VDD_3V3_uq0 VDD_3V3_uq0 pfet_06v0 ad=12.688n pd=0.348m as=21.472n ps=0.664m w=244 l=100
+X3 m1_n1654_59# ternary_input VDD_3V3_uq0 VDD_3V3_uq0 pfet_06v0 ad=27.328n pd=0.712m as=12.81n ps=0.349m w=244 l=100
+X4 5v0_nti_sc_f_0/ternary_output ternary_input VSS VSS nfet_06v0 ad=12.7n pd=0.454m as=11.303n ps=0.432m w=127 l=120
+X5 5v0_nti_sc_f_0/ternary_output ternary_input VDD_3V3_uq0 VDD_3V3_uq0 pfet_06v0 ad=9.696n pd=0.394m as=8.928n ps=0.378m w=96 l=150
+X6 5v0_half_adder_selector_sc_0/m1_n9_n292# 5v0_half_adder_selector_sc_0/m1_n239_179# a_n1798_n937# VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X7 5v0_half_adder_selector_sc_0/m1_n9_n292# 5v0_half_adder_selector_sc_0/m1_n239_179# m1_n698_624# VDD_3V3_uq0 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X8 5v0_half_adder_selector_sc_0/m1_n239_179# ctrl_sign VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X9 5v0_half_adder_selector_sc_0/m1_n239_179# ctrl_sign VDD_3V3_uq0 VDD_3V3_uq0 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X10 5v0_half_adder_selector_sc_0/m1_n9_n292# ctrl_sign m1_n698_624# VSS nfet_06v0 ad=31.489n pd=1.041m as=43.711n ps=1.504m w=164 l=120
+X11 5v0_half_adder_selector_sc_0/m1_n9_n292# ctrl_sign a_n1798_n937# VDD_3V3_uq0 pfet_06v0 ad=46.849n pd=1.361m as=42.856n ps=1.326m w=244 l=100
+X12 ternary_output 5v0_half_adder_selector_sc_0/m1_n437_n664# 5v0_half_adder_selector_sc_0/m1_n9_n292# VSS nfet_06v0 ad=17.057n pd=0.537m as=0 ps=0 w=164 l=120
+X13 ternary_output 5v0_half_adder_selector_sc_0/m1_n437_n664# 5v0_half_adder_selector_sc_0/m1_n10_n948# VDD_3V3 pfet_06v0 ad=25.377n pd=0.697m as=21.472n ps=0.664m w=244 l=100
+X14 5v0_half_adder_selector_sc_0/m1_n244_n517# 5v0_half_adder_selector_sc_0/m1_n437_n664# VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=0.10465u ps=3.768m w=164 l=120
+X15 5v0_half_adder_selector_sc_0/m1_n244_n517# 5v0_half_adder_selector_sc_0/m1_n437_n664# VDD_3V3 VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=85.71201n ps=2.652m w=244 l=100
+X16 ternary_output 5v0_half_adder_selector_sc_0/m1_n244_n517# 5v0_half_adder_selector_sc_0/m1_n10_n948# VSS nfet_06v0 ad=0 pd=0 as=14.432n ps=0.504m w=164 l=120
+X17 ternary_output 5v0_half_adder_selector_sc_0/m1_n244_n517# 5v0_half_adder_selector_sc_0/m1_n9_n292# VDD_3V3 pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X18 a_n1325_n547# m1_n1654_59# VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X19 a_n1325_n547# m1_n1654_59# VDD_3V3_uq0 VDD_3V3_uq0 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X20 a_n1898_n981# 5v0_nti_sc_f_0/ternary_output VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=0 ps=0 w=164 l=120
+X21 a_n1898_n981# 5v0_nti_sc_f_0/ternary_output VDD_3V3 VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=0 ps=0 w=244 l=100
+X22 a_n1373_n454# a_n1898_n981# a_n1798_n937# VSS nfet_06v0 ad=3.528n pd=0.195m as=8.599n ps=0.264m w=147 l=120
+X23 m1_n698_624# 5v0_nti_sc_f_0/ternary_output a_n1205_n937# VDD_3V3 pfet_06v0 ad=21.384n pd=0.662m as=5.832n ps=0.291m w=243 l=100
+X24 m1_n698_624# 5v0_nti_sc_f_0/ternary_output VDD_1V65 VSS nfet_06v0 ad=14.847n pd=0.496m as=10.51n ps=0.29m w=147 l=120
+X25 a_n1205_n937# a_n1325_n547# VDD_3V3 VDD_3V3 pfet_06v0 ad=5.832n pd=0.291m as=21.384n ps=0.662m w=243 l=100
+X26 a_n1798_n937# m1_n1654_59# a_n1778_n454# VSS nfet_06v0 ad=8.599n pd=0.264m as=3.528n ps=0.195m w=147 l=120
+X27 a_n1778_n454# a_n1898_n981# VSS VSS nfet_06v0 ad=3.528n pd=0.195m as=14.847n ps=0.496m w=147 l=120
+X28 m1_n698_624# a_n1325_n547# VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X29 VDD_1V65 a_n1325_n547# a_n1373_n454# VSS nfet_06v0 ad=10.51n pd=0.29m as=3.528n ps=0.195m w=147 l=120
+X30 a_n1798_n937# a_n1898_n981# VDD_3V3 VDD_3V3 pfet_06v0 ad=21.384n pd=0.662m as=21.384n ps=0.662m w=243 l=100
+C0 5v0_half_adder_selector_sc_0/m1_n9_n292# m1_n698_624# 0.27475f
+C1 a_n1373_n454# a_n1325_n547# 0.00135f
+C2 5v0_half_adder_selector_sc_0/m1_n239_179# 5v0_half_adder_selector_sc_0/m1_n10_n948# 0
+C3 a_n1373_n454# a_n1798_n937# 0.00442f
+C4 ternary_input ctrl_sign 0.0028f
+C5 a_n1798_n937# a_n1205_n937# 0.00453f
+C6 VDD_3V3_uq0 m1_n1654_59# 0.551f
+C7 m1_n1654_59# m1_n698_624# 0
+C8 VDD_3V3 5v0_half_adder_selector_sc_0/m1_n244_n517# 0.27028f
+C9 ternary_input 5v0_nti_sc_f_0/ternary_output 0.60908f
+C10 ctrl_sign 5v0_half_adder_selector_sc_0/m1_n437_n664# 0.01302f
+C11 5v0_half_adder_selector_sc_0/m1_n10_n948# 5v0_half_adder_selector_sc_0/m1_n437_n664# 0.06982f
+C12 a_n1778_n454# VDD_1V65 0
+C13 a_n1798_n937# a_n1325_n547# 0.07797f
+C14 5v0_half_adder_selector_sc_0/m1_n9_n292# ctrl_sign 0.22345f
+C15 a_n1373_n454# VDD_1V65 0.00232f
+C16 5v0_half_adder_selector_sc_0/m1_n9_n292# 5v0_half_adder_selector_sc_0/m1_n10_n948# 0.25895f
+C17 5v0_half_adder_selector_sc_0/m1_n9_n292# 5v0_nti_sc_f_0/ternary_output 0.00372f
+C18 VDD_1V65 a_n1205_n937# 0.00354f
+C19 ctrl_sign m1_n1654_59# 0
+C20 5v0_half_adder_selector_sc_0/m1_n244_n517# ternary_output 0.23201f
+C21 m1_n1654_59# 5v0_nti_sc_f_0/ternary_output 0.17279f
+C22 a_n1325_n547# VDD_1V65 0.14775f
+C23 a_n1798_n937# VDD_1V65 0.13024f
+C24 5v0_half_adder_selector_sc_0/m1_n239_179# VDD_3V3 0.00154f
+C25 ternary_input VDD_3V3 0.15502f
+C26 ternary_input a_n1898_n981# 0.02714f
+C27 VDD_3V3 5v0_half_adder_selector_sc_0/m1_n437_n664# 0.40911f
+C28 5v0_half_adder_selector_sc_0/m1_n9_n292# VDD_3V3 0.13661f
+C29 VDD_3V3_uq0 m1_n698_624# 0.33323f
+C30 VDD_3V3 m1_n1654_59# 0.02893f
+C31 ternary_input ternary_output 0.09966f
+C32 m1_n1654_59# a_n1898_n981# 0.10928f
+C33 ternary_output 5v0_half_adder_selector_sc_0/m1_n437_n664# 0.18581f
+C34 VDD_3V3_uq0 ctrl_sign 0.38402f
+C35 5v0_half_adder_selector_sc_0/m1_n244_n517# a_n1325_n547# 0
+C36 5v0_half_adder_selector_sc_0/m1_n9_n292# ternary_output 0.11993f
+C37 a_n1798_n937# 5v0_half_adder_selector_sc_0/m1_n244_n517# 0.02897f
+C38 ctrl_sign m1_n698_624# 0.08746f
+C39 VDD_3V3_uq0 5v0_nti_sc_f_0/ternary_output 0.16211f
+C40 m1_n698_624# 5v0_half_adder_selector_sc_0/m1_n10_n948# 0.00165f
+C41 m1_n698_624# 5v0_nti_sc_f_0/ternary_output 0.11981f
+C42 ternary_input a_n1778_n454# 0.00116f
+C43 5v0_half_adder_selector_sc_0/m1_n244_n517# VDD_1V65 0
+C44 a_n1373_n454# ternary_input 0.00136f
+C45 ctrl_sign 5v0_nti_sc_f_0/ternary_output 0
+C46 ternary_input a_n1205_n937# 0
+C47 5v0_half_adder_selector_sc_0/m1_n239_179# a_n1325_n547# 0
+C48 5v0_half_adder_selector_sc_0/m1_n239_179# a_n1798_n937# 0.09961f
+C49 ternary_input a_n1325_n547# 0.08497f
+C50 5v0_half_adder_selector_sc_0/m1_n9_n292# a_n1205_n937# 0
+C51 ternary_input a_n1798_n937# 0.16132f
+C52 m1_n1654_59# a_n1778_n454# 0.00135f
+C53 VDD_3V3_uq0 VDD_3V3 0
+C54 VDD_3V3 m1_n698_624# 0.13834f
+C55 a_n1373_n454# m1_n1654_59# 0
+C56 a_n1798_n937# 5v0_half_adder_selector_sc_0/m1_n437_n664# 0.00206f
+C57 VDD_3V3_uq0 a_n1898_n981# 0.00196f
+C58 m1_n698_624# a_n1898_n981# 0
+C59 5v0_half_adder_selector_sc_0/m1_n9_n292# a_n1325_n547# 0
+C60 5v0_half_adder_selector_sc_0/m1_n9_n292# a_n1798_n937# 0.25302f
+C61 ternary_input VDD_1V65 0.03394f
+C62 m1_n1654_59# a_n1325_n547# 0.19351f
+C63 a_n1798_n937# m1_n1654_59# 0.08313f
+C64 ctrl_sign VDD_3V3 0
+C65 VDD_3V3 5v0_half_adder_selector_sc_0/m1_n10_n948# 0.0303f
+C66 m1_n698_624# ternary_output 0
+C67 VDD_3V3 5v0_nti_sc_f_0/ternary_output 0.40684f
+C68 a_n1898_n981# 5v0_nti_sc_f_0/ternary_output 0.20745f
+C69 m1_n1654_59# VDD_1V65 0.00115f
+C70 5v0_half_adder_selector_sc_0/m1_n10_n948# ternary_output 0.05319f
+C71 ternary_output 5v0_nti_sc_f_0/ternary_output 0
+C72 5v0_half_adder_selector_sc_0/m1_n239_179# 5v0_half_adder_selector_sc_0/m1_n244_n517# 0.00395f
+C73 m1_n698_624# a_n1778_n454# 0
+C74 a_n1373_n454# m1_n698_624# 0
+C75 ternary_input 5v0_half_adder_selector_sc_0/m1_n244_n517# 0.09044f
+C76 m1_n698_624# a_n1205_n937# 0.00334f
+C77 VDD_3V3 a_n1898_n981# 0.59815f
+C78 5v0_half_adder_selector_sc_0/m1_n244_n517# 5v0_half_adder_selector_sc_0/m1_n437_n664# 0.37702f
+C79 VDD_3V3_uq0 a_n1325_n547# 0.23112f
+C80 VDD_3V3_uq0 a_n1798_n937# 0.10943f
+C81 m1_n698_624# a_n1325_n547# 0.0467f
+C82 5v0_half_adder_selector_sc_0/m1_n9_n292# 5v0_half_adder_selector_sc_0/m1_n244_n517# 0.14284f
+C83 a_n1798_n937# m1_n698_624# 0.38867f
+C84 a_n1778_n454# 5v0_nti_sc_f_0/ternary_output 0.00123f
+C85 a_n1373_n454# 5v0_nti_sc_f_0/ternary_output 0
+C86 VDD_3V3 ternary_output 0.15496f
+C87 m1_n1654_59# 5v0_half_adder_selector_sc_0/m1_n244_n517# 0
+C88 a_n1205_n937# 5v0_nti_sc_f_0/ternary_output 0
+C89 ternary_input 5v0_half_adder_selector_sc_0/m1_n239_179# 0.00189f
+C90 VDD_3V3_uq0 VDD_1V65 0
+C91 ctrl_sign a_n1325_n547# 0.00263f
+C92 m1_n698_624# VDD_1V65 0.16859f
+C93 a_n1798_n937# ctrl_sign 0.14523f
+C94 5v0_half_adder_selector_sc_0/m1_n239_179# 5v0_half_adder_selector_sc_0/m1_n437_n664# 0.00486f
+C95 a_n1798_n937# 5v0_half_adder_selector_sc_0/m1_n10_n948# 0.00615f
+C96 a_n1325_n547# 5v0_nti_sc_f_0/ternary_output 0.21872f
+C97 a_n1798_n937# 5v0_nti_sc_f_0/ternary_output 0.07077f
+C98 5v0_half_adder_selector_sc_0/m1_n239_179# 5v0_half_adder_selector_sc_0/m1_n9_n292# 0.18379f
+C99 ternary_input 5v0_half_adder_selector_sc_0/m1_n437_n664# 0.02233f
+C100 ternary_input 5v0_half_adder_selector_sc_0/m1_n9_n292# 0.02636f
+C101 VDD_1V65 5v0_nti_sc_f_0/ternary_output 0.21326f
+C102 5v0_half_adder_selector_sc_0/m1_n9_n292# 5v0_half_adder_selector_sc_0/m1_n437_n664# 0.04907f
+C103 a_n1373_n454# VDD_3V3 0.00122f
+C104 a_n1778_n454# a_n1898_n981# 0.00212f
+C105 a_n1373_n454# a_n1898_n981# 0
+C106 ternary_input m1_n1654_59# 0.5313f
+C107 VDD_3V3 a_n1205_n937# 0.00891f
+C108 a_n1898_n981# a_n1205_n937# 0
+C109 VDD_3V3 a_n1325_n547# 0.16742f
+C110 a_n1798_n937# VDD_3V3 0.41098f
+C111 a_n1325_n547# a_n1898_n981# 0.08248f
+C112 a_n1798_n937# a_n1898_n981# 0.18136f
+C113 VDD_3V3_uq0 5v0_half_adder_selector_sc_0/m1_n244_n517# 0
+C114 m1_n698_624# 5v0_half_adder_selector_sc_0/m1_n244_n517# 0.00167f
+C115 VDD_3V3 VDD_1V65 0.04713f
+C116 a_n1898_n981# VDD_1V65 0.01095f
+C117 a_n1798_n937# ternary_output 0.00248f
+C118 ctrl_sign 5v0_half_adder_selector_sc_0/m1_n244_n517# 0.0109f
+C119 5v0_half_adder_selector_sc_0/m1_n244_n517# 5v0_half_adder_selector_sc_0/m1_n10_n948# 0.11606f
+C120 5v0_half_adder_selector_sc_0/m1_n244_n517# 5v0_nti_sc_f_0/ternary_output 0.00226f
+C121 VDD_3V3_uq0 5v0_half_adder_selector_sc_0/m1_n239_179# 0.28989f
+C122 5v0_half_adder_selector_sc_0/m1_n239_179# m1_n698_624# 0.07502f
+C123 VDD_3V3_uq0 ternary_input 0.96005f
+C124 ternary_input m1_n698_624# 0.02397f
+C125 VDD_3V3_uq0 5v0_half_adder_selector_sc_0/m1_n437_n664# 0.0015f
+C126 5v0_half_adder_selector_sc_0/m1_n239_179# ctrl_sign 0.30291f
+C127 a_n1798_n937# a_n1778_n454# 0.0031f
+C128 VDD_3V3_uq0 5v0_half_adder_selector_sc_0/m1_n9_n292# 0.02483f
+C129 VDD_1V65 VSS 0.09232f
+C130 a_n1205_n937# VSS 0 ; **FLOATING
+C131 a_n1373_n454# VSS 0.00335f ; **FLOATING
+C132 a_n1778_n454# VSS 0.00573f ; **FLOATING
+C133 a_n1898_n981# VSS 0.56173f ; **FLOATING
+C134 a_n1325_n547# VSS 0.6002f ; **FLOATING
+C135 5v0_nti_sc_f_0/ternary_output VSS 1.36076f
+C136 m1_n1654_59# VSS 0.62941f ; **FLOATING
+C137 VDD_3V3_uq0 VSS 6.3874f
+C138 5v0_half_adder_selector_sc_0/m1_n437_n664# VSS 0.571f ; **FLOATING
+C139 5v0_half_adder_selector_sc_0/m1_n10_n948# VSS 0.55254f ; **FLOATING
+C140 ternary_output VSS 0.30264f
+C141 5v0_half_adder_selector_sc_0/m1_n244_n517# VSS 0.39366f ; **FLOATING
+C142 VDD_3V3 VSS 6.28664f
+C143 5v0_half_adder_selector_sc_0/m1_n239_179# VSS 0.30065f ; **FLOATING
+C144 5v0_half_adder_selector_sc_0/m1_n9_n292# VSS 0.50953f ; **FLOATING
+C145 a_n1798_n937# VSS 0.64154f ; **FLOATING
+C146 ctrl_sign VSS 0.56557f
+C147 m1_n698_624# VSS 0.54918f ; **FLOATING
+C148 ternary_input VSS 1.48124f

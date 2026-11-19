@@ -1,0 +1,44 @@
+* secure binary to ternary conversion E-Ternary Test (5V0)
+
+
+.include "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice"
+.lib "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice" typical
+
+* 2. Include your Magic-extracted netlist
+.include "5v0_upstep_sc_v10.spice"
+
+* Absolute power rails for transistor gates and bulk/wells
+Vdd VDD_3V3 0 DC 5.0
+Vdd1 5v0_pti_sc_0/VDD_3V3 0 DC 5.0
+Vdd2 5v0_nti_sc_f_0/VDD_3V3 0 DC 5.0
+Vss VSS 0 DC 0.0
+Vhf VDD_1V65 0 DC 2.5
+Vpw VPW 0 DC 0.0
+Vnw VNW 0 DC 5.0
+Vdd_main VDD 0 DC 5.0
+Vin_0 ternary_input 0 PWL(
++   0.0n   0.0
++   5.0n   0.0
++   5.1n   5.0
++  10.0n   5.0
++  10.1n   2.5
++  15.0n   2.5
++  15.1n   5.0
++  20.0n   5.0
++  20.1n   0.0
++  25.0n   0.0
++ )
+
+
+CLoad ternary_output 0 10ff
+
+* 6. Simulation Commands
+.tran 1p 25n
+.op
+.control
+run
+plot v(ternary_output) v(ternary_input)
+plot v(nti_test_point) v(pti_test_point)
+.endc
+.end
+

@@ -1,0 +1,100 @@
+* Ternary 3-Trit + Carry-In Adder Truth-Table Testbench (5V0 Domain)
+* Tests all 108 states: 4 (in_0_over, in_0_sign) x 3 (in_1) x 3 (in_2) x 3 (in_3)
+* State duration = 20ns -> Total simulation time = 2200ns (2160ns active)
+
+* 1. PDK Models (GF180MCU)
+.include "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice"
+.lib "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice" typical
+
+* 2. Include your Magic-extracted netlist (update filename if needed)
+.include "5v0_add3_sc_v10.spice"
+
+* 3. Power Supplies
+Vdd  VDD_3V3_0  0 DC 5.0
+Vdd2 VDD_3V3_1  0 DC 5.0
+Vhf0 VDD_1V65_0 0 DC 2.5
+Vhf1 VDD_1V65_1 0 DC 2.5
+Vhf2 VDD_1V65_2 0 DC 2.5
+Vhf3 VDD_1V65_3 0 DC 2.5
+Vhf4 VDD_1V65_4 0 DC 2.5
+Vhf5 VDD_1V65_5 0 DC 2.5
+Vss0 VSS_0      0 DC 0.0
+Vss1 VSS_1      0 DC 0.0
+Vss2 VSS_2      0 DC 0.0
+Vss3 VSS_3      0 DC 0.0
+
+* 4. Input Stimuli (20ns base step, 250ps rise/fall)
+* ----------------------------------------------------------------------
+* in_3 cycles 0V -> 2.5V -> 5.0V every 20ns (60ns full ternary period)
+Vin_3_1 in_3_int 0        PULSE(0.0 2.5 20n   250p 250p 39.75n   60n)
+Vin_3_2 in_3     in_3_int PULSE(0.0 2.5 40n   250p 250p 19.75n   60n)
+
+* in_2 cycles 0V -> 2.5V -> 5.0V every 60ns (180ns full ternary period)
+Vin_2_1 in_2_int 0        PULSE(0.0 2.5 60n   250p 250p 119.75n  180n)
+Vin_2_2 in_2     in_2_int PULSE(0.0 2.5 120n  250p 250p 59.75n   180n)
+
+* in_1 cycles 0V -> 2.5V -> 5.0V every 180ns (540ns full ternary period)
+Vin_1_1 in_1_int 0        PULSE(0.0 2.5 180n  250p 250p 359.75n  540n)
+Vin_1_2 in_1     in_1_int PULSE(0.0 2.5 360n  250p 250p 179.75n  540n)
+
+* in_0_sign toggles every 540ns (1080ns period)
+Vin_0_sign in_0_sign 0    PULSE(0.0 5.0 540n  250p 250p 539.75n  1080n)
+
+* in_0_over toggles every 1080ns (2160ns period)
+Vin_0_over in_0_over 0    PULSE(0.0 5.0 1080n 250p 250p 1079.75n 2160n)
+
+* 5. DUT Instantiation
+* IMPORTANT: Match port order and subcircuit name to your extracted .spice file!
+* Uncomment and adjust if your netlist uses a .subckt wrapper:
+*Xdut in_0_over in_0_sign in_1 in_2 in_3 res_0 res_c VDD_3V3 VDD_1V65 VDD_1V65_2 VSS 5v0_addf_sc_v4
+
+* 6. Output Capacitive Loads
+CLoad_res0 res_0 0 10ff
+CLoad_resc res_c 0 10ff
+
+* 7. Simulation & Plotting Commands
+*.tran 20p 2200n
+.tran 200p 2200n
+.op
+
+.control
+  run
+
+  * --- PLOT 1: Stacked Analog Waveforms (Vertical Offset by 7V per track) ---
+  * Track 0 (0V-5V)   : in_3 (3-level)
+  * Track 1 (7V-12V)  : in_2 (3-level)
+  * Track 2 (14V-19V) : in_1 (3-level)
+  * Track 3 (21V-26V) : in_0_sign (2-level)
+  * Track 4 (28V-33V) : in_0_over (2-level, HIGH = 0)
+  * Track 5 (35V-40V) : res_0 (3-level sum output)
+  * Track 6 (42V-47V) : res_c (3-level carry output)
+  plot v(in_3) v(in_2)+7 v(in_1)+14 v(in_0_sign)+21 v(in_0_over)+28 v(res_0)+35 v(res_c)+42 title "3-Trit + Carry Adder - Stacked I/O Waveforms (7V Offset)" xlabel "Time (s)" ylabel "Stacked Voltage Tracks"
+plot v(int_012) v(int_carry)
+plot v(int_c01) v(in_0_sign) + 7 v(in_0_over)+14 v(in_1)+21 v(res_01)+28
+plot v(res_01) v(int_c01)+7 v(in_2)+14 v(int012)+21 v(int_carry)+28
+plot v(res_01) v(in_2)+7 v(int_012)+14
+
+plot v(int_c01) v(int_carry)+7 v(c_2_s)+14 v(c_2_o)+21
+plot v(int_c01) v(c01) v(c01over)
+  * --- PLOT 2: Decoded Arithmetic Check (-4 to +4) ---
+  * Single-wire ternary (in_1, in_2, in_3, res_0, res_c): 0V -> -1, 2.5V -> 0, 5V -> +1
+  * Two-wire carry-in (in_0_over, in_0_sign): over > 2.5V -> 0; else sign > 2.5V -> +1, sign <= 2.5V -> -1
+  let val_in3   = (v(in_3) - 2.5) / 2.5
+  let val_in2   = (v(in_2) - 2.5) / 2.5
+  let val_in1   = (v(in_1) - 2.5) / 2.5
+  let val_in0   = (v(in_0_over) < 2.5) * ((v(in_0_sign) > 2.5) * 1 + (v(in_0_sign) <= 2.5) * (-1))
+
+  let val_res0  = (v(res_0) - 2.5) / 2.5
+  let val_resc  = (v(res_c) - 2.5) / 2.5
+
+  let expected_total = val_in0 + val_in1 + val_in2 + val_in3
+  let actual_total   = val_res0 + (3 * val_resc)
+  let error_diff     = actual_total - expected_total
+
+  plot expected_total actual_total error_diff title "Functional Verification: Expected vs Actual (res_0 + 3*res_c)" xlabel "Time (s)" ylabel "Balanced Ternary Sum (-4 to +4)"
+
+  * --- PLOT 3: Dynamic & Static Supply Current ---
+  plot -i(Vdd) i(Vss) title "Supply Currents (5V0 Rail & Ground)" xlabel "Time (s)" ylabel "Current (A)"
+
+.endc
+.end

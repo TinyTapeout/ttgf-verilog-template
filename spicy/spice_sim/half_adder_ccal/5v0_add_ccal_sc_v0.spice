@@ -1,0 +1,86 @@
+* NGSPICE file created from 5v0_add_ccal_sc.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 m1_n845_490# in_over VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X1 m1_n845_490# in_over VDD_3V3 VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X2 m1_n9_n292# m1_n251_406# in_sign VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X3 m1_n9_n292# m1_n251_406# m1_n845_490# VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X4 m1_n251_406# ctrl_sign VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X5 m1_n251_406# ctrl_sign VDD_3V3 VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X6 m1_n9_n292# ctrl_sign m1_n845_490# VSS nfet_06v0 ad=31.489n pd=1.041m as=28.864n ps=1.008m w=164 l=120
+X7 m1_n9_n292# ctrl_sign in_sign VDD_3V3 pfet_06v0 ad=46.849n pd=1.361m as=42.944n ps=1.328m w=244 l=100
+X8 res_over a_n974_n610# m1_n9_n292# VSS nfet_06v0 ad=17.057n pd=0.537m as=0 ps=0 w=164 l=120
+X9 res_over a_n974_n610# in_over VDD_3V3 pfet_06v0 ad=25.377n pd=0.697m as=42.944n ps=1.328m w=244 l=100
+X10 a_n974_n610# ctrl_over VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=43.296n ps=1.512m w=164 l=120
+X11 a_n974_n610# ctrl_over VDD_3V3 VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=64.416n ps=1.992m w=244 l=100
+X12 res_over ctrl_over in_over VSS nfet_06v0 ad=0 pd=0 as=28.864n ps=1.008m w=164 l=120
+X13 res_over ctrl_over m1_n9_n292# VDD_3V3 pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X14 in_sign ctrl_over res_sign VSS nfet_06v0 ad=14.432n pd=0.504m as=8.528n ps=0.268m w=164 l=120
+X15 res_sign a_n974_n610# in_over VSS nfet_06v0 ad=8.528n pd=0.268m as=14.432n ps=0.504m w=164 l=120
+X16 res_sign a_n974_n610# in_sign VDD_3V3 pfet_06v0 ad=12.688n pd=0.348m as=21.472n ps=0.664m w=244 l=100
+X17 in_over ctrl_over res_sign VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=12.688n ps=0.348m w=244 l=100
+C0 m1_n845_490# in_sign 0.30245f
+C1 a_n974_n610# m1_n251_406# 0.00585f
+C2 m1_n845_490# in_over 0.2311f
+C3 m1_n845_490# ctrl_over 0
+C4 m1_n845_490# m1_n9_n292# 0.13571f
+C5 m1_n845_490# a_n974_n610# 0.00153f
+C6 ctrl_sign 5v0_tgate_sel_2_sc_1/input_A 0.0139f
+C7 ctrl_sign VDD_3V3 0.33385f
+C8 ctrl_sign in_sign 0.19307f
+C9 in_over ctrl_sign 0.05148f
+C10 ctrl_sign ctrl_over 0.00888f
+C11 5v0_tgate_sel_2_sc_1/input_A VDD_3V3 0.12499f
+C12 in_sign 5v0_tgate_sel_2_sc_1/input_A 0
+C13 m1_n845_490# m1_n251_406# 0.12057f
+C14 ctrl_sign m1_n9_n292# 0.22339f
+C15 in_sign VDD_3V3 0.54991f
+C16 5v0_tgate_sel_2_sc_1/input_A ctrl_over 0.05989f
+C17 in_over VDD_3V3 0.42027f
+C18 ctrl_over VDD_3V3 0.54681f
+C19 in_over in_sign 0.48074f
+C20 in_sign ctrl_over 0.08001f
+C21 5v0_tgate_sel_2_sc_1/input_A m1_n9_n292# 0.00986f
+C22 in_over ctrl_over 0.26956f
+C23 m1_n9_n292# VDD_3V3 0.08135f
+C24 5v0_tgate_sel_2_sc_1/input_A a_n974_n610# 0.04306f
+C25 in_sign m1_n9_n292# 0.15602f
+C26 a_n974_n610# VDD_3V3 0.44139f
+C27 res_sign VDD_3V3 0.0694f
+C28 in_over m1_n9_n292# 0.31843f
+C29 in_sign a_n974_n610# 0.14076f
+C30 m1_n9_n292# ctrl_over 0.08184f
+C31 in_sign res_sign 0.08918f
+C32 in_over a_n974_n610# 0.29231f
+C33 in_over res_sign 0.11395f
+C34 a_n974_n610# ctrl_over 0.45934f
+C35 res_sign ctrl_over 0.15312f
+C36 ctrl_sign m1_n251_406# 0.29796f
+C37 res_over VDD_3V3 0.01786f
+C38 a_n974_n610# m1_n9_n292# 0.10467f
+C39 in_over res_over 0.14786f
+C40 res_over ctrl_over 0.19209f
+C41 a_n974_n610# res_sign 0.20019f
+C42 5v0_tgate_sel_2_sc_1/input_A m1_n251_406# 0.01222f
+C43 m1_n845_490# ctrl_sign 0.16225f
+C44 VDD_3V3 m1_n251_406# 0.2687f
+C45 res_over m1_n9_n292# 0.07822f
+C46 in_sign m1_n251_406# 0.12851f
+C47 in_over m1_n251_406# 0.00535f
+C48 res_over a_n974_n610# 0.15709f
+C49 m1_n845_490# 5v0_tgate_sel_2_sc_1/input_A 0.07351f
+C50 m1_n845_490# VDD_3V3 0.5064f
+C51 m1_n9_n292# m1_n251_406# 0.18379f
+C52 res_sign VSS 0.01485f
+C53 5v0_tgate_sel_2_sc_1/input_A VSS 0.02248f
+C54 a_n974_n610# VSS 0.56206f ; **FLOATING
+C55 res_over VSS 0.02253f
+C56 ctrl_over VSS 0.65783f
+C57 VDD_3V3 VSS 6.87817f
+C58 m1_n251_406# VSS 0.27061f ; **FLOATING
+C59 m1_n9_n292# VSS 0.46177f ; **FLOATING
+C60 in_sign VSS 0.76181f
+C61 ctrl_sign VSS 0.46296f
+C62 m1_n845_490# VSS 0.58608f ; **FLOATING
+C63 in_over VSS 1.6852f

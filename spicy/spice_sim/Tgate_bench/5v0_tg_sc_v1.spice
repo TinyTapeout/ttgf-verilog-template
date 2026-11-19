@@ -1,0 +1,33 @@
+* NGSPICE file created from 5v0_tg_sc.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSS gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X1 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD invI pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X2 out gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I In gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X3 out a_144_428# In invI pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+C0 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I invI 0.18481f
+C1 a_144_428# invI 0.20373f
+C2 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN invI 0.05563f
+C3 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I out 0.0221f
+C4 a_144_428# out 0.01813f
+C5 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD 0.07542f
+C6 a_144_428# gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD 0.03005f
+C7 invI In 0.05889f
+C8 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD 0.14487f
+C9 a_144_428# gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I 0.02126f
+C10 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I 0.20484f
+C11 In out 0.08894f
+C12 a_144_428# gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN 0.02335f
+C13 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I In 0.08812f
+C14 a_144_428# In 0.10788f
+C15 invI out 0.04292f
+C16 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN In 0.03019f
+C17 invI gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD 0.07991f
+C18 out gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSS 0.13587f
+C19 In gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSS 0.09856f
+C20 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSS 0.12455f
+C21 a_144_428# gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSS 0.16194f ; **FLOATING
+C22 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSS 0.1705f
+C23 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSS 0.88456f
+C24 invI gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSS 1.94172f

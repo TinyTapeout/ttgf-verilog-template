@@ -1,0 +1,55 @@
+* NGSPICE file created from 5v0_t2b_ov_sc.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 inverter_pair_short_0/pti in VSS VSUBS nfet_06v0 ad=6.336n pd=0.32m as=6.478n ps=0.255m w=72 l=578
+X1 VDD_3V3 in inverter_pair_short_0/pti gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW pfet_06v0 ad=12.81n pd=0.349m as=12.688n ps=0.348m w=244 l=100
+X2 VDD_3V3 in inverter_pair_short_0/nti gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW pfet_06v0 ad=13.616n pd=0.392m as=9.696n ps=0.394m w=96 l=150
+X3 VSS in inverter_pair_short_0/nti VSUBS nfet_06v0 ad=6.478n pd=0.255m as=12.7n ps=0.454m w=127 l=120
+X4 inverter_pair_short_0/pti in VDD_3V3 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW pfet_06v0 ad=12.688n pd=0.348m as=13.616n ps=0.392m w=244 l=100
+X5 inverter_pair_short_0/pti in VDD_3V3 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW pfet_06v0 ad=27.328n pd=0.712m as=12.81n ps=0.349m w=244 l=100
+X6 sign inverter_pair_short_0/pti VSS VSUBS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X7 sign inverter_pair_short_0/pti VDD_3V3 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X8 over inverter_pair_short_0/nti gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW pfet_06v0 ad=21.472n pd=0.664m as=16.348n ps=0.378m w=244 l=100
+X9 VSS inverter_pair_short_0/nti over VSUBS nfet_06v0 ad=9.944n pd=0.402m as=5.876n ps=0.217m w=113 l=120
+X10 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# sign VDD_3V3 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW pfet_06v0 ad=16.348n pd=0.378m as=21.472n ps=0.664m w=244 l=100
+X11 over sign VSS VSUBS nfet_06v0 ad=5.876n pd=0.217m as=9.944n ps=0.402m w=113 l=120
+C0 VDD_3V3 inverter_pair_short_0/nti 0.06845f
+C1 VDD_3V3 VSS 0.01619f
+C2 in over 0.00314f
+C3 in gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW 0.64442f
+C4 in inverter_pair_short_0/pti 0.45124f
+C5 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# VSS 0
+C6 VDD_3V3 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# 0.01439f
+C7 inverter_pair_short_0/nti over 0.36485f
+C8 inverter_pair_short_0/nti gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW 0.16589f
+C9 inverter_pair_short_0/pti inverter_pair_short_0/nti 0.00231f
+C10 VSS over 0.04609f
+C11 VSS gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW 0.01305f
+C12 in sign 0.21095f
+C13 inverter_pair_short_0/pti VSS 0.16694f
+C14 VDD_3V3 over 0.06367f
+C15 VDD_3V3 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW 0.29319f
+C16 VDD_3V3 inverter_pair_short_0/pti 0.32736f
+C17 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# over 0.02369f
+C18 inverter_pair_short_0/nti sign 0.12688f
+C19 VSS sign 0.17341f
+C20 VDD_3V3 sign 0.2753f
+C21 over gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW 0.02258f
+C22 inverter_pair_short_0/pti gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW 0.20658f
+C23 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# sign 0.01328f
+C24 in inverter_pair_short_0/nti 0.17027f
+C25 over sign 0.24786f
+C26 in VSS 0.22299f
+C27 sign gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW 0.20483f
+C28 inverter_pair_short_0/pti sign 0.29895f
+C29 in VDD_3V3 0.22438f
+C30 inverter_pair_short_0/nti VSS 0.1734f
+C31 over VSUBS 0.01876f
+C32 inverter_pair_short_0/nti VSUBS 0.20363f
+C33 VSS VSUBS 0.76804f
+C34 sign VSUBS 0.80084f
+C35 VDD_3V3 VSUBS 0.48513f
+C36 inverter_pair_short_0/pti VSUBS 0.22198f
+C37 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW VSUBS 3.57109f
+C38 in VSUBS 0.79282f

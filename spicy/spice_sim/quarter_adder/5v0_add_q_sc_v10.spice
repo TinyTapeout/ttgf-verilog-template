@@ -1,0 +1,184 @@
+* NGSPICE file created from 5v0_add_q_sc.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 pti ternary_input VSS VSS nfet_06v0 ad=6.336n pd=0.32m as=6.336n ps=0.32m w=72 l=578
+X1 VDD_3V3_uq0 ternary_input pti VDD_3V3_uq0 pfet_06v0 ad=12.81n pd=0.349m as=12.688n ps=0.348m w=244 l=100
+X2 pti ternary_input VDD_3V3_uq0 VDD_3V3_uq0 pfet_06v0 ad=12.688n pd=0.348m as=21.472n ps=0.664m w=244 l=100
+X3 pti ternary_input VDD_3V3_uq0 VDD_3V3_uq0 pfet_06v0 ad=27.328n pd=0.712m as=12.81n ps=0.349m w=244 l=100
+X4 nti ternary_input VSS VSS nfet_06v0 ad=12.7n pd=0.454m as=11.303n ps=0.432m w=127 l=120
+X5 nti ternary_input VDD_3V3_uq0 VDD_3V3_uq0 pfet_06v0 ad=9.696n pd=0.394m as=8.928n ps=0.378m w=96 l=150
+X6 5v0_half_adder_selector_sc_0/res_stage0 5v0_half_adder_selector_sc_0/m1_n239_179# downstepper_test VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X7 5v0_half_adder_selector_sc_0/res_stage0 5v0_half_adder_selector_sc_0/m1_n239_179# upstepper_test VDD_3V3_uq0 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X8 5v0_half_adder_selector_sc_0/m1_n239_179# ctrl_sign VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X9 5v0_half_adder_selector_sc_0/m1_n239_179# ctrl_sign VDD_3V3_uq0 VDD_3V3_uq0 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X10 5v0_half_adder_selector_sc_0/res_stage0 ctrl_sign upstepper_test VSS nfet_06v0 ad=31.489n pd=1.041m as=43.711n ps=1.504m w=164 l=120
+X11 5v0_half_adder_selector_sc_0/res_stage0 ctrl_sign downstepper_test VDD_3V3_uq0 pfet_06v0 ad=46.849n pd=1.361m as=42.856n ps=1.326m w=244 l=100
+X12 ternary_output 5v0_half_adder_selector_sc_0/ctrl_over 5v0_half_adder_selector_sc_0/res_stage0 VSS nfet_06v0 ad=17.057n pd=0.537m as=0 ps=0 w=164 l=120
+X13 ternary_output 5v0_half_adder_selector_sc_0/ctrl_over ternary_input VDD_3V3 pfet_06v0 ad=25.377n pd=0.697m as=21.472n ps=0.664m w=244 l=100
+X14 5v0_half_adder_selector_sc_0/m1_n244_n517# 5v0_half_adder_selector_sc_0/ctrl_over VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=0.10465u ps=3.768m w=164 l=120
+X15 5v0_half_adder_selector_sc_0/m1_n244_n517# 5v0_half_adder_selector_sc_0/ctrl_over VDD_3V3 VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=85.71201n ps=2.652m w=244 l=100
+X16 ternary_output 5v0_half_adder_selector_sc_0/m1_n244_n517# ternary_input VSS nfet_06v0 ad=0 pd=0 as=14.432n ps=0.504m w=164 l=120
+X17 ternary_output 5v0_half_adder_selector_sc_0/m1_n244_n517# 5v0_half_adder_selector_sc_0/res_stage0 VDD_3V3 pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X18 inv_pti pti VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X19 inv_pti pti VDD_3V3_uq0 VDD_3V3_uq0 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X20 a_n1898_n981# nti VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=0 ps=0 w=164 l=120
+X21 a_n1898_n981# nti VDD_3V3 VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=0 ps=0 w=244 l=100
+X22 a_n1373_n454# a_n1898_n981# downstepper_test VSS nfet_06v0 ad=3.528n pd=0.195m as=8.599n ps=0.264m w=147 l=120
+X23 upstepper_test nti a_n1205_n937# VDD_3V3 pfet_06v0 ad=21.384n pd=0.662m as=5.832n ps=0.291m w=243 l=100
+X24 upstepper_test nti VDD_1V65 VSS nfet_06v0 ad=14.847n pd=0.496m as=10.51n ps=0.29m w=147 l=120
+X25 a_n1205_n937# inv_pti VDD_3V3 VDD_3V3 pfet_06v0 ad=5.832n pd=0.291m as=21.384n ps=0.662m w=243 l=100
+X26 downstepper_test pti a_n1778_n454# VSS nfet_06v0 ad=8.599n pd=0.264m as=3.528n ps=0.195m w=147 l=120
+X27 a_n1778_n454# a_n1898_n981# VSS VSS nfet_06v0 ad=3.528n pd=0.195m as=14.847n ps=0.496m w=147 l=120
+X28 upstepper_test inv_pti VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X29 VDD_1V65 inv_pti a_n1373_n454# VSS nfet_06v0 ad=10.51n pd=0.29m as=3.528n ps=0.195m w=147 l=120
+X30 downstepper_test a_n1898_n981# VDD_3V3 VDD_3V3 pfet_06v0 ad=21.384n pd=0.662m as=21.384n ps=0.662m w=243 l=100
+C0 ternary_output nti 0
+C1 upstepper_test nti 0.11981f
+C2 ternary_output VDD_3V3 0.15496f
+C3 upstepper_test VDD_3V3 0.13834f
+C4 VDD_1V65 pti 0.00115f
+C5 ternary_input a_n1778_n454# 0.00116f
+C6 downstepper_test ternary_input 0.16661f
+C7 VDD_1V65 a_n1373_n454# 0.00232f
+C8 5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 5v0_half_adder_selector_sc_0/res_stage0 0.00385f
+C9 VDD_1V65 5v0_half_adder_selector_sc_0/m1_n244_n517# 0
+C10 inv_pti ternary_input 0.08497f
+C11 VDD_3V3_uq0 ternary_input 0.96005f
+C12 5v0_half_adder_selector_sc_0/m1_n239_179# VDD_3V3 0.00154f
+C13 ctrl_sign nti 0
+C14 5v0_half_adder_selector_sc_0/ctrl_over VDD_3V3 0.40911f
+C15 ctrl_sign VDD_3V3 0
+C16 a_n1205_n937# ternary_input 0
+C17 nti pti 0.17279f
+C18 VDD_1V65 a_n1778_n454# 0
+C19 downstepper_test VDD_1V65 0.13024f
+C20 a_n1373_n454# nti 0
+C21 pti VDD_3V3 0.02893f
+C22 upstepper_test ternary_output 0
+C23 a_n1373_n454# VDD_3V3 0.00122f
+C24 a_n1898_n981# ternary_input 0.02714f
+C25 5v0_half_adder_selector_sc_0/m1_n244_n517# nti 0.00226f
+C26 VDD_1V65 inv_pti 0.14775f
+C27 VDD_1V65 VDD_3V3_uq0 0
+C28 5v0_half_adder_selector_sc_0/m1_n244_n517# VDD_3V3 0.27028f
+C29 upstepper_test 5v0_half_adder_selector_sc_0/m1_n239_179# 0.07502f
+C30 a_n1205_n937# VDD_1V65 0.00354f
+C31 5v0_half_adder_selector_sc_0/ctrl_over ternary_output 0.18581f
+C32 upstepper_test ctrl_sign 0.08746f
+C33 nti a_n1778_n454# 0.00123f
+C34 downstepper_test nti 0.07077f
+C35 downstepper_test VDD_3V3 0.41098f
+C36 5v0_half_adder_selector_sc_0/res_stage0 ternary_input 0.28146f
+C37 upstepper_test pti 0
+C38 a_n1898_n981# VDD_1V65 0.01095f
+C39 5v0_half_adder_selector_sc_0/ctrl_over 5v0_half_adder_selector_sc_0/m1_n239_179# 0.00486f
+C40 nti inv_pti 0.21872f
+C41 nti VDD_3V3_uq0 0.16211f
+C42 upstepper_test a_n1373_n454# 0
+C43 ctrl_sign 5v0_half_adder_selector_sc_0/m1_n239_179# 0.30291f
+C44 inv_pti VDD_3V3 0.16742f
+C45 5v0_half_adder_selector_sc_0/ctrl_over ctrl_sign 0.01302f
+C46 VDD_3V3_uq0 VDD_3V3 0
+C47 ternary_output 5v0_half_adder_selector_sc_0/m1_n244_n517# 0.23201f
+C48 upstepper_test 5v0_half_adder_selector_sc_0/m1_n244_n517# 0.00167f
+C49 a_n1205_n937# nti 0
+C50 a_n1205_n937# VDD_3V3 0.00891f
+C51 ctrl_sign pti 0
+C52 5v0_half_adder_selector_sc_0/m1_n239_179# 5v0_half_adder_selector_sc_0/m1_n244_n517# 0.00395f
+C53 a_n1898_n981# nti 0.20745f
+C54 downstepper_test ternary_output 0.00248f
+C55 upstepper_test a_n1778_n454# 0
+C56 upstepper_test downstepper_test 0.38867f
+C57 5v0_half_adder_selector_sc_0/ctrl_over 5v0_half_adder_selector_sc_0/m1_n244_n517# 0.37702f
+C58 ctrl_sign 5v0_half_adder_selector_sc_0/m1_n244_n517# 0.0109f
+C59 a_n1898_n981# VDD_3V3 0.59815f
+C60 a_n1373_n454# pti 0
+C61 ternary_output VDD_3V3_uq0 0
+C62 upstepper_test inv_pti 0.0467f
+C63 upstepper_test VDD_3V3_uq0 0.33323f
+C64 5v0_half_adder_selector_sc_0/m1_n244_n517# pti 0
+C65 downstepper_test 5v0_half_adder_selector_sc_0/m1_n239_179# 0.09961f
+C66 5v0_half_adder_selector_sc_0/ctrl_over downstepper_test 0.00206f
+C67 upstepper_test a_n1205_n937# 0.00334f
+C68 downstepper_test ctrl_sign 0.14523f
+C69 nti 5v0_half_adder_selector_sc_0/res_stage0 0.00372f
+C70 5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A VDD_3V3 0.03098f
+C71 5v0_half_adder_selector_sc_0/m1_n239_179# inv_pti 0
+C72 VDD_3V3 5v0_half_adder_selector_sc_0/res_stage0 0.13661f
+C73 5v0_half_adder_selector_sc_0/m1_n239_179# VDD_3V3_uq0 0.28989f
+C74 5v0_half_adder_selector_sc_0/ctrl_over VDD_3V3_uq0 0.0015f
+C75 pti a_n1778_n454# 0.00135f
+C76 ctrl_sign inv_pti 0.00263f
+C77 downstepper_test pti 0.08313f
+C78 ctrl_sign VDD_3V3_uq0 0.38402f
+C79 downstepper_test a_n1373_n454# 0.00442f
+C80 upstepper_test a_n1898_n981# 0
+C81 VDD_1V65 ternary_input 0.03394f
+C82 inv_pti pti 0.19351f
+C83 downstepper_test 5v0_half_adder_selector_sc_0/m1_n244_n517# 0.02897f
+C84 pti VDD_3V3_uq0 0.551f
+C85 a_n1373_n454# inv_pti 0.00135f
+C86 5v0_half_adder_selector_sc_0/m1_n244_n517# inv_pti 0
+C87 upstepper_test 5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C88 5v0_half_adder_selector_sc_0/m1_n244_n517# VDD_3V3_uq0 0
+C89 ternary_output 5v0_half_adder_selector_sc_0/res_stage0 0.11993f
+C90 upstepper_test 5v0_half_adder_selector_sc_0/res_stage0 0.27475f
+C91 downstepper_test a_n1778_n454# 0.0031f
+C92 a_n1898_n981# pti 0.10928f
+C93 nti ternary_input 0.60908f
+C94 a_n1898_n981# a_n1373_n454# 0
+C95 downstepper_test inv_pti 0.07797f
+C96 VDD_3V3 ternary_input 0.15434f
+C97 5v0_half_adder_selector_sc_0/ctrl_over 5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.01944f
+C98 downstepper_test VDD_3V3_uq0 0.10943f
+C99 5v0_half_adder_selector_sc_0/m1_n239_179# 5v0_half_adder_selector_sc_0/res_stage0 0.18379f
+C100 ctrl_sign 5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C101 5v0_half_adder_selector_sc_0/ctrl_over 5v0_half_adder_selector_sc_0/res_stage0 0.04907f
+C102 ctrl_sign 5v0_half_adder_selector_sc_0/res_stage0 0.22345f
+C103 a_n1205_n937# downstepper_test 0.00453f
+C104 inv_pti VDD_3V3_uq0 0.23112f
+C105 a_n1898_n981# a_n1778_n454# 0.00212f
+C106 VDD_1V65 nti 0.21326f
+C107 downstepper_test a_n1898_n981# 0.18136f
+C108 5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 5v0_half_adder_selector_sc_0/m1_n244_n517# 0.07353f
+C109 VDD_1V65 VDD_3V3 0.04713f
+C110 5v0_half_adder_selector_sc_0/m1_n244_n517# 5v0_half_adder_selector_sc_0/res_stage0 0.14284f
+C111 ternary_output ternary_input 0.19159f
+C112 upstepper_test ternary_input 0.02545f
+C113 a_n1898_n981# inv_pti 0.08248f
+C114 a_n1898_n981# VDD_3V3_uq0 0.00196f
+C115 downstepper_test 5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C116 a_n1205_n937# a_n1898_n981# 0
+C117 downstepper_test 5v0_half_adder_selector_sc_0/res_stage0 0.25302f
+C118 5v0_half_adder_selector_sc_0/m1_n239_179# ternary_input 0.00191f
+C119 5v0_half_adder_selector_sc_0/ctrl_over ternary_input 0.0727f
+C120 ctrl_sign ternary_input 0.00264f
+C121 nti VDD_3V3 0.40684f
+C122 inv_pti 5v0_half_adder_selector_sc_0/res_stage0 0
+C123 VDD_3V3_uq0 5v0_half_adder_selector_sc_0/res_stage0 0.02483f
+C124 upstepper_test VDD_1V65 0.16859f
+C125 pti ternary_input 0.5313f
+C126 a_n1205_n937# 5v0_half_adder_selector_sc_0/res_stage0 0
+C127 a_n1373_n454# ternary_input 0.00136f
+C128 5v0_half_adder_selector_sc_0/m1_n244_n517# ternary_input 0.13297f
+C129 pti VSS 0.62941f
+C130 VDD_1V65 VSS 0.09232f
+C131 a_n1205_n937# VSS 0 ; **FLOATING
+C132 a_n1373_n454# VSS 0.00335f ; **FLOATING
+C133 a_n1778_n454# VSS 0.00573f ; **FLOATING
+C134 a_n1898_n981# VSS 0.56173f ; **FLOATING
+C135 inv_pti VSS 0.6002f ; **FLOATING
+C136 nti VSS 1.36077f
+C137 5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A VSS 0
+C138 5v0_half_adder_selector_sc_0/ctrl_over VSS 0.571f
+C139 ternary_input VSS 2.00726f
+C140 ternary_output VSS 0.28152f
+C141 5v0_half_adder_selector_sc_0/m1_n244_n517# VSS 0.39366f ; **FLOATING
+C142 VDD_3V3 VSS 6.2849f
+C143 5v0_half_adder_selector_sc_0/m1_n239_179# VSS 0.30065f ; **FLOATING
+C144 5v0_half_adder_selector_sc_0/res_stage0 VSS 0.50953f
+C145 downstepper_test VSS 0.64154f
+C146 ctrl_sign VSS 0.56557f
+C147 VDD_3V3_uq0 VSS 6.37693f
+C148 upstepper_test VSS 0.54918f

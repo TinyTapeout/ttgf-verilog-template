@@ -1,0 +1,706 @@
+* NGSPICE file created from 5v0_addf_sc.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 5v0_addh_sc_0/pti in_A VSS VSS nfet_06v0 ad=6.336n pd=0.32m as=6.478n ps=0.255m w=72 l=578
+X1 VDD_3V3 in_A 5v0_addh_sc_0/pti VDD_3V3 pfet_06v0 ad=12.81n pd=0.349m as=12.688n ps=0.348m w=244 l=100
+X2 VDD_3V3 in_A 5v0_addh_sc_0/nti VDD_3V3 pfet_06v0 ad=13.616n pd=0.392m as=9.696n ps=0.394m w=96 l=150
+X3 VSS in_A 5v0_addh_sc_0/nti VSS nfet_06v0 ad=6.478n pd=0.255m as=12.7n ps=0.454m w=127 l=120
+X4 5v0_addh_sc_0/pti in_A VDD_3V3 VDD_3V3 pfet_06v0 ad=12.688n pd=0.348m as=13.616n ps=0.392m w=244 l=100
+X5 5v0_addh_sc_0/pti in_A VDD_3V3 VDD_3V3 pfet_06v0 ad=27.328n pd=0.712m as=12.81n ps=0.349m w=244 l=100
+X6 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/res_stage0 5v0_addh_sc_0/m1_103_293# 5v0_addh_sc_0/downstepper_test VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X7 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/res_stage0 5v0_addh_sc_0/m1_103_293# 5v0_addh_sc_0/upstepper_test VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X8 5v0_addh_sc_0/m1_103_293# in_C_sign VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X9 5v0_addh_sc_0/m1_103_293# in_C_sign VDD_3V3 VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X10 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/res_stage0 in_C_sign 5v0_addh_sc_0/upstepper_test VSS nfet_06v0 ad=31.489n pd=1.041m as=43.711n ps=1.504m w=164 l=120
+X11 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/res_stage0 in_C_sign 5v0_addh_sc_0/downstepper_test VDD_3V3 pfet_06v0 ad=46.849n pd=1.361m as=42.856n ps=1.326m w=244 l=100
+X12 int_sum_1 5v0_addh_sc_0/a_382_n1095# 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/res_stage0 VSS nfet_06v0 ad=17.057n pd=0.537m as=0 ps=0 w=164 l=120
+X13 int_sum_1 5v0_addh_sc_0/a_382_n1095# in_A VDD_3V3 pfet_06v0 ad=25.377n pd=0.697m as=21.472n ps=0.664m w=244 l=100
+X14 5v0_addh_sc_0/a_382_n1095# in_C_over VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=0.28345u ps=0.01012 w=164 l=120
+X15 5v0_addh_sc_0/a_382_n1095# in_C_over VDD_3V3 VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=0.55101u ps=0.0163 w=244 l=100
+X16 int_sum_1 in_C_over in_A VSS nfet_06v0 ad=0 pd=0 as=14.432n ps=0.504m w=164 l=120
+X17 int_sum_1 in_C_over 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/res_stage0 VDD_3V3 pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X18 5v0_addh_sc_0/inv_pti 5v0_addh_sc_0/pti VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X19 5v0_addh_sc_0/inv_pti 5v0_addh_sc_0/pti VDD_3V3 VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X20 5v0_addh_sc_0/carry_0_probe 5v0_addh_sc_0/a_382_n1095# 5v0_addh_sc_0/m1_843_n857# VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X21 5v0_addh_sc_0/carry_0_probe in_C_over 5v0_addh_sc_0/m1_843_n857# VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X22 5v0_addh_sc_0/inv_nti in_C_sign 5v0_addh_sc_0/carry_sign_probe VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=12.688n ps=0.348m w=244 l=100
+X23 5v0_addh_sc_0/carry_sign_probe 5v0_addh_sc_0/m1_103_293# 5v0_addh_sc_0/inv_nti VSS nfet_06v0 ad=8.528n pd=0.268m as=14.432n ps=0.504m w=164 l=120
+X24 5v0_addh_sc_0/carry_sign_probe 5v0_addh_sc_0/m1_103_293# 5v0_addh_sc_0/inv_pti VDD_3V3 pfet_06v0 ad=12.688n pd=0.348m as=21.472n ps=0.664m w=244 l=100
+X25 5v0_addh_sc_0/inv_pti in_C_sign 5v0_addh_sc_0/carry_sign_probe VSS nfet_06v0 ad=14.432n pd=0.504m as=8.528n ps=0.268m w=164 l=120
+X26 5v0_addh_sc_0/inv_nti in_C_sign 5v0_addh_sc_0/m1_843_n857# VDD_3V3 pfet_06v0 ad=64.416n pd=1.992m as=46.848n ps=1.36m w=244 l=100
+X27 5v0_addh_sc_0/m1_843_n857# 5v0_addh_sc_0/m1_103_293# 5v0_addh_sc_0/inv_nti VSS nfet_06v0 ad=31.488n pd=1.04m as=43.296n ps=1.512m w=164 l=120
+X28 5v0_addh_sc_0/m1_843_n857# 5v0_addh_sc_0/m1_103_293# 5v0_addh_sc_0/pti VDD_3V3 pfet_06v0 ad=0 pd=0 as=74.176n ps=2.072m w=244 l=100
+X29 5v0_addh_sc_0/pti in_C_sign 5v0_addh_sc_0/m1_843_n857# VSS nfet_06v0 ad=20.768n pd=0.824m as=0 ps=0 w=164 l=120
+X30 5v0_addh_sc_0/a_n1373_n454# 5v0_addh_sc_0/inv_nti 5v0_addh_sc_0/downstepper_test VSS nfet_06v0 ad=3.528n pd=0.195m as=8.599n ps=0.264m w=147 l=120
+X31 5v0_addh_sc_0/upstepper_test 5v0_addh_sc_0/nti 5v0_addh_sc_0/a_n1205_n937# VDD_3V3 pfet_06v0 ad=21.384n pd=0.662m as=5.832n ps=0.291m w=243 l=100
+X32 5v0_addh_sc_0/inv_nti 5v0_addh_sc_0/nti VDD_3V3 VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X33 5v0_addh_sc_0/upstepper_test 5v0_addh_sc_0/nti VDD_1V65 VSS nfet_06v0 ad=14.847n pd=0.496m as=10.51n ps=0.29m w=147 l=120
+X34 5v0_addh_sc_0/carry_0_probe 5v0_addh_sc_0/a_382_n1095# VDD_3V3 VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X35 5v0_addh_sc_0/a_n1205_n937# 5v0_addh_sc_0/inv_pti VDD_3V3 VDD_3V3 pfet_06v0 ad=5.832n pd=0.291m as=21.384n ps=0.662m w=243 l=100
+X36 5v0_addh_sc_0/downstepper_test 5v0_addh_sc_0/pti 5v0_addh_sc_0/a_n1778_n454# VSS nfet_06v0 ad=8.599n pd=0.264m as=3.528n ps=0.195m w=147 l=120
+X37 5v0_addh_sc_0/inv_nti 5v0_addh_sc_0/nti VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X38 5v0_addh_sc_0/a_n1778_n454# 5v0_addh_sc_0/inv_nti VSS VSS nfet_06v0 ad=3.528n pd=0.195m as=14.847n ps=0.496m w=147 l=120
+X39 5v0_addh_sc_0/upstepper_test 5v0_addh_sc_0/inv_pti VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X40 VDD_1V65 5v0_addh_sc_0/inv_pti 5v0_addh_sc_0/a_n1373_n454# VSS nfet_06v0 ad=10.51n pd=0.29m as=3.528n ps=0.195m w=147 l=120
+X41 5v0_addh_sc_0/downstepper_test 5v0_addh_sc_0/inv_nti VDD_3V3 VDD_3V3 pfet_06v0 ad=21.384n pd=0.662m as=21.384n ps=0.662m w=243 l=100
+X42 5v0_addh_sc_1/pti in_B VSS VSS nfet_06v0 ad=20.768n pd=0.824m as=0 ps=0 w=72 l=578
+X43 VDD_3V3 in_B 5v0_addh_sc_1/pti VDD_3V3 pfet_06v0 ad=0 pd=0 as=74.176n ps=2.072m w=244 l=100
+X44 VDD_3V3 in_B 5v0_addh_sc_1/nti VDD_3V3 pfet_06v0 ad=0 pd=0 as=9.696n ps=0.394m w=96 l=150
+X45 VSS in_B 5v0_addh_sc_1/nti VSS nfet_06v0 ad=0 pd=0 as=12.7n ps=0.454m w=127 l=120
+X46 5v0_addh_sc_1/pti in_B VDD_3V3 VDD_3V3 pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X47 5v0_addh_sc_1/pti in_B VDD_3V3 VDD_3V3 pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X48 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0 5v0_addh_sc_1/m1_103_293# 5v0_addh_sc_1/downstepper_test VSS nfet_06v0 ad=31.489n pd=1.041m as=31.631n ps=1.032m w=164 l=120
+X49 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0 5v0_addh_sc_1/m1_103_293# 5v0_addh_sc_1/upstepper_test VDD_3V3 pfet_06v0 ad=46.849n pd=1.361m as=42.856n ps=1.326m w=244 l=100
+X50 5v0_addh_sc_1/m1_103_293# int_sign VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=0 ps=0 w=164 l=120
+X51 5v0_addh_sc_1/m1_103_293# int_sign VDD_3V3 VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=0 ps=0 w=244 l=100
+X52 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0 int_sign 5v0_addh_sc_1/upstepper_test VSS nfet_06v0 ad=0 pd=0 as=43.711n ps=1.504m w=164 l=120
+X53 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0 int_sign 5v0_addh_sc_1/downstepper_test VDD_3V3 pfet_06v0 ad=0 pd=0 as=42.856n ps=1.326m w=244 l=100
+X54 sum 5v0_addh_sc_1/a_382_n1095# 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0 VSS nfet_06v0 ad=17.057n pd=0.537m as=0 ps=0 w=164 l=120
+X55 sum 5v0_addh_sc_1/a_382_n1095# in_B VDD_3V3 pfet_06v0 ad=25.377n pd=0.697m as=21.472n ps=0.664m w=244 l=100
+X56 5v0_addh_sc_1/a_382_n1095# int_over VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=0 ps=0 w=164 l=120
+X57 5v0_addh_sc_1/a_382_n1095# int_over VDD_3V3 VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=0 ps=0 w=244 l=100
+X58 sum int_over in_B VSS nfet_06v0 ad=0 pd=0 as=14.432n ps=0.504m w=164 l=120
+X59 sum int_over 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0 VDD_3V3 pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X60 5v0_addh_sc_1/inv_pti 5v0_addh_sc_1/pti VSS VSS nfet_06v0 ad=28.864n pd=1.008m as=0 ps=0 w=164 l=120
+X61 5v0_addh_sc_1/inv_pti 5v0_addh_sc_1/pti VDD_3V3 VDD_3V3 pfet_06v0 ad=42.944n pd=1.328m as=0 ps=0 w=244 l=100
+X62 carry1_over_probe 5v0_addh_sc_1/a_382_n1095# 5v0_addh_sc_1/m1_843_n857# VSS nfet_06v0 ad=14.432n pd=0.504m as=31.488n ps=1.04m w=164 l=120
+X63 carry1_over_probe int_over 5v0_addh_sc_1/m1_843_n857# VDD_3V3 pfet_06v0 ad=42.944n pd=1.328m as=46.848n ps=1.36m w=244 l=100
+X64 5v0_addh_sc_1/inv_nti int_sign carry1_sign_probe VDD_3V3 pfet_06v0 ad=64.416n pd=1.992m as=46.848n ps=1.36m w=244 l=100
+X65 carry1_sign_probe 5v0_addh_sc_1/m1_103_293# 5v0_addh_sc_1/inv_nti VSS nfet_06v0 ad=31.488n pd=1.04m as=43.296n ps=1.512m w=164 l=120
+X66 carry1_sign_probe 5v0_addh_sc_1/m1_103_293# 5v0_addh_sc_1/inv_pti VDD_3V3 pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X67 5v0_addh_sc_1/inv_pti int_sign carry1_sign_probe VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X68 5v0_addh_sc_1/inv_nti int_sign 5v0_addh_sc_1/m1_843_n857# VDD_3V3 pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X69 5v0_addh_sc_1/m1_843_n857# 5v0_addh_sc_1/m1_103_293# 5v0_addh_sc_1/inv_nti VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X70 5v0_addh_sc_1/m1_843_n857# 5v0_addh_sc_1/m1_103_293# 5v0_addh_sc_1/pti VDD_3V3 pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X71 5v0_addh_sc_1/pti int_sign 5v0_addh_sc_1/m1_843_n857# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X72 5v0_addh_sc_1/a_n1373_n454# 5v0_addh_sc_1/inv_nti 5v0_addh_sc_1/downstepper_test VSS nfet_06v0 ad=7.056n pd=0.39m as=0 ps=0 w=147 l=120
+X73 5v0_addh_sc_1/upstepper_test 5v0_addh_sc_1/nti 5v0_addh_sc_1/a_n1205_n937# VDD_3V3 pfet_06v0 ad=0 pd=0 as=11.664n ps=0.582m w=243 l=100
+X74 5v0_addh_sc_1/inv_nti 5v0_addh_sc_1/nti VDD_3V3 VDD_3V3 pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X75 5v0_addh_sc_1/upstepper_test 5v0_addh_sc_1/nti VDD_1V65_2 VSS nfet_06v0 ad=0 pd=0 as=21.021n ps=0.58m w=147 l=120
+X76 carry1_over_probe 5v0_addh_sc_1/a_382_n1095# VDD_3V3 VDD_3V3 pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X77 5v0_addh_sc_1/a_n1205_n937# 5v0_addh_sc_1/inv_pti VDD_3V3 VDD_3V3 pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X78 5v0_addh_sc_1/downstepper_test 5v0_addh_sc_1/pti 5v0_addh_sc_1/a_n1778_n454# VSS nfet_06v0 ad=0 pd=0 as=7.056n ps=0.39m w=147 l=120
+X79 5v0_addh_sc_1/inv_nti 5v0_addh_sc_1/nti VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X80 5v0_addh_sc_1/a_n1778_n454# 5v0_addh_sc_1/inv_nti VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X81 5v0_addh_sc_1/upstepper_test 5v0_addh_sc_1/inv_pti VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X82 VDD_1V65_2 5v0_addh_sc_1/inv_pti 5v0_addh_sc_1/a_n1373_n454# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X83 5v0_addh_sc_1/downstepper_test 5v0_addh_sc_1/inv_nti VDD_3V3 VDD_3V3 pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X84 int_over 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=16.348n ps=0.378m w=244 l=100
+X85 VSS 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1 int_over VSS nfet_06v0 ad=9.944n pd=0.402m as=5.876n ps=0.217m w=113 l=120
+X86 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# 5v0_nter2oter_code_sc_0/nti VDD_3V3 VDD_3V3 pfet_06v0 ad=16.348n pd=0.378m as=20.932n ps=0.664m w=244 l=100
+X87 int_over 5v0_nter2oter_code_sc_0/nti VSS VSS nfet_06v0 ad=5.876n pd=0.217m as=9.944n ps=0.402m w=113 l=120
+X88 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1 5v0_nter2oter_code_sc_0/pti VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=0 ps=0 w=164 l=120
+X89 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1 5v0_nter2oter_code_sc_0/pti VDD_3V3 VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=0 ps=0 w=244 l=100
+X90 5v0_nter2oter_code_sc_0/pti int_sum_1 VSS VSS nfet_06v0 ad=6.336n pd=0.32m as=6.478n ps=0.255m w=72 l=578
+X91 VDD_3V3 5v0_nter2oter_code_sc_0/pti int_sign VDD_3V3 pfet_06v0 ad=18.08n pd=0.612m as=21.696n ps=0.644m w=226 l=100
+X92 VDD_3V3 int_sum_1 5v0_nter2oter_code_sc_0/pti VDD_3V3 pfet_06v0 ad=12.81n pd=0.349m as=12.688n ps=0.348m w=244 l=100
+X93 VDD_3V3 int_sum_1 5v0_nter2oter_code_sc_0/nti VDD_3V3 pfet_06v0 ad=13.616n pd=0.392m as=9.696n ps=0.394m w=96 l=150
+X94 VSS 5v0_nter2oter_code_sc_0/nti int_sign VSS nfet_06v0 ad=7.544n pd=0.42m as=14.432n ps=0.504m w=164 l=120
+X95 VSS int_sum_1 5v0_nter2oter_code_sc_0/nti VSS nfet_06v0 ad=6.478n pd=0.255m as=12.7n ps=0.454m w=127 l=120
+X96 5v0_nter2oter_code_sc_0/pti int_sum_1 VDD_3V3 VDD_3V3 pfet_06v0 ad=12.688n pd=0.348m as=13.616n ps=0.392m w=244 l=100
+X97 5v0_nter2oter_code_sc_0/pti int_sum_1 VDD_3V3 VDD_3V3 pfet_06v0 ad=27.328n pd=0.712m as=12.81n ps=0.349m w=244 l=100
+X98 carry_over 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# VDD_3V3 VDD_3V3 pfet_06v0 ad=12.483n pd=0.333m as=13.775n ps=0.379m w=219 l=100
+X99 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_272_93# 5v0_addh_sc_0/carry_0_probe 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# VSS nfet_06v0 ad=2.304n pd=0.136m as=6.336n ps=0.32m w=72 l=120
+X100 VSS carry1_over_probe 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_272_93# VSS nfet_06v0 ad=8.72n pd=0.304m as=2.304n ps=0.136m w=72 l=120
+X101 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# VSS VSS nfet_06v0 ad=8.528n pd=0.268m as=8.72n ps=0.304m w=164 l=120
+X102 VDD_3V3 5v0_addh_sc_0/carry_0_probe 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_930_497# VDD_3V3 pfet_06v0 ad=19.272n pd=0.614m as=22.119n ps=0.421m w=219 l=100
+X103 carry_over carry1_over_probe 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# VSS nfet_06v0 ad=16.644n pd=0.381m as=8.528n ps=0.268m w=164 l=120
+X104 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# 5v0_addh_sc_0/carry_0_probe VDD_3V3 VDD_3V3 pfet_06v0 ad=5.824n pd=0.216m as=9.856n ps=0.4m w=112 l=100
+X105 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# 5v0_addh_sc_0/carry_0_probe carry_over VSS nfet_06v0 ad=14.432n pd=0.504m as=16.644n ps=0.381m w=164 l=120
+X106 VDD_3V3 carry1_over_probe 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# VDD_3V3 pfet_06v0 ad=13.775n pd=0.379m as=5.824n ps=0.216m w=112 l=100
+X107 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_930_497# carry1_over_probe carry_over VDD_3V3 pfet_06v0 ad=22.119n pd=0.421m as=12.483n ps=0.333m w=219 l=100
+X108 5v0_addh_sc_0/carry_sign_probe 5v0_addh_sc_0/carry_0_probe carry_sign VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=12.688n ps=0.348m w=244 l=100
+X109 carry_sign 5v0_add_ccal_sc_r1_0/a_n260_n44# 5v0_addh_sc_0/carry_sign_probe VSS nfet_06v0 ad=8.528n pd=0.268m as=14.432n ps=0.504m w=164 l=120
+X110 carry_sign 5v0_add_ccal_sc_r1_0/a_n260_n44# carry1_sign_probe VDD_3V3 pfet_06v0 ad=12.688n pd=0.348m as=21.472n ps=0.664m w=244 l=100
+X111 5v0_add_ccal_sc_r1_0/a_n260_n44# 5v0_addh_sc_0/carry_0_probe VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X112 5v0_add_ccal_sc_r1_0/a_n260_n44# 5v0_addh_sc_0/carry_0_probe VDD_3V3 VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X113 carry1_sign_probe 5v0_addh_sc_0/carry_0_probe carry_sign VSS nfet_06v0 ad=14.432n pd=0.504m as=8.528n ps=0.268m w=164 l=120
+C0 5v0_addh_sc_1/m1_103_293# VDD_3V3 0.73166f
+C1 5v0_addh_sc_1/inv_nti VDD_1V65_2 0.06616f
+C2 5v0_nter2oter_code_sc_0/nti 5v0_addh_sc_0/carry_0_probe 0.00756f
+C3 5v0_addh_sc_1/upstepper_test 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# 0.00167f
+C4 5v0_nter2oter_code_sc_0/nti in_B 0.01051f
+C5 5v0_addh_sc_0/a_382_n1095# 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/res_stage0 0.08951f
+C6 5v0_addh_sc_1/inv_pti int_sign 0.29782f
+C7 carry_over in_C_over 0.01506f
+C8 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_930_497# carry_over 0.03123f
+C9 5v0_addh_sc_0/m1_843_n857# carry1_sign_probe 0
+C10 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_272_93# in_C_over 0
+C11 5v0_addh_sc_0/m1_103_293# 5v0_addh_sc_0/carry_0_probe 0.01398f
+C12 int_over 5v0_addh_sc_0/carry_0_probe 0
+C13 int_over in_B 0.32222f
+C14 carry1_over_probe 5v0_addh_sc_1/inv_pti 0.10064f
+C15 5v0_addh_sc_1/inv_nti carry1_sign_probe 0.05332f
+C16 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0 int_over 0.10616f
+C17 5v0_addh_sc_1/a_n1778_n454# 5v0_addh_sc_1/nti 0.00142f
+C18 5v0_addh_sc_0/carry_0_probe 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# 0.02428f
+C19 5v0_addh_sc_0/carry_0_probe 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# 0.29767f
+C20 5v0_addh_sc_0/a_382_n1095# 5v0_addh_sc_1/upstepper_test 0
+C21 in_B 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# 0
+C22 sum int_sign 0
+C23 in_C_sign in_C_over 0.06048f
+C24 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# 0
+C25 5v0_addh_sc_1/m1_103_293# 5v0_add_ccal_sc_r1_0/a_n260_n44# 0.00505f
+C26 carry_over carry1_sign_probe 0
+C27 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1 VDD_3V3 0.27221f
+C28 5v0_addh_sc_0/downstepper_test 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/res_stage0 0.25483f
+C29 5v0_addh_sc_1/a_382_n1095# int_sign 0.07412f
+C30 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_930_497# int_sign 0.00192f
+C31 in_C_over int_sign 0.00172f
+C32 5v0_addh_sc_1/a_n1205_n937# int_over 0.00155f
+C33 5v0_addh_sc_1/downstepper_test 5v0_addh_sc_1/nti 0.05101f
+C34 int_sum_1 5v0_addh_sc_1/pti 0
+C35 5v0_add_ccal_sc_r1_0/a_n260_n44# VDD_3V3 0.27931f
+C36 sum carry1_over_probe 0
+C37 carry_sign VDD_3V3 0.09927f
+C38 in_C_over 5v0_addh_sc_0/nti 0.00272f
+C39 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A int_sign 0
+C40 int_sum_1 5v0_addh_sc_0/carry_sign_probe 0
+C41 5v0_addh_sc_0/inv_pti in_C_over 0.00306f
+C42 5v0_addh_sc_0/a_382_n1095# 5v0_addh_sc_0/carry_0_probe 0.0695f
+C43 5v0_addh_sc_1/a_382_n1095# carry1_over_probe 0.19167f
+C44 5v0_addh_sc_1/upstepper_test 5v0_addh_sc_1/a_n1778_n454# 0
+C45 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_930_497# carry1_over_probe 0.00827f
+C46 carry1_over_probe in_C_over 0.01072f
+C47 int_sign carry1_sign_probe 0.24257f
+C48 5v0_addh_sc_0/inv_nti 5v0_nter2oter_code_sc_0/pti 0.00357f
+C49 5v0_addh_sc_1/upstepper_test 5v0_addh_sc_1/downstepper_test 0.38089f
+C50 int_over 5v0_addh_sc_1/inv_pti 0.01485f
+C51 5v0_addh_sc_0/a_n1373_n454# 5v0_addh_sc_0/nti 0
+C52 5v0_addh_sc_0/inv_pti 5v0_addh_sc_0/a_n1373_n454# 0.00135f
+C53 5v0_addh_sc_0/a_n1205_n937# 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/res_stage0 0
+C54 carry1_over_probe carry1_sign_probe 0.12707f
+C55 5v0_addh_sc_1/a_n1778_n454# in_B 0.00182f
+C56 in_A in_C_over 0.1526f
+C57 5v0_addh_sc_1/inv_pti 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# 0.00247f
+C58 5v0_addh_sc_0/downstepper_test 5v0_addh_sc_0/carry_0_probe 0
+C59 5v0_addh_sc_1/inv_pti 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# 0.00767f
+C60 in_C_over 5v0_addh_sc_0/upstepper_test 0.00287f
+C61 carry_sign 5v0_add_ccal_sc_r1_0/a_n260_n44# 0.16028f
+C62 5v0_addh_sc_1/nti 5v0_addh_sc_1/pti 0.24165f
+C63 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# 5v0_addh_sc_1/nti 0
+C64 5v0_nter2oter_code_sc_0/nti in_C_over 0.00439f
+C65 5v0_addh_sc_1/downstepper_test 5v0_addh_sc_0/carry_0_probe 0
+C66 sum int_over 0.20713f
+C67 5v0_addh_sc_1/downstepper_test in_B 0.18121f
+C68 5v0_addh_sc_1/downstepper_test 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0 0.24494f
+C69 5v0_addh_sc_1/a_382_n1095# int_over 0.64782f
+C70 5v0_addh_sc_0/m1_103_293# in_C_over 0.02869f
+C71 int_over VDD_1V65_2 0.06606f
+C72 in_A 5v0_addh_sc_0/a_n1373_n454# 0.00163f
+C73 5v0_addh_sc_0/a_n1373_n454# 5v0_addh_sc_0/upstepper_test 0
+C74 5v0_addh_sc_0/a_382_n1095# 5v0_addh_sc_1/inv_pti 0
+C75 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A int_over 0.04656f
+C76 in_C_over 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# 0.00626f
+C77 5v0_addh_sc_1/upstepper_test 5v0_addh_sc_1/pti 0.02062f
+C78 in_C_over 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# 0.00566f
+C79 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_930_497# 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# 0
+C80 5v0_addh_sc_1/downstepper_test 5v0_addh_sc_1/a_n1205_n937# 0.00453f
+C81 5v0_addh_sc_0/m1_103_293# carry1_sign_probe 0
+C82 5v0_addh_sc_1/a_n1373_n454# VDD_3V3 0.00122f
+C83 int_over carry1_sign_probe 0
+C84 5v0_addh_sc_0/carry_0_probe 5v0_addh_sc_1/pti 0.00291f
+C85 5v0_addh_sc_0/inv_nti VDD_3V3 0.83873f
+C86 5v0_addh_sc_0/a_382_n1095# in_C_over 0.69161f
+C87 5v0_nter2oter_code_sc_0/pti 5v0_addh_sc_1/inv_nti 0
+C88 in_B 5v0_addh_sc_1/pti 0.66373f
+C89 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# in_B 0.00437f
+C90 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0 5v0_addh_sc_1/pti 0.01078f
+C91 5v0_addh_sc_0/carry_sign_probe 5v0_addh_sc_0/carry_0_probe 0.60586f
+C92 5v0_addh_sc_0/pti VDD_3V3 0.6527f
+C93 5v0_addh_sc_1/downstepper_test 5v0_addh_sc_1/inv_pti 0.11697f
+C94 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A VDD_3V3 0.02871f
+C95 5v0_nter2oter_code_sc_0/pti carry_over 0
+C96 5v0_addh_sc_1/m1_843_n857# in_B 0
+C97 5v0_addh_sc_1/a_n1778_n454# VDD_1V65_2 0
+C98 sum 5v0_addh_sc_1/downstepper_test 0.00302f
+C99 5v0_addh_sc_0/downstepper_test in_C_over 0.03354f
+C100 5v0_addh_sc_0/inv_nti 5v0_add_ccal_sc_r1_0/a_n260_n44# 0
+C101 VDD_1V65 5v0_addh_sc_0/carry_0_probe 0
+C102 5v0_addh_sc_1/a_382_n1095# 5v0_addh_sc_1/downstepper_test 0.00679f
+C103 5v0_addh_sc_1/downstepper_test VDD_1V65_2 0.13024f
+C104 5v0_addh_sc_1/downstepper_test in_C_over 0
+C105 5v0_add_ccal_sc_r1_0/a_n260_n44# 5v0_addh_sc_0/pti 0
+C106 5v0_nter2oter_code_sc_0/pti int_sign 0.06721f
+C107 5v0_nter2oter_code_sc_0/pti 5v0_addh_sc_0/nti 0.00926f
+C108 5v0_addh_sc_1/downstepper_test 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C109 int_sum_1 5v0_addh_sc_1/nti 0
+C110 5v0_addh_sc_1/inv_pti 5v0_addh_sc_1/pti 0.43582f
+C111 5v0_addh_sc_0/downstepper_test 5v0_addh_sc_0/a_n1373_n454# 0.00442f
+C112 int_sum_1 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/res_stage0 0.09409f
+C113 5v0_nter2oter_code_sc_0/pti carry1_over_probe 0
+C114 5v0_addh_sc_1/m1_103_293# 5v0_addh_sc_1/inv_nti 0.35313f
+C115 5v0_addh_sc_0/carry_sign_probe 5v0_addh_sc_1/inv_pti 0
+C116 5v0_addh_sc_0/m1_843_n857# VDD_3V3 0.1274f
+C117 5v0_addh_sc_1/downstepper_test carry1_sign_probe 0
+C118 5v0_addh_sc_1/m1_843_n857# 5v0_addh_sc_1/inv_pti 0
+C119 5v0_addh_sc_1/inv_nti VDD_3V3 0.70863f
+C120 5v0_addh_sc_1/m1_103_293# carry_over 0
+C121 5v0_addh_sc_0/a_n1205_n937# in_C_over 0.00106f
+C122 sum 5v0_addh_sc_1/pti 0
+C123 in_A 5v0_nter2oter_code_sc_0/pti 0.00193f
+C124 carry_over VDD_3V3 0.35448f
+C125 5v0_addh_sc_1/a_382_n1095# 5v0_addh_sc_1/pti 0.12627f
+C126 VDD_1V65_2 5v0_addh_sc_1/pti 0.00234f
+C127 5v0_addh_sc_1/pti in_C_over 0
+C128 5v0_nter2oter_code_sc_0/nti 5v0_nter2oter_code_sc_0/pti 0.13949f
+C129 5v0_addh_sc_0/carry_sign_probe in_C_over 0.03546f
+C130 in_C_sign VDD_3V3 1.25775f
+C131 5v0_addh_sc_1/m1_843_n857# 5v0_addh_sc_1/a_382_n1095# 0.05013f
+C132 5v0_addh_sc_1/m1_103_293# int_sign 0.61412f
+C133 int_sum_1 5v0_addh_sc_0/carry_0_probe 0.01268f
+C134 5v0_add_ccal_sc_r1_0/a_n260_n44# 5v0_addh_sc_1/inv_nti 0
+C135 int_sum_1 in_B 0.00439f
+C136 5v0_nter2oter_code_sc_0/pti int_over 0.07536f
+C137 5v0_addh_sc_1/pti carry1_sign_probe 0.01104f
+C138 carry_sign 5v0_addh_sc_1/inv_nti 0.01667f
+C139 int_sign VDD_3V3 1.12469f
+C140 5v0_nter2oter_code_sc_0/pti 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# 0.00131f
+C141 5v0_addh_sc_0/carry_sign_probe carry1_sign_probe 0.17983f
+C142 5v0_addh_sc_1/m1_103_293# carry1_over_probe 0.04228f
+C143 5v0_add_ccal_sc_r1_0/a_n260_n44# carry_over 0.0272f
+C144 5v0_addh_sc_0/nti VDD_3V3 0.67838f
+C145 5v0_addh_sc_0/inv_pti VDD_3V3 0.86079f
+C146 carry_sign carry_over 0.00301f
+C147 5v0_addh_sc_1/upstepper_test 5v0_addh_sc_1/nti 0.11007f
+C148 VDD_1V65 in_C_over 0.00494f
+C149 5v0_addh_sc_1/m1_843_n857# carry1_sign_probe 0.00698f
+C150 carry1_over_probe VDD_3V3 0.86653f
+C151 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1 int_sign 0.00161f
+C152 5v0_addh_sc_0/inv_nti 5v0_addh_sc_0/pti 0.42004f
+C153 5v0_addh_sc_0/inv_nti 5v0_addh_sc_0/a_n1778_n454# 0.00226f
+C154 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1 5v0_addh_sc_0/nti 0
+C155 5v0_addh_sc_1/nti 5v0_addh_sc_0/carry_0_probe 0
+C156 5v0_add_ccal_sc_r1_0/a_n260_n44# int_sign 0
+C157 in_B 5v0_addh_sc_1/nti 0.51611f
+C158 5v0_addh_sc_0/a_n1373_n454# VDD_1V65 0.00232f
+C159 5v0_addh_sc_0/a_n1778_n454# 5v0_addh_sc_0/pti 0.00135f
+C160 5v0_addh_sc_0/carry_0_probe 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/res_stage0 0
+C161 carry_sign int_sign 0.01563f
+C162 in_A VDD_3V3 1.02771f
+C163 5v0_addh_sc_0/upstepper_test VDD_3V3 0.43797f
+C164 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0 5v0_addh_sc_1/nti 0.00372f
+C165 int_sum_1 5v0_addh_sc_1/inv_pti 0
+C166 5v0_nter2oter_code_sc_0/nti VDD_3V3 0.40177f
+C167 carry1_over_probe 5v0_add_ccal_sc_r1_0/a_n260_n44# 0.04869f
+C168 5v0_addh_sc_0/m1_103_293# 5v0_addh_sc_1/m1_103_293# 0
+C169 carry_sign carry1_over_probe 0.05428f
+C170 5v0_addh_sc_1/m1_103_293# int_over 0.02651f
+C171 5v0_addh_sc_1/a_n1205_n937# 5v0_addh_sc_1/nti 0
+C172 5v0_addh_sc_0/downstepper_test 5v0_nter2oter_code_sc_0/pti 0
+C173 5v0_addh_sc_0/m1_103_293# VDD_3V3 0.69361f
+C174 5v0_addh_sc_1/upstepper_test 5v0_addh_sc_0/carry_0_probe 0
+C175 5v0_addh_sc_1/m1_103_293# 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# 0
+C176 int_over VDD_3V3 0.94534f
+C177 5v0_addh_sc_1/upstepper_test in_B 0.01586f
+C178 5v0_addh_sc_1/upstepper_test 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0 0.27475f
+C179 5v0_nter2oter_code_sc_0/pti 5v0_addh_sc_1/downstepper_test 0
+C180 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# VDD_3V3 0.3533f
+C181 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# VDD_3V3 0.00546f
+C182 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1 5v0_nter2oter_code_sc_0/nti 0.02637f
+C183 5v0_addh_sc_1/a_n1373_n454# 5v0_addh_sc_1/inv_nti 0
+C184 int_sum_1 in_C_over 0.31357f
+C185 5v0_addh_sc_0/inv_nti 5v0_addh_sc_0/m1_843_n857# 0.36668f
+C186 5v0_addh_sc_1/upstepper_test 5v0_addh_sc_1/a_n1205_n937# 0.00334f
+C187 in_B 5v0_addh_sc_0/carry_0_probe 0
+C188 5v0_addh_sc_0/a_382_n1095# 5v0_addh_sc_1/m1_103_293# 0
+C189 5v0_addh_sc_1/nti 5v0_addh_sc_1/inv_pti 0.23721f
+C190 5v0_addh_sc_0/m1_843_n857# 5v0_addh_sc_0/pti 0.11666f
+C191 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1 int_over 0.37378f
+C192 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0 5v0_addh_sc_0/carry_0_probe 0
+C193 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0 in_B 0.26626f
+C194 5v0_addh_sc_0/m1_103_293# 5v0_add_ccal_sc_r1_0/a_n260_n44# 0.00111f
+C195 5v0_addh_sc_0/a_382_n1095# VDD_3V3 0.59827f
+C196 5v0_addh_sc_0/inv_nti carry_over 0.00107f
+C197 carry_sign int_over 0
+C198 5v0_addh_sc_0/pti carry_over 0.00491f
+C199 sum 5v0_addh_sc_1/nti 0
+C200 5v0_nter2oter_code_sc_0/pti 5v0_addh_sc_1/pti 0.01019f
+C201 5v0_addh_sc_1/a_n1205_n937# 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0 0
+C202 5v0_addh_sc_1/upstepper_test 5v0_addh_sc_1/inv_pti 0.08058f
+C203 in_C_sign 5v0_addh_sc_0/inv_nti 0.24913f
+C204 5v0_nter2oter_code_sc_0/pti 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# 0.00455f
+C205 5v0_addh_sc_1/a_382_n1095# 5v0_addh_sc_1/nti 0
+C206 5v0_addh_sc_1/nti VDD_1V65_2 0.21326f
+C207 in_C_sign 5v0_addh_sc_0/pti 0.30014f
+C208 in_C_over 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/res_stage0 0.09613f
+C209 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A in_C_sign 0
+C210 5v0_addh_sc_0/inv_nti int_sign 0
+C211 5v0_addh_sc_1/m1_103_293# 5v0_addh_sc_1/downstepper_test 0.0934f
+C212 5v0_addh_sc_0/downstepper_test VDD_3V3 0.48372f
+C213 5v0_addh_sc_0/a_382_n1095# 5v0_add_ccal_sc_r1_0/a_n260_n44# 0.00129f
+C214 5v0_addh_sc_0/inv_nti 5v0_addh_sc_0/nti 0.21893f
+C215 5v0_addh_sc_1/downstepper_test VDD_3V3 0.45464f
+C216 5v0_addh_sc_0/inv_nti 5v0_addh_sc_0/inv_pti 0.2615f
+C217 5v0_addh_sc_1/inv_pti 5v0_addh_sc_0/carry_0_probe 0.0174f
+C218 in_B 5v0_addh_sc_1/inv_pti 0.05506f
+C219 5v0_addh_sc_0/inv_nti carry1_over_probe 0
+C220 5v0_addh_sc_0/pti 5v0_addh_sc_0/nti 0.23276f
+C221 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0 5v0_addh_sc_1/inv_pti 0.01314f
+C222 5v0_addh_sc_0/inv_pti 5v0_addh_sc_0/pti 0.43735f
+C223 5v0_addh_sc_0/a_n1778_n454# 5v0_addh_sc_0/nti 0
+C224 5v0_addh_sc_1/upstepper_test VDD_1V65_2 0.16859f
+C225 5v0_addh_sc_1/upstepper_test in_C_over 0.00182f
+C226 carry1_over_probe 5v0_addh_sc_0/pti 0
+C227 5v0_addh_sc_1/upstepper_test 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C228 5v0_addh_sc_0/m1_843_n857# carry_over 0.02574f
+C229 sum in_B 0.16326f
+C230 in_A 5v0_addh_sc_0/inv_nti 0.28245f
+C231 sum 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0 0.08533f
+C232 5v0_addh_sc_0/inv_nti 5v0_addh_sc_0/upstepper_test 0.00736f
+C233 5v0_addh_sc_0/a_n1205_n937# VDD_3V3 0.00891f
+C234 5v0_addh_sc_1/a_382_n1095# 5v0_addh_sc_0/carry_0_probe 0
+C235 5v0_addh_sc_0/carry_0_probe VDD_1V65_2 0
+C236 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_930_497# 5v0_addh_sc_0/carry_0_probe 0.01236f
+C237 5v0_addh_sc_1/m1_103_293# 5v0_addh_sc_1/pti 0.09994f
+C238 5v0_addh_sc_0/carry_0_probe in_C_over 0.15086f
+C239 5v0_addh_sc_1/a_382_n1095# in_B 0.09306f
+C240 in_B VDD_1V65_2 0.01451f
+C241 in_A 5v0_addh_sc_0/pti 0.66373f
+C242 5v0_addh_sc_0/inv_nti 5v0_nter2oter_code_sc_0/nti 0.00714f
+C243 5v0_addh_sc_1/a_382_n1095# 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0 0.08951f
+C244 5v0_addh_sc_0/pti 5v0_addh_sc_0/upstepper_test 0.02362f
+C245 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 5v0_addh_sc_0/upstepper_test 0
+C246 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0 in_C_over 0
+C247 in_A 5v0_addh_sc_0/a_n1778_n454# 0.00182f
+C248 in_C_sign 5v0_addh_sc_0/m1_843_n857# 0.24363f
+C249 5v0_addh_sc_1/a_n1373_n454# int_over 0
+C250 5v0_addh_sc_0/a_n1778_n454# 5v0_addh_sc_0/upstepper_test 0
+C251 5v0_addh_sc_1/m1_103_293# 5v0_addh_sc_0/carry_sign_probe 0
+C252 5v0_addh_sc_1/pti VDD_3V3 0.66244f
+C253 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_272_93# carry_over 0
+C254 5v0_nter2oter_code_sc_0/nti 5v0_addh_sc_0/pti 0
+C255 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# VDD_3V3 0.01448f
+C256 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0 0.00253f
+C257 5v0_addh_sc_1/m1_843_n857# 5v0_addh_sc_1/m1_103_293# 0.20659f
+C258 5v0_addh_sc_0/m1_103_293# 5v0_addh_sc_0/inv_nti 0.35313f
+C259 5v0_addh_sc_0/carry_sign_probe VDD_3V3 0.24981f
+C260 5v0_addh_sc_0/carry_0_probe carry1_sign_probe 0.16822f
+C261 5v0_addh_sc_1/a_n1205_n937# VDD_1V65_2 0.00354f
+C262 5v0_addh_sc_1/inv_nti int_sign 0.24909f
+C263 5v0_addh_sc_0/m1_103_293# 5v0_addh_sc_0/pti 0.09933f
+C264 in_C_sign carry_over 0
+C265 5v0_addh_sc_1/m1_843_n857# VDD_3V3 0.12251f
+C266 5v0_addh_sc_0/inv_pti 5v0_addh_sc_0/m1_843_n857# 0
+C267 5v0_addh_sc_0/inv_nti 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# 0
+C268 carry1_over_probe 5v0_addh_sc_0/m1_843_n857# 0
+C269 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1 5v0_addh_sc_1/pti 0
+C270 carry_over int_sign 0.009f
+C271 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_272_93# int_sign 0
+C272 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# 0
+C273 carry1_over_probe 5v0_addh_sc_1/inv_nti 0.39282f
+C274 5v0_add_ccal_sc_r1_0/a_n260_n44# 5v0_addh_sc_1/pti 0.00221f
+C275 int_sum_1 5v0_nter2oter_code_sc_0/pti 0.47835f
+C276 VDD_1V65 VDD_3V3 0.04619f
+C277 carry_sign 5v0_addh_sc_1/pti 0.00455f
+C278 5v0_addh_sc_1/a_382_n1095# 5v0_addh_sc_1/inv_pti 0.00129f
+C279 5v0_addh_sc_0/carry_sign_probe 5v0_add_ccal_sc_r1_0/a_n260_n44# 0.08103f
+C280 carry1_over_probe carry_over 0.07685f
+C281 5v0_addh_sc_1/inv_pti VDD_1V65_2 0.14775f
+C282 5v0_addh_sc_1/inv_pti in_C_over 0.02632f
+C283 5v0_addh_sc_0/a_382_n1095# 5v0_addh_sc_0/inv_nti 0.28643f
+C284 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_930_497# 5v0_addh_sc_1/inv_pti 0.00198f
+C285 carry_sign 5v0_addh_sc_0/carry_sign_probe 0.142f
+C286 in_A 5v0_addh_sc_0/m1_843_n857# 0
+C287 5v0_addh_sc_0/a_382_n1095# 5v0_addh_sc_0/pti 0.12627f
+C288 in_C_sign 5v0_addh_sc_0/nti 0.10553f
+C289 in_C_sign 5v0_addh_sc_0/inv_pti 0.30433f
+C290 5v0_addh_sc_0/a_382_n1095# 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.02928f
+C291 5v0_addh_sc_1/m1_843_n857# carry_sign 0
+C292 5v0_addh_sc_0/nti int_sign 0
+C293 sum 5v0_addh_sc_1/a_382_n1095# 0.16245f
+C294 5v0_addh_sc_1/inv_pti carry1_sign_probe 0.12174f
+C295 5v0_addh_sc_0/inv_pti int_sign 0
+C296 in_A carry_over 0.0014f
+C297 5v0_addh_sc_0/m1_103_293# 5v0_addh_sc_0/m1_843_n857# 0.20659f
+C298 carry1_over_probe int_sign 0.06269f
+C299 5v0_addh_sc_1/a_n1373_n454# 5v0_addh_sc_1/downstepper_test 0.00442f
+C300 5v0_addh_sc_0/inv_pti 5v0_addh_sc_0/nti 0.23986f
+C301 5v0_addh_sc_0/inv_nti 5v0_addh_sc_0/downstepper_test 0.29786f
+C302 5v0_nter2oter_code_sc_0/nti carry_over 0
+C303 5v0_nter2oter_code_sc_0/nti 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_272_93# 0
+C304 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_930_497# in_C_over 0.00117f
+C305 5v0_nter2oter_code_sc_0/pti 5v0_addh_sc_1/nti 0.02317f
+C306 int_over 5v0_addh_sc_1/inv_nti 0.66272f
+C307 5v0_addh_sc_0/downstepper_test 5v0_addh_sc_0/pti 0.20147f
+C308 5v0_addh_sc_1/a_382_n1095# 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.02928f
+C309 in_A in_C_sign 0.07321f
+C310 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 5v0_addh_sc_0/downstepper_test 0
+C311 in_C_sign 5v0_addh_sc_0/upstepper_test 0.20319f
+C312 5v0_addh_sc_0/downstepper_test 5v0_addh_sc_0/a_n1778_n454# 0.0031f
+C313 5v0_addh_sc_1/inv_nti 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# 0
+C314 5v0_addh_sc_0/m1_103_293# carry_over 0.00759f
+C315 5v0_addh_sc_1/a_382_n1095# carry1_sign_probe 0.00159f
+C316 in_C_over carry1_sign_probe 0.00166f
+C317 carry_over 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# 0.02364f
+C318 carry_over 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# 0.215f
+C319 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_272_93# 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# 0.00372f
+C320 in_A 5v0_addh_sc_0/nti 0.52068f
+C321 5v0_addh_sc_0/nti 5v0_addh_sc_0/upstepper_test 0.11981f
+C322 int_sum_1 VDD_3V3 1.23199f
+C323 5v0_nter2oter_code_sc_0/nti int_sign 0.08491f
+C324 in_A 5v0_addh_sc_0/inv_pti 0.05631f
+C325 5v0_addh_sc_0/inv_pti 5v0_addh_sc_0/upstepper_test 0.07093f
+C326 5v0_addh_sc_0/a_382_n1095# 5v0_addh_sc_0/m1_843_n857# 0.05013f
+C327 5v0_addh_sc_1/upstepper_test 5v0_nter2oter_code_sc_0/pti 0
+C328 5v0_addh_sc_0/m1_103_293# in_C_sign 0.63515f
+C329 in_A carry1_over_probe 0.00121f
+C330 carry1_over_probe 5v0_addh_sc_0/upstepper_test 0
+C331 5v0_addh_sc_0/inv_nti 5v0_addh_sc_0/a_n1205_n937# 0
+C332 5v0_addh_sc_1/a_n1373_n454# 5v0_addh_sc_1/pti 0
+C333 5v0_nter2oter_code_sc_0/nti carry1_over_probe 0.00625f
+C334 int_over int_sign 0.07063f
+C335 5v0_addh_sc_0/a_382_n1095# carry_over 0.01598f
+C336 5v0_addh_sc_0/m1_103_293# 5v0_addh_sc_0/inv_pti 0.17336f
+C337 5v0_nter2oter_code_sc_0/pti 5v0_addh_sc_0/carry_0_probe 0
+C338 int_sum_1 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1 0.00729f
+C339 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# int_sign 0
+C340 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# int_sign 0.03504f
+C341 5v0_nter2oter_code_sc_0/pti in_B 0.03197f
+C342 5v0_addh_sc_0/m1_103_293# carry1_over_probe 0
+C343 carry1_over_probe int_over 0.12509f
+C344 in_A 5v0_addh_sc_0/upstepper_test 0.01604f
+C345 5v0_addh_sc_0/inv_nti 5v0_addh_sc_0/carry_sign_probe 0.3327f
+C346 5v0_addh_sc_0/nti 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# 0
+C347 5v0_addh_sc_1/a_n1778_n454# 5v0_addh_sc_1/inv_nti 0.00226f
+C348 in_A 5v0_nter2oter_code_sc_0/nti 0
+C349 5v0_addh_sc_0/a_382_n1095# in_C_sign 0.07412f
+C350 carry1_over_probe 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# 0.22219f
+C351 5v0_addh_sc_0/carry_sign_probe 5v0_addh_sc_0/pti 0.01871f
+C352 carry1_over_probe 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# 0.05216f
+C353 5v0_addh_sc_1/nti VDD_3V3 0.67557f
+C354 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/res_stage0 VDD_3V3 0.15351f
+C355 5v0_addh_sc_1/downstepper_test 5v0_addh_sc_1/inv_nti 0.26175f
+C356 5v0_addh_sc_0/m1_103_293# in_A 0
+C357 5v0_addh_sc_0/m1_103_293# 5v0_addh_sc_0/upstepper_test 0.07658f
+C358 5v0_addh_sc_0/a_382_n1095# 5v0_addh_sc_0/nti 0
+C359 5v0_addh_sc_0/a_382_n1095# 5v0_addh_sc_0/inv_pti 0.00129f
+C360 5v0_addh_sc_1/m1_103_293# 5v0_addh_sc_1/upstepper_test 0.07773f
+C361 5v0_addh_sc_0/inv_nti VDD_1V65 0.08611f
+C362 in_A 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# 0
+C363 5v0_nter2oter_code_sc_0/nti int_over 0.21147f
+C364 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# 5v0_addh_sc_0/upstepper_test 0
+C365 5v0_addh_sc_0/a_382_n1095# carry1_over_probe 0
+C366 in_A 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# 0
+C367 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1 5v0_addh_sc_1/nti 0.00123f
+C368 in_C_sign 5v0_addh_sc_0/downstepper_test 0.18126f
+C369 VDD_1V65 5v0_addh_sc_0/pti 0.00234f
+C370 5v0_addh_sc_1/upstepper_test VDD_3V3 0.73777f
+C371 5v0_addh_sc_0/a_n1778_n454# VDD_1V65 0
+C372 5v0_nter2oter_code_sc_0/nti 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# 0.00509f
+C373 5v0_nter2oter_code_sc_0/nti 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# 0
+C374 5v0_addh_sc_1/m1_103_293# 5v0_addh_sc_0/carry_0_probe 0.00264f
+C375 5v0_addh_sc_1/m1_103_293# in_B 0
+C376 5v0_addh_sc_0/downstepper_test 5v0_addh_sc_0/nti 0.06667f
+C377 int_over 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# 0
+C378 5v0_addh_sc_1/m1_103_293# 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0 0.18549f
+C379 5v0_addh_sc_0/a_382_n1095# in_A 0.09306f
+C380 5v0_addh_sc_0/downstepper_test 5v0_addh_sc_0/inv_pti 0.13775f
+C381 5v0_addh_sc_1/downstepper_test int_sign 0.22547f
+C382 5v0_addh_sc_0/carry_0_probe VDD_3V3 1.07624f
+C383 5v0_addh_sc_0/carry_sign_probe 5v0_addh_sc_0/m1_843_n857# 0.12287f
+C384 5v0_addh_sc_0/downstepper_test carry1_over_probe 0
+C385 5v0_addh_sc_1/inv_nti 5v0_addh_sc_1/pti 0.42143f
+C386 in_B VDD_3V3 1.02995f
+C387 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# 0.00587f
+C388 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0 VDD_3V3 0.14594f
+C389 5v0_addh_sc_1/downstepper_test carry1_over_probe 0
+C390 5v0_addh_sc_1/m1_843_n857# 5v0_addh_sc_1/inv_nti 0.36668f
+C391 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_930_497# 5v0_nter2oter_code_sc_0/pti 0
+C392 5v0_nter2oter_code_sc_0/pti in_C_over 0
+C393 5v0_addh_sc_0/m1_103_293# 5v0_addh_sc_0/a_382_n1095# 0.07764f
+C394 5v0_addh_sc_0/carry_sign_probe carry_over 0.1315f
+C395 5v0_addh_sc_1/a_n1205_n937# VDD_3V3 0.00891f
+C396 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1 5v0_addh_sc_0/carry_0_probe 0
+C397 in_A 5v0_addh_sc_0/downstepper_test 0.18202f
+C398 5v0_addh_sc_0/downstepper_test 5v0_addh_sc_0/upstepper_test 0.38555f
+C399 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1 in_B 0.01953f
+C400 5v0_addh_sc_0/a_382_n1095# 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# 0
+C401 5v0_add_ccal_sc_r1_0/a_n260_n44# 5v0_addh_sc_0/carry_0_probe 0.29408f
+C402 int_sum_1 5v0_addh_sc_0/inv_nti 0.03012f
+C403 5v0_addh_sc_0/a_n1205_n937# 5v0_addh_sc_0/nti 0
+C404 5v0_addh_sc_0/downstepper_test 5v0_nter2oter_code_sc_0/nti 0.00467f
+C405 carry_sign 5v0_addh_sc_0/carry_0_probe 0.24328f
+C406 in_C_sign 5v0_addh_sc_0/carry_sign_probe 0.27266f
+C407 5v0_addh_sc_1/pti int_sign 0.28088f
+C408 int_sum_1 5v0_addh_sc_0/pti 0.00136f
+C409 5v0_addh_sc_1/m1_103_293# 5v0_addh_sc_1/inv_pti 0.17666f
+C410 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# int_sign 0.00266f
+C411 5v0_addh_sc_1/a_n1778_n454# int_over 0
+C412 5v0_addh_sc_0/m1_103_293# 5v0_addh_sc_0/downstepper_test 0.09641f
+C413 5v0_addh_sc_0/carry_sign_probe int_sign 0
+C414 5v0_addh_sc_1/inv_pti VDD_3V3 0.69264f
+C415 carry1_over_probe 5v0_addh_sc_1/pti 0.13493f
+C416 5v0_addh_sc_1/m1_843_n857# int_sign 0.24363f
+C417 5v0_addh_sc_0/carry_sign_probe 5v0_addh_sc_0/inv_pti 0.10808f
+C418 5v0_addh_sc_1/downstepper_test int_over 0.1527f
+C419 5v0_addh_sc_0/carry_sign_probe carry1_over_probe 0.00986f
+C420 5v0_addh_sc_1/a_n1373_n454# 5v0_addh_sc_1/nti 0
+C421 in_C_sign VDD_1V65 0
+C422 5v0_addh_sc_0/a_n1205_n937# 5v0_addh_sc_0/upstepper_test 0.00334f
+C423 5v0_addh_sc_1/downstepper_test 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# 0.00144f
+C424 5v0_addh_sc_1/m1_843_n857# carry1_over_probe 0.19345f
+C425 5v0_addh_sc_1/m1_103_293# 5v0_addh_sc_1/a_382_n1095# 0.07764f
+C426 sum VDD_3V3 0.08844f
+C427 5v0_addh_sc_1/m1_103_293# in_C_over 0
+C428 5v0_addh_sc_0/inv_nti 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/res_stage0 0.02869f
+C429 5v0_addh_sc_1/a_382_n1095# VDD_3V3 0.58103f
+C430 5v0_addh_sc_0/a_382_n1095# 5v0_addh_sc_0/downstepper_test 0.00679f
+C431 VDD_1V65_2 VDD_3V3 0.04373f
+C432 VDD_1V65 5v0_addh_sc_0/nti 0.21326f
+C433 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_930_497# VDD_3V3 0.01437f
+C434 in_C_over VDD_3V3 0.9684f
+C435 5v0_add_ccal_sc_r1_0/a_n260_n44# 5v0_addh_sc_1/inv_pti 0.0038f
+C436 5v0_addh_sc_0/inv_pti VDD_1V65 0.14775f
+C437 5v0_addh_sc_0/pti 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/res_stage0 0.01078f
+C438 5v0_nter2oter_code_sc_0/nti 5v0_addh_sc_1/pti 0.00125f
+C439 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/res_stage0 0.00253f
+C440 carry_sign 5v0_addh_sc_1/inv_pti 0
+C441 5v0_nter2oter_code_sc_0/nti 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# 0.00898f
+C442 5v0_addh_sc_1/upstepper_test 5v0_addh_sc_1/a_n1373_n454# 0
+C443 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A VDD_3V3 0.02871f
+C444 5v0_addh_sc_1/m1_103_293# carry1_sign_probe 0.23584f
+C445 int_over 5v0_addh_sc_1/pti 0.13064f
+C446 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# int_over 0.02967f
+C447 carry1_sign_probe VDD_3V3 0.19889f
+C448 5v0_addh_sc_0/a_n1373_n454# VDD_3V3 0.00122f
+C449 5v0_addh_sc_0/m1_103_293# 5v0_addh_sc_0/carry_sign_probe 0.21173f
+C450 int_sum_1 carry_over 0.0038f
+C451 in_A VDD_1V65 0.01451f
+C452 int_sum_1 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_272_93# 0
+C453 5v0_addh_sc_1/a_382_n1095# 5v0_add_ccal_sc_r1_0/a_n260_n44# 0
+C454 5v0_addh_sc_1/a_n1373_n454# in_B 0.00163f
+C455 VDD_1V65 5v0_addh_sc_0/upstepper_test 0.16859f
+C456 5v0_addh_sc_1/downstepper_test 5v0_addh_sc_1/a_n1778_n454# 0.0031f
+C457 5v0_add_ccal_sc_r1_0/a_n260_n44# in_C_over 0.00368f
+C458 5v0_addh_sc_1/m1_843_n857# int_over 0.10015f
+C459 carry_sign 5v0_addh_sc_1/a_382_n1095# 0
+C460 carry_sign in_C_over 0.00173f
+C461 5v0_addh_sc_0/inv_nti 5v0_addh_sc_0/carry_0_probe 0.01696f
+C462 int_sum_1 in_C_sign 0
+C463 5v0_addh_sc_0/pti 5v0_addh_sc_0/carry_0_probe 0.12808f
+C464 5v0_add_ccal_sc_r1_0/a_n260_n44# carry1_sign_probe 0.09179f
+C465 int_sum_1 int_sign 0.02011f
+C466 carry_sign carry1_sign_probe 0.15216f
+C467 5v0_addh_sc_1/nti 5v0_addh_sc_1/inv_nti 0.22631f
+C468 5v0_addh_sc_0/a_382_n1095# 5v0_addh_sc_0/carry_sign_probe 0.0961f
+C469 int_sum_1 5v0_addh_sc_0/nti 0.01165f
+C470 int_sum_1 5v0_addh_sc_0/inv_pti 0
+C471 5v0_addh_sc_0/downstepper_test 5v0_addh_sc_0/a_n1205_n937# 0.00453f
+C472 int_sum_1 carry1_over_probe 0.01951f
+C473 5v0_addh_sc_1/a_n1778_n454# 5v0_addh_sc_1/pti 0.00135f
+C474 5v0_addh_sc_1/a_n1373_n454# 5v0_addh_sc_1/inv_pti 0.00135f
+C475 5v0_addh_sc_1/upstepper_test 5v0_addh_sc_1/inv_nti 0.00596f
+C476 5v0_addh_sc_0/downstepper_test 5v0_addh_sc_0/carry_sign_probe 0
+C477 5v0_addh_sc_1/downstepper_test 5v0_addh_sc_1/pti 0.19511f
+C478 in_C_sign 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/res_stage0 0.24991f
+C479 int_sum_1 in_A 0.18942f
+C480 int_sum_1 5v0_addh_sc_0/upstepper_test 0
+C481 5v0_addh_sc_1/nti int_sign 0.01943f
+C482 5v0_addh_sc_0/m1_843_n857# 5v0_addh_sc_0/carry_0_probe 0.18526f
+C483 int_sum_1 5v0_nter2oter_code_sc_0/nti 0.2543f
+C484 5v0_addh_sc_0/carry_0_probe 5v0_addh_sc_1/inv_nti 0
+C485 5v0_addh_sc_0/nti 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/res_stage0 0.00372f
+C486 5v0_addh_sc_0/inv_pti 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/res_stage0 0.01294f
+C487 5v0_addh_sc_1/a_n1373_n454# VDD_1V65_2 0.00232f
+C488 carry1_over_probe 5v0_addh_sc_1/nti 0
+C489 in_B 5v0_addh_sc_1/inv_nti 0.26117f
+C490 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0 5v0_addh_sc_1/inv_nti 0.02051f
+C491 carry1_over_probe 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/res_stage0 0
+C492 5v0_addh_sc_0/downstepper_test VDD_1V65 0.13024f
+C493 int_sum_1 int_over 0.00449f
+C494 5v0_addh_sc_0/carry_0_probe carry_over 0.68971f
+C495 5v0_addh_sc_0/inv_nti in_C_over 0.23849f
+C496 5v0_addh_sc_1/upstepper_test int_sign 0.1573f
+C497 int_sum_1 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# 0.01467f
+C498 int_sum_1 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# 0.00471f
+C499 5v0_addh_sc_1/a_n1205_n937# 5v0_addh_sc_1/inv_nti 0
+C500 5v0_addh_sc_0/pti in_C_over 0.11384f
+C501 5v0_nter2oter_code_sc_0/pti VDD_3V3 0.83125f
+C502 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A in_C_over 0.04656f
+C503 in_C_sign 5v0_addh_sc_0/carry_0_probe 0.00936f
+C504 in_A 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/res_stage0 0.26575f
+C505 5v0_addh_sc_1/upstepper_test carry1_over_probe 0.00816f
+C506 5v0_addh_sc_0/upstepper_test 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/res_stage0 0.27475f
+C507 5v0_addh_sc_0/carry_sign_probe 5v0_addh_sc_1/pti 0.00123f
+C508 5v0_nter2oter_code_sc_0/nti 5v0_addh_sc_1/nti 0.00212f
+C509 5v0_addh_sc_0/carry_0_probe int_sign 0.02038f
+C510 5v0_addh_sc_0/inv_nti 5v0_addh_sc_0/a_n1373_n454# 0
+C511 5v0_addh_sc_1/m1_843_n857# 5v0_addh_sc_1/pti 0.11666f
+C512 in_B int_sign 0
+C513 5v0_addh_sc_0/a_382_n1095# int_sum_1 0.16366f
+C514 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0 int_sign 0.24997f
+C515 5v0_addh_sc_0/carry_0_probe 5v0_addh_sc_0/nti 0
+C516 5v0_addh_sc_0/a_n1205_n937# VDD_1V65 0.00354f
+C517 5v0_addh_sc_0/a_n1373_n454# 5v0_addh_sc_0/pti 0
+C518 int_over 5v0_addh_sc_1/nti 0.09725f
+C519 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1 5v0_nter2oter_code_sc_0/pti 0.26329f
+C520 carry1_over_probe 5v0_addh_sc_0/carry_0_probe 0.65217f
+C521 5v0_addh_sc_1/inv_pti 5v0_addh_sc_1/inv_nti 0.25966f
+C522 5v0_addh_sc_0/m1_103_293# 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/res_stage0 0.18379f
+C523 carry1_over_probe in_B 0.00143f
+C524 carry1_over_probe 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0 0.00327f
+C525 5v0_addh_sc_1/inv_pti carry_over 0.00972f
+C526 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/res_stage0 0
+C527 int_sum_1 5v0_addh_sc_0/downstepper_test 0.05426f
+C528 sum 5v0_addh_sc_1/inv_nti 0.01109f
+C529 in_A 5v0_addh_sc_0/carry_0_probe 0.00552f
+C530 5v0_addh_sc_0/carry_0_probe 5v0_addh_sc_0/upstepper_test 0
+C531 5v0_addh_sc_0/m1_843_n857# in_C_over 0.10364f
+C532 5v0_addh_sc_1/upstepper_test int_over 0.00631f
+C533 5v0_addh_sc_1/a_382_n1095# 5v0_addh_sc_1/inv_nti 0.2846f
+C534 carry_sign VSS 0.04388f
+C535 5v0_add_ccal_sc_r1_0/a_n260_n44# VSS 0.29929f ; **FLOATING
+C536 carry_over VSS 0.51042f
+C537 5v0_addh_sc_0/carry_0_probe VSS 1.06364f
+C538 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# VSS 0.39576f ; **FLOATING
+C539 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_272_93# VSS 0.00614f ; **FLOATING
+C540 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_930_497# VSS 0.00162f ; **FLOATING
+C541 5v0_add_ccal_sc_r1_0/gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# VSS 0.53355f ; **FLOATING
+C542 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1 VSS 0.39973f
+C543 5v0_nter2oter_code_sc_0/pti VSS 0.91349f
+C544 5v0_nter2oter_code_sc_0/nti VSS 0.83267f
+C545 5v0_nter2oter_code_sc_0/gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# VSS 0.00184f ; **FLOATING
+C546 5v0_addh_sc_1/pti VSS 1.24857f
+C547 VDD_1V65_2 VSS 0.09068f
+C548 5v0_addh_sc_1/inv_nti VSS 1.24482f
+C549 5v0_addh_sc_1/m1_843_n857# VSS 0.15939f ; **FLOATING
+C550 int_sign VSS 1.05268f
+C551 5v0_addh_sc_1/a_n1205_n937# VSS 0 ; **FLOATING
+C552 5v0_addh_sc_1/a_n1373_n454# VSS 0.00335f ; **FLOATING
+C553 5v0_addh_sc_1/a_n1778_n454# VSS 0.00573f ; **FLOATING
+C554 5v0_addh_sc_1/inv_pti VSS 1.24442f
+C555 carry1_sign_probe VSS 0.11384f
+C556 carry1_over_probe VSS 1.20012f
+C557 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A VSS 0
+C558 5v0_addh_sc_1/a_382_n1095# VSS 0.80936f ; **FLOATING
+C559 in_B VSS 1.58466f
+C560 sum VSS 0.03057f
+C561 int_over VSS 1.26375f
+C562 VDD_3V3 VSS 39.04329f
+C563 5v0_addh_sc_1/m1_103_293# VSS 0.7535f ; **FLOATING
+C564 5v0_addh_sc_1/5v0_half_adder_selector_sc_0/res_stage0 VSS 0.50069f
+C565 5v0_addh_sc_1/downstepper_test VSS 0.62825f
+C566 5v0_addh_sc_1/upstepper_test VSS 0.60726f
+C567 5v0_addh_sc_1/nti VSS 1.22335f
+C568 5v0_addh_sc_0/pti VSS 1.22189f
+C569 VDD_1V65 VSS 0.09081f
+C570 5v0_addh_sc_0/inv_nti VSS 1.3699f
+C571 5v0_addh_sc_0/m1_843_n857# VSS 0.15939f ; **FLOATING
+C572 in_C_sign VSS 1.36176f
+C573 5v0_addh_sc_0/a_n1205_n937# VSS 0 ; **FLOATING
+C574 5v0_addh_sc_0/a_n1373_n454# VSS 0.00335f ; **FLOATING
+C575 5v0_addh_sc_0/a_n1778_n454# VSS 0.00692f ; **FLOATING
+C576 5v0_addh_sc_0/inv_pti VSS 1.09974f
+C577 5v0_addh_sc_0/carry_sign_probe VSS 1.02667f
+C578 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A VSS 0
+C579 5v0_addh_sc_0/a_382_n1095# VSS 0.81948f ; **FLOATING
+C580 in_A VSS 1.66357f
+C581 int_sum_1 VSS 1.41053f
+C582 in_C_over VSS 0.83852f
+C583 5v0_addh_sc_0/m1_103_293# VSS 0.75306f ; **FLOATING
+C584 5v0_addh_sc_0/5v0_half_adder_selector_sc_0/res_stage0 VSS 0.51204f
+C585 5v0_addh_sc_0/downstepper_test VSS 0.5928f
+C586 5v0_addh_sc_0/upstepper_test VSS 0.53881f
+C587 5v0_addh_sc_0/nti VSS 1.21749f

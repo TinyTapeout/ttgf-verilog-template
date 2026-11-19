@@ -1,0 +1,31 @@
+* NGSPICE file created from inverter_pair.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 pti in VSS VSUBS nfet_06v0 ad=6.336n pd=0.32m as=6.478n ps=0.255m w=72 l=578
+X1 VDD_3V3 in pti w_n556_296# pfet_06v0 ad=12.81n pd=0.349m as=12.688n ps=0.348m w=244 l=100
+X2 VDD_3V3 in nti w_n556_296# pfet_06v0 ad=13.616n pd=0.392m as=9.696n ps=0.394m w=96 l=150
+X3 VSS in nti VSUBS nfet_06v0 ad=6.478n pd=0.255m as=12.7n ps=0.454m w=127 l=120
+X4 pti in VDD_3V3 w_n556_296# pfet_06v0 ad=12.688n pd=0.348m as=13.616n ps=0.392m w=244 l=100
+X5 pti in VDD_3V3 w_n556_296# pfet_06v0 ad=27.328n pd=0.712m as=12.81n ps=0.349m w=244 l=100
+C0 VDD_3V3 in 0.22246f
+C1 in pti 0.44356f
+C2 nti VSS 0.04742f
+C3 w_n556_296# in 0.64291f
+C4 VDD_3V3 pti 0.23f
+C5 w_n556_296# VDD_3V3 0.19439f
+C6 nti in 0.16199f
+C7 w_n556_296# pti 0.06361f
+C8 VSS in 0.21883f
+C9 nti VDD_3V3 0.03925f
+C10 VDD_3V3 VSS 0.01279f
+C11 nti pti 0.00231f
+C12 VSS pti 0.04541f
+C13 w_n556_296# nti 0.04212f
+C14 w_n556_296# VSS 0.01896f
+C15 VSS VSUBS 0.51212f
+C16 pti VSUBS 0.10025f
+C17 nti VSUBS 0.09703f
+C18 VDD_3V3 VSUBS 0.32787f
+C19 in VSUBS 0.82576f
+C20 w_n556_296# VSUBS 2.30147f ; **FLOATING

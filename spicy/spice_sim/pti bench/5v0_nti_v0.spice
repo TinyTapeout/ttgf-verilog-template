@@ -1,0 +1,13 @@
+* NGSPICE file created from 5v0_nti.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 VDD_3V3 A Y VDD_3V3 pfet_06v0 ad=27.328n pd=0.712m as=12.688n ps=0.348m w=244 l=100
+X1 Y A VSS VSS nfet_06v0 ad=8.712n pd=0.374m as=8.712n ps=0.374m w=99 l=176
+X2 Y A VDD_3V3 VDD_3V3 pfet_06v0 ad=12.688n pd=0.348m as=21.472n ps=0.664m w=244 l=100
+C0 A VDD_3V3 0.37282f
+C1 A Y 0.21f
+C2 VDD_3V3 Y 0.17172f
+C3 Y VSS 0.16284f
+C4 A VSS 0.38023f
+C5 VDD_3V3 VSS 2.7346f

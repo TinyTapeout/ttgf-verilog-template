@@ -1,0 +1,72 @@
+* NGSPICE file created from 5v0_downstep_sc.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 a_n328_n504# ternary_input 5v0_pti_sc_0/VSS 5v0_pti_sc_0/VSS nfet_06v0 ad=6.336n pd=0.32m as=6.336n ps=0.32m w=72 l=578
+X1 5v0_nti_sc_f_0/VDD_3V3 ternary_input a_n328_n504# 5v0_nti_sc_f_0/VDD_3V3 pfet_06v0 ad=12.81n pd=0.349m as=12.688n ps=0.348m w=244 l=100
+X2 a_n328_n504# ternary_input 5v0_nti_sc_f_0/VDD_3V3 5v0_nti_sc_f_0/VDD_3V3 pfet_06v0 ad=12.688n pd=0.348m as=21.472n ps=0.664m w=244 l=100
+X3 a_n328_n504# ternary_input 5v0_nti_sc_f_0/VDD_3V3 5v0_nti_sc_f_0/VDD_3V3 pfet_06v0 ad=27.328n pd=0.712m as=12.81n ps=0.349m w=244 l=100
+X4 5v0_nti_sc_f_0/ternary_output ternary_input 5v0_pti_sc_0/VSS 5v0_pti_sc_0/VSS nfet_06v0 ad=12.7n pd=0.454m as=11.303n ps=0.432m w=127 l=120
+X5 5v0_nti_sc_f_0/ternary_output ternary_input 5v0_nti_sc_f_0/VDD_3V3 5v0_nti_sc_f_0/VDD_3V3 pfet_06v0 ad=9.696n pd=0.394m as=8.928n ps=0.378m w=96 l=150
+X6 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN 5v0_nti_sc_f_0/ternary_output 5v0_pti_sc_0/VSS 5v0_pti_sc_0/VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X7 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN 5v0_nti_sc_f_0/ternary_output VDD_3V3 VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X8 a_234_n504# a_n328_n504# 5v0_pti_sc_0/VSS 5v0_pti_sc_0/VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X9 a_234_n504# a_n328_n504# 5v0_nti_sc_f_0/VDD_3V3 5v0_nti_sc_f_0/VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X10 a_n208_n404# a_n328_n504# 5v0_pti_sc_0/VSS 5v0_pti_sc_0/VSS nfet_06v0 ad=3.048n pd=0.175m as=12.7n ps=0.454m w=127 l=120
+X11 ternary_output gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN a_n208_n404# 5v0_pti_sc_0/VSS nfet_06v0 ad=6.731n pd=0.233m as=3.048n ps=0.175m w=127 l=120
+X12 ternary_output gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN VDD_3V3 VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X13 a_186_n404# gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN ternary_output 5v0_pti_sc_0/VSS nfet_06v0 ad=3.048n pd=0.175m as=6.731n ps=0.233m w=127 l=120
+X14 VDD_1V65 a_234_n504# a_186_n404# 5v0_pti_sc_0/VSS nfet_06v0 ad=12.7n pd=0.454m as=3.048n ps=0.175m w=127 l=120
+C0 VDD_3V3 VDD_1V65 0.02822f
+C1 a_234_n504# VDD_1V65 0.09172f
+C2 a_186_n404# ternary_output 0.00507f
+C3 a_186_n404# gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN 0
+C4 a_n328_n504# VDD_1V65 0.00383f
+C5 VDD_3V3 ternary_output 0.44086f
+C6 ternary_output a_234_n504# 0.0944f
+C7 VDD_3V3 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN 0.43147f
+C8 a_234_n504# gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN 0.06082f
+C9 a_n208_n404# a_234_n504# 0
+C10 VDD_3V3 5v0_nti_sc_f_0/ternary_output 0.19491f
+C11 5v0_nti_sc_f_0/ternary_output a_234_n504# 0
+C12 a_n328_n504# ternary_output 0.03864f
+C13 a_n328_n504# gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN 0.14649f
+C14 a_n328_n504# a_n208_n404# 0.00197f
+C15 a_n328_n504# 5v0_nti_sc_f_0/ternary_output 0.04267f
+C16 VDD_3V3 5v0_nti_sc_f_0/VDD_3V3 0
+C17 5v0_nti_sc_f_0/VDD_3V3 a_234_n504# 0.12748f
+C18 ternary_output VDD_1V65 0.01186f
+C19 VDD_3V3 ternary_input 0.00574f
+C20 ternary_input a_234_n504# 0.01823f
+C21 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN VDD_1V65 0.00674f
+C22 a_n208_n404# VDD_1V65 0
+C23 5v0_nti_sc_f_0/ternary_output VDD_1V65 0
+C24 a_n328_n504# 5v0_nti_sc_f_0/VDD_3V3 0.57098f
+C25 a_n328_n504# ternary_input 0.60047f
+C26 ternary_output gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN 0.26064f
+C27 a_n208_n404# ternary_output 0.0032f
+C28 a_n208_n404# gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN 0.00197f
+C29 ternary_output 5v0_nti_sc_f_0/ternary_output 0.00671f
+C30 5v0_nti_sc_f_0/ternary_output gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN 0.18279f
+C31 ternary_output ternary_input 0.00451f
+C32 ternary_input gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN 0.01261f
+C33 5v0_nti_sc_f_0/VDD_3V3 5v0_nti_sc_f_0/ternary_output 0.08866f
+C34 ternary_input 5v0_nti_sc_f_0/ternary_output 0.1656f
+C35 a_186_n404# a_234_n504# 0.00116f
+C36 5v0_nti_sc_f_0/VDD_3V3 ternary_input 0.91322f
+C37 a_n328_n504# a_186_n404# 0
+C38 VDD_3V3 a_234_n504# 0.03418f
+C39 a_n328_n504# VDD_3V3 0.03537f
+C40 a_n328_n504# a_234_n504# 0.28413f
+C41 a_186_n404# VDD_1V65 0.00221f
+C42 VDD_1V65 5v0_pti_sc_0/VSS 0.55549f
+C43 ternary_output 5v0_pti_sc_0/VSS 0.20375f
+C44 VDD_3V3 5v0_pti_sc_0/VSS 2.64033f
+C45 a_186_n404# 5v0_pti_sc_0/VSS 0.00282f ; **FLOATING
+C46 a_n208_n404# 5v0_pti_sc_0/VSS 0.00503f ; **FLOATING
+C47 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN 5v0_pti_sc_0/VSS 0.477f
+C48 a_234_n504# 5v0_pti_sc_0/VSS 0.64284f ; **FLOATING
+C49 a_n328_n504# 5v0_pti_sc_0/VSS 0.82722f ; **FLOATING
+C50 5v0_nti_sc_f_0/ternary_output 5v0_pti_sc_0/VSS 0.62947f
+C51 ternary_input 5v0_pti_sc_0/VSS 1.05038f
+C52 5v0_nti_sc_f_0/VDD_3V3 5v0_pti_sc_0/VSS 3.47257f

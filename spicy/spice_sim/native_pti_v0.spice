@@ -1,0 +1,13 @@
+* NGSPICE file created from native_pti_v0.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 VDD A Y VDD pfet_06v0 ad=0.1272u pd=2.36m as=0.1272u ps=2.36m w=1060 l=120
+X1 Y A VSS VSS nfet_06v0 ad=31.2n pd=0.76m as=31.2n ps=0.76m w=120 l=840
+C0 A VDD 0.51601f
+C1 A Y 0.32343f
+C2 VDD Y 0.29295f
+C3 Y VSS 0.33083f ; **FLOATING
+C4 A VSS 1.2412f ; **FLOATING
+C5 VDD VSS 2.60325f ; **FLOATING
+Cload Y 0 10fF

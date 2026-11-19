@@ -1,0 +1,95 @@
+* NGSPICE file created from 5v0_b2t_sc.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 decode_error gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X1 decode_error gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VNW gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VNW pfet_06v0 ad=21.472n pd=0.664m as=15.032n ps=1.036m w=244 l=100
+X2 gf180mcu_fd_sc_mcu7t5v0__inv_1_1/ZN B_in_1 gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS nfet_06v0 ad=14.432n pd=0.504m as=71.441n ps=2.653m w=164 l=120
+X3 gf180mcu_fd_sc_mcu7t5v0__inv_1_1/ZN B_in_1 gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VNW gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VNW pfet_06v0 ad=21.472n pd=0.664m as=53.529n ps=1.371m w=244 l=100
+X4 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I B_in_0 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW pfet_06v0 ad=11.752n pd=0.33m as=19.888n ps=0.628m w=226 l=100
+X5 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I B_in_1 gf180mcu_fd_sc_mcu7t5v0__nand2_1_0/a_245_68# gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS nfet_06v0 ad=14.432n pd=0.504m as=5.248n ps=0.228m w=164 l=120
+X6 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW B_in_1 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW pfet_06v0 ad=19.888n pd=0.628m as=11.752n ps=0.33m w=226 l=100
+X7 gf180mcu_fd_sc_mcu7t5v0__nand2_1_0/a_245_68# B_in_0 gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS nfet_06v0 ad=5.248n pd=0.228m as=14.432n ps=0.504m w=164 l=120
+X8 test_point_nor B_in_0 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW pfet_06v0 ad=21.472n pd=0.664m as=16.348n ps=0.378m w=244 l=100
+X9 gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS B_in_0 test_point_nor gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS nfet_06v0 ad=9.944n pd=0.402m as=5.876n ps=0.217m w=113 l=120
+X10 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# B_in_1 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW pfet_06v0 ad=16.348n pd=0.378m as=21.472n ps=0.664m w=244 l=100
+X11 test_point_nor B_in_1 gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS nfet_06v0 ad=5.876n pd=0.217m as=9.944n ps=0.402m w=113 l=120
+X12 gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I a_525_n35# gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS nfet_06v0 ad=10.032n pd=0.404m as=3.648n ps=0.178m w=114 l=120
+X13 VDD_1V65 test_point_nor ternary_output gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS nfet_06v0 ad=14.694n pd=0.502m as=16.432n ps=0.524m w=158 l=120
+X14 ternary_output decode_error gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS nfet_06v0 ad=7.011n pd=0.237m as=10.032n ps=0.404m w=114 l=120
+X15 a_535_379# gf180mcu_fd_sc_mcu7t5v0__inv_1_1/ZN ternary_output gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VNW pfet_06v0 ad=5.016n pd=0.257m as=18.392n ps=0.594m w=209 l=100
+X16 gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VNW decode_error a_535_379# gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VNW pfet_06v0 ad=18.392n pd=0.594m as=5.016n ps=0.257m w=209 l=100
+X17 a_525_n35# B_in_0 ternary_output gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS nfet_06v0 ad=3.648n pd=0.178m as=7.011n ps=0.237m w=114 l=120
+C0 gf180mcu_fd_sc_mcu7t5v0__nand2_1_0/a_245_68# gf180mcu_fd_sc_mcu7t5v0__inv_1_1/ZN 0
+C1 a_535_379# decode_error 0
+C2 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# 0.01401f
+C3 test_point_nor VDD_1V65 0.01739f
+C4 ternary_output gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VNW 0.3925f
+C5 test_point_nor B_in_1 0.22834f
+C6 test_point_nor B_in_0 0.44854f
+C7 test_point_nor gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I 0.00414f
+C8 gf180mcu_fd_sc_mcu7t5v0__nand2_1_0/a_245_68# gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW 0
+C9 a_525_n35# gf180mcu_fd_sc_mcu7t5v0__inv_1_1/ZN 0.00138f
+C10 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW gf180mcu_fd_sc_mcu7t5v0__inv_1_1/ZN 0
+C11 test_point_nor gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VNW 0.0022f
+C12 a_535_379# gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VNW 0.00412f
+C13 B_in_1 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# 0.009f
+C14 test_point_nor ternary_output 0.02425f
+C15 B_in_0 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# 0.00552f
+C16 gf180mcu_fd_sc_mcu7t5v0__nand2_1_0/a_245_68# decode_error 0
+C17 a_535_379# ternary_output 0.00899f
+C18 decode_error gf180mcu_fd_sc_mcu7t5v0__inv_1_1/ZN 0.22057f
+C19 B_in_1 gf180mcu_fd_sc_mcu7t5v0__nand2_1_0/a_245_68# 0.00919f
+C20 gf180mcu_fd_sc_mcu7t5v0__nand2_1_0/a_245_68# B_in_0 0
+C21 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I gf180mcu_fd_sc_mcu7t5v0__nand2_1_0/a_245_68# 0
+C22 B_in_1 gf180mcu_fd_sc_mcu7t5v0__inv_1_1/ZN 0.26292f
+C23 B_in_0 gf180mcu_fd_sc_mcu7t5v0__inv_1_1/ZN 0.02057f
+C24 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I gf180mcu_fd_sc_mcu7t5v0__inv_1_1/ZN 0.06228f
+C25 a_525_n35# decode_error 0.00145f
+C26 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW decode_error 0.0175f
+C27 gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VNW gf180mcu_fd_sc_mcu7t5v0__inv_1_1/ZN 0.28129f
+C28 B_in_1 a_525_n35# 0
+C29 B_in_1 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW 0.4466f
+C30 B_in_0 a_525_n35# 0
+C31 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW B_in_0 0.46642f
+C32 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I a_525_n35# 0.00142f
+C33 test_point_nor gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# 0.02676f
+C34 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW 0.17804f
+C35 ternary_output gf180mcu_fd_sc_mcu7t5v0__inv_1_1/ZN 0.43538f
+C36 gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VNW a_525_n35# 0
+C37 B_in_1 decode_error 0.01926f
+C38 B_in_0 decode_error 0.02023f
+C39 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I decode_error 0.49135f
+C40 B_in_1 VDD_1V65 0
+C41 ternary_output a_525_n35# 0.00256f
+C42 ternary_output gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW 0.01111f
+C43 B_in_0 VDD_1V65 0
+C44 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I VDD_1V65 0
+C45 a_535_379# gf180mcu_fd_sc_mcu7t5v0__inv_1_1/ZN 0.00134f
+C46 gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VNW decode_error 0.3966f
+C47 B_in_1 B_in_0 0.36311f
+C48 B_in_1 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I 0.57205f
+C49 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I B_in_0 0.11551f
+C50 ternary_output decode_error 0.16646f
+C51 test_point_nor gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW 0.15236f
+C52 B_in_1 gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VNW 0.17901f
+C53 ternary_output VDD_1V65 0.03405f
+C54 gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VNW B_in_0 0.00759f
+C55 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VNW 0.19662f
+C56 ternary_output B_in_1 0.07322f
+C57 ternary_output B_in_0 0.02592f
+C58 ternary_output gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I 0.03496f
+C59 VDD_1V65 gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS 0.22403f
+C60 ternary_output gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS 0.75105f
+C61 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS 0.75663f
+C62 a_525_n35# gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS 0.00566f ; **FLOATING
+C63 a_535_379# gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS 0 ; **FLOATING
+C64 test_point_nor gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS 0.47338f
+C65 B_in_0 gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS 0.90426f
+C66 B_in_1 gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS 0.89988f
+C67 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS 2.99121f
+C68 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS 0 ; **FLOATING
+C69 gf180mcu_fd_sc_mcu7t5v0__nand2_1_0/a_245_68# gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS 0.00322f ; **FLOATING
+C70 gf180mcu_fd_sc_mcu7t5v0__inv_1_1/ZN gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS 0.20662f
+C71 gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VNW gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS 2.84399f
+C72 decode_error gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS 0.60708f

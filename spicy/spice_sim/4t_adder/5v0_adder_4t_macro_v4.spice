@@ -1,0 +1,3334 @@
+* NGSPICE file created from 5v0_adder_4t_macro_v4.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 pti_uq9 in_2 VSS VSS nfet_06v0 ad=6.336n pd=0.32m as=6.478n ps=0.255m w=72 l=578
+X1 VNW in_2 pti_uq9 VNW pfet_06v0 ad=12.81n pd=0.349m as=12.688n ps=0.348m w=244 l=100
+X2 VNW in_2 nti_uq9 VNW pfet_06v0 ad=13.616n pd=0.392m as=9.696n ps=0.394m w=96 l=150
+X3 VSS in_2 nti_uq9 VSS nfet_06v0 ad=6.478n pd=0.255m as=12.7n ps=0.454m w=127 l=120
+X4 pti_uq9 in_2 VNW VNW pfet_06v0 ad=12.688n pd=0.348m as=13.616n ps=0.392m w=244 l=100
+X5 pti_uq9 in_2 VNW VNW pfet_06v0 ad=27.328n pd=0.712m as=12.81n ps=0.349m w=244 l=100
+X6 res_stage0_uq5 a_n11784_n1125# in_downstep_uq5 VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X7 res_stage0_uq5 a_n11784_n1125# in_upstep_uq5 VNW pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X8 a_n11784_n1125# input_A_uq8 VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X9 a_n11784_n1125# input_A_uq8 VNW VNW pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X10 res_stage0_uq5 input_A_uq8 in_upstep_uq5 VSS nfet_06v0 ad=31.491n pd=1.043m as=43.712n ps=1.505m w=164 l=120
+X11 res_stage0_uq5 input_A_uq8 in_downstep_uq5 VNW pfet_06v0 ad=46.851n pd=1.363m as=42.857n ps=1.327m w=244 l=100
+X12 in_uq5 a_n12465_n648# res_stage0_uq5 VSS nfet_06v0 ad=17.059n pd=0.539m as=0 ps=0 w=164 l=120
+X13 in_uq5 a_n12465_n648# in_2 VNW pfet_06v0 ad=25.379n pd=0.699m as=21.473n ps=0.665m w=244 l=100
+X14 a_n12465_n648# ZN_uq5 VSS VSS nfet_06v0 ad=14.433n pd=0.505m as=2.53587u ps=0.09149 w=164 l=120
+X15 a_n12465_n648# ZN_uq5 VNW VNW pfet_06v0 ad=21.473n pd=0.665m as=2.17693u ps=0.06495 w=244 l=100
+X16 in_uq5 ZN_uq5 in_2 VSS nfet_06v0 ad=0 pd=0 as=14.433n ps=0.505m w=164 l=120
+X17 in_uq5 ZN_uq5 res_stage0_uq5 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X18 inv_pti_uq5 pti_uq9 VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X19 inv_pti_uq5 pti_uq9 VNW VNW pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X20 A2_uq5 a_n12465_n648# a_n12365_n1081# VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X21 A2_uq5 ZN_uq5 a_n12365_n1081# VNW pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X22 inv_nti_uq5 input_A_uq8 carry_sign_probe_uq5 VNW pfet_06v0 ad=21.472n pd=0.664m as=12.688n ps=0.348m w=244 l=100
+X23 carry_sign_probe_uq5 a_n11784_n1125# inv_nti_uq5 VSS nfet_06v0 ad=8.528n pd=0.268m as=14.432n ps=0.504m w=164 l=120
+X24 carry_sign_probe_uq5 a_n11784_n1125# inv_pti_uq5 VNW pfet_06v0 ad=12.688n pd=0.348m as=21.472n ps=0.664m w=244 l=100
+X25 inv_pti_uq5 input_A_uq8 carry_sign_probe_uq5 VSS nfet_06v0 ad=14.432n pd=0.504m as=8.528n ps=0.268m w=164 l=120
+X26 inv_nti_uq5 input_A_uq8 a_n12365_n1081# VNW pfet_06v0 ad=64.417n pd=1.993m as=46.849n ps=1.361m w=244 l=100
+X27 a_n12365_n1081# a_n11784_n1125# inv_nti_uq5 VSS nfet_06v0 ad=31.489n pd=1.041m as=43.297n ps=1.513m w=164 l=120
+X28 a_n12365_n1081# a_n11784_n1125# pti_uq9 VNW pfet_06v0 ad=0 pd=0 as=74.177n ps=2.073m w=244 l=100
+X29 pti_uq9 input_A_uq8 a_n12365_n1081# VSS nfet_06v0 ad=20.769n pd=0.825m as=0 ps=0 w=164 l=120
+X30 a_n9625_n487# inv_nti_uq5 in_downstep_uq5 VSS nfet_06v0 ad=3.528n pd=0.195m as=8.599n ps=0.264m w=147 l=120
+X31 in_upstep_uq5 nti_uq9 a_n9793_n970# VNW pfet_06v0 ad=21.384n pd=0.662m as=5.832n ps=0.291m w=243 l=100
+X32 inv_nti_uq5 nti_uq9 VNW VNW pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X33 in_upstep_uq5 nti_uq9 VDD_1V65_3 VSS nfet_06v0 ad=14.847n pd=0.496m as=10.51n ps=0.29m w=147 l=120
+X34 A2_uq5 a_n12465_n648# VNW VNW pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X35 a_n9793_n970# inv_pti_uq5 VNW VNW pfet_06v0 ad=5.832n pd=0.291m as=21.384n ps=0.662m w=243 l=100
+X36 in_downstep_uq5 pti_uq9 a_n9220_n487# VSS nfet_06v0 ad=8.599n pd=0.264m as=3.528n ps=0.195m w=147 l=120
+X37 inv_nti_uq5 nti_uq9 VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X38 a_n9220_n487# inv_nti_uq5 VSS VSS nfet_06v0 ad=3.528n pd=0.195m as=14.847n ps=0.496m w=147 l=120
+X39 in_upstep_uq5 inv_pti_uq5 VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X40 VDD_1V65_3 inv_pti_uq5 a_n9625_n487# VSS nfet_06v0 ad=10.51n pd=0.29m as=3.528n ps=0.195m w=147 l=120
+X41 in_downstep_uq5 inv_nti_uq5 VNW VNW pfet_06v0 ad=21.384n pd=0.662m as=21.384n ps=0.662m w=243 l=100
+X42 pti_uq1 in_uq1 VSS VSS nfet_06v0 ad=20.769n pd=0.825m as=0 ps=0 w=72 l=578
+X43 VNW in_uq1 pti_uq1 VNW pfet_06v0 ad=0 pd=0 as=74.177n ps=2.073m w=244 l=100
+X44 VNW in_uq1 nti_uq1 VNW pfet_06v0 ad=0 pd=0 as=9.697n ps=0.395m w=96 l=150
+X45 VSS in_uq1 nti_uq1 VSS nfet_06v0 ad=0 pd=0 as=12.701n ps=0.455m w=127 l=120
+X46 pti_uq1 in_uq1 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X47 pti_uq1 in_uq1 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X48 res_stage0_uq1 a_n11784_n4261# in_downstep_uq1 VSS nfet_06v0 ad=31.491n pd=1.043m as=31.632n ps=1.033m w=164 l=120
+X49 res_stage0_uq1 a_n11784_n4261# in_upstep_uq1 VNW pfet_06v0 ad=46.851n pd=1.363m as=42.857n ps=1.327m w=244 l=100
+X50 a_n11784_n4261# A1_uq2 VSS VSS nfet_06v0 ad=14.433n pd=0.505m as=0 ps=0 w=164 l=120
+X51 a_n11784_n4261# A1_uq2 VNW VNW pfet_06v0 ad=21.473n pd=0.665m as=0 ps=0 w=244 l=100
+X52 res_stage0_uq1 A1_uq2 in_upstep_uq1 VSS nfet_06v0 ad=0 pd=0 as=43.712n ps=1.505m w=164 l=120
+X53 res_stage0_uq1 A1_uq2 in_downstep_uq1 VNW pfet_06v0 ad=0 pd=0 as=42.857n ps=1.327m w=244 l=100
+X54 res_2 a_n12465_n3784# res_stage0_uq1 VSS nfet_06v0 ad=17.059n pd=0.539m as=0 ps=0 w=164 l=120
+X55 res_2 a_n12465_n3784# in_uq1 VNW pfet_06v0 ad=25.379n pd=0.699m as=21.473n ps=0.665m w=244 l=100
+X56 a_n12465_n3784# ZN_uq1 VSS VSS nfet_06v0 ad=14.433n pd=0.505m as=0 ps=0 w=164 l=120
+X57 a_n12465_n3784# ZN_uq1 VNW VNW pfet_06v0 ad=21.473n pd=0.665m as=0 ps=0 w=244 l=100
+X58 res_2 ZN_uq1 in_uq1 VSS nfet_06v0 ad=0 pd=0 as=14.433n ps=0.505m w=164 l=120
+X59 res_2 ZN_uq1 res_stage0_uq1 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X60 inv_pti_uq1 pti_uq1 VSS VSS nfet_06v0 ad=28.865n pd=1.009m as=0 ps=0 w=164 l=120
+X61 inv_pti_uq1 pti_uq1 VNW VNW pfet_06v0 ad=42.945n pd=1.329m as=0 ps=0 w=244 l=100
+X62 A1_uq5 a_n12465_n3784# a_n12365_n4217# VSS nfet_06v0 ad=14.433n pd=0.505m as=31.489n ps=1.041m w=164 l=120
+X63 A1_uq5 ZN_uq1 a_n12365_n4217# VNW pfet_06v0 ad=42.945n pd=1.329m as=46.849n ps=1.361m w=244 l=100
+X64 inv_nti_uq1 A1_uq2 in_sign_uq1 VNW pfet_06v0 ad=64.417n pd=1.993m as=46.849n ps=1.361m w=244 l=100
+X65 in_sign_uq1 a_n11784_n4261# inv_nti_uq1 VSS nfet_06v0 ad=31.489n pd=1.041m as=43.297n ps=1.513m w=164 l=120
+X66 in_sign_uq1 a_n11784_n4261# inv_pti_uq1 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X67 inv_pti_uq1 A1_uq2 in_sign_uq1 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X68 inv_nti_uq1 A1_uq2 a_n12365_n4217# VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X69 a_n12365_n4217# a_n11784_n4261# inv_nti_uq1 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X70 a_n12365_n4217# a_n11784_n4261# pti_uq1 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X71 pti_uq1 A1_uq2 a_n12365_n4217# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X72 a_n9625_n3623# inv_nti_uq1 in_downstep_uq1 VSS nfet_06v0 ad=7.057n pd=0.391m as=0 ps=0 w=147 l=120
+X73 in_upstep_uq1 nti_uq1 a_n9793_n4106# VNW pfet_06v0 ad=0 pd=0 as=11.665n ps=0.583m w=243 l=100
+X74 inv_nti_uq1 nti_uq1 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X75 in_upstep_uq1 nti_uq1 VDD_1V65_uq0 VSS nfet_06v0 ad=0 pd=0 as=84.085n ps=2.321m w=147 l=120
+X76 A1_uq5 a_n12465_n3784# VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X77 a_n9793_n4106# inv_pti_uq1 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X78 in_downstep_uq1 pti_uq1 a_n9220_n3623# VSS nfet_06v0 ad=0 pd=0 as=7.057n ps=0.391m w=147 l=120
+X79 inv_nti_uq1 nti_uq1 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X80 a_n9220_n3623# inv_nti_uq1 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X81 in_upstep_uq1 inv_pti_uq1 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X82 VDD_1V65_uq0 inv_pti_uq1 a_n9625_n3623# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X83 in_downstep_uq1 inv_nti_uq1 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X84 ZN_uq1 A1_uq2 a_n9029_n2538# VNW pfet_06v0 ad=21.472n pd=0.664m as=16.348n ps=0.378m w=244 l=100
+X85 VSS A1_uq2 ZN_uq1 VSS nfet_06v0 ad=9.944n pd=0.402m as=5.876n ps=0.217m w=113 l=120
+X86 a_n9029_n2538# A2_uq1 VNW VNW pfet_06v0 ad=16.348n pd=0.378m as=20.932n ps=0.664m w=244 l=100
+X87 ZN_uq1 A2_uq1 VSS VSS nfet_06v0 ad=5.876n pd=0.217m as=9.944n ps=0.402m w=113 l=120
+X88 A1_uq2 pti_uq5 VSS VSS nfet_06v0 ad=14.433n pd=0.505m as=0 ps=0 w=164 l=120
+X89 A1_uq2 pti_uq5 VNW VNW pfet_06v0 ad=21.473n pd=0.665m as=0 ps=0 w=244 l=100
+X90 pti_uq5 in_uq5 VSS VSS nfet_06v0 ad=6.336n pd=0.32m as=6.478n ps=0.255m w=72 l=578
+X91 VNW in_uq5 pti_uq5 VNW pfet_06v0 ad=12.81n pd=0.349m as=12.688n ps=0.348m w=244 l=100
+X92 VNW in_uq5 A2_uq1 VNW pfet_06v0 ad=13.616n pd=0.392m as=9.696n ps=0.394m w=96 l=150
+X93 VSS in_uq5 A2_uq1 VSS nfet_06v0 ad=6.478n pd=0.255m as=12.7n ps=0.454m w=127 l=120
+X94 pti_uq5 in_uq5 VNW VNW pfet_06v0 ad=12.688n pd=0.348m as=13.616n ps=0.392m w=244 l=100
+X95 pti_uq5 in_uq5 VNW VNW pfet_06v0 ad=27.328n pd=0.712m as=12.81n ps=0.349m w=244 l=100
+X96 ZN_uq6 a_n10428_n2398# VNW VNW pfet_06v0 ad=12.483n pd=0.333m as=13.775n ps=0.379m w=219 l=100
+X97 a_n10048_n1803# A2_uq5 a_n10428_n2398# VSS nfet_06v0 ad=2.304n pd=0.136m as=6.336n ps=0.32m w=72 l=120
+X98 VSS A1_uq5 a_n10048_n1803# VSS nfet_06v0 ad=8.72n pd=0.304m as=2.304n ps=0.136m w=72 l=120
+X99 a_n11052_n1870# a_n10428_n2398# VSS VSS nfet_06v0 ad=8.528n pd=0.268m as=8.72n ps=0.304m w=164 l=120
+X100 VNW A2_uq5 a_n10844_n2354# VNW pfet_06v0 ad=19.272n pd=0.614m as=22.119n ps=0.421m w=219 l=100
+X101 ZN_uq6 A1_uq5 a_n11052_n1870# VSS nfet_06v0 ad=16.644n pd=0.381m as=8.528n ps=0.268m w=164 l=120
+X102 a_n10428_n2398# A2_uq5 VNW VNW pfet_06v0 ad=5.824n pd=0.216m as=9.856n ps=0.4m w=112 l=100
+X103 a_n11052_n1870# A2_uq5 ZN_uq6 VSS nfet_06v0 ad=14.432n pd=0.504m as=16.644n ps=0.381m w=164 l=120
+X104 VNW A1_uq5 a_n10428_n2398# VNW pfet_06v0 ad=13.775n pd=0.379m as=5.824n ps=0.216m w=112 l=100
+X105 a_n10844_n2354# A1_uq5 ZN_uq6 VNW pfet_06v0 ad=22.119n pd=0.421m as=12.483n ps=0.333m w=219 l=100
+X106 carry_sign_probe_uq5 A2_uq5 res_sign_uq2 VNW pfet_06v0 ad=21.472n pd=0.664m as=12.688n ps=0.348m w=244 l=100
+X107 res_sign_uq2 a_n11778_n2398# carry_sign_probe_uq5 VSS nfet_06v0 ad=8.528n pd=0.268m as=14.432n ps=0.504m w=164 l=120
+X108 res_sign_uq2 a_n11778_n2398# in_sign_uq1 VNW pfet_06v0 ad=12.688n pd=0.348m as=21.472n ps=0.664m w=244 l=100
+X109 a_n11778_n2398# A2_uq5 VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X110 a_n11778_n2398# A2_uq5 VNW VNW pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X111 in_sign_uq1 A2_uq5 res_sign_uq2 VSS nfet_06v0 ad=14.432n pd=0.504m as=8.528n ps=0.268m w=164 l=120
+X112 pti_uq10 in_3 VSS VSS nfet_06v0 ad=20.769n pd=0.825m as=0 ps=0 w=72 l=578
+X113 VNW in_3 pti_uq10 VNW pfet_06v0 ad=0 pd=0 as=74.177n ps=2.073m w=244 l=100
+X114 VNW in_3 nti_uq10 VNW pfet_06v0 ad=0 pd=0 as=9.697n ps=0.395m w=96 l=150
+X115 VSS in_3 nti_uq10 VSS nfet_06v0 ad=0 pd=0 as=12.701n ps=0.455m w=127 l=120
+X116 pti_uq10 in_3 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X117 pti_uq10 in_3 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X118 res_stage0_uq6 a_n16519_n1125# in_downstep_uq6 VSS nfet_06v0 ad=31.49n pd=1.042m as=31.632n ps=1.033m w=164 l=120
+X119 res_stage0_uq6 a_n16519_n1125# in_upstep_uq6 VNW pfet_06v0 ad=46.85n pd=1.362m as=42.857n ps=1.327m w=244 l=100
+X120 a_n16519_n1125# res_sign_uq2 VSS VSS nfet_06v0 ad=14.433n pd=0.505m as=0 ps=0 w=164 l=120
+X121 a_n16519_n1125# res_sign_uq2 VNW VNW pfet_06v0 ad=21.473n pd=0.665m as=0 ps=0 w=244 l=100
+X122 res_stage0_uq6 res_sign_uq2 in_upstep_uq6 VSS nfet_06v0 ad=0 pd=0 as=43.712n ps=1.505m w=164 l=120
+X123 res_stage0_uq6 res_sign_uq2 in_downstep_uq6 VNW pfet_06v0 ad=0 pd=0 as=42.857n ps=1.327m w=244 l=100
+X124 in_uq6 a_n17200_n648# res_stage0_uq6 VSS nfet_06v0 ad=17.058n pd=0.538m as=0 ps=0 w=164 l=120
+X125 in_uq6 a_n17200_n648# in_3 VNW pfet_06v0 ad=25.378n pd=0.698m as=21.473n ps=0.665m w=244 l=100
+X126 a_n17200_n648# ZN_uq6 VSS VSS nfet_06v0 ad=14.433n pd=0.505m as=0 ps=0 w=164 l=120
+X127 a_n17200_n648# ZN_uq6 VNW VNW pfet_06v0 ad=21.473n pd=0.665m as=0 ps=0 w=244 l=100
+X128 in_uq6 ZN_uq6 in_3 VSS nfet_06v0 ad=0 pd=0 as=14.433n ps=0.505m w=164 l=120
+X129 in_uq6 ZN_uq6 res_stage0_uq6 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X130 inv_pti_uq6 pti_uq10 VSS VSS nfet_06v0 ad=28.865n pd=1.009m as=0 ps=0 w=164 l=120
+X131 inv_pti_uq6 pti_uq10 VNW VNW pfet_06v0 ad=42.945n pd=1.329m as=0 ps=0 w=244 l=100
+X132 A2_uq6 a_n17200_n648# a_n17100_n1081# VSS nfet_06v0 ad=14.433n pd=0.505m as=31.489n ps=1.041m w=164 l=120
+X133 A2_uq6 ZN_uq6 a_n17100_n1081# VNW pfet_06v0 ad=42.945n pd=1.329m as=46.849n ps=1.361m w=244 l=100
+X134 inv_nti_uq6 res_sign_uq2 carry_sign_probe_uq6 VNW pfet_06v0 ad=64.417n pd=1.993m as=46.849n ps=1.361m w=244 l=100
+X135 carry_sign_probe_uq6 a_n16519_n1125# inv_nti_uq6 VSS nfet_06v0 ad=31.489n pd=1.041m as=43.297n ps=1.513m w=164 l=120
+X136 carry_sign_probe_uq6 a_n16519_n1125# inv_pti_uq6 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X137 inv_pti_uq6 res_sign_uq2 carry_sign_probe_uq6 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X138 inv_nti_uq6 res_sign_uq2 a_n17100_n1081# VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X139 a_n17100_n1081# a_n16519_n1125# inv_nti_uq6 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X140 a_n17100_n1081# a_n16519_n1125# pti_uq10 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X141 pti_uq10 res_sign_uq2 a_n17100_n1081# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X142 a_n14360_n487# inv_nti_uq6 in_downstep_uq6 VSS nfet_06v0 ad=7.057n pd=0.391m as=0 ps=0 w=147 l=120
+X143 in_upstep_uq6 nti_uq10 a_n14528_n970# VNW pfet_06v0 ad=0 pd=0 as=11.665n ps=0.583m w=243 l=100
+X144 inv_nti_uq6 nti_uq10 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X145 in_upstep_uq6 nti_uq10 VDD_1V65_4 VSS nfet_06v0 ad=0 pd=0 as=21.022n ps=0.581m w=147 l=120
+X146 A2_uq6 a_n17200_n648# VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X147 a_n14528_n970# inv_pti_uq6 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X148 in_downstep_uq6 pti_uq10 a_n13955_n487# VSS nfet_06v0 ad=0 pd=0 as=7.057n ps=0.391m w=147 l=120
+X149 inv_nti_uq6 nti_uq10 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X150 a_n13955_n487# inv_nti_uq6 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X151 in_upstep_uq6 inv_pti_uq6 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X152 VDD_1V65_4 inv_pti_uq6 a_n14360_n487# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X153 in_downstep_uq6 inv_nti_uq6 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X154 pti_uq2 in_uq2 VSS VSS nfet_06v0 ad=20.769n pd=0.825m as=0 ps=0 w=72 l=578
+X155 VNW in_uq2 pti_uq2 VNW pfet_06v0 ad=0 pd=0 as=74.177n ps=2.073m w=244 l=100
+X156 VNW in_uq2 nti_uq2 VNW pfet_06v0 ad=0 pd=0 as=9.697n ps=0.395m w=96 l=150
+X157 VSS in_uq2 nti_uq2 VSS nfet_06v0 ad=0 pd=0 as=12.701n ps=0.455m w=127 l=120
+X158 pti_uq2 in_uq2 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X159 pti_uq2 in_uq2 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X160 res_stage0_uq2 a_n16519_n4261# in_downstep_uq2 VSS nfet_06v0 ad=31.49n pd=1.042m as=31.632n ps=1.033m w=164 l=120
+X161 res_stage0_uq2 a_n16519_n4261# in_upstep_uq2 VNW pfet_06v0 ad=46.85n pd=1.362m as=42.857n ps=1.327m w=244 l=100
+X162 a_n16519_n4261# A1_uq4 VSS VSS nfet_06v0 ad=14.433n pd=0.505m as=0 ps=0 w=164 l=120
+X163 a_n16519_n4261# A1_uq4 VNW VNW pfet_06v0 ad=21.473n pd=0.665m as=0 ps=0 w=244 l=100
+X164 res_stage0_uq2 A1_uq4 in_upstep_uq2 VSS nfet_06v0 ad=0 pd=0 as=43.712n ps=1.505m w=164 l=120
+X165 res_stage0_uq2 A1_uq4 in_downstep_uq2 VNW pfet_06v0 ad=0 pd=0 as=42.857n ps=1.327m w=244 l=100
+X166 res_3 a_n17200_n3784# res_stage0_uq2 VSS nfet_06v0 ad=17.058n pd=0.538m as=0 ps=0 w=164 l=120
+X167 res_3 a_n17200_n3784# in_uq2 VNW pfet_06v0 ad=25.378n pd=0.698m as=21.473n ps=0.665m w=244 l=100
+X168 a_n17200_n3784# ZN_uq2 VSS VSS nfet_06v0 ad=14.433n pd=0.505m as=0 ps=0 w=164 l=120
+X169 a_n17200_n3784# ZN_uq2 VNW VNW pfet_06v0 ad=21.473n pd=0.665m as=0 ps=0 w=244 l=100
+X170 res_3 ZN_uq2 in_uq2 VSS nfet_06v0 ad=0 pd=0 as=14.433n ps=0.505m w=164 l=120
+X171 res_3 ZN_uq2 res_stage0_uq2 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X172 inv_pti_uq2 pti_uq2 VSS VSS nfet_06v0 ad=28.865n pd=1.009m as=0 ps=0 w=164 l=120
+X173 inv_pti_uq2 pti_uq2 VNW VNW pfet_06v0 ad=42.945n pd=1.329m as=0 ps=0 w=244 l=100
+X174 A1_uq6 a_n17200_n3784# a_n17100_n4217# VSS nfet_06v0 ad=14.433n pd=0.505m as=31.489n ps=1.041m w=164 l=120
+X175 A1_uq6 ZN_uq2 a_n17100_n4217# VNW pfet_06v0 ad=42.945n pd=1.329m as=46.849n ps=1.361m w=244 l=100
+X176 inv_nti_uq2 A1_uq4 in_sign_uq2 VNW pfet_06v0 ad=64.417n pd=1.993m as=46.849n ps=1.361m w=244 l=100
+X177 in_sign_uq2 a_n16519_n4261# inv_nti_uq2 VSS nfet_06v0 ad=31.489n pd=1.041m as=43.297n ps=1.513m w=164 l=120
+X178 in_sign_uq2 a_n16519_n4261# inv_pti_uq2 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X179 inv_pti_uq2 A1_uq4 in_sign_uq2 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X180 inv_nti_uq2 A1_uq4 a_n17100_n4217# VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X181 a_n17100_n4217# a_n16519_n4261# inv_nti_uq2 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X182 a_n17100_n4217# a_n16519_n4261# pti_uq2 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X183 pti_uq2 A1_uq4 a_n17100_n4217# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X184 a_n14360_n3623# inv_nti_uq2 in_downstep_uq2 VSS nfet_06v0 ad=7.057n pd=0.391m as=0 ps=0 w=147 l=120
+X185 in_upstep_uq2 nti_uq2 a_n14528_n4106# VNW pfet_06v0 ad=0 pd=0 as=11.665n ps=0.583m w=243 l=100
+X186 inv_nti_uq2 nti_uq2 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X187 in_upstep_uq2 nti_uq2 VDD_1V65_uq0 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X188 A1_uq6 a_n17200_n3784# VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X189 a_n14528_n4106# inv_pti_uq2 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X190 in_downstep_uq2 pti_uq2 a_n13955_n3623# VSS nfet_06v0 ad=0 pd=0 as=7.057n ps=0.391m w=147 l=120
+X191 inv_nti_uq2 nti_uq2 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X192 a_n13955_n3623# inv_nti_uq2 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X193 in_upstep_uq2 inv_pti_uq2 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X194 VDD_1V65_uq0 inv_pti_uq2 a_n14360_n3623# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X195 in_downstep_uq2 inv_nti_uq2 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X196 ZN_uq2 A1_uq4 a_n13764_n2538# VNW pfet_06v0 ad=21.473n pd=0.665m as=32.697n ps=0.757m w=244 l=100
+X197 VSS A1_uq4 ZN_uq2 VSS nfet_06v0 ad=0 pd=0 as=11.753n ps=0.435m w=113 l=120
+X198 a_n13764_n2538# A2_uq2 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X199 ZN_uq2 A2_uq2 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=113 l=120
+X200 A1_uq4 pti_uq6 VSS VSS nfet_06v0 ad=14.433n pd=0.505m as=0 ps=0 w=164 l=120
+X201 A1_uq4 pti_uq6 VNW VNW pfet_06v0 ad=21.473n pd=0.665m as=0 ps=0 w=244 l=100
+X202 pti_uq6 in_uq6 VSS VSS nfet_06v0 ad=6.337n pd=0.321m as=0 ps=0 w=72 l=578
+X203 VNW in_uq6 pti_uq6 VNW pfet_06v0 ad=0 pd=0 as=52.705n ps=1.409m w=244 l=100
+X204 VNW in_uq6 A2_uq2 VNW pfet_06v0 ad=0 pd=0 as=9.697n ps=0.395m w=96 l=150
+X205 VSS in_uq6 A2_uq2 VSS nfet_06v0 ad=0 pd=0 as=12.701n ps=0.455m w=127 l=120
+X206 pti_uq6 in_uq6 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X207 pti_uq6 in_uq6 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X208 ZN_uq3 a_n15163_n2398# VNW VNW pfet_06v0 ad=24.967n pd=0.667m as=0 ps=0 w=219 l=100
+X209 a_n14783_n1803# A2_uq6 a_n15163_n2398# VSS nfet_06v0 ad=4.609n pd=0.273m as=6.337n ps=0.321m w=72 l=120
+X210 VSS A1_uq6 a_n14783_n1803# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=72 l=120
+X211 a_n15787_n1870# a_n15163_n2398# VSS VSS nfet_06v0 ad=31.489n pd=1.041m as=0 ps=0 w=164 l=120
+X212 VNW A2_uq6 a_n15579_n2354# VNW pfet_06v0 ad=0 pd=0 as=44.239n ps=0.843m w=219 l=100
+X213 ZN_uq3 A1_uq6 a_n15787_n1870# VSS nfet_06v0 ad=33.289n pd=0.763m as=0 ps=0 w=164 l=120
+X214 a_n15163_n2398# A2_uq6 VNW VNW pfet_06v0 ad=11.649n pd=0.433m as=0 ps=0 w=112 l=100
+X215 a_n15787_n1870# A2_uq6 ZN_uq3 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X216 VNW A1_uq6 a_n15163_n2398# VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=112 l=100
+X217 a_n15579_n2354# A1_uq6 ZN_uq3 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=219 l=100
+X218 carry_sign_probe_uq6 A2_uq6 res_sign_uq0 VNW pfet_06v0 ad=0 pd=0 as=25.377n ps=0.697m w=244 l=100
+X219 res_sign_uq0 a_n16513_n2398# carry_sign_probe_uq6 VSS nfet_06v0 ad=17.057n pd=0.537m as=0 ps=0 w=164 l=120
+X220 res_sign_uq0 a_n16513_n2398# in_sign_uq2 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X221 a_n16513_n2398# A2_uq6 VSS VSS nfet_06v0 ad=14.433n pd=0.505m as=0 ps=0 w=164 l=120
+X222 a_n16513_n2398# A2_uq6 VNW VNW pfet_06v0 ad=21.473n pd=0.665m as=0 ps=0 w=244 l=100
+X223 in_sign_uq2 A2_uq6 res_sign_uq0 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X224 pti_uq7 in_0 VSS VSS nfet_06v0 ad=20.769n pd=0.825m as=0 ps=0 w=72 l=578
+X225 VNW in_0 pti_uq7 VNW pfet_06v0 ad=0 pd=0 as=74.177n ps=2.073m w=244 l=100
+X226 VNW in_0 nti_uq7 VNW pfet_06v0 ad=0 pd=0 as=9.697n ps=0.395m w=96 l=150
+X227 VSS in_0 nti_uq7 VSS nfet_06v0 ad=0 pd=0 as=12.701n ps=0.455m w=127 l=120
+X228 pti_uq7 in_0 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X229 pti_uq7 in_0 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X230 res_stage0_uq3 a_n2314_n1125# in_downstep_uq3 VSS nfet_06v0 ad=31.49n pd=1.042m as=31.632n ps=1.033m w=164 l=120
+X231 res_stage0_uq3 a_n2314_n1125# in_upstep_uq3 VNW pfet_06v0 ad=46.85n pd=1.362m as=42.857n ps=1.327m w=244 l=100
+X232 a_n2314_n1125# input_A_uq4 VSS VSS nfet_06v0 ad=14.433n pd=0.505m as=0 ps=0 w=164 l=120
+X233 a_n2314_n1125# input_A_uq4 VNW VNW pfet_06v0 ad=21.473n pd=0.665m as=0 ps=0 w=244 l=100
+X234 res_stage0_uq3 input_A_uq4 in_upstep_uq3 VSS nfet_06v0 ad=0 pd=0 as=43.712n ps=1.505m w=164 l=120
+X235 res_stage0_uq3 input_A_uq4 in_downstep_uq3 VNW pfet_06v0 ad=0 pd=0 as=42.857n ps=1.327m w=244 l=100
+X236 in_uq3 a_n2995_n648# res_stage0_uq3 VSS nfet_06v0 ad=17.058n pd=0.538m as=0 ps=0 w=164 l=120
+X237 in_uq3 a_n2995_n648# in_0 VNW pfet_06v0 ad=25.378n pd=0.698m as=21.473n ps=0.665m w=244 l=100
+X238 a_n2995_n648# in_C_over_uq0 VSS VSS nfet_06v0 ad=14.433n pd=0.505m as=0 ps=0 w=164 l=120
+X239 a_n2995_n648# in_C_over_uq0 VNW VNW pfet_06v0 ad=21.473n pd=0.665m as=0 ps=0 w=244 l=100
+X240 in_uq3 in_C_over_uq0 in_0 VSS nfet_06v0 ad=0 pd=0 as=14.433n ps=0.505m w=164 l=120
+X241 in_uq3 in_C_over_uq0 res_stage0_uq3 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X242 inv_pti_uq3 pti_uq7 VSS VSS nfet_06v0 ad=28.865n pd=1.009m as=0 ps=0 w=164 l=120
+X243 inv_pti_uq3 pti_uq7 VNW VNW pfet_06v0 ad=42.945n pd=1.329m as=0 ps=0 w=244 l=100
+X244 A2_uq3 a_n2995_n648# a_n2895_n1081# VSS nfet_06v0 ad=14.433n pd=0.505m as=31.489n ps=1.041m w=164 l=120
+X245 A2_uq3 in_C_over_uq0 a_n2895_n1081# VNW pfet_06v0 ad=42.945n pd=1.329m as=46.849n ps=1.361m w=244 l=100
+X246 inv_nti_uq3 input_A_uq4 carry_sign_probe_uq3 VNW pfet_06v0 ad=64.417n pd=1.993m as=46.849n ps=1.361m w=244 l=100
+X247 carry_sign_probe_uq3 a_n2314_n1125# inv_nti_uq3 VSS nfet_06v0 ad=31.489n pd=1.041m as=43.297n ps=1.513m w=164 l=120
+X248 carry_sign_probe_uq3 a_n2314_n1125# inv_pti_uq3 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X249 inv_pti_uq3 input_A_uq4 carry_sign_probe_uq3 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X250 inv_nti_uq3 input_A_uq4 a_n2895_n1081# VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X251 a_n2895_n1081# a_n2314_n1125# inv_nti_uq3 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X252 a_n2895_n1081# a_n2314_n1125# pti_uq7 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X253 pti_uq7 input_A_uq4 a_n2895_n1081# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X254 a_n155_n487# inv_nti_uq3 in_downstep_uq3 VSS nfet_06v0 ad=7.057n pd=0.391m as=0 ps=0 w=147 l=120
+X255 in_upstep_uq3 nti_uq7 a_n323_n970# VNW pfet_06v0 ad=0 pd=0 as=11.665n ps=0.583m w=243 l=100
+X256 inv_nti_uq3 nti_uq7 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X257 in_upstep_uq3 nti_uq7 VDD_1V65 VSS nfet_06v0 ad=0 pd=0 as=21.022n ps=0.581m w=147 l=120
+X258 A2_uq3 a_n2995_n648# VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X259 a_n323_n970# inv_pti_uq3 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X260 in_downstep_uq3 pti_uq7 a_250_n487# VSS nfet_06v0 ad=0 pd=0 as=7.057n ps=0.391m w=147 l=120
+X261 inv_nti_uq3 nti_uq7 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X262 a_250_n487# inv_nti_uq3 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X263 in_upstep_uq3 inv_pti_uq3 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X264 VDD_1V65 inv_pti_uq3 a_n155_n487# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X265 in_downstep_uq3 inv_nti_uq3 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X266 pti_uq0 in_uq0 VSS VSS nfet_06v0 ad=20.769n pd=0.825m as=0 ps=0 w=72 l=578
+X267 VNW in_uq0 pti_uq0 VNW pfet_06v0 ad=0 pd=0 as=74.177n ps=2.073m w=244 l=100
+X268 VNW in_uq0 nti_uq0 VNW pfet_06v0 ad=0 pd=0 as=9.697n ps=0.395m w=96 l=150
+X269 VSS in_uq0 nti_uq0 VSS nfet_06v0 ad=0 pd=0 as=12.701n ps=0.455m w=127 l=120
+X270 pti_uq0 in_uq0 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X271 pti_uq0 in_uq0 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X272 res_stage0_uq0 a_n2314_n4261# in_downstep_uq0 VSS nfet_06v0 ad=31.49n pd=1.042m as=31.632n ps=1.033m w=164 l=120
+X273 res_stage0_uq0 a_n2314_n4261# in_upstep_uq0 VNW pfet_06v0 ad=46.85n pd=1.362m as=42.857n ps=1.327m w=244 l=100
+X274 a_n2314_n4261# A1_uq0 VSS VSS nfet_06v0 ad=14.433n pd=0.505m as=0 ps=0 w=164 l=120
+X275 a_n2314_n4261# A1_uq0 VNW VNW pfet_06v0 ad=21.473n pd=0.665m as=0 ps=0 w=244 l=100
+X276 res_stage0_uq0 A1_uq0 in_upstep_uq0 VSS nfet_06v0 ad=0 pd=0 as=43.712n ps=1.505m w=164 l=120
+X277 res_stage0_uq0 A1_uq0 in_downstep_uq0 VNW pfet_06v0 ad=0 pd=0 as=42.857n ps=1.327m w=244 l=100
+X278 sum_uq0 a_n2995_n3784# res_stage0_uq0 VSS nfet_06v0 ad=17.058n pd=0.538m as=0 ps=0 w=164 l=120
+X279 sum_uq0 a_n2995_n3784# in_uq0 VNW pfet_06v0 ad=25.378n pd=0.698m as=21.473n ps=0.665m w=244 l=100
+X280 a_n2995_n3784# ZN_uq0 VSS VSS nfet_06v0 ad=14.433n pd=0.505m as=0 ps=0 w=164 l=120
+X281 a_n2995_n3784# ZN_uq0 VNW VNW pfet_06v0 ad=21.473n pd=0.665m as=0 ps=0 w=244 l=100
+X282 sum_uq0 ZN_uq0 in_uq0 VSS nfet_06v0 ad=0 pd=0 as=14.433n ps=0.505m w=164 l=120
+X283 sum_uq0 ZN_uq0 res_stage0_uq0 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X284 inv_pti_uq0 pti_uq0 VSS VSS nfet_06v0 ad=28.865n pd=1.009m as=0 ps=0 w=164 l=120
+X285 inv_pti_uq0 pti_uq0 VNW VNW pfet_06v0 ad=42.945n pd=1.329m as=0 ps=0 w=244 l=100
+X286 A1_uq1 a_n2995_n3784# a_n2895_n4217# VSS nfet_06v0 ad=14.433n pd=0.505m as=31.489n ps=1.041m w=164 l=120
+X287 A1_uq1 ZN_uq0 a_n2895_n4217# VNW pfet_06v0 ad=42.945n pd=1.329m as=46.849n ps=1.361m w=244 l=100
+X288 inv_nti_uq0 A1_uq0 in_sign_uq0 VNW pfet_06v0 ad=64.417n pd=1.993m as=46.849n ps=1.361m w=244 l=100
+X289 in_sign_uq0 a_n2314_n4261# inv_nti_uq0 VSS nfet_06v0 ad=31.489n pd=1.041m as=43.297n ps=1.513m w=164 l=120
+X290 in_sign_uq0 a_n2314_n4261# inv_pti_uq0 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X291 inv_pti_uq0 A1_uq0 in_sign_uq0 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X292 inv_nti_uq0 A1_uq0 a_n2895_n4217# VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X293 a_n2895_n4217# a_n2314_n4261# inv_nti_uq0 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X294 a_n2895_n4217# a_n2314_n4261# pti_uq0 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X295 pti_uq0 A1_uq0 a_n2895_n4217# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X296 a_n155_n3623# inv_nti_uq0 in_downstep_uq0 VSS nfet_06v0 ad=7.057n pd=0.391m as=0 ps=0 w=147 l=120
+X297 in_upstep_uq0 nti_uq0 a_n323_n4106# VNW pfet_06v0 ad=0 pd=0 as=11.665n ps=0.583m w=243 l=100
+X298 inv_nti_uq0 nti_uq0 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X299 in_upstep_uq0 nti_uq0 VDD_1V65_uq0 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X300 A1_uq1 a_n2995_n3784# VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X301 a_n323_n4106# inv_pti_uq0 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X302 in_downstep_uq0 pti_uq0 a_250_n3623# VSS nfet_06v0 ad=0 pd=0 as=7.057n ps=0.391m w=147 l=120
+X303 inv_nti_uq0 nti_uq0 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X304 a_250_n3623# inv_nti_uq0 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X305 in_upstep_uq0 inv_pti_uq0 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X306 VDD_1V65_uq0 inv_pti_uq0 a_n155_n3623# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X307 in_downstep_uq0 inv_nti_uq0 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X308 ZN_uq0 A1_uq0 a_441_n2538# VNW pfet_06v0 ad=21.473n pd=0.665m as=32.697n ps=0.757m w=244 l=100
+X309 VSS A1_uq0 ZN_uq0 VSS nfet_06v0 ad=0 pd=0 as=11.753n ps=0.435m w=113 l=120
+X310 a_441_n2538# A2_uq0 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X311 ZN_uq0 A2_uq0 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=113 l=120
+X312 A1_uq0 pti_uq3 VSS VSS nfet_06v0 ad=14.433n pd=0.505m as=0 ps=0 w=164 l=120
+X313 A1_uq0 pti_uq3 VNW VNW pfet_06v0 ad=21.473n pd=0.665m as=0 ps=0 w=244 l=100
+X314 pti_uq3 in_uq3 VSS VSS nfet_06v0 ad=6.337n pd=0.321m as=0 ps=0 w=72 l=578
+X315 VNW in_uq3 pti_uq3 VNW pfet_06v0 ad=0 pd=0 as=52.705n ps=1.409m w=244 l=100
+X316 VNW in_uq3 A2_uq0 VNW pfet_06v0 ad=0 pd=0 as=9.697n ps=0.395m w=96 l=150
+X317 VSS in_uq3 A2_uq0 VSS nfet_06v0 ad=0 pd=0 as=12.701n ps=0.455m w=127 l=120
+X318 pti_uq3 in_uq3 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X319 pti_uq3 in_uq3 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X320 ZN_uq4 a_n958_n2398# VNW VNW pfet_06v0 ad=24.967n pd=0.667m as=0 ps=0 w=219 l=100
+X321 a_n578_n1803# A2_uq3 a_n958_n2398# VSS nfet_06v0 ad=4.609n pd=0.273m as=6.337n ps=0.321m w=72 l=120
+X322 VSS A1_uq1 a_n578_n1803# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=72 l=120
+X323 a_n1582_n1870# a_n958_n2398# VSS VSS nfet_06v0 ad=31.489n pd=1.041m as=0 ps=0 w=164 l=120
+X324 VNW A2_uq3 a_n1374_n2354# VNW pfet_06v0 ad=0 pd=0 as=44.239n ps=0.843m w=219 l=100
+X325 ZN_uq4 A1_uq1 a_n1582_n1870# VSS nfet_06v0 ad=33.289n pd=0.763m as=0 ps=0 w=164 l=120
+X326 a_n958_n2398# A2_uq3 VNW VNW pfet_06v0 ad=11.649n pd=0.433m as=0 ps=0 w=112 l=100
+X327 a_n1582_n1870# A2_uq3 ZN_uq4 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X328 VNW A1_uq1 a_n958_n2398# VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=112 l=100
+X329 a_n1374_n2354# A1_uq1 ZN_uq4 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=219 l=100
+X330 carry_sign_probe_uq3 A2_uq3 res_sign VNW pfet_06v0 ad=0 pd=0 as=25.377n ps=0.697m w=244 l=100
+X331 res_sign a_n2308_n2398# carry_sign_probe_uq3 VSS nfet_06v0 ad=17.057n pd=0.537m as=0 ps=0 w=164 l=120
+X332 res_sign a_n2308_n2398# in_sign_uq0 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X333 a_n2308_n2398# A2_uq3 VSS VSS nfet_06v0 ad=14.433n pd=0.505m as=0 ps=0 w=164 l=120
+X334 a_n2308_n2398# A2_uq3 VNW VNW pfet_06v0 ad=21.473n pd=0.665m as=0 ps=0 w=244 l=100
+X335 in_sign_uq0 A2_uq3 res_sign VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X336 pti_uq8 in_A VSS VSS nfet_06v0 ad=20.769n pd=0.825m as=0 ps=0 w=72 l=578
+X337 VNW in_A pti_uq8 VNW pfet_06v0 ad=0 pd=0 as=74.177n ps=2.073m w=244 l=100
+X338 VNW in_A nti_uq8 VNW pfet_06v0 ad=0 pd=0 as=9.697n ps=0.395m w=96 l=150
+X339 VSS in_A nti_uq8 VSS nfet_06v0 ad=0 pd=0 as=12.701n ps=0.455m w=127 l=120
+X340 pti_uq8 in_A VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X341 pti_uq8 in_A VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X342 res_stage0_uq4 a_n7049_n1125# in_downstep_uq4 VSS nfet_06v0 ad=31.491n pd=1.043m as=31.632n ps=1.033m w=164 l=120
+X343 res_stage0_uq4 a_n7049_n1125# in_upstep_uq4 VNW pfet_06v0 ad=46.851n pd=1.363m as=42.857n ps=1.327m w=244 l=100
+X344 a_n7049_n1125# res_sign VSS VSS nfet_06v0 ad=14.433n pd=0.505m as=0 ps=0 w=164 l=120
+X345 a_n7049_n1125# res_sign VNW VNW pfet_06v0 ad=21.473n pd=0.665m as=0 ps=0 w=244 l=100
+X346 res_stage0_uq4 res_sign in_upstep_uq4 VSS nfet_06v0 ad=0 pd=0 as=43.712n ps=1.505m w=164 l=120
+X347 res_stage0_uq4 res_sign in_downstep_uq4 VNW pfet_06v0 ad=0 pd=0 as=42.857n ps=1.327m w=244 l=100
+X348 in_uq4 a_n7730_n648# res_stage0_uq4 VSS nfet_06v0 ad=17.059n pd=0.539m as=0 ps=0 w=164 l=120
+X349 in_uq4 a_n7730_n648# in_A VNW pfet_06v0 ad=25.379n pd=0.699m as=21.473n ps=0.665m w=244 l=100
+X350 a_n7730_n648# ZN_uq4 VSS VSS nfet_06v0 ad=14.433n pd=0.505m as=0 ps=0 w=164 l=120
+X351 a_n7730_n648# ZN_uq4 VNW VNW pfet_06v0 ad=21.473n pd=0.665m as=0 ps=0 w=244 l=100
+X352 in_uq4 ZN_uq4 in_A VSS nfet_06v0 ad=0 pd=0 as=14.433n ps=0.505m w=164 l=120
+X353 in_uq4 ZN_uq4 res_stage0_uq4 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X354 inv_pti_uq4 pti_uq8 VSS VSS nfet_06v0 ad=28.865n pd=1.009m as=0 ps=0 w=164 l=120
+X355 inv_pti_uq4 pti_uq8 VNW VNW pfet_06v0 ad=42.945n pd=1.329m as=0 ps=0 w=244 l=100
+X356 A2_uq4 a_n7730_n648# a_n7630_n1081# VSS nfet_06v0 ad=14.433n pd=0.505m as=31.489n ps=1.041m w=164 l=120
+X357 A2_uq4 ZN_uq4 a_n7630_n1081# VNW pfet_06v0 ad=42.945n pd=1.329m as=46.849n ps=1.361m w=244 l=100
+X358 inv_nti_uq4 res_sign carry_sign_probe_uq4 VNW pfet_06v0 ad=64.417n pd=1.993m as=46.849n ps=1.361m w=244 l=100
+X359 carry_sign_probe_uq4 a_n7049_n1125# inv_nti_uq4 VSS nfet_06v0 ad=31.489n pd=1.041m as=43.297n ps=1.513m w=164 l=120
+X360 carry_sign_probe_uq4 a_n7049_n1125# inv_pti_uq4 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X361 inv_pti_uq4 res_sign carry_sign_probe_uq4 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X362 inv_nti_uq4 res_sign a_n7630_n1081# VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X363 a_n7630_n1081# a_n7049_n1125# inv_nti_uq4 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X364 a_n7630_n1081# a_n7049_n1125# pti_uq8 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X365 pti_uq8 res_sign a_n7630_n1081# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X366 a_n4890_n487# inv_nti_uq4 in_downstep_uq4 VSS nfet_06v0 ad=7.057n pd=0.391m as=0 ps=0 w=147 l=120
+X367 in_upstep_uq4 nti_uq8 a_n5058_n970# VNW pfet_06v0 ad=0 pd=0 as=11.665n ps=0.583m w=243 l=100
+X368 inv_nti_uq4 nti_uq8 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X369 in_upstep_uq4 nti_uq8 VDD_1V65_1 VSS nfet_06v0 ad=0 pd=0 as=21.022n ps=0.581m w=147 l=120
+X370 A2_uq4 a_n7730_n648# VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X371 a_n5058_n970# inv_pti_uq4 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X372 in_downstep_uq4 pti_uq8 a_n4485_n487# VSS nfet_06v0 ad=0 pd=0 as=7.057n ps=0.391m w=147 l=120
+X373 inv_nti_uq4 nti_uq8 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X374 a_n4485_n487# inv_nti_uq4 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X375 in_upstep_uq4 inv_pti_uq4 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X376 VDD_1V65_1 inv_pti_uq4 a_n4890_n487# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X377 in_downstep_uq4 inv_nti_uq4 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X378 pti in VSS VSS nfet_06v0 ad=20.769n pd=0.825m as=0 ps=0 w=72 l=578
+X379 VNW in pti VNW pfet_06v0 ad=0 pd=0 as=74.177n ps=2.073m w=244 l=100
+X380 VNW in nti VNW pfet_06v0 ad=0 pd=0 as=9.697n ps=0.395m w=96 l=150
+X381 VSS in nti VSS nfet_06v0 ad=0 pd=0 as=12.701n ps=0.455m w=127 l=120
+X382 pti in VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X383 pti in VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X384 res_stage0 a_n7049_n4261# in_downstep VSS nfet_06v0 ad=31.491n pd=1.043m as=31.632n ps=1.033m w=164 l=120
+X385 res_stage0 a_n7049_n4261# in_upstep VNW pfet_06v0 ad=46.851n pd=1.363m as=42.857n ps=1.327m w=244 l=100
+X386 a_n7049_n4261# A1 VSS VSS nfet_06v0 ad=14.433n pd=0.505m as=0 ps=0 w=164 l=120
+X387 a_n7049_n4261# A1 VNW VNW pfet_06v0 ad=21.473n pd=0.665m as=0 ps=0 w=244 l=100
+X388 res_stage0 A1 in_upstep VSS nfet_06v0 ad=0 pd=0 as=43.712n ps=1.505m w=164 l=120
+X389 res_stage0 A1 in_downstep VNW pfet_06v0 ad=0 pd=0 as=42.857n ps=1.327m w=244 l=100
+X390 sum a_n7730_n3784# res_stage0 VSS nfet_06v0 ad=17.059n pd=0.539m as=0 ps=0 w=164 l=120
+X391 sum a_n7730_n3784# in VNW pfet_06v0 ad=25.379n pd=0.699m as=21.473n ps=0.665m w=244 l=100
+X392 a_n7730_n3784# ZN VSS VSS nfet_06v0 ad=14.433n pd=0.505m as=0 ps=0 w=164 l=120
+X393 a_n7730_n3784# ZN VNW VNW pfet_06v0 ad=21.473n pd=0.665m as=0 ps=0 w=244 l=100
+X394 sum ZN in VSS nfet_06v0 ad=0 pd=0 as=14.433n ps=0.505m w=164 l=120
+X395 sum ZN res_stage0 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X396 inv_pti pti VSS VSS nfet_06v0 ad=28.865n pd=1.009m as=0 ps=0 w=164 l=120
+X397 inv_pti pti VNW VNW pfet_06v0 ad=42.945n pd=1.329m as=0 ps=0 w=244 l=100
+X398 A1_uq3 a_n7730_n3784# a_n7630_n4217# VSS nfet_06v0 ad=14.433n pd=0.505m as=31.489n ps=1.041m w=164 l=120
+X399 A1_uq3 ZN a_n7630_n4217# VNW pfet_06v0 ad=42.945n pd=1.329m as=46.849n ps=1.361m w=244 l=100
+X400 inv_nti A1 in_sign VNW pfet_06v0 ad=64.417n pd=1.993m as=46.849n ps=1.361m w=244 l=100
+X401 in_sign a_n7049_n4261# inv_nti VSS nfet_06v0 ad=31.489n pd=1.041m as=43.297n ps=1.513m w=164 l=120
+X402 in_sign a_n7049_n4261# inv_pti VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X403 inv_pti A1 in_sign VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X404 inv_nti A1 a_n7630_n4217# VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X405 a_n7630_n4217# a_n7049_n4261# inv_nti VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X406 a_n7630_n4217# a_n7049_n4261# pti VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X407 pti A1 a_n7630_n4217# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X408 a_n4890_n3623# inv_nti in_downstep VSS nfet_06v0 ad=7.057n pd=0.391m as=0 ps=0 w=147 l=120
+X409 in_upstep nti a_n5058_n4106# VNW pfet_06v0 ad=0 pd=0 as=11.665n ps=0.583m w=243 l=100
+X410 inv_nti nti VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X411 in_upstep nti VDD_1V65_uq0 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X412 A1_uq3 a_n7730_n3784# VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X413 a_n5058_n4106# inv_pti VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X414 in_downstep pti a_n4485_n3623# VSS nfet_06v0 ad=0 pd=0 as=7.057n ps=0.391m w=147 l=120
+X415 inv_nti nti VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X416 a_n4485_n3623# inv_nti VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X417 in_upstep inv_pti VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X418 VDD_1V65_uq0 inv_pti a_n4890_n3623# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X419 in_downstep inv_nti VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X420 ZN A1 a_n4294_n2538# VNW pfet_06v0 ad=21.473n pd=0.665m as=32.697n ps=0.757m w=244 l=100
+X421 VSS A1 ZN VSS nfet_06v0 ad=0 pd=0 as=11.753n ps=0.435m w=113 l=120
+X422 a_n4294_n2538# A2 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X423 ZN A2 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=113 l=120
+X424 A1 pti_uq4 VSS VSS nfet_06v0 ad=14.433n pd=0.505m as=0 ps=0 w=164 l=120
+X425 A1 pti_uq4 VNW VNW pfet_06v0 ad=21.473n pd=0.665m as=0 ps=0 w=244 l=100
+X426 pti_uq4 in_uq4 VSS VSS nfet_06v0 ad=6.337n pd=0.321m as=0 ps=0 w=72 l=578
+X427 VNW in_uq4 pti_uq4 VNW pfet_06v0 ad=0 pd=0 as=52.705n ps=1.409m w=244 l=100
+X428 VNW in_uq4 A2 VNW pfet_06v0 ad=0 pd=0 as=9.697n ps=0.395m w=96 l=150
+X429 VSS in_uq4 A2 VSS nfet_06v0 ad=0 pd=0 as=12.701n ps=0.455m w=127 l=120
+X430 pti_uq4 in_uq4 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X431 pti_uq4 in_uq4 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X432 ZN_uq5 a_n5693_n2398# VNW VNW pfet_06v0 ad=24.967n pd=0.667m as=0 ps=0 w=219 l=100
+X433 a_n5313_n1803# A2_uq4 a_n5693_n2398# VSS nfet_06v0 ad=4.609n pd=0.273m as=6.337n ps=0.321m w=72 l=120
+X434 VSS A1_uq3 a_n5313_n1803# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=72 l=120
+X435 a_n6317_n1870# a_n5693_n2398# VSS VSS nfet_06v0 ad=31.489n pd=1.041m as=0 ps=0 w=164 l=120
+X436 VNW A2_uq4 a_n6109_n2354# VNW pfet_06v0 ad=0 pd=0 as=44.239n ps=0.843m w=219 l=100
+X437 ZN_uq5 A1_uq3 a_n6317_n1870# VSS nfet_06v0 ad=33.289n pd=0.763m as=0 ps=0 w=164 l=120
+X438 a_n5693_n2398# A2_uq4 VNW VNW pfet_06v0 ad=11.649n pd=0.433m as=0 ps=0 w=112 l=100
+X439 a_n6317_n1870# A2_uq4 ZN_uq5 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X440 VNW A1_uq3 a_n5693_n2398# VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=112 l=100
+X441 a_n6109_n2354# A1_uq3 ZN_uq5 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=219 l=100
+X442 carry_sign_probe_uq4 A2_uq4 input_A_uq8 VNW pfet_06v0 ad=0 pd=0 as=25.377n ps=0.697m w=244 l=100
+X443 input_A_uq8 a_n7043_n2398# carry_sign_probe_uq4 VSS nfet_06v0 ad=17.057n pd=0.537m as=0 ps=0 w=164 l=120
+X444 input_A_uq8 a_n7043_n2398# in_sign VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X445 a_n7043_n2398# A2_uq4 VSS VSS nfet_06v0 ad=14.433n pd=0.505m as=0 ps=0 w=164 l=120
+X446 a_n7043_n2398# A2_uq4 VNW VNW pfet_06v0 ad=21.473n pd=0.665m as=0 ps=0 w=244 l=100
+X447 in_sign A2_uq4 input_A_uq8 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X448 pti_uq8 in_A VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=72 l=578
+X449 VNW in_A pti_uq8 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X450 VNW in_A nti_uq8 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=96 l=150
+X451 VSS in_A nti_uq8 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=127 l=120
+X452 pti_uq8 in_A VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X453 pti_uq8 in_A VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X454 res_stage0_uq4 a_n7049_n1125# in_downstep_uq4 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X455 res_stage0_uq4 a_n7049_n1125# in_upstep_uq4 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X456 a_n7049_n1125# res_sign VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X457 a_n7049_n1125# res_sign VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X458 res_stage0_uq4 res_sign in_upstep_uq4 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X459 res_stage0_uq4 res_sign in_downstep_uq4 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X460 in_uq4 a_n7730_n648# res_stage0_uq4 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X461 in_uq4 a_n7730_n648# in_A VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X462 a_n7730_n648# ZN_uq4 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X463 a_n7730_n648# ZN_uq4 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X464 in_uq4 ZN_uq4 in_A VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X465 in_uq4 ZN_uq4 res_stage0_uq4 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X466 inv_pti_uq4 pti_uq8 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X467 inv_pti_uq4 pti_uq8 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X468 A2_uq4 a_n7730_n648# a_n7630_n1081# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X469 A2_uq4 ZN_uq4 a_n7630_n1081# VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X470 inv_nti_uq4 res_sign carry_sign_probe_uq4 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X471 carry_sign_probe_uq4 a_n7049_n1125# inv_nti_uq4 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X472 carry_sign_probe_uq4 a_n7049_n1125# inv_pti_uq4 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X473 inv_pti_uq4 res_sign carry_sign_probe_uq4 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X474 inv_nti_uq4 res_sign a_n7630_n1081# VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X475 a_n7630_n1081# a_n7049_n1125# inv_nti_uq4 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X476 a_n7630_n1081# a_n7049_n1125# pti_uq8 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X477 pti_uq8 res_sign a_n7630_n1081# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X478 a_n4890_n487# inv_nti_uq4 in_downstep_uq4 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X479 in_upstep_uq4 nti_uq8 a_n5058_n970# VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X480 inv_nti_uq4 nti_uq8 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X481 in_upstep_uq4 nti_uq8 VDD_1V65_1 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X482 A2_uq4 a_n7730_n648# VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X483 a_n5058_n970# inv_pti_uq4 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X484 in_downstep_uq4 pti_uq8 a_n4485_n487# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X485 inv_nti_uq4 nti_uq8 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X486 a_n4485_n487# inv_nti_uq4 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X487 in_upstep_uq4 inv_pti_uq4 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X488 VDD_1V65_1 inv_pti_uq4 a_n4890_n487# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X489 in_downstep_uq4 inv_nti_uq4 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X490 pti in VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=72 l=578
+X491 VNW in pti VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X492 VNW in nti VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=96 l=150
+X493 VSS in nti VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=127 l=120
+X494 pti in VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X495 pti in VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X496 res_stage0 a_n7049_n4261# in_downstep VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X497 res_stage0 a_n7049_n4261# in_upstep VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X498 a_n7049_n4261# A1 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X499 a_n7049_n4261# A1 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X500 res_stage0 A1 in_upstep VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X501 res_stage0 A1 in_downstep VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X502 sum a_n7730_n3784# res_stage0 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X503 sum a_n7730_n3784# in VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X504 a_n7730_n3784# ZN VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X505 a_n7730_n3784# ZN VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X506 sum ZN in VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X507 sum ZN res_stage0 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X508 inv_pti pti VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X509 inv_pti pti VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X510 A1_uq3 a_n7730_n3784# a_n7630_n4217# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X511 A1_uq3 ZN a_n7630_n4217# VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X512 inv_nti A1 in_sign VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X513 in_sign a_n7049_n4261# inv_nti VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X514 in_sign a_n7049_n4261# inv_pti VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X515 inv_pti A1 in_sign VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X516 inv_nti A1 a_n7630_n4217# VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X517 a_n7630_n4217# a_n7049_n4261# inv_nti VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X518 a_n7630_n4217# a_n7049_n4261# pti VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X519 pti A1 a_n7630_n4217# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X520 a_n4890_n3623# inv_nti in_downstep VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X521 in_upstep nti a_n5058_n4106# VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X522 inv_nti nti VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X523 in_upstep nti VDD_1V65_uq0 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X524 A1_uq3 a_n7730_n3784# VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X525 a_n5058_n4106# inv_pti VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X526 in_downstep pti a_n4485_n3623# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X527 inv_nti nti VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X528 a_n4485_n3623# inv_nti VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X529 in_upstep inv_pti VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X530 VDD_1V65_uq0 inv_pti a_n4890_n3623# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X531 in_downstep inv_nti VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X532 ZN A1 a_n4294_n2538# VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X533 VSS A1 ZN VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=113 l=120
+X534 a_n4294_n2538# A2 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X535 ZN A2 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=113 l=120
+X536 A1 pti_uq4 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X537 A1 pti_uq4 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X538 pti_uq4 in_uq4 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=72 l=578
+X539 VNW in_uq4 pti_uq4 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X540 VNW in_uq4 A2 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=96 l=150
+X541 VSS in_uq4 A2 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=127 l=120
+X542 pti_uq4 in_uq4 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X543 pti_uq4 in_uq4 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X544 ZN_uq5 a_n5693_n2398# VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=219 l=100
+X545 a_n5313_n1803# A2_uq4 a_n5693_n2398# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=72 l=120
+X546 VSS A1_uq3 a_n5313_n1803# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=72 l=120
+X547 a_n6317_n1870# a_n5693_n2398# VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X548 VNW A2_uq4 a_n6109_n2354# VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=219 l=100
+X549 ZN_uq5 A1_uq3 a_n6317_n1870# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X550 a_n5693_n2398# A2_uq4 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=112 l=100
+X551 a_n6317_n1870# A2_uq4 ZN_uq5 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X552 VNW A1_uq3 a_n5693_n2398# VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=112 l=100
+X553 a_n6109_n2354# A1_uq3 ZN_uq5 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=219 l=100
+X554 carry_sign_probe_uq4 A2_uq4 input_A_uq8 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X555 input_A_uq8 a_n7043_n2398# carry_sign_probe_uq4 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X556 input_A_uq8 a_n7043_n2398# in_sign VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X557 a_n7043_n2398# A2_uq4 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X558 a_n7043_n2398# A2_uq4 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X559 in_sign A2_uq4 input_A_uq8 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X560 pti_uq9 in_2 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=72 l=578
+X561 VNW in_2 pti_uq9 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X562 VNW in_2 nti_uq9 VNW pfet_06v0 ad=0 pd=0 as=9.697n ps=0.395m w=96 l=150
+X563 VSS in_2 nti_uq9 VSS nfet_06v0 ad=0 pd=0 as=12.701n ps=0.455m w=127 l=120
+X564 pti_uq9 in_2 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X565 pti_uq9 in_2 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X566 res_stage0_uq5 a_n11784_n1125# in_downstep_uq5 VSS nfet_06v0 ad=0 pd=0 as=31.632n ps=1.033m w=164 l=120
+X567 res_stage0_uq5 a_n11784_n1125# in_upstep_uq5 VNW pfet_06v0 ad=0 pd=0 as=42.857n ps=1.327m w=244 l=100
+X568 a_n11784_n1125# input_A_uq8 VSS VSS nfet_06v0 ad=14.433n pd=0.505m as=0 ps=0 w=164 l=120
+X569 a_n11784_n1125# input_A_uq8 VNW VNW pfet_06v0 ad=21.473n pd=0.665m as=0 ps=0 w=244 l=100
+X570 res_stage0_uq5 input_A_uq8 in_upstep_uq5 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X571 res_stage0_uq5 input_A_uq8 in_downstep_uq5 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X572 in_uq5 a_n12465_n648# res_stage0_uq5 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X573 in_uq5 a_n12465_n648# in_2 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X574 a_n12465_n648# ZN_uq5 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X575 a_n12465_n648# ZN_uq5 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X576 in_uq5 ZN_uq5 in_2 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X577 in_uq5 ZN_uq5 res_stage0_uq5 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X578 inv_pti_uq5 pti_uq9 VSS VSS nfet_06v0 ad=28.865n pd=1.009m as=0 ps=0 w=164 l=120
+X579 inv_pti_uq5 pti_uq9 VNW VNW pfet_06v0 ad=42.945n pd=1.329m as=0 ps=0 w=244 l=100
+X580 A2_uq5 a_n12465_n648# a_n12365_n1081# VSS nfet_06v0 ad=14.433n pd=0.505m as=0 ps=0 w=164 l=120
+X581 A2_uq5 ZN_uq5 a_n12365_n1081# VNW pfet_06v0 ad=42.945n pd=1.329m as=0 ps=0 w=244 l=100
+X582 inv_nti_uq5 input_A_uq8 carry_sign_probe_uq5 VNW pfet_06v0 ad=0 pd=0 as=46.849n ps=1.361m w=244 l=100
+X583 carry_sign_probe_uq5 a_n11784_n1125# inv_nti_uq5 VSS nfet_06v0 ad=31.489n pd=1.041m as=0 ps=0 w=164 l=120
+X584 carry_sign_probe_uq5 a_n11784_n1125# inv_pti_uq5 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X585 inv_pti_uq5 input_A_uq8 carry_sign_probe_uq5 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X586 inv_nti_uq5 input_A_uq8 a_n12365_n1081# VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X587 a_n12365_n1081# a_n11784_n1125# inv_nti_uq5 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X588 a_n12365_n1081# a_n11784_n1125# pti_uq9 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X589 pti_uq9 input_A_uq8 a_n12365_n1081# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X590 a_n9625_n487# inv_nti_uq5 in_downstep_uq5 VSS nfet_06v0 ad=7.057n pd=0.391m as=0 ps=0 w=147 l=120
+X591 in_upstep_uq5 nti_uq9 a_n9793_n970# VNW pfet_06v0 ad=0 pd=0 as=11.665n ps=0.583m w=243 l=100
+X592 inv_nti_uq5 nti_uq9 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X593 in_upstep_uq5 nti_uq9 VDD_1V65_3 VSS nfet_06v0 ad=0 pd=0 as=21.022n ps=0.581m w=147 l=120
+X594 A2_uq5 a_n12465_n648# VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X595 a_n9793_n970# inv_pti_uq5 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X596 in_downstep_uq5 pti_uq9 a_n9220_n487# VSS nfet_06v0 ad=0 pd=0 as=7.057n ps=0.391m w=147 l=120
+X597 inv_nti_uq5 nti_uq9 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X598 a_n9220_n487# inv_nti_uq5 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X599 in_upstep_uq5 inv_pti_uq5 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X600 VDD_1V65_3 inv_pti_uq5 a_n9625_n487# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X601 in_downstep_uq5 inv_nti_uq5 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X602 pti_uq1 in_uq1 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=72 l=578
+X603 VNW in_uq1 pti_uq1 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X604 VNW in_uq1 nti_uq1 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=96 l=150
+X605 VSS in_uq1 nti_uq1 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=127 l=120
+X606 pti_uq1 in_uq1 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X607 pti_uq1 in_uq1 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X608 res_stage0_uq1 a_n11784_n4261# in_downstep_uq1 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X609 res_stage0_uq1 a_n11784_n4261# in_upstep_uq1 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X610 a_n11784_n4261# A1_uq2 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X611 a_n11784_n4261# A1_uq2 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X612 res_stage0_uq1 A1_uq2 in_upstep_uq1 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X613 res_stage0_uq1 A1_uq2 in_downstep_uq1 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X614 res_2 a_n12465_n3784# res_stage0_uq1 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X615 res_2 a_n12465_n3784# in_uq1 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X616 a_n12465_n3784# ZN_uq1 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X617 a_n12465_n3784# ZN_uq1 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X618 res_2 ZN_uq1 in_uq1 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X619 res_2 ZN_uq1 res_stage0_uq1 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X620 inv_pti_uq1 pti_uq1 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X621 inv_pti_uq1 pti_uq1 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X622 A1_uq5 a_n12465_n3784# a_n12365_n4217# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X623 A1_uq5 ZN_uq1 a_n12365_n4217# VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X624 inv_nti_uq1 A1_uq2 in_sign_uq1 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X625 in_sign_uq1 a_n11784_n4261# inv_nti_uq1 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X626 in_sign_uq1 a_n11784_n4261# inv_pti_uq1 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X627 inv_pti_uq1 A1_uq2 in_sign_uq1 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X628 inv_nti_uq1 A1_uq2 a_n12365_n4217# VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X629 a_n12365_n4217# a_n11784_n4261# inv_nti_uq1 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X630 a_n12365_n4217# a_n11784_n4261# pti_uq1 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X631 pti_uq1 A1_uq2 a_n12365_n4217# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X632 a_n9625_n3623# inv_nti_uq1 in_downstep_uq1 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X633 in_upstep_uq1 nti_uq1 a_n9793_n4106# VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X634 inv_nti_uq1 nti_uq1 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X635 in_upstep_uq1 nti_uq1 VDD_1V65_uq0 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X636 A1_uq5 a_n12465_n3784# VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X637 a_n9793_n4106# inv_pti_uq1 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X638 in_downstep_uq1 pti_uq1 a_n9220_n3623# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X639 inv_nti_uq1 nti_uq1 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X640 a_n9220_n3623# inv_nti_uq1 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X641 in_upstep_uq1 inv_pti_uq1 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X642 VDD_1V65_uq0 inv_pti_uq1 a_n9625_n3623# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=147 l=120
+X643 in_downstep_uq1 inv_nti_uq1 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=243 l=100
+X644 ZN_uq1 A1_uq2 a_n9029_n2538# VNW pfet_06v0 ad=21.473n pd=0.665m as=32.697n ps=0.757m w=244 l=100
+X645 VSS A1_uq2 ZN_uq1 VSS nfet_06v0 ad=0 pd=0 as=11.753n ps=0.435m w=113 l=120
+X646 a_n9029_n2538# A2_uq1 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X647 ZN_uq1 A2_uq1 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=113 l=120
+X648 A1_uq2 pti_uq5 VSS VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X649 A1_uq2 pti_uq5 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X650 pti_uq5 in_uq5 VSS VSS nfet_06v0 ad=6.337n pd=0.321m as=0 ps=0 w=72 l=578
+X651 VNW in_uq5 pti_uq5 VNW pfet_06v0 ad=0 pd=0 as=52.705n ps=1.409m w=244 l=100
+X652 VNW in_uq5 A2_uq1 VNW pfet_06v0 ad=0 pd=0 as=9.697n ps=0.395m w=96 l=150
+X653 VSS in_uq5 A2_uq1 VSS nfet_06v0 ad=0 pd=0 as=12.701n ps=0.455m w=127 l=120
+X654 pti_uq5 in_uq5 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X655 pti_uq5 in_uq5 VNW VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X656 ZN_uq6 a_n10428_n2398# VNW VNW pfet_06v0 ad=24.967n pd=0.667m as=0 ps=0 w=219 l=100
+X657 a_n10048_n1803# A2_uq5 a_n10428_n2398# VSS nfet_06v0 ad=4.609n pd=0.273m as=6.337n ps=0.321m w=72 l=120
+X658 VSS A1_uq5 a_n10048_n1803# VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=72 l=120
+X659 a_n11052_n1870# a_n10428_n2398# VSS VSS nfet_06v0 ad=31.489n pd=1.041m as=0 ps=0 w=164 l=120
+X660 VNW A2_uq5 a_n10844_n2354# VNW pfet_06v0 ad=0 pd=0 as=44.239n ps=0.843m w=219 l=100
+X661 ZN_uq6 A1_uq5 a_n11052_n1870# VSS nfet_06v0 ad=33.289n pd=0.763m as=0 ps=0 w=164 l=120
+X662 a_n10428_n2398# A2_uq5 VNW VNW pfet_06v0 ad=11.649n pd=0.433m as=0 ps=0 w=112 l=100
+X663 a_n11052_n1870# A2_uq5 ZN_uq6 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+X664 VNW A1_uq5 a_n10428_n2398# VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=112 l=100
+X665 a_n10844_n2354# A1_uq5 ZN_uq6 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=219 l=100
+X666 carry_sign_probe_uq5 A2_uq5 res_sign_uq2 VNW pfet_06v0 ad=0 pd=0 as=25.377n ps=0.697m w=244 l=100
+X667 res_sign_uq2 a_n11778_n2398# carry_sign_probe_uq5 VSS nfet_06v0 ad=17.057n pd=0.537m as=0 ps=0 w=164 l=120
+X668 res_sign_uq2 a_n11778_n2398# in_sign_uq1 VNW pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+X669 a_n11778_n2398# A2_uq5 VSS VSS nfet_06v0 ad=14.433n pd=0.505m as=0 ps=0 w=164 l=120
+X670 a_n11778_n2398# A2_uq5 VNW VNW pfet_06v0 ad=21.473n pd=0.665m as=0 ps=0 w=244 l=100
+X671 in_sign_uq1 A2_uq5 res_sign_uq2 VSS nfet_06v0 ad=0 pd=0 as=0 ps=0 w=164 l=120
+C0 VNW VDD_1V65 0.48952f
+C1 nti_uq7 in_upstep_uq3 0.1133f
+C2 ZN_uq2 res_sign_uq2 0.00506f
+C3 in_sign_uq1 a_n12365_n4217# 0.00698f
+C4 a_n6317_n1870# a_n5693_n2398# 0.00587f
+C5 VNW a_n4890_n487# 0.00122f
+C6 a_n5693_n2398# inv_nti 0
+C7 a_n17200_n648# a_n16519_n4261# 0
+C8 a_n10428_n2398# a_n10844_n2354# 0
+C9 in_downstep_uq1 in_uq1 0.18036f
+C10 a_n958_n2398# A1_uq0 0.02061f
+C11 A2_uq3 a_n958_n2398# 0.29767f
+C12 res_stage0_uq6 in_upstep_uq6 0.27475f
+C13 in_C_over_uq0 a_441_n2538# 0
+C14 in_downstep_uq4 VDD_1V65_1 0.1733f
+C15 in_upstep_uq2 pti_uq2 0.02037f
+C16 in_upstep_uq2 inv_nti_uq2 0.00562f
+C17 carry_sign_probe_uq4 pti_uq5 0
+C18 A2 pti 0
+C19 a_n6317_n1870# A2 0
+C20 VDD_1V65_uq0 res_stage0_uq1 0.02166f
+C21 in_C_over_uq0 VDD_1V65 0.43409f
+C22 ZN_uq1 A1_uq5 0.12587f
+C23 in_uq5 input_A_uq8 0.00533f
+C24 in_upstep sum 0
+C25 in_downstep ZN_uq4 0
+C26 A2_uq3 A2_uq0 0.00498f
+C27 A2_uq0 A1_uq0 0.08925f
+C28 in_uq0 a_n155_n3623# 0.00163f
+C29 nti_uq0 inv_pti_uq0 0.23279f
+C30 in_downstep_uq0 a_n2995_n3784# 0.00679f
+C31 ZN_uq0 in_uq0 0.53055f
+C32 in_upstep_uq5 ZN_uq5 0.00305f
+C33 carry_sign_probe_uq4 inv_pti_uq4 0.10808f
+C34 A2_uq3 in_uq4 0
+C35 inv_pti_uq3 in_A 0.0051f
+C36 a_n7049_n4261# VDD_1V65_1 0.0015f
+C37 A1_uq3 input_A_uq8 0.10392f
+C38 A1_uq0 res_sign 0.01563f
+C39 A2_uq3 res_sign 0.33594f
+C40 a_n15787_n1870# A1_uq4 0
+C41 A1_uq4 pti_uq2 0.27933f
+C42 A2_uq6 inv_nti_uq2 0
+C43 A2_uq6 pti_uq2 0.00291f
+C44 a_n15787_n1870# A2_uq6 0.02428f
+C45 A1_uq4 inv_nti_uq2 0.24909f
+C46 a_n6109_n2354# A1 0.00185f
+C47 A2_uq4 a_n6109_n2354# 0.01236f
+C48 VNW a_n6317_n1870# 0.00546f
+C49 ZN a_n7630_n4217# 0.10075f
+C50 VNW pti 0.67684f
+C51 ZN_uq2 a_n12365_n4217# 0.00143f
+C52 res_stage0_uq5 in_upstep_uq5 0.27475f
+C53 VNW inv_nti 0.72691f
+C54 a_n7730_n648# inv_pti_uq4 0.00139f
+C55 res_stage0_uq3 A2_uq3 0
+C56 a_n7730_n648# 5v0_2t_adder_1/5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.02928f
+C57 ZN_uq5 pti_uq9 0.08767f
+C58 ZN_uq5 inv_nti_uq5 0.28022f
+C59 ZN_uq3 a_n14783_n1803# 0
+C60 A1_uq6 a_n17100_n4217# 0.19345f
+C61 VNW a_n12365_n1081# 0.1274f
+C62 res_stage0_uq2 nti_uq2 0.00348f
+C63 inv_pti_uq6 a_n14360_n487# 0.00135f
+C64 in_upstep a_n5693_n2398# 0.00167f
+C65 res_3 a_n16519_n4261# 0
+C66 a_n10428_n2398# A2_uq1 0.00398f
+C67 ZN_uq5 in_2 0.12269f
+C68 a_n7049_n1125# nti_uq9 0
+C69 in_downstep_uq3 A2_uq0 0.00639f
+C70 in_upstep A2 0
+C71 res_stage0_uq4 A1_uq3 0
+C72 VNW nti_uq7 0.64113f
+C73 ZN_uq6 in_sign_uq1 0
+C74 res_stage0_uq5 inv_nti_uq5 0.02869f
+C75 res_stage0_uq5 pti_uq9 0.01078f
+C76 in_uq1 a_n9029_n2538# 0.00342f
+C77 res_stage0_uq0 A1_uq1 0.00327f
+C78 in_uq0 a_250_n3623# 0.00182f
+C79 a_n5693_n2398# A1 0.02061f
+C80 A2_uq4 a_n5693_n2398# 0.29767f
+C81 ZN_uq4 a_n4294_n2538# 0
+C82 res_stage0_uq5 in_2 0.26364f
+C83 inv_pti_uq3 res_sign 0.01633f
+C84 in_upstep_uq2 A2_uq6 0
+C85 in_upstep_uq2 A1_uq4 0.15739f
+C86 A2 A1 0.08925f
+C87 a_n1582_n1870# ZN_uq4 0.215f
+C88 nti_uq7 in_C_over_uq0 0.00972f
+C89 A2_uq4 A2 0.00498f
+C90 in a_n4890_n3623# 0.00163f
+C91 nti inv_pti 0.23679f
+C92 ZN in 0.48399f
+C93 VNW in_upstep 0.68065f
+C94 res_stage0_uq3 in_downstep_uq3 0.25403f
+C95 in_uq2 ZN_uq1 0.00115f
+C96 nti_uq2 inv_pti_uq1 0
+C97 res_stage0_uq3 inv_pti_uq3 0.01246f
+C98 in_downstep_uq6 A2_uq2 0.00639f
+C99 a_n16519_n1125# ZN_uq3 0.00908f
+C100 A1_uq1 a_n2308_n2398# 0.04869f
+C101 carry_sign_probe_uq4 inv_nti_uq5 0
+C102 ZN_uq6 ZN_uq2 0.00569f
+C103 a_n323_n4106# inv_nti_uq0 0
+C104 A2_uq6 A1_uq4 0.02035f
+C105 A1_uq6 in_uq2 0.00143f
+C106 carry_sign_probe_uq3 A1_uq1 0.00313f
+C107 VNW A1 1.32955f
+C108 VNW A2_uq4 1.07855f
+C109 a_n2895_n1081# inv_nti_uq3 0.36668f
+C110 a_n2895_n1081# pti_uq7 0.11666f
+C111 carry_sign_probe_uq4 in_2 0.00353f
+C112 VDD_1V65_uq0 pti_uq2 0.00299f
+C113 ZN_uq5 in_uq5 0.42811f
+C114 a_n7730_n648# pti_uq9 0
+C115 ZN_uq0 in_downstep 0
+C116 inv_nti_uq2 VDD_1V65_uq0 0.09168f
+C117 a_n7730_n648# inv_nti_uq5 0
+C118 VDD_1V65_uq0 A1_uq1 0.11622f
+C119 in_downstep_uq0 VNW 0.47085f
+C120 inv_pti_uq0 a_n2895_n4217# 0
+C121 a_n16519_n1125# a_n16513_n2398# 0.00111f
+C122 ZN_uq1 res_stage0_uq1 0.10778f
+C123 ZN_uq5 input_A_uq8 0.17716f
+C124 in_0 a_n2895_n1081# 0
+C125 VDD_1V65_uq0 res_2 0.48871f
+C126 A1_uq3 ZN_uq5 0.07823f
+C127 A1_uq0 ZN_uq4 0.0091f
+C128 a_n2995_n648# A1_uq1 0
+C129 A2_uq3 ZN_uq4 0.69053f
+C130 a_n7730_n648# in_2 0
+C131 a_n16519_n1125# carry_sign_probe_uq6 0.21173f
+C132 res_stage0_uq5 in_uq5 0.09289f
+C133 a_n2314_n4261# in 0.00149f
+C134 a_n17200_n3784# inv_pti_uq2 0.00129f
+C135 res_stage0 A1_uq3 0.00327f
+C136 in a_n4485_n3623# 0.00182f
+C137 in_downstep_uq0 in_C_over_uq0 0
+C138 res_stage0_uq5 input_A_uq8 0.24991f
+C139 in_downstep_uq1 inv_nti_uq1 0.27468f
+C140 in_downstep_uq1 pti_uq1 0.19511f
+C141 res_sign_uq0 in_sign_uq2 0.1557f
+C142 a_n2314_n1125# pti_uq7 0.09933f
+C143 a_n2314_n1125# inv_nti_uq3 0.35313f
+C144 5v0_2t_adder_2/5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A ZN_uq1 0.04656f
+C145 in_uq6 inv_pti_uq2 0
+C146 a_n16519_n1125# a_n17200_n648# 0.07845f
+C147 a_n155_n3623# pti_uq0 0
+C148 ZN_uq0 pti_uq0 0.12182f
+C149 a_n155_n3623# inv_nti_uq0 0
+C150 ZN_uq0 inv_nti_uq0 0.52504f
+C151 VNW pti_uq5 0.62692f
+C152 inv_pti_uq6 A1_uq4 0
+C153 a_n2314_n1125# in_0 0
+C154 a_n7043_n2398# input_A_uq8 0.16188f
+C155 VNW inv_pti_uq4 0.91446f
+C156 res_sign_uq0 VDD_1V65_4 0.00728f
+C157 res_3 nti_uq2 0
+C158 inv_nti nti_uq1 0.003f
+C159 pti nti_uq1 0.00711f
+C160 carry_sign_probe_uq4 in_uq5 0
+C161 VNW 5v0_2t_adder_1/5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.02871f
+C162 in_sign_uq0 ZN 0
+C163 a_n7049_n1125# VDD_1V65_1 0.01076f
+C164 A1_uq3 a_n7043_n2398# 0.04869f
+C165 in_upstep_uq2 VDD_1V65_uq0 0.24797f
+C166 carry_sign_probe_uq4 input_A_uq8 0.36085f
+C167 a_n5058_n4106# inv_nti 0
+C168 A1_uq5 inv_pti_uq1 0.10104f
+C169 A1_uq1 a_n1374_n2354# 0.00827f
+C170 in_uq0 inv_pti_uq0 0.10055f
+C171 carry_sign_probe_uq4 A1_uq3 0.00313f
+C172 a_n7630_n1081# pti_uq8 0.11666f
+C173 a_n7630_n1081# inv_nti_uq4 0.36668f
+C174 sum_uq0 A1_uq1 0
+C175 inv_nti_uq6 a_n12365_n1081# 0
+C176 input_A_uq4 a_n2895_n1081# 0.24363f
+C177 a_n2895_n4217# nti 0.00118f
+C178 A2_uq6 VDD_1V65_uq0 0
+C179 in_sign_uq1 pti_uq1 0.01104f
+C180 in_sign_uq1 inv_nti_uq1 0.05332f
+C181 a_n7730_n648# input_A_uq8 0.01332f
+C182 inv_pti a_n7630_n4217# 0
+C183 in_A a_n7630_n1081# 0
+C184 res_stage0_uq4 5v0_2t_adder_0/5v0_addf_sc_rev2_1/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.00253f
+C185 in_upstep_uq0 A1_uq1 0.00816f
+C186 in_3 a_n12365_n1081# 0
+C187 a_n17100_n1081# in_sign_uq2 0
+C188 in_upstep_uq1 in_downstep_uq1 0.38023f
+C189 a_n7730_n648# A1_uq3 0
+C190 a_n15163_n2398# a_n14783_n1803# 0.00372f
+C191 a_250_n3623# inv_nti_uq0 0.00226f
+C192 a_250_n3623# pti_uq0 0.00135f
+C193 A2_uq2 a_n14783_n1803# 0
+C194 in_downstep_uq2 VNW 0.449f
+C195 VNW in_upstep_uq5 0.38042f
+C196 nti_uq2 A2_uq2 0
+C197 res_stage0_uq2 in_uq2 0.26626f
+C198 a_n2314_n4261# in_sign_uq0 0.23584f
+C199 in_downstep_uq1 A1_uq2 0.22547f
+C200 a_n17100_n1081# VDD_1V65_4 0.04226f
+C201 in_downstep_uq1 A2_uq5 0
+C202 A1_uq1 a_n958_n2398# 0.22219f
+C203 a_n2314_n1125# input_A_uq4 0.63515f
+C204 a_n11784_n1125# a_n12365_n1081# 0.20659f
+C205 in_upstep_uq5 in_downstep_uq5 0.3849f
+C206 a_n4890_n3623# inv_nti 0
+C207 a_n4890_n3623# pti 0
+C208 ZN pti 0.12182f
+C209 ZN inv_nti 0.52504f
+C210 VDD_1V65_uq0 res_stage0_uq0 0.02166f
+C211 inv_nti_uq2 ZN_uq1 0.00124f
+C212 ZN_uq2 inv_nti_uq1 0.00257f
+C213 ZN_uq2 pti_uq1 0.01373f
+C214 in_upstep_uq1 5v0_2t_adder_1/5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C215 carry_sign_probe_uq3 pti_uq4 0
+C216 res_stage0_uq4 a_n7730_n648# 0.08951f
+C217 ZN_uq0 A2_uq3 0
+C218 A1_uq1 A2_uq0 0.00537f
+C219 in_0 pti_uq3 0.00157f
+C220 ZN_uq0 A1_uq0 0.53644f
+C221 a_n2314_n1125# in_upstep_uq3 0.07658f
+C222 res_2 ZN_uq1 0.22185f
+C223 in_downstep a_n7049_n4261# 0.0934f
+C224 a_n2314_n4261# VDD_1V65 0.0015f
+C225 A1 nti_uq1 0
+C226 res_stage0_uq5 ZN_uq5 0.10493f
+C227 A1_uq1 res_sign 0.10392f
+C228 carry_sign_probe_uq3 a_n2308_n2398# 0.08103f
+C229 VNW 5v0_2t_adder_2/5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.02871f
+C230 VNW inv_nti_uq5 0.85376f
+C231 VNW pti_uq9 0.65643f
+C232 a_n15787_n1870# A1_uq6 0.05216f
+C233 A1_uq6 inv_nti_uq2 0.39282f
+C234 A1_uq6 pti_uq2 0.13493f
+C235 A1_uq3 a_n6109_n2354# 0.00827f
+C236 in inv_pti 0.12053f
+C237 in_uq2 inv_pti_uq1 0.03576f
+C238 in_uq6 a_n12365_n1081# 0
+C239 5v0_2t_adder_1/5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A A1_uq2 0
+C240 sum A1_uq3 0
+C241 res_stage0_uq3 A1_uq1 0
+C242 res_sign a_n7630_n1081# 0.24363f
+C243 res_sign_uq2 a_n12365_n1081# 0.004f
+C244 in_downstep_uq5 pti_uq9 0.20147f
+C245 a_n2995_n648# 5v0_2t_adder_0/5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.02928f
+C246 in_downstep_uq5 inv_nti_uq5 0.29786f
+C247 VNW in_2 1.12259f
+C248 ZN_uq6 inv_pti_uq2 0.02373f
+C249 VNW in_sign_uq2 0.19889f
+C250 a_n7043_n2398# ZN_uq5 0.0272f
+C251 a_n2995_n648# a_n2308_n2398# 0.00129f
+C252 VNW a_n2895_n1081# 0.1274f
+C253 nti_uq10 a_n17200_n648# 0
+C254 in_sign_uq1 A1_uq2 0.24257f
+C255 5v0_2t_adder_2/5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A in_upstep_uq5 0
+C256 A2_uq5 in_sign_uq1 0.16822f
+C257 in_downstep_uq5 in_2 0.1825f
+C258 carry_sign_probe_uq4 ZN_uq5 0.19557f
+C259 ZN_uq1 a_n10428_n2398# 0
+C260 a_n7630_n4217# inv_nti_uq1 0
+C261 a_n2995_n648# carry_sign_probe_uq3 0.0961f
+C262 VNW a_n13764_n2538# 0.01448f
+C263 in_upstep a_n4890_n3623# 0
+C264 a_n4485_n3623# pti 0.00135f
+C265 a_n4485_n3623# inv_nti 0.00226f
+C266 in_upstep ZN 0.00882f
+C267 nti_uq8 VDD_1V65_1 0.23732f
+C268 VNW VDD_1V65_4 0.4723f
+C269 a_n9029_n2538# A1_uq2 0.00901f
+C270 ZN_uq1 A2_uq1 0.21563f
+C271 res_stage0_uq1 inv_pti_uq1 0.01266f
+C272 a_n7049_n4261# in_sign 0.23584f
+C273 in_uq3 pti_uq3 0.46061f
+C274 in_C_over_uq0 a_n2895_n1081# 0.09669f
+C275 sum_uq0 res_stage0_uq0 0.09478f
+C276 nti_uq1 pti_uq5 0
+C277 input_A_uq4 pti_uq3 0.02711f
+C278 a_n7730_n648# ZN_uq5 0.016f
+C279 A1_uq3 a_n5693_n2398# 0.22219f
+C280 in_upstep_uq2 A1_uq6 0.00816f
+C281 VNW a_n12465_n3784# 0.60728f
+C282 A1_uq3 A2 0.00537f
+C283 ZN A1 0.53644f
+C284 ZN_uq2 A1_uq2 0.00189f
+C285 ZN A2_uq4 0
+C286 in_A pti_uq4 0.00157f
+C287 in_upstep_uq0 res_stage0_uq0 0.27475f
+C288 inv_nti_uq3 pti_uq7 0.42004f
+C289 a_n2314_n1125# VNW 0.69361f
+C290 ZN_uq2 A2_uq5 0
+C291 res_stage0_uq6 VNW 0.13498f
+C292 a_n11778_n2398# inv_pti_uq1 0.0038f
+C293 VNW in_uq5 1.24561f
+C294 carry_sign_probe_uq3 inv_nti_uq4 0
+C295 carry_sign_probe_uq4 a_n7043_n2398# 0.08103f
+C296 inv_pti_uq0 pti_uq0 0.42601f
+C297 inv_pti_uq0 inv_nti_uq0 0.26082f
+C298 in_0 inv_nti_uq3 0.28801f
+C299 in_0 pti_uq7 0.7186f
+C300 in_upstep_uq6 VNW 0.38042f
+C301 VNW input_A_uq8 1.88333f
+C302 A1_uq6 A2_uq6 0.65353f
+C303 A1_uq6 A1_uq4 0.0629f
+C304 ZN_uq2 a_n16519_n4261# 0.02687f
+C305 carry_sign_probe_uq5 inv_pti_uq1 0
+C306 a_n2314_n1125# in_C_over_uq0 0.02682f
+C307 a_n11784_n4261# a_n12465_n3784# 0.07764f
+C308 res_stage0_uq4 a_n5693_n2398# 0
+C309 VNW A1_uq3 1.33022f
+C310 res_3 in_uq2 0.19587f
+C311 in_downstep_uq5 in_uq5 0.05426f
+C312 pti in_uq1 0.00518f
+C313 carry_sign_probe_uq3 in_A 0.00353f
+C314 a_n7730_n648# 5v0_2t_adder_0/5v0_addf_sc_rev2_1/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.02928f
+C315 inv_nti in_uq1 0.01475f
+C316 res_stage0_uq0 a_n958_n2398# 0
+C317 in_upstep a_n4485_n3623# 0
+C318 VDD_1V65_uq0 a_n9793_n4106# 0.01045f
+C319 in_downstep_uq5 input_A_uq8 0.18126f
+C320 a_n2995_n648# inv_nti_uq4 0
+C321 a_n2995_n648# pti_uq8 0
+C322 a_n7730_n648# a_n7043_n2398# 0.00129f
+C323 VDD_1V65_uq0 sum_uq0 0.46902f
+C324 a_n6109_n2354# ZN_uq5 0.03123f
+C325 a_n5058_n970# VDD_1V65_1 0.00932f
+C326 in_upstep_uq4 pti_uq8 0.02362f
+C327 in_upstep_uq4 inv_nti_uq4 0.00677f
+C328 a_n12465_n648# inv_pti_uq1 0
+C329 in_downstep nti 0.04747f
+C330 a_n7730_n648# carry_sign_probe_uq4 0.0961f
+C331 A1_uq1 ZN_uq4 0.07823f
+C332 VDD_1V65_3 inv_pti_uq1 0.02547f
+C333 a_n2995_n648# in_A 0
+C334 a_n1582_n1870# inv_pti_uq0 0.00247f
+C335 in_upstep_uq0 VDD_1V65_uq0 0.24797f
+C336 a_n15787_n1870# ZN_uq3 0.215f
+C337 res_stage0_uq2 pti_uq2 0.01078f
+C338 in_uq4 pti_uq4 0.46061f
+C339 ZN_uq4 a_n7630_n1081# 0.09669f
+C340 res_stage0_uq2 inv_nti_uq2 0.02198f
+C341 ZN_uq6 a_n12365_n1081# 0.02574f
+C342 in_upstep_uq4 in_A 0.01656f
+C343 res_stage0_uq4 VNW 0.13498f
+C344 nti_uq10 a_n15163_n2398# 0
+C345 sum res_stage0 0.09478f
+C346 res_sign pti_uq4 0.02779f
+C347 in_upstep_uq0 a_n2995_n648# 0
+C348 in_downstep_uq0 a_n2314_n4261# 0.0934f
+C349 in_uq2 a_n15163_n2398# 0
+C350 in_uq3 inv_nti_uq3 0.02344f
+C351 in_uq3 pti_uq7 0.00136f
+C352 5v0_2t_adder_2/5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A input_A_uq8 0
+C353 inv_nti_uq4 pti_uq8 0.42004f
+C354 VNW pti_uq3 0.59574f
+C355 inv_nti_uq6 inv_nti_uq5 0
+C356 inv_nti_uq6 pti_uq9 0
+C357 in_uq2 A2_uq2 0.01124f
+C358 nti_uq2 a_n14528_n4106# 0
+C359 input_A_uq4 pti_uq7 0.29781f
+C360 VDD_1V65_uq0 a_n7730_n3784# 0.01363f
+C361 a_n2308_n2398# res_sign 0.16188f
+C362 input_A_uq4 inv_nti_uq3 0.25057f
+C363 in_upstep in_uq1 0
+C364 pti_uq0 nti 0.00711f
+C365 carry_sign_probe_uq3 in_uq4 0
+C366 res_stage0_uq3 5v0_2t_adder_0/5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.00253f
+C367 a_n16513_n2398# inv_nti_uq2 0
+C368 a_n16513_n2398# pti_uq2 0.00221f
+C369 inv_nti_uq0 nti 0.003f
+C370 a_n6317_n1870# inv_pti 0.00247f
+C371 a_n5693_n2398# ZN_uq5 0.02364f
+C372 inv_pti inv_nti 0.26891f
+C373 inv_pti pti 0.62741f
+C374 in_A pti_uq8 0.71861f
+C375 in_uq3 in_0 0.18891f
+C376 in_3 pti_uq9 0
+C377 VDD_1V65_uq0 a_n9625_n3623# 0.00232f
+C378 VDD_1V65_uq0 ZN_uq1 0.13532f
+C379 in_upstep_uq5 a_n11784_n1125# 0.07658f
+C380 in_A inv_nti_uq4 0.28801f
+C381 carry_sign_probe_uq3 res_sign 0.36085f
+C382 in_upstep_uq3 pti_uq7 0.02362f
+C383 in_upstep_uq3 inv_nti_uq3 0.00677f
+C384 in_3 inv_nti_uq5 0.002f
+C385 inv_pti_uq1 a_n10844_n2354# 0.00198f
+C386 A2_uq3 inv_pti_uq0 0.01771f
+C387 in_C_over_uq0 pti_uq3 0.04627f
+C388 inv_pti_uq0 A1_uq0 0.29692f
+C389 in_0 input_A_uq4 0.21153f
+C390 carry_sign_probe_uq6 pti_uq2 0.00123f
+C391 in_downstep_uq2 a_n17200_n3784# 0.00679f
+C392 res_2 inv_pti_uq1 0
+C393 A2_uq4 nti_uq9 0
+C394 A2 ZN_uq5 0
+C395 a_n4890_n487# VDD_1V65_1 0.00232f
+C396 res_stage0 a_n5693_n2398# 0
+C397 A1 in_uq1 0.00369f
+C398 in_upstep_uq3 in_0 0.01674f
+C399 in_upstep_uq2 res_stage0_uq2 0.27475f
+C400 a_n2995_n648# res_sign 0.01332f
+C401 in_upstep_uq4 in_uq4 0
+C402 a_n15787_n1870# a_n17200_n648# 0
+C403 pti_uq10 VDD_1V65_4 0.16694f
+C404 in_upstep_uq0 sum_uq0 0
+C405 inv_nti_uq6 VDD_1V65_4 0.11161f
+C406 in_upstep_uq4 res_sign 0.20319f
+C407 a_n11784_n1125# pti_uq9 0.09933f
+C408 res_stage0_uq3 a_n2995_n648# 0.08951f
+C409 a_n11784_n1125# inv_nti_uq5 0.35313f
+C410 VNW ZN_uq5 1.6865f
+C411 ZN_uq3 A1_uq4 0.00911f
+C412 A2_uq6 ZN_uq3 0.74016f
+C413 nti_uq2 a_n14360_n3623# 0
+C414 a_n17200_n3784# 5v0_2t_adder_2/5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.02928f
+C415 res_stage0_uq2 A1_uq4 0.24997f
+C416 in_3 VDD_1V65_4 0.03237f
+C417 inv_nti VDD_1V65_1 0.00101f
+C418 a_n6317_n1870# VDD_1V65_1 0.0046f
+C419 in_sign_uq0 a_n2895_n4217# 0.00698f
+C420 res_stage0_uq2 A2_uq6 0
+C421 ZN_uq2 nti_uq2 0.09054f
+C422 nti_uq1 a_n12465_n3784# 0
+C423 VNW res_stage0 0.13083f
+C424 a_n11784_n1125# in_2 0
+C425 in_downstep_uq5 ZN_uq5 0.0506f
+C426 a_n7049_n1125# in_sign 0
+C427 res_stage0_uq6 inv_nti_uq6 0.02869f
+C428 res_stage0_uq6 pti_uq10 0.01078f
+C429 in_downstep_uq1 A1_uq5 0
+C430 a_n10428_n2398# inv_pti_uq1 0.00822f
+C431 a_n958_n2398# a_n1374_n2354# 0
+C432 VNW res_stage0_uq5 0.13498f
+C433 in_upstep inv_pti 0.07469f
+C434 in_uq4 pti_uq8 0.00136f
+C435 VDD_1V65_uq0 a_n9220_n3623# 0
+C436 in_upstep 5v0_2t_adder_1/5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C437 in_uq4 inv_nti_uq4 0.02344f
+C438 a_n17200_n3784# in_sign_uq2 0.00159f
+C439 ZN_uq5 a_n11784_n4261# 0
+C440 in_uq5 nti_uq1 0
+C441 nti_uq9 pti_uq5 0.00836f
+C442 ZN_uq1 a_n9793_n4106# 0.00142f
+C443 ZN_uq0 A1_uq1 0.12587f
+C444 in_uq3 input_A_uq4 0.00358f
+C445 res_sign pti_uq8 0.29783f
+C446 res_sign inv_nti_uq4 0.25156f
+C447 res_sign_uq2 pti_uq9 0.01424f
+C448 res_sign_uq2 inv_nti_uq5 0.01089f
+C449 in_upstep_uq6 pti_uq10 0.02362f
+C450 in_upstep_uq6 inv_nti_uq6 0.00677f
+C451 res_stage0_uq6 in_3 0.26617f
+C452 inv_pti_uq4 nti_uq9 0
+C453 a_n4485_n487# VDD_1V65_1 0
+C454 in_downstep_uq2 a_n12365_n4217# 0
+C455 in_uq1 pti_uq5 0.01672f
+C456 res_stage0_uq5 in_downstep_uq5 0.25403f
+C457 VNW 5v0_2t_adder_0/5v0_addf_sc_rev2_1/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.02871f
+C458 in_upstep_uq0 a_n958_n2398# 0.00167f
+C459 A1_uq3 nti_uq1 0.00352f
+C460 in_uq4 in_A 0.22137f
+C461 in_upstep_uq3 in_uq3 0
+C462 a_n16513_n2398# A1_uq4 0
+C463 A2_uq6 a_n16513_n2398# 0.29408f
+C464 A1_uq0 nti 0
+C465 VNW pti_uq7 0.65643f
+C466 VNW a_n7043_n2398# 0.27931f
+C467 inv_pti A1 0.29692f
+C468 VNW inv_nti_uq3 0.85387f
+C469 A2_uq4 inv_pti 0.01771f
+C470 ZN_uq4 pti_uq4 0.04062f
+C471 in_A res_sign 0.21305f
+C472 in_upstep_uq0 A2_uq0 0
+C473 in_upstep_uq3 input_A_uq4 0.20319f
+C474 in_3 input_A_uq8 0.00308f
+C475 in_upstep_uq2 a_n17200_n648# 0
+C476 res_3 pti_uq2 0
+C477 in_upstep_uq6 in_3 0.01674f
+C478 A1 5v0_2t_adder_1/5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C479 carry_sign_probe_uq6 A1_uq4 0
+C480 carry_sign_probe_uq6 A2_uq6 0.60571f
+C481 res_3 inv_nti_uq2 0.01287f
+C482 inv_nti inv_nti_uq1 0
+C483 pti inv_nti_uq1 0
+C484 in_downstep_uq0 nti_uq0 0.04747f
+C485 VNW carry_sign_probe_uq4 0.484f
+C486 VNW in_0 1.14789f
+C487 5v0_2t_adder_2/5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A ZN_uq5 0.04656f
+C488 in_C_over_uq0 pti_uq7 0.08697f
+C489 in_upstep VDD_1V65_1 0
+C490 a_n2308_n2398# ZN_uq4 0.0272f
+C491 in_C_over_uq0 inv_nti_uq3 0.26546f
+C492 res_sign_uq2 a_n13764_n2538# 0
+C493 nti_uq2 a_n13955_n3623# 0.00142f
+C494 a_n16519_n4261# inv_pti_uq2 0.17666f
+C495 in_uq6 VDD_1V65_4 0.18493f
+C496 A1_uq5 in_sign_uq1 0.12637f
+C497 res_sign_uq2 VDD_1V65_4 0.00966f
+C498 a_n17200_n648# A2_uq6 0.06947f
+C499 a_n7730_n3784# ZN_uq1 0.00211f
+C500 a_n2895_n4217# inv_nti 0
+C501 VNW a_n7730_n648# 0.60219f
+C502 a_n958_n2398# A2_uq0 0.00398f
+C503 carry_sign_probe_uq3 ZN_uq4 0.19557f
+C504 5v0_2t_adder_2/5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A res_stage0_uq5 0.00253f
+C505 in_C_over_uq0 in_0 0.16925f
+C506 a_n11784_n1125# input_A_uq8 0.63515f
+C507 VNW res_sign_uq0 0.11138f
+C508 ZN_uq1 a_n9625_n3623# 0
+C509 in_upstep_uq5 nti_uq9 0.1133f
+C510 in_sign a_n7630_n4217# 0.00698f
+C511 in_uq0 a_441_n2538# 0.00342f
+C512 res_stage0_uq6 in_uq6 0.09289f
+C513 A1 VDD_1V65_1 0.0016f
+C514 A2_uq4 VDD_1V65_1 0.44456f
+C515 a_n15787_n1870# a_n15163_n2398# 0.00587f
+C516 res_sign_uq2 a_n12465_n3784# 0.00184f
+C517 a_n5693_n2398# a_n6109_n2354# 0
+C518 in_downstep in 0.18036f
+C519 a_n15163_n2398# inv_nti_uq2 0
+C520 res_stage0_uq6 res_sign_uq2 0.24991f
+C521 ZN input_A_uq8 0
+C522 a_n2995_n648# ZN_uq4 0.016f
+C523 res_stage0_uq3 a_n958_n2398# 0
+C524 VNW a_n2995_n3784# 0.60728f
+C525 A2_uq2 pti_uq2 0
+C526 a_n15787_n1870# A2_uq2 0
+C527 res_stage0_uq2 VDD_1V65_uq0 0.02085f
+C528 ZN A1_uq3 0.12587f
+C529 in_uq4 res_sign 0.00533f
+C530 in_upstep_uq4 ZN_uq4 0.00305f
+C531 ZN_uq2 A1_uq5 0.0051f
+C532 in_upstep_uq2 res_3 0
+C533 in_upstep_uq6 in_uq6 0
+C534 in_downstep_uq2 ZN_uq6 0
+C535 carry_sign_probe_uq6 inv_pti_uq6 0.10808f
+C536 res_sign_uq2 input_A_uq8 0.00241f
+C537 in_upstep_uq6 res_sign_uq2 0.20319f
+C538 VNW in_uq3 1.2408f
+C539 nti_uq9 inv_nti_uq5 0.21842f
+C540 nti_uq9 pti_uq9 0.23277f
+C541 VNW input_A_uq4 1.42451f
+C542 a_n15579_n2354# A1_uq4 0.00185f
+C543 A2_uq6 a_n15579_n2354# 0.01236f
+C544 ZN_uq2 a_n17100_n4217# 0.10075f
+C545 a_n12465_n3784# a_n12365_n4217# 0.05013f
+C546 VNW a_n6109_n2354# 0.01437f
+C547 a_n17200_n648# inv_pti_uq6 0.00134f
+C548 in_downstep_uq1 res_stage0_uq1 0.24414f
+C549 pti_uq0 in 0.00518f
+C550 inv_nti_uq0 in 0.01475f
+C551 VNW sum 0.36968f
+C552 a_n2314_n1125# a_n2314_n4261# 0
+C553 VNW in_upstep_uq3 0.38042f
+C554 nti_uq9 in_2 0.64339f
+C555 VDD_1V65_uq0 a_n323_n4106# 0.00933f
+C556 in_C_over_uq0 in_uq3 0.42505f
+C557 VDD_1V65_uq0 inv_pti_uq1 0.1704f
+C558 ZN_uq4 pti_uq8 0.08767f
+C559 ZN_uq4 inv_nti_uq4 0.28022f
+C560 inv_nti_uq6 ZN_uq5 0
+C561 ZN_uq1 a_n9220_n3623# 0
+C562 ZN_uq6 pti_uq9 0.00491f
+C563 ZN_uq6 inv_nti_uq5 0.00107f
+C564 ZN_uq5 nti_uq1 0
+C565 VDD_1V65_1 pti_uq5 0.00107f
+C566 ZN_uq0 res_stage0_uq0 0.10778f
+C567 in_C_over_uq0 input_A_uq4 0.28309f
+C568 VNW a_n17100_n1081# 0.1274f
+C569 in_uq2 in_sign_uq1 0.00138f
+C570 inv_pti_uq4 VDD_1V65_1 0.16497f
+C571 a_n1374_n2354# ZN_uq4 0.03123f
+C572 in_upstep_uq2 a_n15163_n2398# 0.00167f
+C573 A2_uq5 a_n12365_n1081# 0.18526f
+C574 a_n5693_n2398# A2 0.00398f
+C575 a_n323_n970# VDD_1V65 0.00932f
+C576 ZN_uq4 in_A 0.12269f
+C577 in_upstep_uq3 in_C_over_uq0 0.00305f
+C578 ZN_uq6 in_2 0
+C579 in_upstep_uq2 A2_uq2 0
+C580 5v0_2t_adder_2/5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A in_downstep_uq1 0
+C581 in a_n4294_n2538# 0.00342f
+C582 res_stage0_uq1 5v0_2t_adder_1/5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.00253f
+C583 a_n15163_n2398# A1_uq4 0.02061f
+C584 A2_uq6 a_n15163_n2398# 0.29767f
+C585 VNW a_n5693_n2398# 0.34663f
+C586 ZN_uq6 a_n13764_n2538# 0
+C587 A2_uq2 A1_uq4 0.08925f
+C588 ZN_uq6 VDD_1V65_4 0.43408f
+C589 A2_uq6 A2_uq2 0.00498f
+C590 in_uq2 a_n14360_n3623# 0.00163f
+C591 nti_uq2 inv_pti_uq2 0.23279f
+C592 ZN_uq2 in_uq2 0.53055f
+C593 in_uq1 a_n12465_n3784# 0.06378f
+C594 VNW A2 0.38815f
+C595 a_n9793_n970# inv_nti_uq5 0
+C596 a_n11784_n1125# ZN_uq5 0.02912f
+C597 nti_uq9 in_uq5 0.01158f
+C598 a_n958_n2398# ZN_uq4 0.02364f
+C599 VDD_1V65_uq0 a_n155_n3623# 0.00232f
+C600 VDD_1V65_uq0 ZN_uq0 0.1054f
+C601 in_uq5 in_uq1 0.00886f
+C602 nti_uq9 input_A_uq8 0.14066f
+C603 A1_uq1 inv_pti_uq0 0.10103f
+C604 res_stage0_uq6 ZN_uq6 0.10053f
+C605 in_uq1 input_A_uq8 0.00408f
+C606 A2_uq3 nti_uq8 0
+C607 A2_uq0 ZN_uq4 0
+C608 a_n155_n487# VDD_1V65 0.00232f
+C609 inv_pti_uq5 a_n12365_n1081# 0
+C610 res_stage0_uq5 a_n11784_n1125# 0.18379f
+C611 in_upstep_uq5 a_n9625_n487# 0
+C612 A2_uq4 A1_uq2 0
+C613 ZN_uq4 in_uq4 0.42811f
+C614 in_uq6 ZN_uq5 0
+C615 ZN_uq6 in_uq5 0.00138f
+C616 a_n11778_n2398# in_sign_uq1 0.09179f
+C617 A1_uq3 in_uq1 0.03695f
+C618 A1_uq0 in 0.00369f
+C619 ZN res_stage0 0.10778f
+C620 ZN_uq4 res_sign 0.17716f
+C621 in_sign_uq0 pti_uq0 0.01104f
+C622 in_sign_uq0 inv_nti_uq0 0.05332f
+C623 res_sign_uq2 ZN_uq5 0.01586f
+C624 in_upstep_uq6 ZN_uq6 0.00305f
+C625 ZN_uq6 input_A_uq8 0
+C626 res_3 VDD_1V65_uq0 0.26053f
+C627 carry_sign_probe_uq5 in_sign_uq1 0.17983f
+C628 in_downstep_uq0 in_uq0 0.18121f
+C629 nti_uq7 a_n323_n970# 0
+C630 VNW in_downstep_uq5 0.45847f
+C631 VNW in_C_over_uq0 1.2496f
+C632 VDD_1V65_1 inv_nti_uq5 0
+C633 A1_uq6 ZN_uq3 0.07693f
+C634 in_uq2 a_n13955_n3623# 0.00182f
+C635 VNW a_n11784_n4261# 0.73629f
+C636 in_downstep pti 0.19511f
+C637 res_stage0_uq2 A1_uq6 0.00327f
+C638 a_n9625_n487# pti_uq9 0
+C639 in_downstep inv_nti 0.27468f
+C640 inv_nti_uq0 VDD_1V65 0.00101f
+C641 a_n9625_n487# inv_nti_uq5 0
+C642 in_downstep_uq1 res_2 0.0171f
+C643 VDD_1V65_uq0 a_250_n3623# 0
+C644 VDD_1V65_3 in_sign_uq1 0.00934f
+C645 VNW pti_uq6 0.62692f
+C646 inv_pti_uq1 a_n9625_n3623# 0.00135f
+C647 ZN_uq1 inv_pti_uq1 0.01453f
+C648 in_2 a_n9625_n487# 0.00163f
+C649 ZN_uq2 carry_sign_probe_uq5 0
+C650 inv_pti_uq3 nti_uq8 0
+C651 sum_uq0 ZN_uq0 0.22185f
+C652 a_250_n487# VDD_1V65 0
+C653 A2_uq5 pti_uq5 0
+C654 pti_uq5 A1_uq2 0.20453f
+C655 in_upstep_uq5 a_n9220_n487# 0
+C656 5v0_2t_adder_2/5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A VNW 0.02871f
+C657 inv_pti input_A_uq8 0
+C658 A1_uq6 a_n16513_n2398# 0.04869f
+C659 A1_uq1 nti 0.00352f
+C660 a_n1582_n1870# VDD_1V65 0.0046f
+C661 a_n14528_n4106# inv_nti_uq2 0
+C662 A1_uq3 inv_pti 0.10103f
+C663 in_upstep_uq0 a_n155_n3623# 0
+C664 in_upstep_uq0 ZN_uq0 0.00882f
+C665 5v0_2t_adder_0/5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A A1_uq0 0
+C666 res_sign_uq0 a_n17200_n3784# 0.00139f
+C667 carry_sign_probe_uq6 A1_uq6 0.00847f
+C668 a_n17100_n1081# pti_uq10 0.11666f
+C669 5v0_2t_adder_2/5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A in_downstep_uq5 0
+C670 pti_uq0 inv_nti 0
+C671 nti_uq7 a_n155_n487# 0
+C672 a_n17100_n1081# inv_nti_uq6 0.36668f
+C673 inv_nti_uq0 inv_nti 0
+C674 in_downstep_uq1 a_n10428_n2398# 0.00144f
+C675 a_n11052_n1870# in_2 0
+C676 in_sign pti 0.01104f
+C677 in_sign inv_nti 0.05332f
+C678 inv_pti_uq2 a_n17100_n4217# 0
+C679 in_3 a_n17100_n1081# 0
+C680 in_upstep in_downstep 0.38023f
+C681 A2_uq3 in_sign_uq0 0.16822f
+C682 in_sign_uq0 A1_uq0 0.24257f
+C683 a_n9220_n487# inv_nti_uq5 0.00226f
+C684 a_n9220_n487# pti_uq9 0.00135f
+C685 a_n17200_n648# A1_uq6 0
+C686 VDD_1V65_1 in_uq5 0.00197f
+C687 a_n2995_n3784# ZN 0.00211f
+C688 ZN_uq0 a_n958_n2398# 0
+C689 nti_uq9 ZN_uq5 0.00972f
+C690 ZN_uq5 in_uq1 0.01019f
+C691 VDD_1V65_1 input_A_uq8 0.02779f
+C692 a_441_n2538# A1_uq0 0.00901f
+C693 ZN_uq0 A2_uq0 0.21563f
+C694 res_stage0_uq0 inv_pti_uq0 0.01266f
+C695 in_2 a_n9220_n487# 0.00182f
+C696 A1_uq3 VDD_1V65_1 0.00653f
+C697 A1_uq0 VDD_1V65 0.0016f
+C698 in_downstep A2_uq4 0
+C699 in_downstep A1 0.22546f
+C700 nti_uq0 pti_uq3 0
+C701 A2_uq3 VDD_1V65 0.44456f
+C702 in_upstep_uq5 A2_uq5 0
+C703 VDD_1V65_uq0 a_n7049_n4261# 0.01449f
+C704 a_n7049_n1125# a_n7630_n1081# 0.20659f
+C705 ZN_uq0 res_sign 0
+C706 ZN_uq6 ZN_uq5 0.00729f
+C707 res_stage0_uq5 nti_uq9 0.00348f
+C708 in_upstep_uq4 in_downstep_uq4 0.3849f
+C709 a_n14360_n3623# inv_nti_uq2 0
+C710 a_n14360_n3623# pti_uq2 0
+C711 ZN_uq2 pti_uq2 0.12182f
+C712 in_upstep 5v0_2t_adder_0/5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C713 in_upstep_uq0 a_250_n3623# 0
+C714 ZN_uq2 inv_nti_uq2 0.52504f
+C715 a_n12465_n3784# pti_uq1 0.12627f
+C716 a_n12465_n3784# inv_nti_uq1 0.28514f
+C717 sum ZN 0.22185f
+C718 nti_uq7 a_250_n487# 0
+C719 in_downstep_uq2 a_n16519_n4261# 0.0934f
+C720 a_n10428_n2398# in_sign_uq1 0
+C721 a_n2308_n2398# inv_pti_uq0 0.0038f
+C722 VNW pti_uq10 0.65277f
+C723 a_n11052_n1870# in_uq5 0.00471f
+C724 in_uq5 pti_uq1 0
+C725 VNW inv_nti_uq6 0.85376f
+C726 VNW nti_uq1 0.6307f
+C727 res_stage0_uq4 VDD_1V65_1 0.02552f
+C728 A1_uq6 a_n15579_n2354# 0.00827f
+C729 in_uq2 inv_pti_uq2 0.10055f
+C730 VNW a_n5058_n4106# 0.0028f
+C731 5v0_2t_adder_0/5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A A1 0
+C732 carry_sign_probe_uq3 inv_pti_uq0 0
+C733 a_n2314_n4261# a_n2995_n3784# 0.07764f
+C734 inv_nti_uq5 A1_uq2 0
+C735 A2_uq5 inv_nti_uq5 0.01696f
+C736 A2_uq5 pti_uq9 0.12808f
+C737 res_3 A1_uq6 0
+C738 A1_uq3 inv_nti_uq1 0
+C739 carry_sign_probe_uq4 nti_uq9 0
+C740 in_downstep_uq4 pti_uq8 0.20147f
+C741 res_sign_uq2 a_n17100_n1081# 0.24363f
+C742 in_downstep_uq4 inv_nti_uq4 0.29785f
+C743 in_3 VNW 1.15179f
+C744 VDD_1V65_uq0 inv_pti_uq0 0.16499f
+C745 a_n9029_n2538# A2_uq1 0.00898f
+C746 in_downstep_uq0 pti_uq0 0.19511f
+C747 in_downstep_uq3 VDD_1V65 0.1733f
+C748 ZN_uq5 a_n9793_n970# 0
+C749 in_2 A2_uq5 0.0025f
+C750 A2_uq4 in_sign 0.16822f
+C751 in_sign A1 0.24257f
+C752 in_downstep_uq0 inv_nti_uq0 0.27468f
+C753 A1_uq4 in_sign_uq1 0
+C754 inv_pti ZN_uq5 0.00922f
+C755 in_downstep_uq4 in_A 0.1825f
+C756 a_n2995_n648# inv_pti_uq0 0
+C757 inv_pti_uq3 VDD_1V65 0.16497f
+C758 ZN a_n5693_n2398# 0
+C759 in_upstep_uq5 inv_pti_uq5 0.06521f
+C760 a_n7730_n648# nti_uq9 0
+C761 a_n16513_n2398# ZN_uq3 0.02804f
+C762 in_upstep_uq2 a_n14360_n3623# 0
+C763 a_n13955_n3623# inv_nti_uq2 0.00226f
+C764 a_n13955_n3623# pti_uq2 0.00135f
+C765 in_upstep_uq2 ZN_uq2 0.00882f
+C766 a_n4294_n2538# A1 0.00901f
+C767 ZN A2 0.21563f
+C768 res_stage0 inv_pti 0.01266f
+C769 carry_sign_probe_uq6 ZN_uq3 0.28048f
+C770 a_n16519_n4261# in_sign_uq2 0.23584f
+C771 res_stage0 5v0_2t_adder_1/5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.00253f
+C772 nti_uq7 A1_uq0 0
+C773 nti_uq7 A2_uq3 0
+C774 VNW a_n11784_n1125# 0.69361f
+C775 nti pti_uq4 0
+C776 A1_uq6 a_n15163_n2398# 0.22219f
+C777 in_downstep_uq6 VDD_1V65_4 0.1733f
+C778 VNW a_n17200_n3784# 0.59411f
+C779 a_n11784_n1125# in_downstep_uq5 0.09641f
+C780 ZN_uq6 res_sign_uq0 0
+C781 ZN_uq2 A2_uq6 0
+C782 A1_uq6 A2_uq2 0.00537f
+C783 in_3 pti_uq6 0.00157f
+C784 ZN_uq2 A1_uq4 0.53644f
+C785 A2_uq5 a_n12465_n3784# 0
+C786 VDD_1V65_uq0 in_downstep_uq1 0.18975f
+C787 a_n12465_n3784# A1_uq2 0.07412f
+C788 inv_pti_uq5 pti_uq9 0.4362f
+C789 VNW a_n4890_n3623# 0.00122f
+C790 VNW ZN 1.09053f
+C791 inv_pti_uq5 inv_nti_uq5 0.26171f
+C792 a_n16519_n4261# VDD_1V65_4 0.0015f
+C793 a_n17200_n648# ZN_uq3 0.0185f
+C794 a_n7043_n2398# inv_pti 0.0038f
+C795 VDD_1V65_1 ZN_uq5 0.12054f
+C796 in_uq6 VNW 1.24561f
+C797 a_n11784_n1125# a_n11784_n4261# 0
+C798 in_sign pti_uq5 0
+C799 carry_sign_probe_uq6 a_n16513_n2398# 0.08103f
+C800 res_stage0_uq6 in_downstep_uq6 0.25403f
+C801 in_uq5 A1_uq2 0.033f
+C802 in_uq5 A2_uq5 0.01029f
+C803 in_2 inv_pti_uq5 0.07043f
+C804 carry_sign_probe_uq4 inv_pti 0
+C805 inv_pti_uq0 a_n1374_n2354# 0.00198f
+C806 VNW res_sign_uq2 1.88046f
+C807 a_n7049_n4261# a_n7730_n3784# 0.07763f
+C808 input_A_uq8 A1_uq2 0.00188f
+C809 in_downstep_uq4 in_uq4 0.05426f
+C810 sum_uq0 inv_pti_uq0 0
+C811 A2_uq5 input_A_uq8 0.00936f
+C812 VDD_1V65_uq0 nti 0.24286f
+C813 a_n17200_n648# 5v0_2t_adder_2/5v0_addf_sc_rev2_1/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.02928f
+C814 A1_uq1 in 0.03695f
+C815 A2_uq3 A1 0
+C816 in_downstep_uq4 res_sign 0.18126f
+C817 a_n14528_n4106# VDD_1V65_uq0 0.01045f
+C818 in_upstep_uq2 a_n13955_n3623# 0
+C819 in_upstep_uq6 in_downstep_uq6 0.3849f
+C820 a_n17200_n648# a_n16513_n2398# 0.00129f
+C821 in_upstep_uq0 inv_pti_uq0 0.07469f
+C822 nti_uq7 in_downstep_uq3 0.06312f
+C823 nti_uq10 a_n12365_n1081# 0
+C824 a_n7730_n648# inv_pti 0
+C825 in_downstep_uq0 A2_uq3 0
+C826 in_downstep_uq0 A1_uq0 0.22546f
+C827 nti_uq7 inv_pti_uq3 0.23961f
+C828 in_downstep_uq2 nti_uq2 0.04747f
+C829 a_n17200_n648# carry_sign_probe_uq6 0.0961f
+C830 a_n11052_n1870# ZN_uq5 0.00329f
+C831 ZN_uq5 pti_uq1 0
+C832 a_n7043_n2398# VDD_1V65_1 0.01006f
+C833 VDD_1V65_uq0 in_sign_uq1 0
+C834 VNW a_n12365_n4217# 0.14009f
+C835 VNW a_n2314_n4261# 0.73629f
+C836 a_n15579_n2354# ZN_uq3 0.03123f
+C837 in_uq6 pti_uq6 0.46061f
+C838 ZN_uq6 a_n17100_n1081# 0.09669f
+C839 nti_uq0 a_n2995_n3784# 0
+C840 in_downstep_uq1 a_n9793_n4106# 0.00316f
+C841 carry_sign_probe_uq4 VDD_1V65_1 0.10367f
+C842 res_sign_uq2 pti_uq6 0.02779f
+C843 res_3 res_stage0_uq2 0.09489f
+C844 a_n958_n2398# inv_pti_uq0 0.00822f
+C845 in_uq5 inv_pti_uq5 0
+C846 in_C_over_uq0 a_n2314_n4261# 0
+C847 in_uq3 nti_uq0 0
+C848 ZN_uq0 a_n323_n4106# 0.00142f
+C849 inv_nti_uq6 pti_uq10 0.42004f
+C850 a_n11784_n4261# a_n12365_n4217# 0.20659f
+C851 inv_pti_uq5 input_A_uq8 0.30401f
+C852 in_uq0 pti_uq3 0.01672f
+C853 a_n7730_n648# VDD_1V65_1 0.09448f
+C854 inv_pti_uq0 res_sign 0
+C855 in_upstep_uq4 a_n7049_n1125# 0.07658f
+C856 a_n15787_n1870# inv_pti_uq2 0.00247f
+C857 a_n14360_n3623# VDD_1V65_uq0 0.00232f
+C858 ZN_uq2 VDD_1V65_uq0 0.09517f
+C859 inv_pti_uq2 pti_uq2 0.42601f
+C860 inv_pti a_n6109_n2354# 0.00198f
+C861 inv_pti_uq2 inv_nti_uq2 0.26082f
+C862 in_3 inv_nti_uq6 0.28801f
+C863 in_3 pti_uq10 0.7186f
+C864 sum inv_pti 0
+C865 res_stage0_uq2 a_n15163_n2398# 0
+C866 a_n15163_n2398# ZN_uq3 0.02364f
+C867 VNW nti_uq9 0.64202f
+C868 in_upstep_uq1 ZN_uq5 0.0014f
+C869 VNW in_uq1 2.23908f
+C870 A2_uq2 ZN_uq3 0
+C871 A1_uq1 in_sign_uq0 0.12637f
+C872 in_downstep_uq1 a_n9625_n3623# 0.00442f
+C873 in_downstep_uq1 ZN_uq1 0.20049f
+C874 in_downstep_uq5 nti_uq9 0.06312f
+C875 a_n7049_n1125# pti_uq8 0.09933f
+C876 carry_sign_probe_uq5 a_n12365_n1081# 0.12287f
+C877 a_n7049_n1125# inv_nti_uq4 0.35313f
+C878 ZN_uq6 VNW 1.67384f
+C879 ZN_uq0 a_n155_n3623# 0
+C880 ZN_uq5 A1_uq2 0.01039f
+C881 ZN_uq5 A2_uq5 0.11887f
+C882 nti a_n7730_n3784# 0
+C883 nti_uq2 a_n12465_n3784# 0.00497f
+C884 a_n6109_n2354# VDD_1V65_1 0
+C885 a_n7049_n1125# in_A 0
+C886 in_downstep_uq4 ZN_uq4 0.0506f
+C887 in_downstep_uq6 ZN_uq5 0
+C888 in_3 a_n11784_n1125# 0.00121f
+C889 VDD_1V65_uq0 a_n7630_n4217# 0.10686f
+C890 in_downstep A1_uq3 0
+C891 a_n5693_n2398# inv_pti 0.00822f
+C892 A1_uq1 VDD_1V65 0.00653f
+C893 in_downstep_uq2 A1_uq5 0.0018f
+C894 in_upstep_uq5 A1_uq5 0
+C895 in_uq1 a_n11784_n4261# 0
+C896 a_n16519_n1125# in_sign_uq2 0
+C897 ZN nti_uq1 0.00137f
+C898 a_n12465_n648# a_n12365_n1081# 0.05013f
+C899 a_n13955_n3623# VDD_1V65_uq0 0
+C900 in_upstep_uq2 inv_pti_uq2 0.07469f
+C901 in_uq6 pti_uq10 0.00136f
+C902 ZN_uq4 a_n7049_n4261# 0
+C903 in_uq4 nti 0
+C904 nti_uq8 pti_uq4 0.00836f
+C905 ZN a_n5058_n4106# 0.00142f
+C906 in_uq6 inv_nti_uq6 0.02344f
+C907 ZN_uq6 a_n11784_n4261# 0
+C908 VDD_1V65_3 a_n12365_n1081# 0.04334f
+C909 res_stage0_uq5 A2_uq5 0
+C910 ZN_uq1 5v0_2t_adder_1/5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.04656f
+C911 res_sign_uq2 pti_uq10 0.29783f
+C912 in pti_uq4 0.01672f
+C913 res_sign_uq2 inv_nti_uq6 0.25156f
+C914 a_n16519_n1125# VDD_1V65_4 0.0105f
+C915 in_uq6 in_3 0.18891f
+C916 VNW a_n9793_n970# 0.00342f
+C917 VNW nti_uq0 0.61899f
+C918 A2_uq6 inv_pti_uq2 0.01771f
+C919 ZN_uq6 pti_uq6 0.04062f
+C920 inv_pti_uq2 A1_uq4 0.29692f
+C921 in_3 res_sign_uq2 0.21371f
+C922 ZN_uq1 in_sign_uq1 0
+C923 VNW inv_pti 0.72691f
+C924 a_n2995_n3784# a_n2895_n4217# 0.05013f
+C925 A1_uq5 pti_uq9 0
+C926 A1_uq5 inv_nti_uq5 0
+C927 in_downstep_uq1 a_n9220_n3623# 0.0031f
+C928 VNW 5v0_2t_adder_1/5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.02871f
+C929 carry_sign_probe_uq3 nti_uq8 0
+C930 A1_uq1 inv_nti 0
+C931 in_downstep_uq5 a_n9793_n970# 0.00316f
+C932 carry_sign_probe_uq4 A1_uq2 0
+C933 a_n5693_n2398# VDD_1V65_1 0.00128f
+C934 in_sign input_A_uq8 0.19479f
+C935 res_stage0_uq6 a_n16519_n1125# 0.18379f
+C936 ZN_uq1 a_n9029_n2538# 0.02576f
+C937 in_C_over_uq0 nti_uq0 0
+C938 ZN_uq0 a_250_n3623# 0
+C939 in_2 A1_uq5 0.00121f
+C940 ZN_uq5 inv_pti_uq5 0.00125f
+C941 A1_uq3 in_sign 0.12637f
+C942 A2 VDD_1V65_1 0.01722f
+C943 inv_pti_uq0 ZN_uq4 0.00922f
+C944 VDD_1V65_uq0 in 0.02359f
+C945 A2_uq3 a_n2895_n1081# 0.18526f
+C946 a_n2995_n648# nti_uq8 0
+C947 a_n7049_n1125# res_sign 0.63515f
+C948 res_sign_uq2 a_n11784_n1125# 0.00126f
+C949 in_upstep_uq6 a_n16519_n1125# 0.07658f
+C950 ZN a_n4890_n3623# 0
+C951 ZN_uq2 ZN_uq1 0.00343f
+C952 res_stage0_uq5 inv_pti_uq5 0.01246f
+C953 in_upstep_uq4 nti_uq8 0.1133f
+C954 in_sign_uq2 a_n17100_n4217# 0.00698f
+C955 res_stage0_uq0 5v0_2t_adder_0/5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.00253f
+C956 in_downstep_uq2 in_uq2 0.18121f
+C957 VNW VDD_1V65_1 0.48952f
+C958 a_n15163_n2398# a_n15579_n2354# 0
+C959 VNW a_n9625_n487# 0.00122f
+C960 ZN_uq2 A1_uq6 0.12587f
+C961 in_uq6 res_sign_uq2 0.00533f
+C962 A1_uq5 a_n12465_n3784# 0.19167f
+C963 in_uq0 a_n2995_n3784# 0.09306f
+C964 a_n323_n970# inv_nti_uq3 0
+C965 a_n2314_n1125# A2_uq3 0.01398f
+C966 in_downstep_uq5 a_n9625_n487# 0.00442f
+C967 in_sign_uq0 pti_uq4 0
+C968 nti_uq8 pti_uq8 0.23277f
+C969 nti_uq10 pti_uq9 0.00263f
+C970 nti_uq8 inv_nti_uq4 0.21842f
+C971 nti_uq10 inv_nti_uq5 0
+C972 in_uq5 A1_uq5 0.01899f
+C973 in_uq3 in_uq0 0.00886f
+C974 a_n7730_n3784# a_n7630_n4217# 0.05013f
+C975 in_downstep res_stage0 0.24414f
+C976 in_uq1 nti_uq1 0.71795f
+C977 in_uq0 input_A_uq4 0.03434f
+C978 inv_pti_uq3 a_n2895_n1081# 0
+C979 a_n7630_n4217# ZN_uq1 0.00143f
+C980 nti_uq8 in_A 0.64339f
+C981 a_n2308_n2398# in_sign_uq0 0.09179f
+C982 inv_pti_uq2 VDD_1V65_uq0 0.17039f
+C983 VNW a_n11052_n1870# 0.00546f
+C984 VNW inv_nti_uq1 0.72691f
+C985 VNW pti_uq1 0.67683f
+C986 ZN_uq6 pti_uq10 0.08697f
+C987 ZN_uq6 inv_nti_uq6 0.26546f
+C988 ZN_uq4 nti 0
+C989 VDD_1V65 pti_uq4 0.00107f
+C990 ZN a_n4485_n3623# 0
+C991 ZN_uq6 a_n10048_n1803# 0
+C992 in_downstep_uq0 A1_uq1 0
+C993 carry_sign_probe_uq3 in_sign_uq0 0.17983f
+C994 res_sign_uq2 a_n12365_n4217# 0
+C995 A2_uq4 a_n7630_n1081# 0.18526f
+C996 a_n15163_n2398# A2_uq2 0.00398f
+C997 in_upstep_uq5 5v0_2t_adder_1/5v0_addf_sc_rev2_1/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C998 in_upstep_uq0 in 0
+C999 ZN_uq6 in_3 0.16925f
+C1000 VDD_1V65_uq0 in_sign_uq0 0
+C1001 a_n2308_n2398# VDD_1V65 0.01006f
+C1002 VNW a_n2895_n4217# 0.14009f
+C1003 in_uq2 a_n13764_n2538# 0.00342f
+C1004 nti_uq10 VDD_1V65_4 0.23732f
+C1005 res_stage0 5v0_2t_adder_0/5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.00253f
+C1006 a_n11052_n1870# a_n11784_n4261# 0
+C1007 a_n11784_n4261# pti_uq1 0.09994f
+C1008 a_n11784_n4261# inv_nti_uq1 0.35313f
+C1009 a_n155_n487# inv_nti_uq3 0
+C1010 a_n155_n487# pti_uq7 0
+C1011 a_n2314_n1125# in_downstep_uq3 0.09641f
+C1012 in_downstep_uq1 inv_pti_uq1 0.11741f
+C1013 in_sign ZN_uq5 0
+C1014 carry_sign_probe_uq3 VDD_1V65 0.10367f
+C1015 a_n2314_n1125# inv_pti_uq3 0.17336f
+C1016 in_downstep_uq5 a_n9220_n487# 0.0031f
+C1017 inv_pti_uq0 a_n155_n3623# 0.00135f
+C1018 ZN_uq0 inv_pti_uq0 0.01453f
+C1019 in_0 a_n155_n487# 0.00163f
+C1020 res_stage0_uq6 nti_uq10 0.00348f
+C1021 in a_n7730_n3784# 0.06378f
+C1022 a_n5058_n970# inv_nti_uq4 0
+C1023 in_uq2 a_n12465_n3784# 0.00544f
+C1024 a_n7049_n1125# ZN_uq4 0.02912f
+C1025 pti_uq3 A1_uq0 0.20453f
+C1026 ZN_uq6 a_n11784_n1125# 0.00759f
+C1027 A2_uq3 pti_uq3 0
+C1028 ZN in_uq1 0.00115f
+C1029 inv_pti nti_uq1 0
+C1030 nti_uq8 in_uq4 0.01158f
+C1031 a_n2995_n648# VDD_1V65 0.09448f
+C1032 VNW in_upstep_uq1 0.68065f
+C1033 a_n11778_n2398# inv_nti_uq5 0
+C1034 a_n11778_n2398# pti_uq9 0
+C1035 in_uq4 in 0.00886f
+C1036 nti_uq8 res_sign 0.14066f
+C1037 nti_uq10 input_A_uq8 0
+C1038 in_upstep_uq6 nti_uq10 0.1133f
+C1039 VDD_1V65_3 in_upstep_uq5 0.2498f
+C1040 in res_sign 0.00408f
+C1041 inv_pti_uq4 a_n7630_n1081# 0
+C1042 carry_sign_probe_uq5 pti_uq9 0.01871f
+C1043 carry_sign_probe_uq5 inv_nti_uq5 0.3327f
+C1044 in_upstep_uq4 a_n4890_n487# 0
+C1045 ZN_uq6 in_uq6 0.41569f
+C1046 a_n7043_n2398# in_sign 0.09179f
+C1047 VNW A1_uq2 1.32955f
+C1048 VNW A2_uq5 1.07855f
+C1049 VNW in_uq0 1.82974f
+C1050 ZN_uq2 res_stage0_uq2 0.10778f
+C1051 ZN_uq6 res_sign_uq2 0.17443f
+C1052 in_sign_uq1 inv_pti_uq1 0.12174f
+C1053 in_upstep_uq1 a_n11784_n4261# 0.07773f
+C1054 in_upstep_uq0 5v0_2t_adder_0/5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C1055 res_stage0_uq1 a_n12465_n3784# 0.08951f
+C1056 carry_sign_probe_uq4 in_sign 0.17983f
+C1057 VDD_1V65_uq0 pti 0.01144f
+C1058 VDD_1V65_uq0 inv_nti 0.09306f
+C1059 a_250_n487# inv_nti_uq3 0.00226f
+C1060 a_250_n487# pti_uq7 0.00135f
+C1061 a_n14528_n970# VDD_1V65_4 0.00932f
+C1062 in_downstep_uq6 VNW 0.45847f
+C1063 a_n12465_n648# pti_uq9 0.12677f
+C1064 a_n12465_n648# inv_nti_uq5 0.28651f
+C1065 in_downstep_uq5 A2_uq5 0
+C1066 VDD_1V65 inv_nti_uq4 0
+C1067 pti_uq5 a_n10428_n2398# 0
+C1068 VDD_1V65_3 pti_uq9 0.16717f
+C1069 VDD_1V65_3 inv_nti_uq5 0.11166f
+C1070 VNW a_n16519_n4261# 0.73652f
+C1071 ZN_uq5 A1_uq5 0.00986f
+C1072 in_C_over_uq0 in_uq0 0.01022f
+C1073 a_n4890_n487# pti_uq8 0
+C1074 in_0 a_250_n487# 0.00182f
+C1075 in_downstep_uq2 pti_uq2 0.19511f
+C1076 a_n4890_n487# inv_nti_uq4 0
+C1077 a_n1374_n2354# VDD_1V65 0
+C1078 in_downstep_uq2 inv_nti_uq2 0.27468f
+C1079 A2_uq5 a_n11784_n4261# 0.00264f
+C1080 pti_uq5 A2_uq1 0.01198f
+C1081 in_uq1 a_n12365_n4217# 0
+C1082 a_n11784_n4261# A1_uq2 0.61411f
+C1083 in_2 a_n12465_n648# 0.06378f
+C1084 ZN_uq0 nti 0.00137f
+C1085 in_downstep sum 0.0171f
+C1086 a_n1582_n1870# in_0 0
+C1087 a_n11778_n2398# a_n12465_n3784# 0
+C1088 5v0_2t_adder_2/5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A a_n12465_n3784# 0.02928f
+C1089 VDD_1V65_3 in_2 0.03237f
+C1090 inv_pti a_n4890_n3623# 0.00404f
+C1091 ZN inv_pti 0.01453f
+C1092 in_A a_n4890_n487# 0.00163f
+C1093 a_n2995_n3784# pti_uq0 0.12627f
+C1094 in_upstep_uq3 a_n155_n487# 0
+C1095 ZN_uq2 inv_pti_uq1 0
+C1096 res_stage0_uq5 A1_uq5 0
+C1097 a_n2995_n3784# inv_nti_uq0 0.28514f
+C1098 ZN 5v0_2t_adder_1/5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.04656f
+C1099 in_downstep_uq0 res_stage0_uq0 0.24414f
+C1100 A2_uq4 pti_uq4 0
+C1101 pti_uq4 A1 0.20453f
+C1102 in_upstep_uq4 a_n4485_n487# 0
+C1103 in_upstep_uq0 VDD_1V65 0
+C1104 pti_uq6 A2_uq5 0
+C1105 5v0_2t_adder_1/5v0_addf_sc_rev2_1/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A input_A_uq8 0
+C1106 nti_uq7 a_n2995_n648# 0
+C1107 a_n958_n2398# in_sign_uq0 0
+C1108 in_uq3 pti_uq0 0
+C1109 VNW a_n323_n970# 0.00342f
+C1110 VNW inv_pti_uq5 0.85938f
+C1111 A1_uq6 inv_pti_uq2 0.10104f
+C1112 in_uq5 carry_sign_probe_uq5 0
+C1113 nti_uq1 pti_uq1 0.23319f
+C1114 VDD_1V65_uq0 in_upstep 0.24797f
+C1115 A2_uq3 pti_uq7 0.12808f
+C1116 nti_uq1 inv_nti_uq1 0.22612f
+C1117 inv_nti_uq3 A1_uq0 0
+C1118 A2_uq3 inv_nti_uq3 0.01696f
+C1119 a_n14360_n487# VDD_1V65_4 0.00232f
+C1120 carry_sign_probe_uq5 input_A_uq8 0.27266f
+C1121 in_downstep_uq5 inv_pti_uq5 0.13818f
+C1122 in_downstep a_n5693_n2398# 0.00144f
+C1123 a_n6317_n1870# in_A 0
+C1124 a_n958_n2398# VDD_1V65 0.00128f
+C1125 a_n7630_n1081# inv_nti_uq5 0
+C1126 carry_sign_probe_uq3 A1 0
+C1127 in_sign_uq0 res_sign 0.19479f
+C1128 in_sign_uq2 pti_uq2 0.01104f
+C1129 in_upstep_uq5 a_n10428_n2398# 0
+C1130 a_441_n2538# A2_uq0 0.00898f
+C1131 in_C_over_uq0 a_n323_n970# 0
+C1132 in_0 A2_uq3 0.0025f
+C1133 in_sign_uq2 inv_nti_uq2 0.05332f
+C1134 a_n4485_n487# pti_uq8 0.00135f
+C1135 in_upstep_uq2 in_downstep_uq2 0.38023f
+C1136 in_uq5 a_n12465_n648# 0.16366f
+C1137 a_n4485_n487# inv_nti_uq4 0.00226f
+C1138 A2_uq0 VDD_1V65 0.01722f
+C1139 VDD_1V65_uq0 A1 0.00292f
+C1140 VDD_1V65_uq0 A2_uq4 0
+C1141 VDD_1V65 in_uq4 0.00197f
+C1142 nti_uq8 ZN_uq4 0.00972f
+C1143 a_n1582_n1870# in_uq3 0.00471f
+C1144 nti_uq10 ZN_uq5 0
+C1145 VDD_1V65_3 in_uq5 0.18493f
+C1146 a_n12465_n648# input_A_uq8 0.07457f
+C1147 a_n7630_n1081# in_2 0
+C1148 ZN_uq4 in 0.01019f
+C1149 in_A a_n4485_n487# 0.00182f
+C1150 VDD_1V65 res_sign 0.02779f
+C1151 in_downstep_uq0 VDD_1V65_uq0 0.17291f
+C1152 in_upstep_uq3 a_250_n487# 0
+C1153 VDD_1V65_3 input_A_uq8 0.00971f
+C1154 inv_nti_uq2 VDD_1V65_4 0.00101f
+C1155 a_n15787_n1870# VDD_1V65_4 0.0046f
+C1156 in_upstep_uq4 A2_uq4 0
+C1157 in_downstep_uq2 A2_uq6 0
+C1158 in_downstep_uq2 A1_uq4 0.22546f
+C1159 in_upstep_uq6 a_n14360_n487# 0
+C1160 VNW in_downstep 0.449f
+C1161 res_stage0_uq3 VDD_1V65 0.02552f
+C1162 a_n16519_n1125# a_n17100_n1081# 0.20659f
+C1163 inv_nti_uq5 a_n10428_n2398# 0
+C1164 a_n7730_n3784# pti 0.12627f
+C1165 a_n7730_n3784# inv_nti 0.28514f
+C1166 VNW a_n155_n487# 0.00122f
+C1167 in_downstep_uq3 inv_nti_uq3 0.29786f
+C1168 in_downstep_uq3 pti_uq7 0.20147f
+C1169 pti_uq2 a_n12465_n3784# 0
+C1170 inv_nti_uq2 a_n12465_n3784# 0
+C1171 in_upstep_uq2 5v0_2t_adder_2/5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C1172 inv_nti_uq5 A2_uq1 0.00564f
+C1173 pti_uq9 A2_uq1 0
+C1174 in_upstep_uq1 nti_uq1 0.10356f
+C1175 A2_uq3 a_n2995_n3784# 0
+C1176 a_n2995_n3784# A1_uq0 0.07412f
+C1177 inv_pti_uq3 inv_nti_uq3 0.26171f
+C1178 inv_pti_uq3 pti_uq7 0.4362f
+C1179 pti ZN_uq1 0.01373f
+C1180 res_sign_uq0 a_n17100_n4217# 0
+C1181 res_3 ZN_uq2 0.22214f
+C1182 a_n13955_n487# VDD_1V65_4 0
+C1183 in_2 a_n10428_n2398# 0
+C1184 res_2 a_n12465_n3784# 0.1874f
+C1185 ZN inv_nti_uq1 0.00124f
+C1186 inv_nti ZN_uq1 0.00257f
+C1187 a_n5693_n2398# in_sign 0
+C1188 a_n2314_n1125# A1_uq1 0
+C1189 a_n6317_n1870# in_uq4 0.00471f
+C1190 in_uq4 pti 0
+C1191 in_downstep_uq3 in_0 0.18335f
+C1192 VNW nti_uq2 0.6307f
+C1193 ZN_uq5 res_stage0_uq1 0
+C1194 nti_uq9 a_n9793_n970# 0
+C1195 in_uq3 A1_uq0 0.033f
+C1196 in_uq3 A2_uq3 0.01029f
+C1197 in_0 inv_pti_uq3 0.07043f
+C1198 inv_nti_uq4 A1 0
+C1199 A2_uq4 inv_nti_uq4 0.01696f
+C1200 A2_uq4 pti_uq8 0.12808f
+C1201 inv_nti_uq6 A2_uq5 0
+C1202 5v0_2t_adder_2/5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A A1_uq4 0
+C1203 res_sign_uq2 inv_nti_uq1 0.01667f
+C1204 res_sign_uq2 pti_uq1 0.0045f
+C1205 A1_uq2 a_n10048_n1803# 0
+C1206 input_A_uq4 A1_uq0 0
+C1207 A2_uq5 nti_uq1 0
+C1208 nti_uq1 A1_uq2 0.01088f
+C1209 VNW 5v0_2t_adder_0/5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.02871f
+C1210 A2_uq3 input_A_uq4 0.00936f
+C1211 in_downstep_uq6 pti_uq10 0.20147f
+C1212 inv_pti in_uq1 0.03576f
+C1213 a_n7630_n1081# in_uq5 0
+C1214 in_downstep_uq6 inv_nti_uq6 0.29786f
+C1215 a_n2895_n4217# ZN 0.00143f
+C1216 nti_uq7 a_n958_n2398# 0
+C1217 VNW inv_nti_uq0 0.73245f
+C1218 VNW pti_uq0 0.67776f
+C1219 a_n4294_n2538# A2 0.00898f
+C1220 a_n7630_n1081# input_A_uq8 0.004f
+C1221 ZN_uq4 a_n5058_n970# 0
+C1222 in_A A2_uq4 0.0025f
+C1223 in_upstep_uq3 A2_uq3 0
+C1224 in_3 A2_uq5 0
+C1225 in_upstep_uq2 VDD_1V65_4 0
+C1226 ZN_uq5 5v0_2t_adder_1/5v0_addf_sc_rev2_1/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.04656f
+C1227 A2_uq6 in_sign_uq2 0.16822f
+C1228 in_sign_uq2 A1_uq4 0.24257f
+C1229 VNW in_sign 0.20097f
+C1230 in_downstep_uq6 in_3 0.18335f
+C1231 in_upstep_uq4 inv_pti_uq4 0.06521f
+C1232 nti_uq2 a_n11784_n4261# 0
+C1233 ZN_uq2 a_n15163_n2398# 0
+C1234 in_upstep_uq6 a_n13955_n487# 0
+C1235 in_upstep_uq4 5v0_2t_adder_1/5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C1236 in_downstep_uq0 sum_uq0 0.0171f
+C1237 ZN_uq5 a_n11778_n2398# 0
+C1238 in_C_over_uq0 pti_uq0 0
+C1239 inv_pti_uq2 ZN_uq3 0.0093f
+C1240 a_n13764_n2538# A1_uq4 0.00901f
+C1241 ZN_uq2 A2_uq2 0.21563f
+C1242 res_stage0_uq2 inv_pti_uq2 0.01266f
+C1243 a_n12365_n4217# pti_uq1 0.11666f
+C1244 res_stage0_uq5 5v0_2t_adder_1/5v0_addf_sc_rev2_1/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.00253f
+C1245 a_n12365_n4217# inv_nti_uq1 0.36668f
+C1246 ZN_uq5 carry_sign_probe_uq5 0.0283f
+C1247 VNW a_n4294_n2538# 0.01448f
+C1248 in_downstep_uq0 in_upstep_uq0 0.38023f
+C1249 A1_uq4 VDD_1V65_4 0.0016f
+C1250 A2_uq6 VDD_1V65_4 0.44389f
+C1251 a_n16519_n1125# VNW 0.69361f
+C1252 in_sign_uq0 ZN_uq4 0
+C1253 nti_uq2 pti_uq6 0
+C1254 in_uq5 a_n10428_n2398# 0.0138f
+C1255 VDD_1V65_1 nti_uq9 0
+C1256 a_n1582_n1870# VNW 0.00546f
+C1257 res_stage0_uq3 nti_uq7 0.00348f
+C1258 in_downstep_uq3 in_uq3 0.05426f
+C1259 a_n11784_n1125# A2_uq5 0.01398f
+C1260 a_n7049_n1125# in_downstep_uq4 0.09641f
+C1261 in_uq5 A2_uq1 0.26387f
+C1262 nti_uq9 a_n9625_n487# 0
+C1263 a_n7730_n3784# A1 0.07412f
+C1264 in_uq3 inv_pti_uq3 0
+C1265 in_downstep_uq3 input_A_uq4 0.18126f
+C1266 in_downstep_uq2 VDD_1V65_uq0 0.18975f
+C1267 input_A_uq8 A2_uq1 0
+C1268 A2_uq4 a_n7730_n3784# 0
+C1269 inv_pti_uq4 inv_nti_uq4 0.2698f
+C1270 inv_pti_uq4 pti_uq8 0.6376f
+C1271 ZN_uq5 a_n12465_n648# 0.71113f
+C1272 a_n2314_n4261# a_n2895_n4217# 0.20659f
+C1273 inv_pti_uq3 input_A_uq4 0.30401f
+C1274 res_stage0_uq6 A2_uq6 0
+C1275 A1 ZN_uq1 0.00189f
+C1276 A2_uq4 ZN_uq1 0
+C1277 ZN_uq0 in 0.00115f
+C1278 inv_pti_uq0 nti 0
+C1279 a_n7049_n1125# a_n7049_n4261# 0
+C1280 a_n1582_n1870# in_C_over_uq0 0.00329f
+C1281 VDD_1V65 ZN_uq4 0.12054f
+C1282 in_upstep_uq3 in_downstep_uq3 0.3849f
+C1283 a_n16513_n2398# inv_pti_uq2 0.0038f
+C1284 VDD_1V65_3 ZN_uq5 0.43409f
+C1285 in_downstep_uq0 a_n958_n2398# 0.00144f
+C1286 in_uq4 A1 0.033f
+C1287 in_uq4 A2_uq4 0.01029f
+C1288 in_A inv_pti_uq4 0.08268f
+C1289 in_upstep_uq3 inv_pti_uq3 0.06521f
+C1290 in_uq6 A2_uq5 0
+C1291 in_3 inv_pti_uq5 0.0051f
+C1292 carry_sign_probe_uq6 inv_pti_uq2 0
+C1293 a_n16519_n4261# a_n17200_n3784# 0.07764f
+C1294 res_stage0_uq5 a_n12465_n648# 0.08951f
+C1295 res_sign A1 0.00188f
+C1296 A2_uq4 res_sign 0.00936f
+C1297 in_upstep_uq6 A2_uq6 0
+C1298 in_downstep_uq6 in_uq6 0.05426f
+C1299 res_sign_uq2 A1_uq2 0.01563f
+C1300 res_sign_uq2 A2_uq5 0.33689f
+C1301 VDD_1V65_3 res_stage0_uq5 0.02552f
+C1302 in_downstep_uq6 res_sign_uq2 0.18126f
+C1303 VNW A1_uq0 1.32855f
+C1304 VNW A1_uq5 1.33022f
+C1305 VNW A2_uq3 1.07675f
+C1306 in_uq1 pti_uq1 0.88738f
+C1307 in_uq1 inv_nti_uq1 0.26592f
+C1308 a_n17200_n648# inv_pti_uq2 0
+C1309 inv_pti_uq6 VDD_1V65_4 0.16497f
+C1310 carry_sign_probe_uq3 a_n2895_n1081# 0.12287f
+C1311 in_downstep_uq5 A1_uq5 0
+C1312 a_n11784_n1125# inv_pti_uq5 0.17336f
+C1313 a_n6317_n1870# ZN_uq4 0.00329f
+C1314 ZN_uq4 pti 0
+C1315 ZN_uq6 a_n11052_n1870# 0.215f
+C1316 ZN_uq5 a_n10844_n2354# 0
+C1317 in_C_over_uq0 A1_uq0 0.01039f
+C1318 in_C_over_uq0 A2_uq3 0.11887f
+C1319 VNW a_n17100_n4217# 0.13766f
+C1320 nti_uq9 a_n9220_n487# 0
+C1321 inv_pti VDD_1V65_1 0.02547f
+C1322 in_downstep a_n5058_n4106# 0.00316f
+C1323 ZN_uq1 pti_uq5 0.00753f
+C1324 A1_uq5 a_n11784_n4261# 0.04228f
+C1325 A1_uq2 a_n12365_n4217# 0.24363f
+C1326 in_downstep_uq1 5v0_2t_adder_1/5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C1327 in_uq0 a_n2314_n4261# 0
+C1328 res_stage0_uq6 inv_pti_uq6 0.01246f
+C1329 a_n7630_n1081# ZN_uq5 0.02574f
+C1330 a_n2995_n648# a_n2895_n1081# 0.05013f
+C1331 in_uq4 inv_pti_uq4 0
+C1332 a_n2314_n1125# a_n2308_n2398# 0.00111f
+C1333 ZN_uq0 5v0_2t_adder_0/5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.04656f
+C1334 a_n7049_n4261# a_n7630_n4217# 0.20659f
+C1335 inv_pti_uq4 res_sign 0.30401f
+C1336 res_sign_uq2 inv_pti_uq5 0.01633f
+C1337 in_upstep_uq6 inv_pti_uq6 0.06521f
+C1338 in_downstep_uq1 in_sign_uq1 0
+C1339 pti_uq8 inv_nti_uq5 0
+C1340 res_sign 5v0_2t_adder_1/5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C1341 a_n2314_n1125# carry_sign_probe_uq3 0.21173f
+C1342 VNW in_downstep_uq3 0.45847f
+C1343 inv_nti_uq4 inv_nti_uq5 0
+C1344 VNW inv_pti_uq3 0.85938f
+C1345 inv_pti_uq2 a_n15579_n2354# 0.00198f
+C1346 VDD_1V65_uq0 a_n12465_n3784# 0.01363f
+C1347 in_upstep_uq1 in_uq1 0.01573f
+C1348 A1_uq1 pti_uq7 0
+C1349 ZN_uq0 in_sign_uq0 0
+C1350 A1_uq1 inv_nti_uq3 0
+C1351 res_3 inv_pti_uq2 0
+C1352 ZN_uq5 a_n10428_n2398# 0.00979f
+C1353 pti_uq8 in_2 0
+C1354 inv_nti_uq4 in_2 0.002f
+C1355 nti_uq10 VNW 0.64202f
+C1356 in_upstep ZN_uq4 0.0014f
+C1357 in_downstep_uq3 in_C_over_uq0 0.04611f
+C1358 a_n2314_n1125# a_n2995_n648# 0.07845f
+C1359 a_n2895_n1081# inv_nti_uq4 0
+C1360 ZN_uq5 A2_uq1 0.0234f
+C1361 nti_uq9 A1_uq2 0
+C1362 nti_uq9 A2_uq5 0
+C1363 in_0 A1_uq1 0.00121f
+C1364 ZN_uq0 a_441_n2538# 0.02576f
+C1365 in_C_over_uq0 inv_pti_uq3 0.00125f
+C1366 VNW in_uq2 2.26779f
+C1367 in_downstep a_n4890_n3623# 0.00442f
+C1368 in_downstep ZN 0.20049f
+C1369 in_downstep_uq4 nti_uq8 0.06312f
+C1370 in_downstep_uq2 ZN_uq1 0
+C1371 A2_uq5 in_uq1 0
+C1372 in_uq1 A1_uq2 0.12011f
+C1373 VDD_1V65_uq0 A1_uq3 0.11622f
+C1374 carry_sign_probe_uq4 a_n7630_n1081# 0.12287f
+C1375 res_stage0_uq5 a_n10428_n2398# 0
+C1376 a_n16519_n1125# pti_uq10 0.09933f
+C1377 a_n16519_n1125# inv_nti_uq6 0.35313f
+C1378 a_n2895_n1081# in_A 0
+C1379 ZN_uq4 A1 0.01039f
+C1380 ZN_uq4 A2_uq4 0.11887f
+C1381 ZN_uq6 A1_uq2 0.0091f
+C1382 ZN_uq6 A2_uq5 0.69053f
+C1383 res_sign_uq0 pti_uq2 0.00455f
+C1384 res_sign_uq0 inv_nti_uq2 0.01667f
+C1385 nti_uq2 a_n17200_n3784# 0
+C1386 in_upstep_uq4 A1_uq3 0
+C1387 in a_n7049_n4261# 0
+C1388 in_uq2 a_n11784_n4261# 0.00149f
+C1389 in_downstep_uq2 A1_uq6 0
+C1390 a_n15163_n2398# inv_pti_uq2 0.00822f
+C1391 a_n16519_n1125# in_3 0
+C1392 in_downstep_uq6 ZN_uq6 0.04611f
+C1393 a_n7730_n648# a_n7630_n1081# 0.05013f
+C1394 ZN_uq2 a_n14528_n4106# 0.00142f
+C1395 VNW res_stage0_uq1 0.13083f
+C1396 ZN 5v0_2t_adder_0/5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.04656f
+C1397 ZN_uq6 a_n16519_n4261# 0
+C1398 in_uq6 nti_uq2 0
+C1399 nti_uq10 pti_uq6 0.00836f
+C1400 A1_uq1 a_n2995_n3784# 0.19167f
+C1401 in_uq2 pti_uq6 0.01672f
+C1402 ZN_uq0 inv_nti 0.00124f
+C1403 inv_nti_uq0 ZN 0.00257f
+C1404 pti_uq0 ZN 0.01373f
+C1405 pti_uq8 input_A_uq8 0.01424f
+C1406 a_n2314_n1125# in_A 0.00121f
+C1407 a_n7630_n4217# in_downstep_uq1 0
+C1408 inv_nti_uq4 input_A_uq8 0.01089f
+C1409 VNW a_n14528_n970# 0.00342f
+C1410 nti_uq9 inv_pti_uq5 0.23962f
+C1411 VNW 5v0_2t_adder_1/5v0_addf_sc_rev2_1/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.02871f
+C1412 ZN in_sign 0
+C1413 in_uq3 A1_uq1 0.019f
+C1414 ZN_uq2 in_sign_uq1 0
+C1415 A1_uq3 pti_uq8 0
+C1416 A1_uq3 inv_nti_uq4 0
+C1417 res_stage0_uq4 in_upstep_uq4 0.27475f
+C1418 in_downstep a_n4485_n3623# 0.0031f
+C1419 A1_uq5 nti_uq1 0
+C1420 res_stage0_uq1 a_n11784_n4261# 0.18549f
+C1421 in_uq0 nti_uq0 0.71794f
+C1422 VNW a_n11778_n2398# 0.27931f
+C1423 5v0_2t_adder_2/5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A VNW 0.02871f
+C1424 res_sign in_2 0.00307f
+C1425 inv_pti_uq0 in 0.03576f
+C1426 in_downstep_uq4 a_n5058_n970# 0.00316f
+C1427 a_n2895_n1081# in_uq4 0
+C1428 in_downstep_uq5 5v0_2t_adder_1/5v0_addf_sc_rev2_1/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C1429 ZN a_n4294_n2538# 0.02576f
+C1430 inv_nti_uq1 pti_uq1 0.42143f
+C1431 a_n2895_n1081# res_sign 0.004f
+C1432 in_A A1_uq3 0.00121f
+C1433 ZN_uq4 inv_pti_uq4 0.00125f
+C1434 in_upstep_uq3 A1_uq1 0
+C1435 VNW carry_sign_probe_uq5 0.484f
+C1436 ZN_uq4 5v0_2t_adder_1/5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.04656f
+C1437 A1_uq6 in_sign_uq2 0.12707f
+C1438 in_downstep_uq0 a_n323_n4106# 0.00316f
+C1439 nti_uq2 a_n12365_n4217# 0.00118f
+C1440 a_n16519_n1125# res_sign_uq2 0.63515f
+C1441 in_downstep_uq5 carry_sign_probe_uq5 0
+C1442 a_n11784_n4261# a_n11778_n2398# 0.00505f
+C1443 res_stage0_uq4 inv_nti_uq4 0.02869f
+C1444 res_stage0_uq4 pti_uq8 0.01078f
+C1445 ZN_uq2 a_n14360_n3623# 0
+C1446 a_n2314_n4261# pti_uq0 0.09994f
+C1447 ZN_uq1 a_n12465_n3784# 0.65632f
+C1448 VNW a_n12465_n648# 0.60219f
+C1449 a_n2314_n4261# inv_nti_uq0 0.35313f
+C1450 A1_uq6 VDD_1V65_4 0.00667f
+C1451 res_sign_uq0 A1_uq4 0.01563f
+C1452 A2_uq6 res_sign_uq0 0.24754f
+C1453 carry_sign_probe_uq5 a_n11784_n4261# 0
+C1454 VDD_1V65_3 VNW 0.48952f
+C1455 a_n11784_n1125# A1_uq5 0
+C1456 a_n7730_n3784# input_A_uq8 0.00184f
+C1457 res_stage0_uq4 in_A 0.26364f
+C1458 VNW a_n14360_n487# 0.00122f
+C1459 in_uq5 ZN_uq1 0.00556f
+C1460 in_downstep_uq5 a_n12465_n648# 0.00679f
+C1461 A1_uq3 a_n7730_n3784# 0.19167f
+C1462 a_n2314_n1125# res_sign 0.00126f
+C1463 VDD_1V65_3 in_downstep_uq5 0.1733f
+C1464 ZN_uq1 input_A_uq8 0.00506f
+C1465 VDD_1V65_uq0 res_stage0 0.02166f
+C1466 pti_uq6 carry_sign_probe_uq5 0
+C1467 res_stage0_uq6 A1_uq6 0
+C1468 A1_uq3 ZN_uq1 0.0051f
+C1469 A1_uq0 ZN 0.00189f
+C1470 A2_uq3 ZN 0
+C1471 in_downstep_uq4 a_n4890_n487# 0.00442f
+C1472 a_n12465_n648# a_n11784_n4261# 0
+C1473 a_n2308_n2398# pti_uq7 0
+C1474 res_stage0_uq3 a_n2314_n1125# 0.18379f
+C1475 nti_uq10 pti_uq10 0.23276f
+C1476 in_upstep_uq1 pti_uq1 0.02037f
+C1477 in_uq4 A1_uq3 0.019f
+C1478 a_n2308_n2398# inv_nti_uq3 0
+C1479 nti_uq10 inv_nti_uq6 0.21857f
+C1480 VDD_1V65_3 a_n11784_n4261# 0.0015f
+C1481 in_upstep_uq1 inv_nti_uq1 0.00562f
+C1482 res_sign input_A_uq8 0.00241f
+C1483 a_n1582_n1870# a_n2314_n4261# 0
+C1484 in_downstep_uq0 a_n155_n3623# 0.00442f
+C1485 a_n17200_n3784# a_n17100_n4217# 0.05013f
+C1486 in nti 0.71795f
+C1487 in_downstep_uq0 ZN_uq0 0.20049f
+C1488 carry_sign_probe_uq3 pti_uq7 0.01871f
+C1489 in_upstep_uq6 A1_uq6 0
+C1490 in_downstep_uq2 res_stage0_uq2 0.24414f
+C1491 res_sign_uq2 A1_uq5 0.10392f
+C1492 carry_sign_probe_uq3 inv_nti_uq3 0.3327f
+C1493 nti_uq10 in_3 0.64342f
+C1494 a_n15787_n1870# VNW 0.00546f
+C1495 VNW inv_nti_uq2 0.72517f
+C1496 VNW pti_uq2 0.65946f
+C1497 VNW a_n10844_n2354# 0.01437f
+C1498 VNW A1_uq1 1.33022f
+C1499 ZN_uq6 nti_uq2 0
+C1500 VDD_1V65_3 pti_uq6 0.00107f
+C1501 ZN_uq2 a_n13955_n3623# 0
+C1502 a_n11052_n1870# A1_uq2 0
+C1503 A2_uq5 pti_uq1 0.00291f
+C1504 a_n11052_n1870# A2_uq5 0.02428f
+C1505 A1_uq2 pti_uq1 0.27933f
+C1506 in_sign_uq0 inv_pti_uq0 0.12174f
+C1507 res_stage0_uq0 a_n2995_n3784# 0.08951f
+C1508 A2_uq5 inv_nti_uq1 0
+C1509 A1_uq2 inv_nti_uq1 0.24909f
+C1510 VNW res_2 0.36968f
+C1511 5v0_2t_adder_2/5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A a_n12465_n648# 0.02928f
+C1512 ZN_uq4 inv_nti_uq5 0
+C1513 pti_uq8 ZN_uq5 0.00491f
+C1514 inv_nti_uq4 ZN_uq5 0.00107f
+C1515 a_n2995_n648# pti_uq7 0.12652f
+C1516 A2_uq6 a_n17100_n1081# 0.18469f
+C1517 VNW a_n7630_n1081# 0.1274f
+C1518 in_upstep_uq4 5v0_2t_adder_0/5v0_addf_sc_rev2_1/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C1519 a_n2995_n648# inv_nti_uq3 0.28647f
+C1520 in_sign in_uq1 0.00138f
+C1521 res_stage0_uq4 in_uq4 0.09289f
+C1522 pti_uq3 a_n958_n2398# 0
+C1523 in_C_over_uq0 A1_uq1 0.00986f
+C1524 a_n6317_n1870# a_n7049_n4261# 0
+C1525 a_n7049_n4261# pti 0.09994f
+C1526 a_n7049_n4261# inv_nti 0.35313f
+C1527 res_stage0_uq4 res_sign 0.24991f
+C1528 in_A ZN_uq5 0
+C1529 in_downstep inv_pti 0.13415f
+C1530 inv_pti_uq0 VDD_1V65 0.02547f
+C1531 in_0 a_n2995_n648# 0.09306f
+C1532 nti_uq10 a_n11784_n1125# 0
+C1533 res_stage0_uq2 5v0_2t_adder_2/5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.00253f
+C1534 res_stage0_uq1 nti_uq1 0.00348f
+C1535 A1_uq5 a_n12365_n4217# 0.19345f
+C1536 inv_pti_uq5 a_n9625_n487# 0.00135f
+C1537 A2_uq3 a_n2314_n4261# 0.00264f
+C1538 pti_uq3 A2_uq0 0.01198f
+C1539 in_uq0 a_n2895_n4217# 0
+C1540 a_n2314_n4261# A1_uq0 0.61412f
+C1541 in_downstep 5v0_2t_adder_1/5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C1542 res_2 a_n11784_n4261# 0
+C1543 in_downstep_uq4 a_n4485_n487# 0.0031f
+C1544 a_n2895_n1081# ZN_uq4 0.02574f
+C1545 a_n2308_n2398# a_n2995_n3784# 0
+C1546 in_sign_uq2 ZN_uq3 0.00115f
+C1547 in_downstep_uq0 a_250_n3623# 0.0031f
+C1548 in_uq2 a_n17200_n3784# 0.09306f
+C1549 a_n14528_n970# inv_nti_uq6 0
+C1550 a_n16519_n1125# ZN_uq6 0.02682f
+C1551 VNW a_n10428_n2398# 0.34663f
+C1552 5v0_2t_adder_0/5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A input_A_uq4 0
+C1553 in_upstep_uq2 VNW 0.68065f
+C1554 nti_uq10 in_uq6 0.01158f
+C1555 inv_nti_uq3 inv_nti_uq4 0
+C1556 pti_uq7 inv_nti_uq4 0
+C1557 a_n7043_n2398# inv_nti_uq4 0
+C1558 a_n7043_n2398# pti_uq8 0
+C1559 VDD_1V65_uq0 a_n2995_n3784# 0.01363f
+C1560 VNW A2_uq1 0.38815f
+C1561 in_uq6 in_uq2 0.00886f
+C1562 nti_uq10 res_sign_uq2 0.14066f
+C1563 in_upstep_uq1 A2_uq5 0
+C1564 in_upstep_uq1 A1_uq2 0.15739f
+C1565 in_uq3 carry_sign_probe_uq3 0
+C1566 nti_uq0 inv_nti_uq0 0.22627f
+C1567 nti_uq0 pti_uq0 0.23318f
+C1568 in_upstep_uq3 5v0_2t_adder_0/5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C1569 carry_sign_probe_uq4 pti_uq8 0.01871f
+C1570 carry_sign_probe_uq4 inv_nti_uq4 0.3327f
+C1571 inv_nti_uq6 carry_sign_probe_uq5 0
+C1572 ZN_uq3 VDD_1V65_4 0.13789f
+C1573 pti_uq7 in_A 0
+C1574 in_uq2 res_sign_uq2 0.00408f
+C1575 inv_pti_uq6 a_n17100_n1081# 0
+C1576 inv_nti_uq3 in_A 0.002f
+C1577 carry_sign_probe_uq3 input_A_uq4 0.27266f
+C1578 in_downstep_uq5 A2_uq1 0.00639f
+C1579 a_n2314_n1125# ZN_uq4 0.00759f
+C1580 a_n16513_n2398# in_sign_uq2 0.09179f
+C1581 ZN_uq5 ZN_uq1 0.00569f
+C1582 VNW A1_uq4 1.32301f
+C1583 VNW A2_uq6 1.07501f
+C1584 in_sign inv_pti 0.12174f
+C1585 res_stage0 a_n7730_n3784# 0.08951f
+C1586 in_upstep a_n7049_n4261# 0.07773f
+C1587 in_3 carry_sign_probe_uq5 0.00354f
+C1588 ZN_uq4 in_uq5 0
+C1589 in_uq4 ZN_uq5 0.00138f
+C1590 in_uq3 a_n2995_n648# 0.16366f
+C1591 carry_sign_probe_uq6 in_sign_uq2 0.17983f
+C1592 A2_uq5 A1_uq2 0.02035f
+C1593 A1_uq5 in_uq1 0.00143f
+C1594 a_n7730_n648# pti_uq8 0.12677f
+C1595 a_n7730_n648# inv_nti_uq4 0.28651f
+C1596 inv_nti_uq6 a_n12465_n648# 0
+C1597 pti_uq10 a_n12465_n648# 0
+C1598 ZN_uq4 input_A_uq8 0.01586f
+C1599 res_sign ZN_uq5 0
+C1600 in_downstep_uq4 A2_uq4 0
+C1601 VDD_1V65_uq0 sum 0.48871f
+C1602 a_n2995_n648# input_A_uq4 0.07434f
+C1603 pti_uq4 a_n5693_n2398# 0
+C1604 VDD_1V65_3 inv_nti_uq6 0
+C1605 a_n16513_n2398# VDD_1V65_4 0.00994f
+C1606 ZN_uq4 A1_uq3 0.00986f
+C1607 ZN_uq6 A1_uq5 0.07823f
+C1608 a_n14360_n487# pti_uq10 0
+C1609 pti_uq4 A2 0.01198f
+C1610 in a_n7630_n4217# 0
+C1611 a_n7049_n4261# A1 0.61412f
+C1612 in_A a_n7730_n648# 0.06378f
+C1613 in_3 a_n12465_n648# 0
+C1614 a_n14360_n487# inv_nti_uq6 0
+C1615 a_n11784_n1125# a_n11778_n2398# 0.00111f
+C1616 A2_uq4 a_n7049_n4261# 0.00264f
+C1617 carry_sign_probe_uq6 VDD_1V65_4 0.10431f
+C1618 a_n7043_n2398# a_n7730_n3784# 0
+C1619 inv_nti_uq3 a_n958_n2398# 0
+C1620 in_downstep_uq2 res_3 0.0171f
+C1621 res_stage0_uq6 5v0_2t_adder_2/5v0_addf_sc_rev2_1/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.00253f
+C1622 a_n11784_n1125# carry_sign_probe_uq5 0.21173f
+C1623 VNW res_stage0_uq0 0.13083f
+C1624 inv_pti_uq2 a_n14360_n3623# 0.00135f
+C1625 ZN_uq2 inv_pti_uq2 0.01453f
+C1626 in_3 a_n14360_n487# 0.00163f
+C1627 a_n12465_n3784# inv_pti_uq1 0.00129f
+C1628 inv_nti_uq3 A2_uq0 0.00564f
+C1629 pti_uq7 A2_uq0 0
+C1630 in_sign VDD_1V65_1 0.00934f
+C1631 A2_uq6 pti_uq6 0
+C1632 pti_uq6 A1_uq4 0.20453f
+C1633 5v0_2t_adder_0/5v0_addf_sc_rev2_1/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A res_sign 0
+C1634 in_0 a_n958_n2398# 0
+C1635 sum_uq0 a_n2995_n3784# 0.1874f
+C1636 a_n17200_n648# VDD_1V65_4 0.09429f
+C1637 in_upstep_uq6 5v0_2t_adder_2/5v0_addf_sc_rev2_1/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C1638 VNW pti_uq4 0.62692f
+C1639 carry_sign_probe_uq4 ZN_uq1 0
+C1640 res_stage0_uq4 ZN_uq4 0.10493f
+C1641 pti_uq7 res_sign 0.01424f
+C1642 inv_nti_uq3 res_sign 0.01089f
+C1643 VNW inv_pti_uq6 0.84971f
+C1644 in_uq5 inv_pti_uq1 0
+C1645 res_sign_uq2 a_n11778_n2398# 0.16188f
+C1646 a_n11784_n1125# a_n12465_n648# 0.07927f
+C1647 a_n2895_n4217# in_downstep 0
+C1648 in_uq4 carry_sign_probe_uq4 0
+C1649 nti pti 0.23319f
+C1650 in_C_over_uq0 res_stage0_uq0 0
+C1651 nti_uq2 pti_uq1 0.00711f
+C1652 in_uq6 carry_sign_probe_uq5 0
+C1653 nti inv_nti 0.22612f
+C1654 VNW 5v0_2t_adder_0/5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.02871f
+C1655 nti_uq2 inv_nti_uq1 0.003f
+C1656 A1_uq0 a_n578_n1803# 0
+C1657 nti_uq0 A1_uq0 0.01088f
+C1658 inv_pti_uq5 A1_uq2 0
+C1659 VDD_1V65_3 a_n11784_n1125# 0.01076f
+C1660 carry_sign_probe_uq4 res_sign 0.27266f
+C1661 A2_uq3 nti_uq0 0
+C1662 res_stage0_uq3 inv_nti_uq3 0.02869f
+C1663 res_stage0_uq3 pti_uq7 0.01078f
+C1664 res_sign_uq2 carry_sign_probe_uq5 0.36085f
+C1665 in_downstep_uq4 inv_pti_uq4 0.15493f
+C1666 VNW a_n2308_n2398# 0.27931f
+C1667 res_2 nti_uq1 0
+C1668 input_A_uq4 in_A 0.00307f
+C1669 in_downstep_uq2 a_n15163_n2398# 0.00144f
+C1670 a_n15787_n1870# in_3 0
+C1671 res_stage0_uq6 a_n17200_n648# 0.08951f
+C1672 in_downstep_uq4 5v0_2t_adder_1/5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C1673 in_upstep_uq4 a_n5693_n2398# 0
+C1674 VNW carry_sign_probe_uq3 0.484f
+C1675 in_downstep_uq0 inv_pti_uq0 0.11741f
+C1676 a_n13955_n487# pti_uq10 0.00135f
+C1677 in_uq4 a_n7730_n648# 0.16366f
+C1678 in_C_over_uq0 5v0_2t_adder_0/5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.04656f
+C1679 res_stage0_uq3 in_0 0.26617f
+C1680 a_n13955_n487# inv_nti_uq6 0.00226f
+C1681 a_n7730_n648# res_sign 0.07457f
+C1682 in_C_over_uq0 a_n2308_n2398# 0
+C1683 VDD_1V65_3 in_uq6 0.00197f
+C1684 res_sign_uq2 a_n12465_n648# 0.01332f
+C1685 nti_uq10 ZN_uq6 0.00972f
+C1686 VNW VDD_1V65_uq0 2.94583f
+C1687 ZN_uq6 in_uq2 0.01019f
+C1688 in_3 a_n13955_n487# 0.00182f
+C1689 VDD_1V65_3 res_sign_uq2 0.02779f
+C1690 a_n2895_n4217# pti_uq0 0.11666f
+C1691 in_C_over_uq0 carry_sign_probe_uq3 0.0283f
+C1692 a_n2895_n4217# inv_nti_uq0 0.36668f
+C1693 VNW a_n2995_n648# 0.60132f
+C1694 a_n15579_n2354# VDD_1V65_4 0
+C1695 A1_uq6 res_sign_uq0 0.09848f
+C1696 a_n12365_n1081# in_sign_uq1 0
+C1697 in_uq3 a_n958_n2398# 0.0138f
+C1698 inv_nti_uq4 a_n5693_n2398# 0
+C1699 in_upstep_uq4 VNW 0.38042f
+C1700 a_n10428_n2398# a_n10048_n1803# 0.00372f
+C1701 a_n2995_n3784# res_sign 0.00184f
+C1702 in_uq3 A2_uq0 0.26387f
+C1703 a_n17200_n3784# pti_uq2 0.12627f
+C1704 a_n17200_n3784# inv_nti_uq2 0.28514f
+C1705 pti_uq8 A2 0
+C1706 in_upstep nti 0.10356f
+C1707 VDD_1V65_uq0 a_n11784_n4261# 0.01449f
+C1708 ZN_uq4 ZN_uq5 0.00729f
+C1709 inv_nti_uq4 A2 0.00564f
+C1710 nti_uq1 A2_uq1 0
+C1711 A2_uq1 a_n10048_n1803# 0
+C1712 in_A a_n5693_n2398# 0
+C1713 sum a_n7730_n3784# 0.1874f
+C1714 in_C_over_uq0 a_n2995_n648# 0.69216f
+C1715 res_stage0_uq1 in_uq1 0.26373f
+C1716 in_upstep_uq3 a_n958_n2398# 0
+C1717 a_n15163_n2398# in_sign_uq2 0
+C1718 A1_uq1 ZN 0.0051f
+C1719 a_n15787_n1870# in_uq6 0.00471f
+C1720 in_uq6 pti_uq2 0
+C1721 ZN_uq4 res_stage0 0
+C1722 nti_uq8 a_n5058_n970# 0
+C1723 input_A_uq4 res_sign 0.00241f
+C1724 inv_nti_uq6 A1_uq4 0
+C1725 A2_uq6 inv_nti_uq6 0.01696f
+C1726 A2_uq6 pti_uq10 0.12808f
+C1727 A1 a_n5313_n1803# 0
+C1728 A2_uq4 nti 0
+C1729 nti A1 0.01088f
+C1730 res_stage0_uq3 in_uq3 0.09289f
+C1731 nti_uq2 A1_uq2 0
+C1732 VNW inv_nti_uq4 0.85376f
+C1733 VNW pti_uq8 0.65643f
+C1734 res_stage0_uq3 input_A_uq4 0.24991f
+C1735 a_n15163_n2398# VDD_1V65_4 0.00128f
+C1736 VNW a_n1374_n2354# 0.01437f
+C1737 a_n13764_n2538# A2_uq2 0.00898f
+C1738 VNW a_n9793_n4106# 0.0028f
+C1739 ZN_uq6 a_n14528_n970# 0
+C1740 in_3 A2_uq6 0.0025f
+C1741 a_n11052_n1870# A1_uq5 0.05216f
+C1742 A1_uq5 pti_uq1 0.13493f
+C1743 ZN_uq4 5v0_2t_adder_0/5v0_addf_sc_rev2_1/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.04656f
+C1744 VNW in_A 1.12259f
+C1745 VNW sum_uq0 0.37017f
+C1746 in_uq0 pti_uq0 0.88738f
+C1747 A1_uq5 inv_nti_uq1 0.39282f
+C1748 in_uq0 inv_nti_uq0 0.26592f
+C1749 res_stage0_uq3 in_upstep_uq3 0.27475f
+C1750 A2_uq2 VDD_1V65_4 0.01722f
+C1751 pti_uq7 ZN_uq4 0.00491f
+C1752 A1_uq6 a_n17100_n1081# 0
+C1753 in_C_over_uq0 inv_nti_uq4 0
+C1754 ZN_uq4 a_n7043_n2398# 0
+C1755 inv_nti_uq3 ZN_uq4 0.00107f
+C1756 ZN_uq6 a_n11778_n2398# 0.0272f
+C1757 in_sign A1_uq2 0
+C1758 in_sign_uq0 in 0.00138f
+C1759 VNW in_upstep_uq0 0.68065f
+C1760 ZN_uq5 inv_pti_uq1 0.02373f
+C1761 in_C_over_uq0 a_n1374_n2354# 0
+C1762 res_stage0_uq6 a_n15163_n2398# 0
+C1763 a_n7630_n4217# inv_nti 0.36668f
+C1764 a_n7630_n4217# pti 0.11666f
+C1765 ZN_uq4 carry_sign_probe_uq4 0.0283f
+C1766 inv_nti_uq2 a_n12365_n4217# 0
+C1767 ZN_uq6 carry_sign_probe_uq5 0.19557f
+C1768 nti_uq9 a_n12465_n648# 0
+C1769 in_0 ZN_uq4 0
+C1770 in_uq4 a_n5693_n2398# 0.0138f
+C1771 ZN_uq0 pti_uq3 0.00753f
+C1772 A1_uq1 a_n2314_n4261# 0.04228f
+C1773 A1_uq0 a_n2895_n4217# 0.24363f
+C1774 VDD_1V65 nti_uq8 0
+C1775 VDD_1V65_3 nti_uq9 0.23732f
+C1776 a_n7049_n1125# A2_uq4 0.01398f
+C1777 in_upstep_uq6 a_n15163_n2398# 0
+C1778 in_uq4 A2 0.26387f
+C1779 nti_uq8 a_n4890_n487# 0
+C1780 in_upstep_uq0 in_C_over_uq0 0.0014f
+C1781 a_n16519_n1125# in_downstep_uq6 0.09641f
+C1782 a_n17200_n3784# A1_uq4 0.07412f
+C1783 ZN_uq4 a_n7730_n648# 0.71113f
+C1784 A2_uq6 a_n17200_n3784# 0
+C1785 inv_pti_uq6 inv_nti_uq6 0.26171f
+C1786 inv_pti_uq6 pti_uq10 0.4362f
+C1787 ZN_uq6 a_n12465_n648# 0.016f
+C1788 res_sign A2 0
+C1789 VNW a_n7730_n3784# 0.60728f
+C1790 VNW a_n958_n2398# 0.34663f
+C1791 a_n16519_n1125# a_n16519_n4261# 0
+C1792 VDD_1V65_3 ZN_uq6 0.12054f
+C1793 VNW A2_uq0 0.38815f
+C1794 in_uq6 A1_uq4 0.033f
+C1795 VNW a_n9625_n3623# 0.00122f
+C1796 VNW ZN_uq1 1.09053f
+C1797 in_uq6 A2_uq6 0.01029f
+C1798 in_3 inv_pti_uq6 0.07043f
+C1799 in_upstep_uq1 A1_uq5 0.00816f
+C1800 VNW in_uq4 1.24561f
+C1801 res_sign_uq2 A1_uq4 0.00188f
+C1802 res_sign_uq0 ZN_uq3 0.02667f
+C1803 A2_uq6 res_sign_uq2 0.00923f
+C1804 in_C_over_uq0 a_n958_n2398# 0.00979f
+C1805 VNW res_sign 1.88333f
+C1806 VNW A1_uq6 0.88298f
+C1807 in_C_over_uq0 A2_uq0 0.02374f
+C1808 in inv_nti 0.26592f
+C1809 in pti 0.88738f
+C1810 res_stage0_uq3 VNW 0.13498f
+C1811 in_uq2 pti_uq1 0.00518f
+C1812 in_uq2 inv_nti_uq1 0.01475f
+C1813 VDD_1V65_uq0 nti_uq1 0.24286f
+C1814 in_C_over_uq0 in_uq4 0
+C1815 in_uq3 ZN_uq4 0.00138f
+C1816 A1_uq5 A2_uq5 0.65407f
+C1817 A1_uq5 A1_uq2 0.0629f
+C1818 ZN_uq1 a_n11784_n4261# 0.02687f
+C1819 VDD_1V65_uq0 a_n5058_n4106# 0.01045f
+C1820 A2_uq3 in_uq0 0
+C1821 in_uq0 A1_uq0 0.12028f
+C1822 a_n7630_n1081# nti_uq9 0
+C1823 res_2 in_uq1 0.2271f
+C1824 in_C_over_uq0 res_sign 0.01586f
+C1825 in_downstep_uq4 A1_uq3 0
+C1826 a_n7049_n1125# inv_pti_uq4 0.17336f
+C1827 input_A_uq4 ZN_uq4 0
+C1828 a_n15787_n1870# ZN_uq6 0.00329f
+C1829 ZN_uq6 pti_uq2 0
+C1830 ZN_uq4 a_n6109_n2354# 0
+C1831 nti_uq8 a_n4485_n487# 0
+C1832 res_sign_uq0 a_n16513_n2398# 0.16028f
+C1833 ZN_uq6 a_n10844_n2354# 0.03123f
+C1834 VDD_1V65_3 a_n9793_n970# 0.00932f
+C1835 A1 a_n7630_n4217# 0.24363f
+C1836 res_stage0_uq3 in_C_over_uq0 0.10053f
+C1837 in_downstep_uq2 a_n14528_n4106# 0.00316f
+C1838 ZN pti_uq4 0.00753f
+C1839 A1_uq3 a_n7049_n4261# 0.04228f
+C1840 in_downstep 5v0_2t_adder_0/5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C1841 carry_sign_probe_uq6 res_sign_uq0 0.15264f
+C1842 in_uq6 inv_pti_uq6 0
+C1843 res_stage0_uq1 inv_nti_uq1 0.02198f
+C1844 res_stage0_uq1 pti_uq1 0.01078f
+C1845 in_downstep in_sign 0
+C1846 in_sign_uq0 VDD_1V65 0.00934f
+C1847 a_n17100_n1081# ZN_uq3 0.03117f
+C1848 a_n16519_n4261# a_n17100_n4217# 0.20659f
+C1849 inv_pti_uq6 res_sign_uq2 0.30401f
+C1850 nti_uq9 a_n10428_n2398# 0
+C1851 res_stage0_uq4 in_downstep_uq4 0.25403f
+C1852 a_n17200_n648# res_sign_uq0 0
+C1853 carry_sign_probe_uq3 ZN 0
+C1854 in_uq1 a_n10428_n2398# 0
+C1855 a_n17200_n3784# VDD_1V65_uq0 0
+C1856 in_upstep in 0.01573f
+C1857 in_uq2 in_upstep_uq1 0
+C1858 in_uq1 A2_uq1 0.01124f
+C1859 nti_uq1 a_n9793_n4106# 0
+C1860 A1_uq1 nti_uq0 0
+C1861 res_stage0_uq0 a_n2314_n4261# 0.18549f
+C1862 ZN_uq4 a_n5693_n2398# 0.00979f
+C1863 VDD_1V65_uq0 a_n4890_n3623# 0.00232f
+C1864 VDD_1V65_uq0 ZN 0.13531f
+C1865 ZN_uq6 a_n10428_n2398# 0.02364f
+C1866 a_n11778_n2398# pti_uq1 0.00221f
+C1867 in_upstep_uq2 ZN_uq6 0.0014f
+C1868 a_n11778_n2398# inv_nti_uq1 0
+C1869 ZN_uq4 A2 0.0234f
+C1870 nti_uq8 A1 0
+C1871 ZN_uq6 A2_uq1 0
+C1872 nti_uq8 A2_uq4 0
+C1873 inv_nti_uq0 pti_uq0 0.42143f
+C1874 nti_uq10 A2_uq5 0
+C1875 VDD_1V65_3 a_n9625_n487# 0.00232f
+C1876 carry_sign_probe_uq5 pti_uq1 0.00123f
+C1877 A2_uq4 in 0
+C1878 in A1 0.12011f
+C1879 in_uq2 A1_uq2 0.00369f
+C1880 in_downstep_uq2 a_n14360_n3623# 0.00442f
+C1881 in_downstep_uq2 ZN_uq2 0.20049f
+C1882 in_downstep_uq6 nti_uq10 0.06312f
+C1883 in_downstep_uq1 a_n12465_n3784# 0.00679f
+C1884 carry_sign_probe_uq6 a_n17100_n1081# 0.12276f
+C1885 a_n2314_n4261# a_n2308_n2398# 0.00505f
+C1886 ZN_uq6 A1_uq4 0.01039f
+C1887 ZN_uq6 A2_uq6 0.11887f
+C1888 in_upstep_uq1 res_stage0_uq1 0.27475f
+C1889 ZN_uq0 a_n2995_n3784# 0.65632f
+C1890 VNW ZN_uq4 1.6865f
+C1891 a_n11052_n1870# a_n12465_n648# 0
+C1892 in_uq2 a_n16519_n4261# 0
+C1893 carry_sign_probe_uq3 a_n2314_n4261# 0
+C1894 a_n17200_n648# a_n17100_n1081# 0.05013f
+C1895 VDD_1V65_3 a_n11052_n1870# 0.0046f
+C1896 a_n7730_n3784# nti_uq1 0.00497f
+C1897 VDD_1V65_3 inv_nti_uq1 0.00101f
+C1898 A1_uq3 in_downstep_uq1 0.0018f
+C1899 ZN_uq4 in_downstep_uq5 0
+C1900 a_n7049_n1125# in_2 0.00121f
+C1901 in_uq3 ZN_uq0 0.00556f
+C1902 VNW ZN_uq3 0.38069f
+C1903 VNW res_stage0_uq2 0.13083f
+C1904 VDD_1V65_uq0 a_n2314_n4261# 0.01449f
+C1905 in_downstep_uq3 a_n323_n970# 0.00316f
+C1906 VDD_1V65_uq0 a_n12365_n4217# 0.10686f
+C1907 a_n12465_n3784# 5v0_2t_adder_1/5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.02928f
+C1908 in_C_over_uq0 ZN_uq4 0.00729f
+C1909 ZN_uq2 5v0_2t_adder_2/5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.04656f
+C1910 res_stage0_uq1 A2_uq5 0
+C1911 nti_uq1 a_n9625_n3623# 0
+C1912 ZN_uq1 nti_uq1 0.09054f
+C1913 res_stage0_uq1 A1_uq2 0.24997f
+C1914 ZN_uq0 input_A_uq4 0.00515f
+C1915 VDD_1V65_uq0 a_n4485_n3623# 0
+C1916 a_n7049_n4261# ZN_uq5 0
+C1917 a_n7630_n1081# VDD_1V65_1 0.04334f
+C1918 a_n2995_n648# a_n2314_n4261# 0
+C1919 5v0_2t_adder_2/5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A in_upstep_uq1 0
+C1920 nti_uq8 inv_pti_uq4 0.24361f
+C1921 nti_uq10 inv_pti_uq5 0
+C1922 VDD_1V65_3 a_n9220_n487# 0
+C1923 ZN_uq2 in_sign_uq2 0
+C1924 A1_uq6 pti_uq10 0
+C1925 A1_uq6 inv_nti_uq6 0
+C1926 VNW 5v0_2t_adder_2/5v0_addf_sc_rev2_1/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.02871f
+C1927 a_n12465_n3784# in_sign_uq1 0.00159f
+C1928 A1_uq3 nti 0
+C1929 res_stage0 a_n7049_n4261# 0.18549f
+C1930 nti_uq2 A1_uq5 0.00352f
+C1931 in_downstep_uq2 a_n13955_n3623# 0.0031f
+C1932 nti_uq7 VDD_1V65 0.23732f
+C1933 VNW a_n16513_n2398# 0.27931f
+C1934 in_downstep_uq6 a_n14528_n970# 0.00316f
+C1935 5v0_2t_adder_2/5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A A1_uq2 0
+C1936 inv_nti pti 0.42143f
+C1937 in_downstep_uq4 5v0_2t_adder_0/5v0_addf_sc_rev2_1/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C1938 VNW a_n323_n4106# 0.0028f
+C1939 inv_nti_uq2 pti_uq1 0
+C1940 a_n11778_n2398# A1_uq2 0
+C1941 A2_uq5 a_n11778_n2398# 0.29408f
+C1942 VNW inv_pti_uq1 0.67183f
+C1943 inv_nti_uq2 inv_nti_uq1 0
+C1944 in_3 A1_uq6 0.00121f
+C1945 ZN_uq2 a_n13764_n2538# 0.02576f
+C1946 ZN_uq6 inv_pti_uq6 0.00125f
+C1947 VNW carry_sign_probe_uq6 0.24981f
+C1948 A2_uq3 inv_nti_uq0 0
+C1949 A2_uq3 pti_uq0 0.00291f
+C1950 A1_uq0 pti_uq0 0.27933f
+C1951 A1_uq0 inv_nti_uq0 0.24909f
+C1952 in_upstep_uq1 a_n12465_n648# 0
+C1953 res_2 pti_uq1 0
+C1954 in_downstep_uq0 5v0_2t_adder_0/5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C1955 carry_sign_probe_uq5 A1_uq2 0
+C1956 carry_sign_probe_uq5 A2_uq5 0.60363f
+C1957 res_2 inv_nti_uq1 0.01287f
+C1958 in_sign_uq0 A1 0
+C1959 in_downstep_uq4 carry_sign_probe_uq4 0
+C1960 VDD_1V65_3 in_upstep_uq1 0
+C1961 a_n7049_n4261# a_n7043_n2398# 0.00505f
+C1962 ZN a_n7730_n3784# 0.65632f
+C1963 in_downstep_uq3 a_n155_n487# 0.00442f
+C1964 ZN_uq2 a_n12465_n3784# 0.00211f
+C1965 VDD_1V65_uq0 in_uq1 0.02359f
+C1966 input_A_uq8 a_n9029_n2538# 0
+C1967 a_n7049_n1125# input_A_uq8 0.00126f
+C1968 a_n17200_n648# VNW 0.59914f
+C1969 nti_uq1 a_n9220_n3623# 0.00142f
+C1970 a_n11784_n4261# inv_pti_uq1 0.17666f
+C1971 carry_sign_probe_uq4 a_n7049_n4261# 0
+C1972 res_stage0_uq0 nti_uq0 0.00348f
+C1973 in_downstep_uq0 in_sign_uq0 0
+C1974 A1_uq1 a_n2895_n4217# 0.19346f
+C1975 inv_pti_uq3 a_n155_n487# 0.00135f
+C1976 a_n12465_n648# A2_uq5 0.06947f
+C1977 ZN ZN_uq1 0.00343f
+C1978 a_n7049_n1125# A1_uq3 0
+C1979 sum_uq0 a_n2314_n4261# 0
+C1980 in_uq4 ZN 0.00556f
+C1981 in_downstep_uq4 a_n7730_n648# 0.00679f
+C1982 a_n1582_n1870# A1_uq0 0
+C1983 a_n1582_n1870# A2_uq3 0.02428f
+C1984 VDD_1V65_3 A1_uq2 0.0016f
+C1985 VDD_1V65_3 A2_uq5 0.44457f
+C1986 A1_uq6 a_n17200_n3784# 0.19167f
+C1987 ZN res_sign 0.00506f
+C1988 in_upstep_uq0 a_n2314_n4261# 0.07773f
+C1989 res_sign_uq2 ZN_uq1 0
+C1990 a_n10428_n2398# inv_nti_uq1 0
+C1991 a_n11052_n1870# a_n10428_n2398# 0.00587f
+C1992 a_n7730_n648# a_n7049_n4261# 0
+C1993 in_downstep_uq6 a_n14360_n487# 0.00442f
+C1994 in_upstep pti 0.02037f
+C1995 in_upstep inv_nti 0.00562f
+C1996 VNW a_n155_n3623# 0.00122f
+C1997 VNW ZN_uq0 1.09391f
+C1998 in_uq6 A1_uq6 0.019f
+C1999 A2_uq1 pti_uq1 0
+C2000 a_n11052_n1870# A2_uq1 0
+C2001 in_downstep_uq1 ZN_uq5 0
+C2002 in_uq2 nti_uq2 0.71794f
+C2003 in_upstep_uq1 res_2 0
+C2004 pti_uq8 nti_uq9 0.00263f
+C2005 inv_nti_uq4 nti_uq9 0
+C2006 res_stage0_uq4 a_n7049_n1125# 0.18379f
+C2007 carry_sign_probe_uq5 inv_pti_uq5 0.10808f
+C2008 VNW a_n15579_n2354# 0.01437f
+C2009 in_C_over_uq0 ZN_uq0 0.00569f
+C2010 a_n6317_n1870# A1 0
+C2011 a_n6317_n1870# A2_uq4 0.02428f
+C2012 A1 pti 0.27933f
+C2013 in_downstep_uq3 a_250_n487# 0.0031f
+C2014 A2_uq4 inv_nti 0
+C2015 A2_uq4 pti 0.00291f
+C2016 A1 inv_nti 0.24909f
+C2017 VDD_1V65_uq0 nti_uq0 0.2372f
+C2018 res_3 VNW 0.38064f
+C2019 a_n10844_n2354# A1_uq2 0.00185f
+C2020 A2_uq3 A1_uq0 0.02035f
+C2021 A2_uq5 a_n10844_n2354# 0.01236f
+C2022 ZN_uq1 a_n12365_n4217# 0.10075f
+C2023 VDD_1V65_uq0 inv_pti 0.1704f
+C2024 A1_uq1 in_uq0 0.00143f
+C2025 a_n5313_n1803# ZN_uq5 0
+C2026 a_n12465_n648# inv_pti_uq5 0.00139f
+C2027 a_n2895_n1081# nti_uq8 0
+C2028 a_n7630_n4217# input_A_uq8 0
+C2029 VDD_1V65_3 inv_pti_uq5 0.16497f
+C2030 a_n15787_n1870# a_n16519_n4261# 0
+C2031 pti_uq10 ZN_uq3 0.00562f
+C2032 a_n16519_n4261# pti_uq2 0.09994f
+C2033 res_stage0 nti 0.00348f
+C2034 A1_uq3 a_n7630_n4217# 0.19345f
+C2035 inv_pti_uq4 a_n4890_n487# 0.00404f
+C2036 inv_nti_uq6 ZN_uq3 0.00113f
+C2037 in_downstep_uq2 inv_pti_uq2 0.11741f
+C2038 a_n16519_n4261# inv_nti_uq2 0.35313f
+C2039 sum a_n7049_n4261# 0
+C2040 in_upstep_uq1 a_n10428_n2398# 0.00167f
+C2041 in_downstep_uq6 a_n13955_n487# 0.0031f
+C2042 in_3 ZN_uq3 0
+C2043 in_upstep_uq1 A2_uq1 0
+C2044 a_n2995_n3784# inv_pti_uq0 0.00129f
+C2045 VNW a_n15163_n2398# 0.34663f
+C2046 a_n10428_n2398# A1_uq2 0.02061f
+C2047 a_n7730_n3784# in_uq1 0.00544f
+C2048 a_n2314_n1125# nti_uq8 0
+C2049 a_n16513_n2398# inv_nti_uq6 0
+C2050 a_n16513_n2398# pti_uq10 0
+C2051 A2_uq5 a_n10428_n2398# 0.29767f
+C2052 ZN_uq5 a_n9029_n2538# 0
+C2053 a_n7049_n1125# ZN_uq5 0.00759f
+C2054 in_uq3 inv_pti_uq0 0
+C2055 VNW A2_uq2 0.38815f
+C2056 in_upstep A2_uq4 0
+C2057 in_upstep A1 0.15739f
+C2058 in_downstep_uq3 A2_uq3 0
+C2059 A2_uq5 A2_uq1 0.00498f
+C2060 A2_uq1 A1_uq2 0.08925f
+C2061 in_uq1 a_n9625_n3623# 0.00163f
+C2062 nti_uq1 inv_pti_uq1 0.2328f
+C2063 inv_pti_uq3 A1_uq0 0
+C2064 carry_sign_probe_uq6 pti_uq10 0.01871f
+C2065 carry_sign_probe_uq6 inv_nti_uq6 0.3327f
+C2066 ZN_uq1 in_uq1 0.48399f
+C2067 res_sign nti_uq9 0
+C2068 in_downstep_uq4 A2 0.00639f
+C2069 in_upstep_uq4 VDD_1V65_1 0.2498f
+C2070 sum_uq0 nti_uq0 0
+C2071 ZN_uq4 ZN 0.00569f
+C2072 in_sign_uq2 inv_pti_uq2 0.12174f
+C2073 res_stage0_uq2 a_n17200_n3784# 0.08951f
+C2074 in_upstep_uq2 a_n16519_n4261# 0.07773f
+C2075 A2_uq4 A1 0.02035f
+C2076 A1_uq3 in 0.00143f
+C2077 in_upstep_uq0 nti_uq0 0.10356f
+C2078 in_uq2 A1_uq5 0.03695f
+C2079 A1_uq4 A2_uq5 0
+C2080 a_n17200_n648# pti_uq10 0.12652f
+C2081 a_n17200_n648# inv_nti_uq6 0.28647f
+C2082 in_downstep_uq6 A2_uq6 0
+C2083 VNW in_downstep_uq4 0.45847f
+C2084 pti_uq6 a_n15163_n2398# 0
+C2085 VDD_1V65_uq0 pti_uq1 0.01144f
+C2086 VDD_1V65_uq0 inv_nti_uq1 0.09306f
+C2087 in_uq6 ZN_uq3 0.00148f
+C2088 ZN_uq6 A1_uq6 0.00986f
+C2089 a_n7049_n1125# a_n7043_n2398# 0.00111f
+C2090 inv_pti_uq2 VDD_1V65_4 0.02547f
+C2091 in_3 a_n17200_n648# 0.09306f
+C2092 pti_uq8 VDD_1V65_1 0.16717f
+C2093 res_sign_uq2 ZN_uq3 0
+C2094 A2_uq6 a_n16519_n4261# 0.00264f
+C2095 pti_uq6 A2_uq2 0.01198f
+C2096 in_uq2 a_n17100_n4217# 0
+C2097 a_n16519_n4261# A1_uq4 0.61412f
+C2098 VNW a_n7049_n4261# 0.73629f
+C2099 inv_nti_uq4 VDD_1V65_1 0.11166f
+C2100 a_n2895_n1081# in_sign_uq0 0
+C2101 a_n2995_n3784# nti 0.00497f
+C2102 res_stage0_uq4 nti_uq8 0.00348f
+C2103 a_n7049_n1125# carry_sign_probe_uq4 0.21173f
+C2104 a_n958_n2398# a_n578_n1803# 0.00372f
+C2105 a_n16513_n2398# a_n17200_n3784# 0
+C2106 A1_uq1 in_downstep 0.0018f
+C2107 in_C_over_uq0 in_downstep_uq4 0
+C2108 VDD_1V65_uq0 a_n2895_n4217# 0.10686f
+C2109 a_n7730_n3784# inv_pti 0.00129f
+C2110 in_downstep_uq3 inv_pti_uq3 0.13818f
+C2111 a_n7730_n3784# 5v0_2t_adder_1/5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.02928f
+C2112 in_A VDD_1V65_1 0.03237f
+C2113 res_stage0_uq1 A1_uq5 0.00327f
+C2114 in_uq1 a_n9220_n3623# 0.00182f
+C2115 nti_uq0 A2_uq0 0
+C2116 A2_uq0 a_n578_n1803# 0
+C2117 res_stage0_uq0 in_uq0 0.26626f
+C2118 inv_pti ZN_uq1 0
+C2119 a_n2314_n4261# ZN_uq4 0
+C2120 a_n2895_n1081# VDD_1V65 0.04334f
+C2121 5v0_2t_adder_2/5v0_addf_sc_rev2_1/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A res_sign_uq2 0
+C2122 in_uq4 inv_pti 0
+C2123 a_n7049_n1125# a_n7730_n648# 0.07927f
+C2124 A2_uq4 pti_uq5 0
+C2125 in_uq6 carry_sign_probe_uq6 0
+C2126 nti_uq2 inv_nti_uq2 0.22627f
+C2127 nti_uq2 pti_uq2 0.23318f
+C2128 inv_pti_uq4 A1 0
+C2129 res_sign_uq2 inv_pti_uq1 0
+C2130 carry_sign_probe_uq6 res_sign_uq2 0.27266f
+C2131 sum nti 0
+C2132 a_n2314_n1125# in_sign_uq0 0
+C2133 in_downstep_uq6 inv_pti_uq6 0.13818f
+C2134 VNW inv_pti_uq0 0.67289f
+C2135 A1_uq5 a_n11778_n2398# 0.04869f
+C2136 VDD_1V65_uq0 in_upstep_uq1 0.24797f
+C2137 a_n9793_n4106# inv_nti_uq1 0
+C2138 A1_uq1 inv_nti_uq0 0.39282f
+C2139 A1_uq1 pti_uq0 0.13493f
+C2140 in_uq6 a_n17200_n648# 0.16366f
+C2141 ZN_uq2 res_sign_uq0 0.00145f
+C2142 carry_sign_probe_uq5 A1_uq5 0.00313f
+C2143 a_n12365_n1081# pti_uq9 0.11666f
+C2144 a_n12365_n1081# inv_nti_uq5 0.36668f
+C2145 a_n2314_n1125# VDD_1V65 0.01076f
+C2146 a_n17200_n648# res_sign_uq2 0.07434f
+C2147 in_C_over_uq0 inv_pti_uq0 0.02373f
+C2148 VDD_1V65_uq0 A1_uq2 0.00292f
+C2149 VDD_1V65_uq0 in_uq0 0.0206f
+C2150 VDD_1V65_uq0 A2_uq5 0
+C2151 ZN_uq4 nti_uq9 0
+C2152 in_uq4 VDD_1V65_1 0.18493f
+C2153 inv_pti_uq1 a_n12365_n4217# 0
+C2154 in_2 a_n12365_n1081# 0
+C2155 a_n7630_n1081# in_sign 0
+C2156 res_sign VDD_1V65_1 0.00971f
+C2157 a_n12465_n648# A1_uq5 0
+C2158 ZN_uq0 ZN 0.00343f
+C2159 a_n5693_n2398# a_n5313_n1803# 0.00372f
+C2160 inv_nti_uq6 a_n15163_n2398# 0
+C2161 a_n1582_n1870# A1_uq1 0.05216f
+C2162 VDD_1V65_3 A1_uq5 0.00653f
+C2163 pti_uq10 A2_uq2 0
+C2164 in_upstep_uq2 nti_uq2 0.10356f
+C2165 nti A2 0
+C2166 A2 a_n5313_n1803# 0
+C2167 inv_nti_uq6 A2_uq2 0.00564f
+C2168 VNW in_downstep_uq1 0.449f
+C2169 res_stage0 in 0.26373f
+C2170 in_3 a_n15163_n2398# 0
+C2171 res_3 a_n17200_n3784# 0.18883f
+C2172 a_n7730_n3784# pti_uq1 0
+C2173 a_n7730_n3784# inv_nti_uq1 0
+C2174 ZN_uq6 ZN_uq3 0.01178f
+C2175 ZN_uq6 res_stage0_uq2 0
+C2176 nti_uq10 a_n14528_n970# 0
+C2177 a_n9625_n3623# inv_nti_uq1 0
+C2178 a_n9625_n3623# pti_uq1 0
+C2179 ZN_uq1 pti_uq1 0.12182f
+C2180 ZN_uq1 inv_nti_uq1 0.52504f
+C2181 A1_uq4 a_n14783_n1803# 0
+C2182 A2_uq6 nti_uq2 0
+C2183 nti_uq2 A1_uq4 0.01088f
+C2184 pti_uq7 nti_uq8 0.00263f
+C2185 inv_nti_uq3 nti_uq8 0
+C2186 VNW nti 0.6307f
+C2187 in_downstep_uq1 a_n11784_n4261# 0.0934f
+C2188 inv_nti input_A_uq8 0.01667f
+C2189 pti input_A_uq8 0.0045f
+C2190 A2_uq4 inv_nti_uq5 0
+C2191 VNW a_n14528_n4106# 0.0028f
+C2192 VNW 5v0_2t_adder_1/5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.02871f
+C2193 a_n6317_n1870# A1_uq3 0.05216f
+C2194 A1_uq3 pti 0.13493f
+C2195 nti_uq10 carry_sign_probe_uq5 0
+C2196 A1_uq3 inv_nti 0.39282f
+C2197 inv_nti_uq2 A1_uq5 0
+C2198 ZN_uq6 5v0_2t_adder_2/5v0_addf_sc_rev2_1/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.04656f
+C2199 A1_uq1 A1_uq0 0.0629f
+C2200 A1_uq5 a_n10844_n2354# 0.00827f
+C2201 in_uq1 inv_pti_uq1 0.10055f
+C2202 A1_uq1 A2_uq3 0.65271f
+C2203 ZN_uq0 a_n2314_n4261# 0.02687f
+C2204 A2_uq4 in_2 0
+C2205 a_n578_n1803# ZN_uq4 0
+C2206 ZN_uq6 a_n16513_n2398# 0
+C2207 res_2 A1_uq5 0
+C2208 sum_uq0 in_uq0 0.19464f
+C2209 input_A_uq8 a_n12365_n1081# 0.24363f
+C2210 ZN_uq4 inv_pti 0.02373f
+C2211 ZN_uq6 inv_pti_uq1 0.00922f
+C2212 a_n7049_n4261# nti_uq1 0
+C2213 a_n2895_n4217# res_sign 0
+C2214 VNW in_sign_uq1 0.20097f
+C2215 a_n17100_n4217# inv_nti_uq2 0.36668f
+C2216 a_n17100_n4217# pti_uq2 0.11666f
+C2217 ZN_uq6 carry_sign_probe_uq6 0.02856f
+C2218 nti_uq8 a_n7730_n648# 0
+C2219 nti_uq10 a_n12465_n648# 0
+C2220 in_upstep_uq0 in_uq0 0.0159f
+C2221 in_uq6 a_n15163_n2398# 0.0138f
+C2222 VDD_1V65_3 nti_uq10 0
+C2223 a_n16519_n1125# A2_uq6 0.01398f
+C2224 VNW a_n9029_n2538# 0.01448f
+C2225 5v0_2t_adder_2/5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A res_stage0_uq1 0.00253f
+C2226 VNW a_n7049_n1125# 0.69361f
+C2227 in_uq6 A2_uq2 0.26387f
+C2228 nti_uq10 a_n14360_n487# 0
+C2229 in_upstep_uq1 a_n9625_n3623# 0
+C2230 a_n9220_n3623# pti_uq1 0.00135f
+C2231 res_stage0_uq0 pti_uq0 0.01078f
+C2232 a_n9220_n3623# inv_nti_uq1 0.00226f
+C2233 in_upstep_uq1 ZN_uq1 0.00882f
+C2234 res_stage0_uq0 inv_nti_uq0 0.02198f
+C2235 ZN_uq6 a_n17200_n648# 0.69216f
+C2236 res_sign_uq2 A2_uq2 0
+C2237 a_n11784_n4261# in_sign_uq1 0.23584f
+C2238 a_n2995_n3784# in 0.00544f
+C2239 VDD_1V65_uq0 in_downstep 0.18975f
+C2240 in_uq0 a_n958_n2398# 0
+C2241 A1_uq5 a_n10428_n2398# 0.22219f
+C2242 VNW a_n14360_n3623# 0.00122f
+C2243 VNW ZN_uq2 1.06553f
+C2244 in_upstep A1_uq3 0.00816f
+C2245 in_downstep_uq3 A1_uq1 0
+C2246 ZN_uq4 VDD_1V65_1 0.43409f
+C2247 A1_uq5 A2_uq1 0.00537f
+C2248 ZN_uq1 A1_uq2 0.53644f
+C2249 in_uq0 A2_uq0 0.01124f
+C2250 nti_uq0 a_n323_n4106# 0
+C2251 ZN_uq1 A2_uq5 0
+C2252 in_2 pti_uq5 0.00157f
+C2253 pti_uq6 in_sign_uq1 0
+C2254 A2_uq4 in_uq5 0
+C2255 inv_pti_uq4 in_2 0.0051f
+C2256 input_A_uq4 nti_uq8 0
+C2257 a_n2308_n2398# inv_nti_uq0 0
+C2258 a_n2308_n2398# pti_uq0 0.00221f
+C2259 A1 input_A_uq8 0.01563f
+C2260 A2_uq4 input_A_uq8 0.33689f
+C2261 carry_sign_probe_uq5 a_n11778_n2398# 0.08103f
+C2262 nti_uq2 VDD_1V65_uq0 0.24286f
+C2263 in_uq2 inv_nti_uq2 0.26592f
+C2264 in_uq2 pti_uq2 0.88738f
+C2265 A1_uq3 A2_uq4 0.65407f
+C2266 A1_uq3 A1 0.0629f
+C2267 ZN a_n7049_n4261# 0.02687f
+C2268 carry_sign_probe_uq3 pti_uq0 0.00123f
+C2269 sum in 0.2271f
+C2270 nti_uq7 pti_uq3 0.00836f
+C2271 a_n12465_n648# 5v0_2t_adder_1/5v0_addf_sc_rev2_1/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.02928f
+C2272 in_downstep_uq6 A1_uq6 0
+C2273 a_n16519_n1125# inv_pti_uq6 0.17336f
+C2274 VDD_1V65_uq0 pti_uq0 0.01079f
+C2275 VDD_1V65_uq0 inv_nti_uq0 0.08886f
+C2276 ZN_uq6 a_n15579_n2354# 0
+C2277 nti_uq10 a_n13955_n487# 0
+C2278 in_upstep_uq1 a_n9220_n3623# 0
+C2279 a_n12465_n648# a_n11778_n2398# 0.00129f
+C2280 res_sign_uq0 inv_pti_uq2 0
+C2281 A1_uq4 a_n17100_n4217# 0.24363f
+C2282 a_n6317_n1870# ZN_uq5 0.215f
+C2283 pti_uq7 VDD_1V65 0.16717f
+C2284 ZN_uq2 pti_uq6 0.00753f
+C2285 A1_uq6 a_n16519_n4261# 0.04228f
+C2286 VDD_1V65_uq0 in_sign 0
+C2287 VNW a_n7630_n4217# 0.14009f
+C2288 inv_nti_uq3 VDD_1V65 0.11166f
+C2289 in_downstep_uq2 5v0_2t_adder_2/5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C2290 VDD_1V65_3 a_n11778_n2398# 0.01006f
+C2291 in_downstep_uq1 nti_uq1 0.04747f
+C2292 in_upstep_uq5 pti_uq9 0.02362f
+C2293 in_upstep_uq5 inv_nti_uq5 0.00677f
+C2294 a_n12465_n648# carry_sign_probe_uq5 0.0961f
+C2295 res_stage0_uq4 A2_uq4 0
+C2296 res_stage0 inv_nti 0.02198f
+C2297 res_stage0 pti 0.01078f
+C2298 VDD_1V65_3 carry_sign_probe_uq5 0.10367f
+C2299 in_0 VDD_1V65 0.03237f
+C2300 in_uq5 pti_uq5 0.46061f
+C2301 ZN_uq5 a_n12365_n1081# 0.09669f
+C2302 nti_uq8 a_n5693_n2398# 0
+C2303 res_stage0_uq0 A2_uq3 0
+C2304 nti_uq0 a_n155_n3623# 0
+C2305 ZN_uq0 nti_uq0 0.09054f
+C2306 a_n2995_n3784# 5v0_2t_adder_0/5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.02928f
+C2307 res_stage0_uq0 A1_uq0 0.24997f
+C2308 in_downstep_uq2 in_sign_uq2 0
+C2309 in_upstep_uq5 in_2 0.01656f
+C2310 res_2 res_stage0_uq1 0.09478f
+C2311 input_A_uq8 pti_uq5 0.02779f
+C2312 inv_pti_uq0 ZN 0
+C2313 in a_n5693_n2398# 0
+C2314 inv_pti_uq4 input_A_uq8 0.01633f
+C2315 A2_uq3 pti_uq4 0
+C2316 in_upstep_uq2 in_uq2 0.0159f
+C2317 a_n1582_n1870# a_n2995_n648# 0
+C2318 VDD_1V65_3 a_n12465_n648# 0.09448f
+C2319 in A2 0.01124f
+C2320 nti a_n5058_n4106# 0
+C2321 a_n2995_n3784# in_sign_uq0 0.00159f
+C2322 inv_nti_uq5 pti_uq9 0.42004f
+C2323 ZN_uq6 a_n15163_n2398# 0.00979f
+C2324 a_n7043_n2398# pti 0.00221f
+C2325 a_n7043_n2398# inv_nti 0
+C2326 a_n2308_n2398# A1_uq0 0
+C2327 ZN_uq6 A2_uq2 0.0234f
+C2328 nti_uq10 A1_uq4 0
+C2329 A2_uq3 a_n2308_n2398# 0.29408f
+C2330 nti_uq10 A2_uq6 0
+C2331 a_n11052_n1870# inv_pti_uq1 0.00247f
+C2332 inv_pti_uq1 inv_nti_uq1 0.26082f
+C2333 inv_pti_uq1 pti_uq1 0.42601f
+C2334 in_2 pti_uq9 0.7186f
+C2335 carry_sign_probe_uq4 pti 0.00123f
+C2336 VNW nti_uq8 0.64202f
+C2337 in_2 inv_nti_uq5 0.28801f
+C2338 A2_uq6 in_uq2 0
+C2339 in_uq2 A1_uq4 0.12028f
+C2340 in_downstep a_n7730_n3784# 0.00679f
+C2341 carry_sign_probe_uq3 A1_uq0 0
+C2342 sum_uq0 inv_nti_uq0 0.01287f
+C2343 sum_uq0 pti_uq0 0
+C2344 VNW in 2.23908f
+C2345 carry_sign_probe_uq3 A2_uq3 0.60363f
+C2346 res_stage0_uq1 a_n10428_n2398# 0
+C2347 ZN in_downstep_uq1 0
+C2348 in_upstep res_stage0 0.27475f
+C2349 res_stage0_uq4 inv_pti_uq4 0.01246f
+C2350 VDD_1V65_uq0 A1_uq0 0.00292f
+C2351 VDD_1V65_uq0 A2_uq3 0
+C2352 in_upstep_uq0 pti_uq0 0.02037f
+C2353 in_upstep_uq0 inv_nti_uq0 0.00562f
+C2354 VDD_1V65_uq0 A1_uq5 0.11622f
+C2355 res_stage0_uq4 5v0_2t_adder_1/5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.00253f
+C2356 in_C_over_uq0 nti_uq8 0
+C2357 in_uq3 VDD_1V65 0.18493f
+C2358 in_upstep_uq5 in_uq5 0
+C2359 a_n6317_n1870# a_n7730_n648# 0
+C2360 nti_uq0 a_250_n3623# 0.00142f
+C2361 a_n2314_n4261# inv_pti_uq0 0.17666f
+C2362 nti_uq7 inv_nti_uq3 0.21857f
+C2363 nti_uq7 pti_uq7 0.23276f
+C2364 A1 ZN_uq5 0.0091f
+C2365 A2_uq4 ZN_uq5 0.69053f
+C2366 input_A_uq4 VDD_1V65 0.00971f
+C2367 a_n2995_n648# A2_uq3 0.06947f
+C2368 in_upstep_uq5 input_A_uq8 0.20319f
+C2369 a_n7049_n4261# in_uq1 0.00149f
+C2370 VDD_1V65_3 a_n10844_n2354# 0
+C2371 nti a_n4890_n3623# 0
+C2372 a_n7730_n3784# 5v0_2t_adder_0/5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.02928f
+C2373 res_stage0 A1 0.24997f
+C2374 in_upstep_uq3 VDD_1V65 0.2498f
+C2375 in_downstep_uq3 5v0_2t_adder_0/5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C2376 nti_uq7 in_0 0.64339f
+C2377 res_stage0 A2_uq4 0
+C2378 ZN nti 0.09054f
+C2379 nti_uq2 ZN_uq1 0.00137f
+C2380 in_sign_uq2 VDD_1V65_4 0.00934f
+C2381 a_n2995_n3784# pti 0
+C2382 a_n2995_n3784# inv_nti 0
+C2383 a_n958_n2398# inv_nti_uq0 0
+C2384 a_n11784_n1125# in_sign_uq1 0
+C2385 nti_uq10 inv_pti_uq6 0.23961f
+C2386 in_upstep_uq1 inv_pti_uq1 0.07469f
+C2387 A2_uq0 pti_uq0 0
+C2388 in_uq5 inv_nti_uq5 0.02344f
+C2389 in_uq5 pti_uq9 0.00136f
+C2390 a_n7730_n3784# in_sign 0.00159f
+C2391 in_downstep_uq3 carry_sign_probe_uq3 0
+C2392 a_n16519_n4261# ZN_uq3 0
+C2393 A1_uq6 nti_uq2 0
+C2394 res_stage0_uq2 a_n16519_n4261# 0.18549f
+C2395 carry_sign_probe_uq3 inv_pti_uq3 0.10808f
+C2396 input_A_uq8 pti_uq9 0.29783f
+C2397 input_A_uq8 inv_nti_uq5 0.25156f
+C2398 VNW a_n5058_n970# 0.00342f
+C2399 in_sign ZN_uq1 0
+C2400 pti_uq0 res_sign 0.0045f
+C2401 A2_uq3 inv_nti_uq4 0
+C2402 a_n7043_n2398# A1 0
+C2403 A2_uq4 a_n7043_n2398# 0.29408f
+C2404 inv_nti_uq0 res_sign 0.01667f
+C2405 a_n2314_n1125# a_n2895_n1081# 0.20659f
+C2406 inv_nti_uq2 pti_uq2 0.42143f
+C2407 VNW inv_pti_uq2 0.66696f
+C2408 in_downstep_uq6 5v0_2t_adder_2/5v0_addf_sc_rev2_1/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0
+C2409 in_uq5 in_2 0.22137f
+C2410 VNW 5v0_2t_adder_0/5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A 0.02871f
+C2411 A2_uq5 inv_pti_uq1 0.01771f
+C2412 inv_pti_uq1 A1_uq2 0.29692f
+C2413 in_upstep a_n7730_n648# 0
+C2414 sum pti 0
+C2415 a_n1374_n2354# A1_uq0 0.00185f
+C2416 A2_uq3 a_n1374_n2354# 0.01236f
+C2417 ZN_uq0 a_n2895_n4217# 0.10075f
+C2418 in_downstep_uq3 a_n2995_n648# 0.00679f
+C2419 ZN_uq5 pti_uq5 0.04062f
+C2420 in_2 input_A_uq8 0.21305f
+C2421 carry_sign_probe_uq4 A1 0
+C2422 carry_sign_probe_uq4 A2_uq4 0.60363f
+C2423 sum inv_nti 0.01287f
+C2424 a_n1582_n1870# a_n958_n2398# 0.00587f
+C2425 A1_uq4 carry_sign_probe_uq5 0
+C2426 VDD_1V65_3 a_n10428_n2398# 0.00128f
+C2427 res_sign_uq2 in_sign_uq1 0.19479f
+C2428 a_n2995_n648# inv_pti_uq3 0.00134f
+C2429 A2_uq3 in_A 0
+C2430 res_stage0_uq6 VDD_1V65_4 0.02552f
+C2431 a_n1582_n1870# A2_uq0 0
+C2432 in_downstep_uq6 carry_sign_probe_uq6 0
+C2433 VDD_1V65_3 A2_uq1 0.01722f
+C2434 a_n7630_n4217# nti_uq1 0.00118f
+C2435 a_n2314_n4261# nti 0
+C2436 VNW in_sign_uq0 0.20097f
+C2437 a_n16519_n4261# a_n16513_n2398# 0.00505f
+C2438 in_uq2 VDD_1V65_uq0 0.01843f
+C2439 ZN_uq2 a_n17200_n3784# 0.65632f
+C2440 res_sign a_n4294_n2538# 0
+C2441 nti a_n4485_n3623# 0.00142f
+C2442 a_n7049_n4261# inv_pti 0.17666f
+C2443 in_upstep_uq0 A2_uq3 0
+C2444 in_upstep_uq0 A1_uq0 0.15739f
+C2445 nti_uq7 in_uq3 0.01158f
+C2446 a_n7730_n648# A2_uq4 0.06947f
+C2447 nti_uq7 input_A_uq4 0.12504f
+C2448 carry_sign_probe_uq6 a_n16519_n4261# 0
+C2449 in_upstep_uq6 VDD_1V65_4 0.2498f
+C2450 a_n16519_n1125# A1_uq6 0
+C2451 VNW a_441_n2538# 0.01448f
+C2452 in_uq6 ZN_uq2 0.00556f
+C2453 in_downstep_uq6 a_n17200_n648# 0.00679f
+C2454 a_n11778_n2398# VSS 0.33791f ; **FLOATING
+C2455 A2_uq5 VSS 1.03956f
+C2456 a_n11052_n1870# VSS 0.40287f ; **FLOATING
+C2457 a_n10048_n1803# VSS 0.00609f ; **FLOATING
+C2458 a_n10844_n2354# VSS 0.00162f ; **FLOATING
+C2459 a_n10428_n2398# VSS 0.80742f ; **FLOATING
+C2460 pti_uq5 VSS 0.84384f
+C2461 A2_uq1 VSS 1.13365f
+C2462 a_n9029_n2538# VSS 0.00205f ; **FLOATING
+C2463 pti_uq1 VSS 1.30534f
+C2464 inv_nti_uq1 VSS 1.44543f
+C2465 a_n12365_n4217# VSS 0.1904f ; **FLOATING
+C2466 A1_uq2 VSS 1.46424f
+C2467 a_n9793_n4106# VSS 0 ; **FLOATING
+C2468 a_n9625_n3623# VSS 0.00335f ; **FLOATING
+C2469 a_n9220_n3623# VSS 0.00573f ; **FLOATING
+C2470 inv_pti_uq1 VSS 1.64615f
+C2471 in_sign_uq1 VSS 0.12146f
+C2472 A1_uq5 VSS 1.22508f
+C2473 5v0_2t_adder_1/5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A VSS 0
+C2474 a_n12465_n3784# VSS 0.90317f ; **FLOATING
+C2475 in_uq1 VSS 1.91443f
+C2476 res_2 VSS 0.53189f
+C2477 ZN_uq1 VSS 1.31858f
+C2478 a_n11784_n4261# VSS 0.86655f ; **FLOATING
+C2479 res_stage0_uq1 VSS 0.7133f
+C2480 in_downstep_uq1 VSS 0.76853f
+C2481 in_upstep_uq1 VSS 0.83979f
+C2482 nti_uq1 VSS 1.42023f
+C2483 pti_uq9 VSS 1.2516f
+C2484 inv_nti_uq5 VSS 1.52949f
+C2485 a_n12365_n1081# VSS 0.26975f ; **FLOATING
+C2486 input_A_uq8 VSS 1.42981f
+C2487 a_n9793_n970# VSS 0 ; **FLOATING
+C2488 a_n9625_n487# VSS 0.00335f ; **FLOATING
+C2489 a_n9220_n487# VSS 0.00692f ; **FLOATING
+C2490 inv_pti_uq5 VSS 1.31183f
+C2491 carry_sign_probe_uq5 VSS 1.02666f
+C2492 5v0_2t_adder_1/5v0_addf_sc_rev2_1/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A VSS 0
+C2493 a_n12465_n648# VSS 0.8315f ; **FLOATING
+C2494 in_2 VSS 2.02743f
+C2495 in_uq5 VSS 1.40577f
+C2496 ZN_uq5 VSS 1.3067f
+C2497 a_n11784_n1125# VSS 0.76589f ; **FLOATING
+C2498 res_stage0_uq5 VSS 0.71946f
+C2499 in_downstep_uq5 VSS 0.80731f
+C2500 in_upstep_uq5 VSS 0.63652f
+C2501 nti_uq9 VSS 1.40271f
+C2502 VDD_1V65_1 VSS 0.7565f
+C2503 5v0_2t_adder_1/5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A VSS 0
+C2504 5v0_2t_adder_1/5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A VSS 0
+C2505 a_n7043_n2398# VSS 0.33791f ; **FLOATING
+C2506 A2_uq4 VSS 1.03956f
+C2507 a_n6317_n1870# VSS 0.40287f ; **FLOATING
+C2508 a_n5313_n1803# VSS 0.00609f ; **FLOATING
+C2509 a_n6109_n2354# VSS 0.00162f ; **FLOATING
+C2510 a_n5693_n2398# VSS 0.80742f ; **FLOATING
+C2511 pti_uq4 VSS 0.84384f
+C2512 A2 VSS 1.13365f
+C2513 a_n4294_n2538# VSS 0.00205f ; **FLOATING
+C2514 pti VSS 1.30534f
+C2515 inv_nti VSS 1.44543f
+C2516 a_n7630_n4217# VSS 0.1904f ; **FLOATING
+C2517 A1 VSS 1.46424f
+C2518 a_n5058_n4106# VSS 0 ; **FLOATING
+C2519 a_n4890_n3623# VSS 0.00335f ; **FLOATING
+C2520 a_n4485_n3623# VSS 0.00573f ; **FLOATING
+C2521 inv_pti VSS 1.01291f
+C2522 in_sign VSS 0.12146f
+C2523 A1_uq3 VSS 1.22508f
+C2524 5v0_2t_adder_0/5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A VSS 0
+C2525 a_n7730_n3784# VSS 0.90317f ; **FLOATING
+C2526 in VSS 1.91443f
+C2527 sum VSS 0.53189f
+C2528 ZN VSS 1.31858f
+C2529 a_n7049_n4261# VSS 0.86655f ; **FLOATING
+C2530 res_stage0 VSS 0.7133f
+C2531 in_downstep VSS 0.76853f
+C2532 in_upstep VSS 0.8398f
+C2533 nti VSS 1.42023f
+C2534 pti_uq8 VSS 1.2516f
+C2535 inv_nti_uq4 VSS 1.52949f
+C2536 a_n7630_n1081# VSS 0.26975f ; **FLOATING
+C2537 res_sign VSS 1.42981f
+C2538 a_n5058_n970# VSS 0 ; **FLOATING
+C2539 a_n4890_n487# VSS 0.00335f ; **FLOATING
+C2540 a_n4485_n487# VSS 0.00692f ; **FLOATING
+C2541 inv_pti_uq4 VSS 0.6786f
+C2542 carry_sign_probe_uq4 VSS 1.02666f
+C2543 5v0_2t_adder_0/5v0_addf_sc_rev2_1/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A VSS 0
+C2544 a_n7730_n648# VSS 0.8315f ; **FLOATING
+C2545 in_A VSS 2.02742f
+C2546 in_uq4 VSS 1.40578f
+C2547 ZN_uq4 VSS 1.30676f
+C2548 a_n7049_n1125# VSS 0.76589f ; **FLOATING
+C2549 res_stage0_uq4 VSS 0.71946f
+C2550 in_downstep_uq4 VSS 0.80731f
+C2551 in_upstep_uq4 VSS 0.63652f
+C2552 nti_uq8 VSS 1.40271f
+C2553 VDD_1V65 VSS 0.74631f
+C2554 a_n2308_n2398# VSS 0.29931f ; **FLOATING
+C2555 A2_uq3 VSS 1.05767f
+C2556 a_n1582_n1870# VSS 0.39503f ; **FLOATING
+C2557 a_n578_n1803# VSS 0.00605f ; **FLOATING
+C2558 a_n1374_n2354# VSS 0.00162f ; **FLOATING
+C2559 a_n958_n2398# VSS 0.71695f ; **FLOATING
+C2560 pti_uq3 VSS 0.64306f
+C2561 A2_uq0 VSS 0.90497f
+C2562 a_441_n2538# VSS 0.00205f ; **FLOATING
+C2563 pti_uq0 VSS 1.25935f
+C2564 inv_nti_uq0 VSS 1.19581f
+C2565 a_n2895_n4217# VSS 0.15939f ; **FLOATING
+C2566 A1_uq0 VSS 1.42584f
+C2567 a_n323_n4106# VSS 0 ; **FLOATING
+C2568 a_n155_n3623# VSS 0.00335f ; **FLOATING
+C2569 a_250_n3623# VSS 0.00573f ; **FLOATING
+C2570 inv_pti_uq0 VSS 1.26761f
+C2571 in_sign_uq0 VSS 0.11392f
+C2572 A1_uq1 VSS 1.20291f
+C2573 5v0_2t_adder_0/5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A VSS 0
+C2574 a_n2995_n3784# VSS 0.80999f ; **FLOATING
+C2575 in_uq0 VSS 1.86722f
+C2576 sum_uq0 VSS 0.55078f
+C2577 ZN_uq0 VSS 1.21187f
+C2578 a_n2314_n4261# VSS 0.75352f ; **FLOATING
+C2579 res_stage0_uq0 VSS 0.50069f
+C2580 in_downstep_uq0 VSS 0.62799f
+C2581 in_upstep_uq0 VSS 0.64054f
+C2582 nti_uq0 VSS 1.24399f
+C2583 pti_uq7 VSS 1.22521f
+C2584 inv_nti_uq3 VSS 1.28062f
+C2585 a_n2895_n1081# VSS 0.15939f ; **FLOATING
+C2586 input_A_uq4 VSS 2.0181f
+C2587 a_n323_n970# VSS 0 ; **FLOATING
+C2588 a_n155_n487# VSS 0.00335f ; **FLOATING
+C2589 a_250_n487# VSS 0.00692f ; **FLOATING
+C2590 inv_pti_uq3 VSS 1.10483f
+C2591 carry_sign_probe_uq3 VSS 1.02666f
+C2592 5v0_2t_adder_0/5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A VSS 0
+C2593 a_n2995_n648# VSS 0.77395f ; **FLOATING
+C2594 in_0 VSS 1.76685f
+C2595 in_uq3 VSS 1.37184f
+C2596 in_C_over_uq0 VSS 1.26858f
+C2597 a_n2314_n1125# VSS 0.75306f ; **FLOATING
+C2598 res_stage0_uq3 VSS 0.50107f
+C2599 in_downstep_uq3 VSS 0.59387f
+C2600 in_upstep_uq3 VSS 0.56528f
+C2601 nti_uq7 VSS 1.16627f
+C2602 VDD_1V65_4 VSS 0.77286f
+C2603 res_sign_uq0 VSS 0.36826f
+C2604 a_n16513_n2398# VSS 0.29927f ; **FLOATING
+C2605 ZN_uq3 VSS 0.84482f
+C2606 A2_uq6 VSS 1.02985f
+C2607 a_n15787_n1870# VSS 0.39503f ; **FLOATING
+C2608 a_n14783_n1803# VSS 0.00609f ; **FLOATING
+C2609 a_n15579_n2354# VSS 0.00162f ; **FLOATING
+C2610 a_n15163_n2398# VSS 0.72311f ; **FLOATING
+C2611 pti_uq6 VSS 0.70333f
+C2612 A2_uq2 VSS 0.90536f
+C2613 a_n13764_n2538# VSS 0.00205f ; **FLOATING
+C2614 pti_uq2 VSS 1.2571f
+C2615 VDD_1V65_uq0 VSS 6.34782f
+C2616 inv_nti_uq2 VSS 1.19642f
+C2617 a_n17100_n4217# VSS 0.15939f ; **FLOATING
+C2618 A1_uq4 VSS 1.42692f
+C2619 a_n14528_n4106# VSS 0 ; **FLOATING
+C2620 a_n14360_n3623# VSS 0.00335f ; **FLOATING
+C2621 a_n13955_n3623# VSS 0.00573f ; **FLOATING
+C2622 inv_pti_uq2 VSS 1.26772f
+C2623 in_sign_uq2 VSS 0.10979f
+C2624 A1_uq6 VSS 1.16998f
+C2625 5v0_2t_adder_2/5v0_addf_sc_rev2_1/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A VSS 0
+C2626 a_n17200_n3784# VSS 0.80749f ; **FLOATING
+C2627 in_uq2 VSS 1.61969f
+C2628 res_3 VSS 0.58718f
+C2629 ZN_uq2 VSS 1.22775f
+C2630 VNW VSS 0.16224p
+C2631 a_n16519_n4261# VSS 0.75352f ; **FLOATING
+C2632 res_stage0_uq2 VSS 0.50069f
+C2633 in_downstep_uq2 VSS 0.6318f
+C2634 in_upstep_uq2 VSS 0.64054f
+C2635 nti_uq2 VSS 1.24635f
+C2636 pti_uq10 VSS 1.22136f
+C2637 inv_nti_uq6 VSS 1.3109f
+C2638 a_n17100_n1081# VSS 0.15576f ; **FLOATING
+C2639 res_sign_uq2 VSS 1.61303f
+C2640 a_n14528_n970# VSS 0 ; **FLOATING
+C2641 a_n14360_n487# VSS 0.00335f ; **FLOATING
+C2642 a_n13955_n487# VSS 0.00692f ; **FLOATING
+C2643 inv_pti_uq6 VSS 1.10492f
+C2644 carry_sign_probe_uq6 VSS 0.91376f
+C2645 5v0_2t_adder_2/5v0_addf_sc_rev2_1/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A VSS 0
+C2646 a_n17200_n648# VSS 0.77233f ; **FLOATING
+C2647 in_3 VSS 1.73842f
+C2648 in_uq6 VSS 1.37327f
+C2649 ZN_uq6 VSS 1.43706f
+C2650 a_n16519_n1125# VSS 0.75278f ; **FLOATING
+C2651 res_stage0_uq6 VSS 0.50107f
+C2652 in_downstep_uq6 VSS 0.59387f
+C2653 in_upstep_uq6 VSS 0.56528f
+C2654 nti_uq10 VSS 1.22538f
+C2655 VDD_1V65_3 VSS 0.7565f
+C2656 5v0_2t_adder_2/5v0_addf_sc_rev2_0/5v0_addh_sc_1/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A VSS 0
+C2657 5v0_2t_adder_2/5v0_addf_sc_rev2_0/5v0_addh_sc_0/5v0_half_adder_selector_sc_0/5v0_tgate_sel_2_sc_1/input_A VSS 0
