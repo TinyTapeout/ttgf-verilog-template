@@ -2,10 +2,7 @@
 //the overlord is a separate spectator
 /*
 for the logic container it is in charge of handling command streaming into the things, 
-can also do memory read and writes through the io for all 3 threads, as well as handling the changes between microcode, thread command intake and stuff
-
-
-
+can also do memory read and writes through the io for all 3 threads, as well as handling the changes between microcode, thread command intake and stuff 
 */
 
 
@@ -23,7 +20,7 @@ module logic_container(
     output wire [7:0] uio_out,  // IOs: Output path (Pins 8-15)
     output wire [7:0] uio_oe,   // IOs: Enable path (active high: 1=drive, 0=high-Z)
 
-    
+    //add inputs from core overcommand
 );
 
 
@@ -191,25 +188,35 @@ microcode microcode_parser
 
     // ================= MAIN SRAM BUS =================
     // main bus
-        input   [7:0] bus,
-        output  [11:0] address,
+        .bus(dbus),
+        .address(microcode_address),
         output  cycle_threads,
         output  microcode_idle,
 );
 
+
+wire [11:0] microcode_address;
+wire [7:0] dbus;
+
     always @(*) begin
         case (ui_in[2:0])
             3'b010: begin
-                //thread -1 addressing 
+                //thread -1 addressing
             end
             3'b011: begin
                 //thread 0 addressing 
             end
             3'b100: begin
-                //thread 1 addressing 
+                //thread 1 addressing
             end
             3'b101: begin
                 //microcode addressing
+                ui_in[7:3] = dbus[4:0];
+                uio_in[2:0] = dbus[7:5];
+                uio_out[7:3] = microcode_address[4:0]; //
+                uio_oe[2:0] = 3'b000;
+                uio_oe[7:3] = 5'b11111;
+                uo_out[6:0] = microcode_address[11:5]; 
             end
         endcase
     end
@@ -292,11 +299,11 @@ wire [6:0] converted_param_t0;
 //short for "ternary to unsigned binary Action counter thread0"
 ternary_to_unsigned_binary_logic_convert_4t t2ubActr_t0(
     .in_trits(action_ctr_wire_t0),
-    out_bin(converted_action_t0),
+    .out_bin(converted_action_t0),
 );
 ternary_to_unsigned_binary_logic_convert_4t t2ubPctr_t0(
     .in_trits(param_ctr_wire_t0),
-    out_bin(converted_param_t0),
+    .out_bin(converted_param_t0),
 );
 
 

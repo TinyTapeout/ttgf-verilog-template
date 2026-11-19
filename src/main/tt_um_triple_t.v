@@ -36,43 +36,43 @@ module tt_um_triple_t_devEclipse2 (
     );
 
     //out from commander
-    wire [7:0] commander_tracker_data;
-    wire [7:0] commander_tracker_enable;
+        wire [7:0] commander_tracker_data;
+        wire [7:0] commander_tracker_enable;
 
-    wire [2:0] b2t_translation_err_wire;
-    wire [2:0] microcode_illegal_err_wire;
-    wire [2:0] pc_overflow_err_wire;
-    wire [2:0] micro_op_action_ovf_err_wire;
-    wire [2:0] micro_op_param_ovf_err_wire;
-    wire [2:0] reg_overflow_err_wire;
+        wire [2:0] b2t_translation_err_wire;
+        wire [2:0] microcode_illegal_err_wire;
+        wire [2:0] pc_overflow_err_wire;
+        wire [2:0] micro_op_action_ovf_err_wire;
+        wire [2:0] micro_op_param_ovf_err_wire;
+        wire [2:0] reg_overflow_err_wire;
 
-    wire [1:0] thread_sel_wire;
-    wire [1:0] reg_read_stage_wire;
-    wire [4:0] reg_addr_wire;
-    wire       is_read_wire;
-    wire [2:0] reg_handover_done_wire; //remember on thread side when it stops reading this thread it resets
+        wire [1:0] thread_sel_wire;
+        wire [1:0] reg_read_stage_wire;
+        wire [4:0] reg_addr_wire;
+        wire       is_read_wire;
+        wire [2:0] reg_handover_done_wire; //remember on thread side when it stops reading this thread it resets
 
-    wire o_microcode_fence_t0_wire;
-    wire o_microcode_fence_t1_wire;
-    wire o_microcode_fence_t2_wire;
+        wire o_microcode_fence_t0_wire;
+        wire o_microcode_fence_t1_wire;
+        wire o_microcode_fence_t2_wire;
 
-    wire o_direct_instr_t0_wire;
-    wire o_direct_instr_t1_wire;
-    wire o_direct_instr_t2_wire;
-    wire single_execute_t0_wire;
-    wire single_execute_t1_wire;
-    wire single_execute_t2_wire;
-    wire single_execute_ack_t0_wire;
-    wire single_execute_ack_t1_wire;
-    wire single_execute_ack_t2_wire;
+        wire o_direct_instr_t0_wire;
+        wire o_direct_instr_t1_wire;
+        wire o_direct_instr_t2_wire;
+        wire single_execute_t0_wire;
+        wire single_execute_t1_wire;
+        wire single_execute_t2_wire;
+        wire single_execute_ack_t0_wire;
+        wire single_execute_ack_t1_wire;
+        wire single_execute_ack_t2_wire;
 
-    wire cmd_buf_clr_t0_wire;
-    wire cmd_buf_clr_t1_wire;
-    wire cmd_buf_clr_t2_wire;
+        wire cmd_buf_clr_t0_wire;
+        wire cmd_buf_clr_t1_wire;
+        wire cmd_buf_clr_t2_wire;
 
-    wire cmd_buf_clr_ack_t0_wire;
-    wire cmd_buf_clr_ack_t1_wire;
-    wire cmd_buf_clr_ack_t2_wire;
+        wire cmd_buf_clr_ack_t0_wire;
+        wire cmd_buf_clr_ack_t1_wire;
+        wire cmd_buf_clr_ack_t2_wire;
 
     tt_um_core_commander core_commander (
         .clk                    (clk),
