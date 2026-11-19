@@ -483,7 +483,6 @@ module microcode #(
                         state <= ST_IDLE;
                     end
                 end
-
                 default: state <= ST_IDLE;
             endcase
         end
