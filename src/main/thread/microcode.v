@@ -1,6 +1,4 @@
-module microcode #(
-    parameter [3:0] PAD_NIBBLE = 4'hF //nibble value representing 'x' (padding)
-)(
+module microcode(
     input  wire        clk,
     input  wire        rst_n,
 
@@ -470,7 +468,6 @@ module microcode #(
                                 data_ready_t2                  <= 1'b1;
                             end
                         endcase
-
                         state <= ST_IDLE;
                     end
                 end
