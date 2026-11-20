@@ -20,6 +20,7 @@ checklist
 18: probably simulate on an fpga
 19: from 18, i'll need an even bigger wrapper that does the work for me
 20: ladder reg aliasing
+21: am buffer default states MUST be h55 (to make sure that accidental mask uses don't erase things) 
 */
 
 
@@ -193,7 +194,7 @@ task write_any_reg_12t;
             endcase
             if (alias_addr_12t == addr) begin
                 alias_addr_12t = 4'd0;
-                am_12t         = 24'hAAAAAA;
+                am_12t         = 24'h555555;
             end
         end
     end
@@ -281,7 +282,7 @@ task write_secondary_reg;
         endcase
         if (alias_addr_12t == addr) begin
             alias_addr_12t = 4'd0;
-            am_12t         = 24'hAAAAAA;
+            am_12t         = 24'h555555;
         end
     end
 endtask
@@ -342,7 +343,7 @@ task write_any_reg_4t;
             endcase
             if (alias_active_4t && (alias_addr_4t == addr_4t)) begin
                 alias_active_4t = 1'b0;
-                am_4t      = 8'hAA;
+                am_4t      = 8'h55;
             end
         end
     end
@@ -400,7 +401,7 @@ task write_any_reg_1t;
 
             if (alias_active_1t && (alias_addr_1t == addr_1t)) begin
                 alias_active_1t = 1'b0;
-                am_1t = 2'b10;
+                am_1t = 2'b01;
             end
         end
     end
@@ -746,7 +747,7 @@ task execute_alias_write;
                 end
                 // Clear alias address & buffer regardless of write_allow
                 addr_12t_next = 4'b0000;
-                buff_12t      = 24'hAAAAAA;
+                buff_12t      = 24'h555555;
             end
 
             //4t
@@ -764,7 +765,7 @@ task execute_alias_write;
                     endcase
                 end
                 active_4t_next = 1'b0;
-                buff_4t        = 8'hAA;
+                buff_4t        = 8'h55;
             end
 
             //1trit
@@ -782,7 +783,7 @@ task execute_alias_write;
                     endcase
                 end
                 active_1t_next = 1'b0;
-                buff_1t        = 2'b10;
+                buff_1t        = 2'b01;
             end
         end
 
@@ -801,20 +802,30 @@ endtask
 function [1:0] apply_mask_1t;
     input [1:0] val;
     input [1:0] m;
+    reg out_ovr;
     begin
-        case (m)
-            2'b01: apply_mask_1t = (val == 2'b11) ? 2'b10 : val; // * (+1)
-            2'b00: begin                                         // * (-1)
-                case (val)
-                    2'b00:   apply_mask_1t = 2'b01;
-                    2'b01:   apply_mask_1t = 2'b00;
-                    default: apply_mask_1t = 2'b10;
-                endcase
-            end
-            default: apply_mask_1t = 2'b10;                      // * (0)
-        endcase
+        out_ovr       = val[1] | m[1];
+        apply_mask_1t = {out_ovr, (~out_ovr) & (val[0] ~^ m[0])};
     end
-endfunction
+endfunction //shrunked
+
+// function [1:0] apply_mask_1t;
+//     input [1:0] val;
+//     input [1:0] m;
+//     begin
+//         case (m)
+//             2'b01: apply_mask_1t = (val == 2'b11) ? 2'b10 : val; // * (+1)
+//             2'b00: begin                                         // * (-1)
+//                 case (val)
+//                     2'b00:   apply_mask_1t = 2'b01;
+//                     2'b01:   apply_mask_1t = 2'b00;
+//                     default: apply_mask_1t = 2'b10;
+//                 endcase
+//             end
+//             default: apply_mask_1t = 2'b10;                      // * (0)
+//         endcase
+//     end
+// endfunction
 
 function [7:0] apply_mask_4t;
     input [7:0] val;
@@ -874,7 +885,7 @@ always @(posedge clk or negedge rst_n) begin
         using_macroop_1    <= 1'b0;
         op_read_state      <= 2'b00;
         cmd_param_id       <= 3'd1;      // 1-indexed to match commandpipe_address (1..6)
-        cmd_param_reg      <= 24'hAAAAAA;
+        //cmd_param_reg      <= 24'hAAAAAA;
         ret_micro          <= 1'b0;
         execute_done       <= 1'b0;
         execute_stage      <= 2'b00;
@@ -885,12 +896,12 @@ always @(posedge clk or negedge rst_n) begin
         single_execute_ack <= 1'b0;
         pc_increment       <= 1'b0;
         pc_w_enable        <= 1'b0;
-        pc_w_data          <= 24'hAAAAAA;
+        //pc_w_data          <= 24'hAAAAAA;
         cmd_we             <= 1'b0;
         pipe_empty         <= 1'b1;
         pipe_full_rej      <= 1'b0;
-        debug_reg_cache    <= 24'hAAAAAA;
-        dbg_dout           <= 8'hAA;
+        //debug_reg_cache    <= 24'hAAAAAA;
+        //dbg_dout           <= 8'hAA;
 
         //aliases
         action_ctr         <= 8'b0;
@@ -900,29 +911,29 @@ always @(posedge clk or negedge rst_n) begin
         alias_addr_1t      <= 3'b0;
         alias_active_4t    <= 1'b0;
         alias_active_1t    <= 1'b0;
-        am_buff_12t        <= 24'hAAAAAA;
-        am_buff_4t         <= 8'hAA;
-        am_buff_1t         <= 2'b10;
+        am_buff_12t        <= 24'h555555;
+        am_buff_4t         <= 8'h55;
+        am_buff_1t         <= 2'b01;
 
         //top reggies
-        {sp0_trib2, sp0_trib1, sp0_trib0} <= 24'hAAAAAA;
-        {sp1_trib2, sp1_trib1, sp1_trib0} <= 24'hAAAAAA;
-        {spf_flag7, spf_flag6, spf_flag5, spf_flag4,
-         spf_flag3, spf_flag2, spf_flag1, spf_flag0} <= 16'hAAAA;
-        {mac_a,mac_b,mac_c,mac_d} <= 32'hAAAAAAAA;
+        // {sp0_trib2, sp0_trib1, sp0_trib0} <= 24'hAAAAAA;
+        // {sp1_trib2, sp1_trib1, sp1_trib0} <= 24'hAAAAAA;
+        // {spf_flag7, spf_flag6, spf_flag5, spf_flag4,
+        //  spf_flag3, spf_flag2, spf_flag1, spf_flag0} <= 16'hAAAA;
+        // {mac_a,mac_b,mac_c,mac_d} <= 32'hAAAAAAAA;
         mac_carry <= 2'b10;
-        gp_reg_6    <= 24'hAAAAAA; gp_reg_7     <= 24'hAAAAAA; gp_reg_8     <= 24'hAAAAAA;
-        cmd0_reg_0  <= 24'hAAAAAA; cmd0_reg_1   <= 24'hAAAAAA; cmd0_reg_2   <= 24'hAAAAAA;
-        cmd0_reg_3  <= 24'hAAAAAA; cmd0_reg_4   <= 24'hAAAAAA; cmd0_reg_5   <= 24'hAAAAAA;
-        cmd1_reg_0  <= 24'hAAAAAA; cmd1_reg_1   <= 24'hAAAAAA; cmd1_reg_2   <= 24'hAAAAAA;
-        cmd1_reg_3  <= 24'hAAAAAA; cmd1_reg_4   <= 24'hAAAAAA; cmd1_reg_5   <= 24'hAAAAAA;
+        // gp_reg_6    <= 24'hAAAAAA; gp_reg_7     <= 24'hAAAAAA; gp_reg_8     <= 24'hAAAAAA;
+        // cmd0_reg_0  <= 24'hAAAAAA; cmd0_reg_1   <= 24'hAAAAAA; cmd0_reg_2   <= 24'hAAAAAA;
+        // cmd0_reg_3  <= 24'hAAAAAA; cmd0_reg_4   <= 24'hAAAAAA; cmd0_reg_5   <= 24'hAAAAAA;
+        // cmd1_reg_0  <= 24'hAAAAAA; cmd1_reg_1   <= 24'hAAAAAA; cmd1_reg_2   <= 24'hAAAAAA;
+        // cmd1_reg_3  <= 24'hAAAAAA; cmd1_reg_4   <= 24'hAAAAAA; cmd1_reg_5   <= 24'hAAAAAA;
 
 
-        //execution state resets
-        alu_res_4t_lat <= 8'hAA;
-        alu_res_1t_lat <= 2'b10;
-        alu_res_mul_lat <= 16'hAAAA;
-        hold_reg_addr <= 4'b0;
+        // //execution state resets
+        // alu_res_4t_lat <= 8'hAA;
+        // alu_res_1t_lat <= 2'b10;
+        // alu_res_mul_lat <= 16'hAAAA;
+        // hold_reg_addr <= 4'b0;
         hold_reg_active <= 1'b0;
 
     end else begin
@@ -1101,9 +1112,9 @@ always @(posedge clk or negedge rst_n) begin
                                     4'b0011: begin
                                         //reset mask/alias
                                         if(write_allow) begin
-                                            am_buff_12t <= 24'hAAAAAA;
-                                            am_buff_4t <= 8'hAA;
-                                            am_buff_1t <= 2'b10;
+                                            am_buff_12t <= 24'h555555;
+                                            am_buff_4t <= 8'h55;
+                                            am_buff_1t <= 2'b01;
                                             alias_active_1t <= 1'b0;
                                             alias_active_4t <= 1'b0;
                                             alias_addr_12t <= 4'd0;
@@ -1189,7 +1200,7 @@ always @(posedge clk or negedge rst_n) begin
                                 case(param_0)
                                     4'b0001: begin
                                         //mac read with imm
-
+                                        //due to space limitations, this is constrained to 4 4t scratchpads, which are the 3 in sp1 and flag
                                         /*
                                         task write_any_reg_4t;
                                         input use_mask;
@@ -1207,10 +1218,20 @@ always @(posedge clk or negedge rst_n) begin
                                         reg [7:0] wdata;
                                         begin                              
                                         */
-                                        write_any_reg_4t(param_1[0],write_allow,param_1[3:1],)
+                                        case(param_1[1:0])
+                                            2'b00:write_any_reg_4t(1'b0,write_allow,{1'b0, param_1[3:2]} + 2'd3,alias_active_4t,alias_addr_4t,mac_a,am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
+                                            2'b01:write_any_reg_4t(1'b0,write_allow,{1'b0, param_1[3:2]} + 2'd3,alias_active_4t,alias_addr_4t,mac_b,am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
+                                            2'b10:write_any_reg_4t(1'b0,write_allow,{1'b0, param_1[3:2]} + 2'd3,alias_active_4t,alias_addr_4t,mac_c,am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
+                                            2'b11:write_any_reg_4t(1'b0,write_allow,{1'b0, param_1[3:2]} + 2'd3,alias_active_4t,alias_addr_4t,mac_d,am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
+                                        endcase
                                     end
                                     4'b0010: begin
                                         //mac pump. param is overflow destination
+                                        if(write_allow) begin
+                                            write_any_reg_4t(param_1[0],1'b1,param_1[3:1],alias_active_4t,alias_addr_4t,mac_a,am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
+                                            mac_a <= mac_c;
+                                            mac_b <= mac_d;
+                                        end
                                     end
                                     4'b0011: begin
                                         //clear 4 trits of scratch/mac
@@ -1220,24 +1241,30 @@ always @(posedge clk or negedge rst_n) begin
                                         if(write_allow) begin
                                             if(param_1[0]) begin
                                                 case(param_1[3:1])
-                                                3'b000: ladder_trib0 <= 8'd0;
-                                                3'b001: ladder_trib1 <= 8'd0;
-                                                3'b010: ladder_trib2 <= 8'd0;
+                                                3'b000: mac_a <= 8'hFF;
+                                                3'b001: mac_b <= 8'hFF;
+                                                3'b010: mac_c <= 8'hFF;
+                                                3'b011: mac_d <= 8'hFF;
                                                 endcase
                                             end
                                             else begin
                                                 case(param_1[3:1])
-                                                3'b000: sp0_trib0 <= 8'd0;
-                                                3'b001: sp0_trib1 <= 8'd0;
-                                                3'b010: sp0_trib2 <= 8'd0;
+                                                3'b000: sp0_trib0 <= 8'hFF;
+                                                3'b001: sp0_trib1 <= 8'hFF;
+                                                3'b010: sp0_trib2 <= 8'hFF;
                                                 
-                                                3'b011: sp1_trib0 <= 8'd0;
-                                                3'b100: sp1_trib1 <= 8'd0;
-                                                3'b101: sp1_trib2 <= 8'd0;
+                                                3'b011: sp1_trib0 <= 8'hFF;
+                                                3'b100: sp1_trib1 <= 8'hFF;
+                                                3'b101: sp1_trib2 <= 8'hFF;
 
-                                                3'b110: spf_trib0 <= 8'd0;
-                                                3'b111: spf_trib1 <= 8'd0;
+                                                3'b110: spf_trib0 <= 8'hFF;
+                                                3'b111: spf_trib1 <= 8'hFF;
                                                 endcase
+                                                if(alias_active_4t && alias_addr_4t == param_1[3:1]) begin
+                                                    //clear alias
+                                                    alias_active_4t = 1'b0;
+                                                    am_buff_4t <= 8'h55;
+                                                end
                                             end
                                             
                                         end

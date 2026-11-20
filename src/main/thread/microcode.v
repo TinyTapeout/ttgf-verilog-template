@@ -84,7 +84,7 @@ module microcode(
     endfunction
     
     reg        request_data   [0:2];
-    reg [5:0]  importance     [0:2]; //max 63 //should never be filled all the way up
+    reg [3:0]  importance     [0:2]; //max 63 //should never be filled all the way up
     reg        has_cached_odd [0:2];
     reg [3:0]  cached_act_odd [0:2];
     reg [3:0]  cached_p0_odd  [0:2];
@@ -219,22 +219,23 @@ module microcode(
         if (!rst_n) begin
             state                          <= ST_IDLE;
             active_t                       <= 2'd0;
-            active_base                    <= 10'd0;
-            cur_act_off                    <= 7'd0;
-            cur_prm_off                    <= 7'd0;
+            // active_base                    <= 10'd0;
+            // cur_act_off                    <= 7'd0;
+            // cur_prm_off                    <= 7'd0;
             address                        <= 12'd0;
-            latched_act_byte               <= 8'd0;
-            latched_prm0                   <= 8'd0;
-            latched_prm1                   <= 8'd0;
-            latched_prm2                   <= 8'd0;
+            // latched_act_byte               <= 8'd0;
+            // latched_prm0                   <= 8'd0;
+            // latched_prm1                   <= 8'd0;
+            // latched_prm2                   <= 8'd0;
             wait_cnt                       <= 4'd0;
 
             data_ready_t0                  <= 1'b0;
             data_ready_t1                  <= 1'b0;
             data_ready_t2                  <= 1'b0;
-            action_t0  <= 4'd0; param0_t0 <= 4'd0; param1_t0 <= 4'd0; param2_t0 <= 4'd0;
-            action_t1  <= 4'd0; param0_t1 <= 4'd0; param1_t1 <= 4'd0; param2_t1 <= 4'd0;
-            action_t2  <= 4'd0; param0_t2 <= 4'd0; param1_t2 <= 4'd0; param2_t2 <= 4'd0;
+
+            // action_t0  <= 4'd0; param0_t0 <= 4'd0; param1_t0 <= 4'd0; param2_t0 <= 4'd0;
+            // action_t1  <= 4'd0; param0_t1 <= 4'd0; param1_t1 <= 4'd0; param2_t1 <= 4'd0;
+            // action_t2  <= 4'd0; param0_t2 <= 4'd0; param1_t2 <= 4'd0; param2_t2 <= 4'd0;
 
             microcode_action_offset_t0_res <= 7'd0;
             microcode_param_offset_t0_res  <= 7'd0;
@@ -245,12 +246,12 @@ module microcode(
 
             for (i = 0; i < 3; i = i + 1) begin
                 request_data[i]   <= 1'b0;
-                importance[i]     <= 6'd0;
+                importance[i]     <= 4'd0;
                 has_cached_odd[i] <= 1'b0;
-                cached_act_odd[i] <= 4'd0;
-                cached_p0_odd[i]  <= 4'd0;
-                cached_p1_odd[i]  <= 4'd0;
-                cached_p2_odd[i]  <= 4'd0;
+                // cached_act_odd[i] <= 4'd0;
+                // cached_p0_odd[i]  <= 4'd0;
+                // cached_p1_odd[i]  <= 4'd0;
+                // cached_p2_odd[i]  <= 4'd0;
             end
         end else begin
             
@@ -261,7 +262,7 @@ module microcode(
                 has_cached_odd[0]              <= 1'b0;
                 data_ready_t0                  <= 1'b0;
                 request_data[0]                <= 1'b1;
-                importance[0]                  <= 6'd1;
+                importance[0]                  <= 4'd1;
             end else if (next_microop_t0) begin
                 data_ready_t0                  <= 1'b0;
                 request_data[0]                <= 1'b1;
@@ -273,7 +274,7 @@ module microcode(
                 has_cached_odd[1]              <= 1'b0;
                 data_ready_t1                  <= 1'b0;
                 request_data[1]                <= 1'b1;
-                importance[1]                  <= 6'd1;
+                importance[1]                  <= 4'd1;
             end else if (next_microop_t1) begin
                 data_ready_t1                  <= 1'b0;
                 request_data[1]                <= 1'b1;
@@ -285,7 +286,7 @@ module microcode(
                 has_cached_odd[2]              <= 1'b0;
                 data_ready_t2                  <= 1'b0;
                 request_data[2]                <= 1'b1;
-                importance[2]                  <= 6'd1;
+                importance[2]                  <= 4'd1;
             end else if (next_microop_t2) begin
                 data_ready_t2                  <= 1'b0;
                 request_data[2]                <= 1'b1;
@@ -294,8 +295,8 @@ module microcode(
             //importance inc for every waiting thread (saturating at 63)
             for (i = 0; i < 3; i = i + 1) begin
                 if (request_data[i] && !(state == ST_COMMIT && active_t == i[1:0])) begin
-                    if (importance[i] != 6'h3F)
-                        importance[i] <= importance[i] + 6'd1;
+                    if (importance[i] != 4'b1111)
+                        importance[i] <= importance[i] + 4'd1;
                 end
             end
 
@@ -312,7 +313,7 @@ module microcode(
                         if (has_cached_odd[winning_thread] && !flush_vec[winning_thread]) begin
                             has_cached_odd[winning_thread] <= 1'b0;
                             request_data[winning_thread]   <= 1'b0;
-                            importance[winning_thread]     <= 6'd0;
+                            importance[winning_thread]     <= 4'd0;
                             
 
                             case (winning_thread)
@@ -427,7 +428,7 @@ module microcode(
                         state <= ST_IDLE;
                     end else begin
                         request_data[active_t]   <= 1'b0;
-                        importance[active_t]     <= 6'd0;
+                        importance[active_t]     <= 4'd0;
 
                         // Only cache Op1 if we started on an even micro-op
                         has_cached_odd[active_t] <= ~is_odd_jump;
