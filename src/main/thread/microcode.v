@@ -49,7 +49,6 @@ module microcode(
     output wire         cycle_threads,
     output wire        microcode_idle,
 
-    input wire [2:0] min_wait_cycles//can wait for up to 7 cycles. start at 4 unless explicitly changed later
 );
 
     // 1. Sector Base Address Calculation
@@ -149,8 +148,7 @@ module microcode(
     wire   bus_needed     = any_request && !(has_cached_odd[winning_thread] && !flush_vec[winning_thread]);
     assign cycle_threads  = (state == ST_IDLE) && !bus_needed;
 
-    reg [2:0] wait_cnt;//count up i guess
-    wire data_arrived = (wait_cnt >= min_wait_cycles) && (bus != 8'hFF);
+
 
 
     wire [7:0] sel_macro_op = (winning_thread == 2'd0) ? macro_op_t0 :
@@ -306,6 +304,7 @@ module microcode(
             // -----------------------------------------------------------------
             case (state)
                 ST_IDLE: begin
+                    wait_cnt <= 4'd0;
                     if (any_request) begin
                         active_t <= winning_thread;
 
@@ -350,7 +349,7 @@ module microcode(
 
                             cur_act_off <= next_act_off;
                             cur_prm_off <= next_prm_off;
-                            address     <= {2'b00, calc_sector_base(sel_macro_op)} + {5'b00000, next_act_off};
+                            address     <= {2'b00, calc_sector_base(sel_macro_op)} + {6'b000000, next_act_off[6:1]};
                             state       <= ST_WAIT_ACT;
                         end
                     end
@@ -363,7 +362,7 @@ module microcode(
                     end else if (!data_arrived) begin
                         wait_cnt <= wait_cnt + 4'd1;// Hold address steady for FPGA BRAM + pad delay
                     end else begin
-                        wait_cnt         <= 3'd0;
+                        wait_cnt         <= 4'd0;
                         latched_act_byte <= bus;
                         address          <= calc_param_addr(active_base, cur_prm_off);
                         state            <= ST_WAIT_PRM0;
