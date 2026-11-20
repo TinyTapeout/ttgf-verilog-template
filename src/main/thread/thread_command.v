@@ -121,7 +121,9 @@ function [23:0] read_any_reg_12t;
     input [7:0]  sp0_t0, sp0_t1, sp0_t2;
     input [7:0]  sp1_t0, sp1_t1, sp1_t2;
     input [7:0]  spf_t0, spf_t1, spf_t2;
-    input [7:0]  lad_t0, lad_t1, lad_t2;
+    
+    //ladder
+    input [7:0] mac_a, mac_b,mac_d; // Incoming product:   | D | C |
     // PC & Secondary Registers
     input [23:0] pc_val;
     input [23:0] gp6, gp7, gp8;
@@ -129,7 +131,7 @@ function [23:0] read_any_reg_12t;
     input [23:0] c1_0, c1_1, c1_2, c1_3, c1_4, c1_5;
     begin
         if (addr == 4'd0) begin
-            read_any_reg_12t = 24'b0;
+            read_any_reg_12t = 24'hAAAAAA;
         end else if (alias_addr_12t == addr) begin
             // Active 12t alias intercept
             read_any_reg_12t = am_buff_12t;
@@ -138,7 +140,7 @@ function [23:0] read_any_reg_12t;
                 4'd1: read_any_reg_12t = {sp0_t2, sp0_t1, sp0_t0};
                 4'd2: read_any_reg_12t = {sp1_t2, sp1_t1, sp1_t0};
                 4'd3: read_any_reg_12t = {spf_t2, spf_t1, spf_t0};
-                4'd4: read_any_reg_12t = {lad_t2, lad_t1, lad_t0};
+                4'd4: read_any_reg_12t = {mac_d, mac_b, mac_a};
                 default: read_any_reg_12t = read_secondary_reg(
                     1'b1, addr, sel_cmd1, pc_val,
                     gp6, gp7, gp8,
@@ -150,6 +152,53 @@ function [23:0] read_any_reg_12t;
     end
 endfunction
 
+task write_any_reg_12t;
+    input use_mask;
+    input        write_allow;
+    input [3:0]  addr;
+    input        sel_cmd1;
+    // Alias check inputs
+    inout [3:0]  alias_addr_12t;
+    inout [23:0] am_12t;
+    input [23:0] data_12t;
+    output pc_wen;
+    output [23:0] pc_val;
+    // Scratchpads, Flags (with spf_trib2), Ladder
+    output [7:0]  sp0_t0, sp0_t1, sp0_t2;
+    output [7:0]  sp1_t0, sp1_t1, sp1_t2;
+    output [7:0]  spf_t0, spf_t1, spf_t2;
+    
+    //ladder
+    output [7:0] mac_a, mac_b,mac_d; // Incoming product:   | D | C |
+    // PC & Secondary Registers
+    output [23:0] gp6, gp7, gp8;
+    output [23:0] c0_0, c0_1, c0_2, c0_3, c0_4, c0_5;
+    output [23:0] c1_0, c1_1, c1_2, c1_3, c1_4, c1_5;
+    
+    reg [23:0] wdata;
+    begin
+        if(write_allow) begin
+            wdata = (alias_addr_12t == 4'd0 && use_mask) ? apply_mask_12t(data_12t, am_12t) : data_12t;
+            case (addr)
+                4'd1: {sp0_t2, sp0_t1, sp0_t0} = wdata;
+                4'd2: {sp1_t2, sp1_t1, sp1_t0} = wdata;
+                4'd3: {spf_t2, spf_t1, spf_t0} = wdata;
+                4'd4: {mac_d, mac_b, mac_a} = wdata;
+                default: write_secondary_reg(
+                    1'b1, addr, sel_cmd1, use_mask, alias_addr_12t, am_12t, data_12t, pc_wen, pc_val,
+                    gp6, gp7, gp8,
+                    c0_0, c0_1, c0_2, c0_3, c0_4, c0_5,
+                    c1_0, c1_1, c1_2, c1_3, c1_4, c1_5
+                );
+            endcase
+            if (alias_addr_12t == addr) begin
+                alias_addr_12t = 4'd0;
+                am_12t         = 24'hAAAAAA;
+            end
+        end
+    end
+endtask
+
 function [23:0] read_secondary_reg;
     input        r_en;
     input [3:0]  addr;
@@ -160,7 +209,7 @@ function [23:0] read_secondary_reg;
     input [23:0] c1_0, c1_1, c1_2, c1_3, c1_4, c1_5;
     begin
         if (!r_en) begin
-            read_secondary_reg = 24'b0;
+            read_secondary_reg = 24'hAAAAAA;
         end else begin
             case (addr)
                 4'd5:  read_secondary_reg = pc_val;
@@ -173,11 +222,69 @@ function [23:0] read_secondary_reg;
                 4'd12: read_secondary_reg = sel_cmd1 ? c1_3 : c0_3;
                 4'd13: read_secondary_reg = sel_cmd1 ? c1_4 : c0_4;
                 4'd14: read_secondary_reg = sel_cmd1 ? c1_5 : c0_5;
-                default: read_secondary_reg = 24'b0;
+                default: read_secondary_reg = 24'hAAAAAA;
             endcase
         end
     end
 endfunction
+
+task write_secondary_reg;
+    input        write_allow;
+    input [3:0]  addr;
+    input        sel_cmd1;
+    input use_mask;
+    inout alias_addr_12t;
+    input [23:0] am_12t;
+    input [23:0] data_12t;
+    output pc_wen;
+    output [23:0] pc_val;
+    output [23:0] gp6, gp7, gp8;
+    output [23:0] c0_0, c0_1, c0_2, c0_3, c0_4, c0_5;
+    output [23:0] c1_0, c1_1, c1_2, c1_3, c1_4, c1_5;
+
+    reg [23:0] wdata;
+    begin
+
+        if(write_allow) begin
+            wdata = (alias_addr_12t == 4'd0 && use_mask) ? apply_mask_12t(data_12t, am_12t) : data_12t;
+        end
+        case (addr)
+            4'd5:  begin
+                pc_val = wdata;
+                pc_wen = 1'b1;
+            end
+            4'd6: gp6 = wdata;
+            4'd7: gp7 = wdata;
+            4'd8: gp8 = wdata;
+            default: begin 
+                if(sel_cmd1) begin
+                    case (addr)
+                        4'd9:  c1_0 = wdata;
+                        4'd10: c1_1 = wdata;
+                        4'd11: c1_2 = wdata;
+                        4'd12: c1_3 = wdata;
+                        4'd13: c1_4 = wdata;
+                        4'd14: c1_5 = wdata;
+                    endcase
+                end
+                else begin
+                    case (addr)
+                        4'd9:  c0_0 = wdata;
+                        4'd10: c0_1 = wdata;
+                        4'd11: c0_2 = wdata;
+                        4'd12: c0_3 = wdata;
+                        4'd13: c0_4 = wdata;
+                        4'd14: c0_5 = wdata;
+                    endcase
+                end
+            end
+        endcase
+        if (alias_addr_12t == addr) begin
+            alias_addr_12t = 4'd0;
+            am_12t         = 24'hAAAAAA;
+        end
+    end
+endtask
 
 function [7:0] read_any_reg_4t;
     input [2:0] addr_4t;
@@ -205,6 +312,42 @@ function [7:0] read_any_reg_4t;
     end
 endfunction
 
+
+task write_any_reg_4t;
+    input use_mask;
+    input write_allow;
+    input [2:0] addr_4t;
+    inout       alias_active_4t;
+    input [2:0] alias_addr_4t;
+    input [7:0] data_4t;
+
+    inout [7:0] am_4t;
+    output [7:0] sp0_t0, sp0_t1, sp0_t2;
+    output [7:0] sp1_t0, sp1_t1, sp1_t2;
+    output [7:0] spf_t0, spf_t1;
+
+    reg [7:0] wdata;
+    begin
+        if(write_allow) begin
+            wdata = (!alias_active_4t && use_mask) ? apply_mask_4t(data_4t, am_4t) : data_4t;
+            case (addr_4t)
+                3'd0: sp0_t0 = wdata;
+                3'd1: sp0_t1 = wdata;
+                3'd2: sp0_t2 = wdata;
+                3'd3: sp1_t0 = wdata;
+                3'd4: sp1_t1 = wdata;
+                3'd5: sp1_t2 = wdata;
+                3'd6: spf_t0 = wdata;
+                3'd7: spf_t1 = wdata;
+            endcase
+            if (alias_active_4t && (alias_addr_4t == addr_4t)) begin
+                alias_active_4t = 1'b0;
+                am_4t      = 8'hAA;
+            end
+        end
+    end
+endtask
+
 //read 1t func
 function [1:0] read_any_reg_1t;
     input [2:0] addr_1t;
@@ -229,6 +372,39 @@ function [1:0] read_any_reg_1t;
         end
     end
 endfunction
+
+task write_any_reg_1t;
+    input use_mask;
+    input write_allow;
+    input [2:0] addr_1t;
+    input [1:0] data_1t;
+    inout       alias_active_1t;
+    input [2:0] alias_addr_1t;
+    inout [1:0] am_1t;
+    output [1:0] f0, f1, f2, f3, f4, f5, f6, f7;
+
+    reg [1:0] wdata;
+    begin
+        if(write_allow)begin
+            wdata = (!alias_active_1t && use_mask) ? apply_mask_1t(data_1t, am_1t) : data_1t;
+            case (addr_1t)
+                    3'd0: f0 = wdata;
+                    3'd1: f1 = wdata;
+                    3'd2: f2 = wdata;
+                    3'd3: f3 = wdata;
+                    3'd4: f4 = wdata;
+                    3'd5: f5 = wdata;
+                    3'd6: f6 = wdata;
+                    3'd7: f7 = wdata;
+            endcase
+
+            if (alias_active_1t && (alias_addr_1t == addr_1t)) begin
+                alias_active_1t = 1'b0;
+                am_1t = 2'b10;
+            end
+        end
+    end
+endtask
 
 function check_reg_collision;
     input       w_en;
@@ -313,6 +489,7 @@ task update_secondary_regs;
     end
 endtask
 
+
 function [23:0] read_debug_ext;
     input [4:0]  addr;
     input        active_bank; // Pass using_macroop_1 so ~active_bank reads the OTHER bank
@@ -355,7 +532,7 @@ function [23:0] read_debug_ext;
             // 5'd24: [23:16]=8'b0 | [15:0]=macroop_register
             5'd24: read_debug_ext = {8'b0, macroop_reg};
 
-            default: read_debug_ext = 24'b0;
+            default: read_debug_ext = 24'hAAAAAA;
         endcase
     end
 endfunction
@@ -451,10 +628,11 @@ endfunction
 
         reg  [7:0] spf_trib2; // cannot be accessed normally. basically just to keep the data there to prevent losing it
 
-        reg [7:0] ladder_trib0;
-        reg [7:0] ladder_trib1;
-        reg [7:0] ladder_trib2;
-        reg [1:0] ladder_offset;
+        reg [7:0] mac_a;
+        reg [7:0] mac_b;
+        reg [7:0] mac_c;
+        reg [7:0] mac_d;
+        reg [1:0] mac_carry;
 
         reg [7:0] param_ctr;
         reg [7:0] action_ctr;
@@ -568,7 +746,7 @@ task execute_alias_write;
                 end
                 // Clear alias address & buffer regardless of write_allow
                 addr_12t_next = 4'b0000;
-                buff_12t      = 24'b0;
+                buff_12t      = 24'hAAAAAA;
             end
 
             //4t
@@ -586,7 +764,7 @@ task execute_alias_write;
                     endcase
                 end
                 active_4t_next = 1'b0;
-                buff_4t        = 8'b0;
+                buff_4t        = 8'hAA;
             end
 
             //1trit
@@ -604,7 +782,7 @@ task execute_alias_write;
                     endcase
                 end
                 active_1t_next = 1'b0;
-                buff_1t        = 2'b0;
+                buff_1t        = 2'b10;
             end
         end
 
@@ -619,7 +797,49 @@ task execute_alias_write;
     end
 endtask
 
+//masking funcs
+function [1:0] apply_mask_1t;
+    input [1:0] val;
+    input [1:0] m;
+    begin
+        case (m)
+            2'b01: apply_mask_1t = (val == 2'b11) ? 2'b10 : val; // * (+1)
+            2'b00: begin                                         // * (-1)
+                case (val)
+                    2'b00:   apply_mask_1t = 2'b01;
+                    2'b01:   apply_mask_1t = 2'b00;
+                    default: apply_mask_1t = 2'b10;
+                endcase
+            end
+            default: apply_mask_1t = 2'b10;                      // * (0)
+        endcase
+    end
+endfunction
 
+function [7:0] apply_mask_4t;
+    input [7:0] val;
+    input [7:0] m;
+    begin
+        apply_mask_4t = {
+            apply_mask_1t(val[7:6], m[7:6]),
+            apply_mask_1t(val[5:4], m[5:4]),
+            apply_mask_1t(val[3:2], m[3:2]),
+            apply_mask_1t(val[1:0], m[1:0])
+        };
+    end
+endfunction
+
+function [23:0] apply_mask_12t;
+    input [23:0] val;
+    input [23:0] m;
+    begin
+        apply_mask_12t = {
+            apply_mask_4t(val[23:16], m[23:16]),
+            apply_mask_4t(val[15:8],  m[15:8]),
+            apply_mask_4t(val[7:0],   m[7:0])
+        };
+    end
+endfunction
 
 
 
@@ -631,6 +851,8 @@ reg [15:0] alu_res_mul_lat;
 reg [3:0]  mac_ovf_target_12t; // Set by 1param:0001
 reg [3:0]  hold_reg_addr;      // Set by 1param:0100
 reg        hold_reg_active;
+
+reg execute_done = 1'b0;
 
 //i should find a use for them later
 assign pc_r_enable = (register_address == 5'd5) || (r_enable && t_addr_in == 4'd5);
@@ -652,7 +874,7 @@ always @(posedge clk or negedge rst_n) begin
         using_macroop_1    <= 1'b0;
         op_read_state      <= 2'b00;
         cmd_param_id       <= 3'd1;      // 1-indexed to match commandpipe_address (1..6)
-        cmd_param_reg      <= 24'b0;
+        cmd_param_reg      <= 24'hAAAAAA;
         ret_micro          <= 1'b0;
         execute_done       <= 1'b0;
         execute_stage      <= 2'b00;
@@ -663,12 +885,12 @@ always @(posedge clk or negedge rst_n) begin
         single_execute_ack <= 1'b0;
         pc_increment       <= 1'b0;
         pc_w_enable        <= 1'b0;
-        pc_w_data          <= 24'b0;
+        pc_w_data          <= 24'hAAAAAA;
         cmd_we             <= 1'b0;
         pipe_empty         <= 1'b1;
         pipe_full_rej      <= 1'b0;
-        debug_reg_cache    <= 24'b0;
-        dbg_dout           <= 8'b0;
+        debug_reg_cache    <= 24'hAAAAAA;
+        dbg_dout           <= 8'hAA;
 
         //aliases
         action_ctr         <= 8'b0;
@@ -678,43 +900,42 @@ always @(posedge clk or negedge rst_n) begin
         alias_addr_1t      <= 3'b0;
         alias_active_4t    <= 1'b0;
         alias_active_1t    <= 1'b0;
-        am_buff_12t        <= 24'b0;
-        am_buff_4t         <= 8'b0;
-        am_buff_1t         <= 2'b0;
+        am_buff_12t        <= 24'hAAAAAA;
+        am_buff_4t         <= 8'hAA;
+        am_buff_1t         <= 2'b10;
 
         //top reggies
-        {sp0_trib2, sp0_trib1, sp0_trib0} <= 24'b0;
-        {sp1_trib2, sp1_trib1, sp1_trib0} <= 24'b0;
+        {sp0_trib2, sp0_trib1, sp0_trib0} <= 24'hAAAAAA;
+        {sp1_trib2, sp1_trib1, sp1_trib0} <= 24'hAAAAAA;
         {spf_flag7, spf_flag6, spf_flag5, spf_flag4,
-         spf_flag3, spf_flag2, spf_flag1, spf_flag0} <= 16'b0;
-        {ladder_trib2, ladder_trib1, ladder_trib0} <= 24'b0;
-        ladder_offset      <= 2'b0;
-        gp_reg_6 <= 24'b0; gp_reg_7 <= 24'b0; gp_reg_8 <= 24'b0;
-        cmd0_reg_0 <= 24'b0; cmd0_reg_1 <= 24'b0; cmd0_reg_2 <= 24'b0;
-        cmd0_reg_3 <= 24'b0; cmd0_reg_4 <= 24'b0; cmd0_reg_5 <= 24'b0;
-        cmd1_reg_0 <= 24'b0; cmd1_reg_1 <= 24'b0; cmd1_reg_2 <= 24'b0;
-        cmd1_reg_3 <= 24'b0; cmd1_reg_4 <= 24'b0; cmd1_reg_5 <= 24'b0;
+         spf_flag3, spf_flag2, spf_flag1, spf_flag0} <= 16'hAAAA;
+        {mac_a,mac_b,mac_c,mac_d} <= 32'hAAAAAAAA;
+        mac_carry <= 2'b10;
+        gp_reg_6    <= 24'hAAAAAA; gp_reg_7     <= 24'hAAAAAA; gp_reg_8     <= 24'hAAAAAA;
+        cmd0_reg_0  <= 24'hAAAAAA; cmd0_reg_1   <= 24'hAAAAAA; cmd0_reg_2   <= 24'hAAAAAA;
+        cmd0_reg_3  <= 24'hAAAAAA; cmd0_reg_4   <= 24'hAAAAAA; cmd0_reg_5   <= 24'hAAAAAA;
+        cmd1_reg_0  <= 24'hAAAAAA; cmd1_reg_1   <= 24'hAAAAAA; cmd1_reg_2   <= 24'hAAAAAA;
+        cmd1_reg_3  <= 24'hAAAAAA; cmd1_reg_4   <= 24'hAAAAAA; cmd1_reg_5   <= 24'hAAAAAA;
 
 
         //execution state resets
-        exec_cmd_lat <= 4'b0;
-        exec_p0_lat <= 4'b0;
-        exec_p1_lat <= 4'b0;
-        exec_p2_lat <= 4'b0;
-        alu_res_4t_lat <= 8'b0;
-        alu_res_1t_lat <= 2'b0;
-        alu_res_mul_lat <= 16'b0;
-        mac_ovf_target_12t <= 4'b0;
+        alu_res_4t_lat <= 8'hAA;
+        alu_res_1t_lat <= 2'b10;
+        alu_res_mul_lat <= 16'hAAAA;
         hold_reg_addr <= 4'b0;
         hold_reg_active <= 1'b0;
+
     end else begin
         
-        can_execute_this_clock = 1'b0; // Blocking temp var
+        execute_done <= 1'b0;
+        can_execute_this_clock = 1'b0; // non blocking temp var
         pc_increment          <= 1'b0;
         pc_w_enable           <= 1'b0;
         cmd_we                <= 1'b0;
         pipe_empty            <= (threadstate == THREAD_EMPTY);
         command_req_new       <= 1'b0;
+        alu_prio_inc          <= 1'b0;
+        flush <= 1'b0;
         do_housekeeping = 1'b0;
         //this block executes beforehand to do... something    
             if(cmd_buf_clr) begin
@@ -726,8 +947,8 @@ always @(posedge clk or negedge rst_n) begin
                 action_ctr      <= 8'b00000000;
                 param_ctr      <= 8'b00000000;
                 //direct clear flag
-                {spf_flag3, spf_flag2, spf_flag1, spf_flag0} <= 8'b00000000;
-                {spf_flag7, spf_flag6, spf_flag5, spf_flag4} <= 8'b00000000;
+                {spf_flag3, spf_flag2, spf_flag1, spf_flag0} <= 8'hAA;
+                {spf_flag7, spf_flag6, spf_flag5, spf_flag4} <= 8'hAA;
                 cmd_buf_clr_ack <= 1'b1;
             end
             else begin
@@ -749,7 +970,7 @@ always @(posedge clk or negedge rst_n) begin
                             sp0_trib0, sp0_trib1, sp0_trib2,
                             sp1_trib0, sp1_trib1, sp1_trib2,
                             spf_trib0, spf_trib1, spf_trib2,
-                            ladder_trib0, ladder_trib1, ladder_trib2,
+                            mac_a,mac_b,mac_d,
                             pc_r_data, gp_reg_6, gp_reg_7, gp_reg_8,
                             cmd0_reg_0, cmd0_reg_1, cmd0_reg_2, cmd0_reg_3, cmd0_reg_4, cmd0_reg_5,
                             cmd1_reg_0, cmd1_reg_1, cmd1_reg_2, cmd1_reg_3, cmd1_reg_4, cmd1_reg_5
@@ -775,7 +996,7 @@ always @(posedge clk or negedge rst_n) begin
                         2'b01: dbg_dout <= debug_reg_cache[7:0];
                         2'b10: dbg_dout <= debug_reg_cache[15:8];
                         2'b11: dbg_dout <= debug_reg_cache[23:16];
-                        default: dbg_dout <= 8'b0;
+                        default: dbg_dout <= 8'hAA;
                     endcase
                 end
                 else begin
@@ -854,40 +1075,35 @@ always @(posedge clk or negedge rst_n) begin
                             //if there was a jump previously, use a flush and make sure action counter and param counter are visible
                             // then command_req_new is inverted to show new request
                             command_req_new <= 1'b1;
+                            execute_done <= 1'b0;
                         end else if(command_data_sent && execute_stage == 2'b0) begin
                             //read command input
-                            execute_done <= 1'b0;
-                            //latch command/params for multi-stage use
-                            exec_cmd_lat <= command;
-                            exec_p0_lat  <= param_0;
-                            exec_p1_lat  <= param_1;
-                            exec_p2_lat  <= param_2;
                             execute_done <= 1'b0;
                             //for some single clock stuff you can non block it back to 1 later
                             
                             if(command == 4'b0000) begin
                                 // 0 parameters
+                                execute_done <= 1'b1; //auto sets to 1 
                                 case(param_0)
                                     4'b0001: begin
                                         //mac ladder flush
                                         if(write_allow) begin
-                                            ladder_trib0 <= 8'd0;
-                                            ladder_trib1 <= 8'd0;
-                                            ladder_trib2 <= 8'd0;
+                                            {mac_a,mac_b,mac_c,mac_d} <= 32'hAAAAAAAA;
+                                            mac_carry <= 2'b0;
                                         end
                                     end
                                     4'b0010: begin
                                         //clear carry
                                         if(write_allow) begin
-                                            carry_reg <= 2'b00;
+                                            carry_reg <= 2'b10;
                                         end
                                     end
                                     4'b0011: begin
                                         //reset mask/alias
                                         if(write_allow) begin
-                                            am_buff_12t <= 24'd0;
-                                            am_buff_4t <= 8'd0;
-                                            am_buff_1t <= 2'd0;
+                                            am_buff_12t <= 24'hAAAAAA;
+                                            am_buff_4t <= 8'hAA;
+                                            am_buff_1t <= 2'b10;
                                             alias_active_1t <= 1'b0;
                                             alias_active_4t <= 1'b0;
                                             alias_addr_12t <= 4'd0;
@@ -896,6 +1112,9 @@ always @(posedge clk or negedge rst_n) begin
                                     4'b0100: begin
                                         //return
                                         ret_micro <= 1'b1;
+                                        flush <= 1'b1;
+                                        action_ctr <= 8'd0;
+                                        param_ctr  <= 8'd0;
                                         //maybe unfinished
                                         //purge all cached microcode on the handler side
 
@@ -911,20 +1130,19 @@ always @(posedge clk or negedge rst_n) begin
                                     4'b0111: begin
                                         //clear scratchpads
                                         if(write_allow) begin
-                                            sp0_trib0 <= 8'd0;
-                                            sp0_trib1 <= 8'd0;
-                                            sp0_trib2 <= 8'd0;
-                                            sp1_trib0 <= 8'd0;
-                                            sp1_trib1 <= 8'd0;
-                                            sp1_trib2 <= 8'd0;
+                                            {sp0_trib2, sp0_trib1, sp0_trib0} <= 24'hAAAAAA;
+                                            {sp1_trib2, sp1_trib1, sp1_trib0} <= 24'hAAAAAA;
+                                            if (alias_addr_12t == 4'd1 || alias_addr_12t == 4'd2) alias_addr_12t <= 4'd0;
+                                            if (alias_active_4t && alias_addr_4t <= 3'd5)         alias_active_4t <= 1'b0;
                                         end
                                     end
                                     4'b1000: begin
                                         //clear general purpose registers
                                         if(write_allow) begin
-                                            gp_reg_6 <= 24'd0;
-                                            gp_reg_7 <= 24'd0;
-                                            gp_reg_8 <= 24'd0;
+                                            gp_reg_6 <= 24'hAAAAAA;
+                                            gp_reg_7 <= 24'hAAAAAA;
+                                            gp_reg_8 <= 24'hAAAAAA;
+                                            if (alias_addr_12t >= 4'd6 && alias_addr_12t <= 4'd8) alias_addr_12t <= 4'd0;
                                         end
                                     end
                                     4'b1001: begin
@@ -934,12 +1152,13 @@ always @(posedge clk or negedge rst_n) begin
                                             if(threadstate != THREAD_FULL) begin
                                                 stall = WAIT_PIPEFULL;
                                             end
-
                                             //unfinished: need calls on the thread manager to ask for more instructions
                                         end
                                     end
                                     4'b1010: begin
                                         //alu priority step up, housekeep
+                                        alu_prio_inc    <= 1'b1; // 1-cycle pulse
+                                        do_housekeeping  = 1'b1;
                                         //this needs to be implemented on all sides
                                     end
                                     4'b1011: begin
@@ -949,38 +1168,41 @@ always @(posedge clk or negedge rst_n) begin
                                         //remember to always request a pc update when we change it inside here to prevent desync after each macro op and also for situations like these
                                     end
                                     4'b1100: begin
-                                        //clear mac offset
-                                        //remember this is not affected by we
-                                        ladder_offset <= 2'b00;
+                                        //mac pump (destinationless)
+                                        if (write_allow) begin
+                                            mac_a <= mac_c;
+                                            mac_b <= mac_d;
+                                        end
                                     end
                                     4'b1101: begin
-                                        //mac offset++
-                                        //mac only goes from 0-2
-                                        ladder_offset <= ladder_offset + 1'b1;
-                                        if(ladder_offset == 2'b10) begin
-                                            ladder_offset <= 2'b00;
-                                        end
+                                        //mac add but just takes whatever is in spot c and throws it onto b, clearing c in the process
+                                        if (write_allow) begin
+                                            mac_b     <= mac_sum;
+                                            mac_carry <= mac_cout;
+                                            mac_c     <= 8'hAA; // Ternary 0
+                                        end 
                                     end
                                 endcase
                             end else if(command == 4'b0001) begin 
+                                execute_done <= 1'b1;
                                 // 1 parameter
                                 case(param_0)
                                     4'b0001: begin
-                                        //mac ladder set overflow target (12 trits)
-                                        // internal complex method of handling the overflow
-                                        /*
-                                            write section according to the mac offset
-                                        */
-                                        //param 1 here is the 4 bit 12 trit address
+                                        //mac read
+                                        // can either be an immediate or an address
+                                        if (write_allow) begin
+                                            if(param_1[0]) begin
+                                                //use mask
+
+                                            end
+                                            else begin
+                                                
+                                            end
+                                            write_reg_4t(param_1[2:0], mac_a);
+                                        end 
                                     end
                                     4'b0010: begin
-                                        //mac ladder pump, 4 trit chunk source address 
-                                        // Xxx0: fill normally, using xxx as the address to source 4 trits
-                                        // Xxx1: fill with 0s
-                                        //mac pumps do not shift the destination register trits, 
-                                        //instead a counter keeps track of where each segment should go and overwrite that segment 
-                                        //based off of the mac counter
-                                        //the mac ladder pump copies trib 0 to overflow address, trib 1 to trib 0, trib 2 to trib 1
+                                        //mac pump. param is overflow destination
                                     end
                                     4'b0011: begin
                                         //clear 4 trits of scratch/mac
@@ -1277,12 +1499,8 @@ always @(posedge clk or negedge rst_n) begin
                                         //param 2: ADDR to 
                                     end
                                     4'b1111: begin
-                                        //read mac ladder,
-                                        //param1 : the 4 trit address to write to
-                                        //xxx0 : no mask , xxx1: use mask
-                                        //param2
-                                        //xxx0 : this is a 1t address, use it to determine reading sections
-                                        //xx01 : this is an immediate, where 4 means that you read data from the designated overflow 4trits
+                                        //mac mul without pumping
+                                        //OR mac move
                                     end
                                 endcase
                             end
@@ -1304,15 +1522,14 @@ always @(posedge clk or negedge rst_n) begin
                                         */
                                     end
                                     4'b0100: begin
-                                        //multiply,accumulate, pump A * B + C
+                                        //reworked mac
                                         /*
-                                        param 1 Operand A address 4 trit aaab
-                                        param 2 Operand B address 4 trit bbcc
-                                        param 3 operand C address 4 trit cddd
-                                        the 3 bits are the address 4 trits of a 4t overflow. set it to 000
-                                         (000 is still a valid 4t address but idc)
-                                        to *not* pump and store the overflow 
-                                        if you really want to store it in 000, too bad!
+                                        multiply accumulate and pump
+                                        0 : dont use mask 
+                                        1 : use mask
+                                        param 1 Operand A address 4 trit aaa0
+                                        param 2 Operand B address 4 trit bbb0
+                                        param 3 operand C address 4 trit ccc0
                                         */
                                     end
                                     4'b0101: begin
@@ -1332,7 +1549,8 @@ always @(posedge clk or negedge rst_n) begin
                                         00xxxyyy : local, no mask
                                         01xxxyyy : overflow/underflow , depending on shift dir , no mask
                                         10xxxyyy : use mask, local
-                                        11xxxyyy : over/underflow, use mask
+                                        11xxxyyy : over/underflow, use mask 
+                                        //the mask is applied to the thing before shifting
 
                                         Result address (4 trits) zzz0 : shift towards infinity, zzz1 : shift towards 0
                                         */
@@ -1531,6 +1749,8 @@ always @(posedge clk or negedge rst_n) begin
                     using_macroop_1 <= 0;
                     param_ctr <= 8'd0;
                     action_ctr <= 8'd0;
+                    command_req_new <= 1'b1;
+                    flush <= 1'b1;
                 end 
                 else begin
                     //set to full    
