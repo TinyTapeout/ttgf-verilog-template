@@ -56,16 +56,16 @@ module thread_command(
         output  wire cmd_ready,
         input   wire res_ready_in,
         //4 trit. replace these with binary coding
-        inout [3:0] t4_a_out,
-        inout [3:0] t4_b_out,
-        inout [3:0] t4_c_out,
-        inout       t1_a_out,
-        inout       t1_b_out,
-
+        output [7:0] t4_a_out,
+        output [7:0] t4_b_out,
+        output [7:0] t4_c_out,
+        output [1:0] t1_a_out,
+        output [1:0] t1_b_out,
+        output reg alu_prio_inc,
         //results here
-        inout [3:0] t4_in,
-        inout       t1_in,
-        inout [7:0] multiply_in,
+        input [7:0] t4_in,
+        inout [1:0] t1_in,
+        inout [16:0] multiply_in,
 
     //overlord interface
         input   wire stall,
@@ -1188,18 +1188,26 @@ always @(posedge clk or negedge rst_n) begin
                                 // 1 parameter
                                 case(param_0)
                                     4'b0001: begin
-                                        //mac read
-                                        // can either be an immediate or an address
-                                        if (write_allow) begin
-                                            if(param_1[0]) begin
-                                                //use mask
+                                        //mac read with imm
 
-                                            end
-                                            else begin
-                                                
-                                            end
-                                            write_reg_4t(param_1[2:0], mac_a);
-                                        end 
+                                        /*
+                                        task write_any_reg_4t;
+                                        input use_mask;
+                                        input write_allow;
+                                        input [2:0] addr_4t;
+                                        inout       alias_active_4t;
+                                        input [2:0] alias_addr_4t;
+                                        input [7:0] data_4t;
+
+                                        inout [7:0] am_4t;
+                                        output [7:0] sp0_t0, sp0_t1, sp0_t2;
+                                        output [7:0] sp1_t0, sp1_t1, sp1_t2;
+                                        output [7:0] spf_t0, spf_t1;
+
+                                        reg [7:0] wdata;
+                                        begin                              
+                                        */
+                                        write_any_reg_4t(param_1[0],write_allow,param_1[3:1],)
                                     end
                                     4'b0010: begin
                                         //mac pump. param is overflow destination
