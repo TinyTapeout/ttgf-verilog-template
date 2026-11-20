@@ -58,6 +58,8 @@ module microcode #(
     //    0  to 31  (32 ops): 2-byte chunks -> Base = op * 2
     //    32 to 111 (80 ops): 4-byte chunks -> Base = 64  + (op - 32) * 4
     //    112 to 191(80 ops): 8-byte chunks -> Base = 384 + (op - 112) * 8
+
+
     function [9:0] calc_sector_base(input [7:0] macro_op);
         reg [7:0] rel_op;
         begin
@@ -70,38 +72,31 @@ module microcode #(
                 rel_op = macro_op - 8'd112;
                 calc_sector_base = 10'd384 + ({2'b00, rel_op} << 3);
             end else begin
-                calc_sector_base = 10'd0; // Illegal fallback
+                calc_sector_base = 10'd0;
             end
         end
     endfunction
 
-    // // Helper: returns parameter counter increment based on command code
-        // //   command == 4'b0000 -> +1
-        // //   command == 4'b0001 -> +2
-        // function [6:0] get_param_step(input [3:0] cmd, input [1:0] fallback_step);
-        //     begin
-        //         if (cmd == 4'b0000)
-        //             get_param_step = 7'd1;
-        //         else if (cmd == 4'b0001)
-        //             get_param_step = 7'd2;
-        //         else
-        //             get_param_step = {5'd0, fallback_step};
-        //     end
-        // endfunction
-
-
-    // 2. Per-Thread Request Tracking, Importance Counters & Cached Pair State
+    function [11:0] calc_param_addr(input [9:0] base, input [6:0] prm_off);
+        reg [12:0] raw_addr;
+        begin
+            // 1024 + (base * 3) + prm_off
+            raw_addr = 13'd1024 + {3'b000, base} + {2'b00, base, 1'b0} + {6'b000000, prm_off};
+            calc_param_addr = (raw_addr >= 13'd4000) ? 12'd3999 : raw_addr[11:0];
+        end
+    endfunction
+    
     reg        request_data   [0:2];
-    reg [5:0]  importance     [0:2]; //max 64
+    reg [5:0]  importance     [0:2]; //max 63 //should never be filled all the way up
     reg        has_cached_odd [0:2];
     reg [3:0]  cached_act_odd [0:2];
     reg [3:0]  cached_p0_odd  [0:2];
     reg [3:0]  cached_p1_odd  [0:2];
     reg [3:0]  cached_p2_odd  [0:2];
+
     wire [2:0] flush_vec = {flush_t2, flush_t1, flush_t0};
 
-
-    //Arbiter from Halo 2
+//Arbiter from Halo 2
     reg [1:0] winning_thread;
     reg       any_request;
 
@@ -142,9 +137,23 @@ module microcode #(
     reg [7:0]  latched_prm0;
     reg [7:0]  latched_prm1;
     reg [7:0]  latched_prm2;
-    reg [1:0]  extra_reads_needed;
+    
+    reg [3:0]  wait_cnt;
 
-    assign microcode_idle = !(request_data[0] | request_data[1] | request_data[2]) && (state == ST_IDLE);
+    //bus wait stuff : fixed 2-cycle min wait + early exit on != 8'hFF, 16-cycle timeout fallback
+    wire early_exit   = (wait_cnt >= 4'd2) && (bus != 8'hFF);
+    wire timed_out    = (wait_cnt == 4'd15);
+    wire data_arrived = early_exit || timed_out;
+
+//high whenever the FSM is idle and no thread is requesting an external fetch
+    //(also stays high if a thread is only hitting straight cache)
+    assign microcode_idle = !any_request && (state == ST_IDLE); //prevents cycling when still waiting for microcode
+    wire   bus_needed     = any_request && !(has_cached_odd[winning_thread] && !flush_vec[winning_thread]);
+    assign cycle_threads  = (state == ST_IDLE) && !bus_needed;
+
+    reg [2:0] wait_cnt;//count up i guess
+    wire data_arrived = (wait_cnt >= min_wait_cycles) && (bus != 8'hFF);
+
 
     wire [7:0] sel_macro_op = (winning_thread == 2'd0) ? macro_op_t0 :
                               (winning_thread == 2'd1) ? macro_op_t1 : macro_op_t2;
@@ -164,33 +173,51 @@ module microcode #(
                               ((winning_thread == 2'd0) ? microcode_param_offset_t0 :
                                (winning_thread == 2'd1) ? microcode_param_offset_t1 :
                                                           microcode_param_offset_t2) : sel_prm_off;
-    // Combinational unpacking wires used in ST_COMMIT
+
+
+//deterministic unpacking according to action opcode
     wire [3:0] op0_cmd = latched_act_byte[7:4];
     wire [3:0] op1_cmd = latched_act_byte[3:0];
 
-    wire [3:0] raw_op0_p0 = latched_prm0[7:4];
-    wire [3:0] raw_op0_p1 = (latched_prm0[3:0] == PAD_NIBBLE) ? 4'd0 : latched_prm0[3:0];
-    wire [3:0] raw_op0_p2 = (latched_prm0[3:0] != PAD_NIBBLE &&
-                             latched_prm1[7:4] != PAD_NIBBLE &&
-                             latched_prm1[3:0] != PAD_NIBBLE) ? latched_prm1[7:4] : 4'd0;
+    wire [1:0] n0 = (op0_cmd == 4'b0000) ? 2'd1 : (op0_cmd == 4'b0001) ? 2'd2 : 2'd3;
+    wire [1:0] n1 = (op1_cmd == 4'b0000) ? 2'd1 : (op1_cmd == 4'b0001) ? 2'd2 : 2'd3;
 
-    // Apply command 0000 / 0001 output masking rules for Op0:
-    //   - 0000: only param0 is sent (param1 = 0, param2 = 0)
-    //   - 0001: only param0 and param1 are sent (param2 = 0)
-    wire [3:0] final_op0_p0 = raw_op0_p0;
-    wire [3:0] final_op0_p1 = (op0_cmd == 4'b0000) ? 4'd0 : raw_op0_p1;
-    wire [3:0] final_op0_p2 = (op0_cmd == 4'b0000 || op0_cmd == 4'b0001) ? 4'd0 : raw_op0_p2;
+    wire [2:0] total_nibs   = {1'b0, n0} + {1'b0, n1}; // Range: 2..6 nibbles
+    wire [1:0] bytes_needed = (total_nibs <= 3'd2) ? 2'd1 :
+                              (total_nibs <= 3'd4) ? 2'd2 : 2'd3;
+
+
+    //nibble assignment
+    wire [3:0] nib [0:5];
+    assign nib[0] = latched_prm0[7:4];
+    assign nib[1] = latched_prm0[3:0];
+    assign nib[2] = latched_prm1[7:4];
+    assign nib[3] = latched_prm1[3:0];
+    assign nib[4] = latched_prm2[7:4];
+    assign nib[5] = latched_prm2[3:0];
+
+    // Op0 always starts at nib[0]
+    wire [3:0] final_op0_p0 = nib[0];
+    wire [3:0] final_op0_p1 = (n0 >= 2'd2) ? nib[1] : 4'd0;
+    wire [3:0] final_op0_p2 = (n0 == 2'd3) ? nib[2] : 4'd0;
+
+    // Op1 always starts immediately after Op0 at nib[n0]
+    wire [3:0] final_op1_p0 = nib[n0];
+    wire [3:0] final_op1_p1 = (n1 >= 2'd2) ? nib[n0 + 2'd1] : 4'd0;
+    wire [3:0] final_op1_p2 = (n1 == 2'd3) ? nib[n0 + 2'd2] : 4'd0;
+
+    // Select Op0 (even index) or Op1 (odd jump index) for immediate output in ST_COMMIT
+    //fixes jump instruction problems
+    wire       is_odd_jump  = cur_act_off[0];
+    wire [3:0] commit_act   = is_odd_jump ? op1_cmd      : op0_cmd;
+    wire [3:0] commit_p0    = is_odd_jump ? final_op1_p0 : final_op0_p0;
+    wire [3:0] commit_p1    = is_odd_jump ? final_op1_p1 : final_op0_p1;
+    wire [3:0] commit_p2    = is_odd_jump ? final_op1_p2 : final_op0_p2;
+
 
     integer i;
     
-    //high whenever the FSM is idle and no thread is requesting an external fetch
-    //(also stays high if a thread is only hitting straight cache)
-    wire bus_needed = any_request && !(has_cached_odd[winning_thread] && !flush_vec[winning_thread]);
-    assign cycle_threads = (state == ST_IDLE) && !bus_needed;
-
-    reg [2:0] wait_cnt;//count up i guess
-    wire data_arrived = (wait_cnt >= min_wait_cycles) && (bus != 8'hFF);
-
+    
     //logik
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
@@ -204,7 +231,7 @@ module microcode #(
             latched_prm0                   <= 8'd0;
             latched_prm1                   <= 8'd0;
             latched_prm2                   <= 8'd0;
-            extra_reads_needed             <= 2'd0;
+            wait_cnt                       <= 4'd0;
 
             data_ready_t0                  <= 1'b0;
             data_ready_t1                  <= 1'b0;
@@ -220,9 +247,6 @@ module microcode #(
             microcode_action_offset_t2_res <= 7'd0;
             microcode_param_offset_t2_res  <= 7'd0;
 
-            wait_cnt <= 3'd0;
-
-            //synths into physical stuff
             for (i = 0; i < 3; i = i + 1) begin
                 request_data[i]   <= 1'b0;
                 importance[i]     <= 6'd0;
@@ -271,7 +295,7 @@ module microcode #(
                 request_data[2]                <= 1'b1;
             end
 
-            // Increment importance for every waiting thread (saturating at 63)
+            //importance inc for every waiting thread (saturating at 63)
             for (i = 0; i < 3; i = i + 1) begin
                 if (request_data[i] && !(state == ST_COMMIT && active_t == i[1:0])) begin
                     if (importance[i] != 6'h3F)
@@ -296,25 +320,29 @@ module microcode #(
 
                             case (winning_thread)
                                 2'd0: begin
-                                    action_t0     <= cached_act_odd[0];
-                                    param0_t0     <= cached_p0_odd[0];
-                                    param1_t0     <= (cached_act_odd[0] == 4'b0000) ? 4'd0 : cached_p1_odd[0];
-                                    param2_t0     <= (cached_act_odd[0] == 4'b0000 || cached_act_odd[0] == 4'b0001) ? 4'd0 : cached_p2_odd[0];
-                                    data_ready_t0 <= 1'b1;
+                                    //aligned odd even reads
+                                    action_t0                      <= cached_act_odd[0];
+                                    param0_t0                      <= cached_p0_odd[0];
+                                    param1_t0                      <= cached_p1_odd[0];
+                                    param2_t0                      <= cached_p2_odd[0];
+                                    microcode_action_offset_t0_res <= microcode_action_offset_t0_res + 7'd1;
+                                    data_ready_t0                  <= 1'b1;
                                 end
                                 2'd1: begin
-                                    action_t1     <= cached_act_odd[1];
-                                    param0_t1     <= cached_p0_odd[1];
-                                    param1_t1     <= (cached_act_odd[1] == 4'b0000) ? 4'd0 : cached_p1_odd[1];
-                                    param2_t1     <= (cached_act_odd[1] == 4'b0000 || cached_act_odd[1] == 4'b0001) ? 4'd0 : cached_p2_odd[1];
-                                    data_ready_t1 <= 1'b1;
+                                    action_t1                      <= cached_act_odd[1];
+                                    param0_t1                      <= cached_p0_odd[1];
+                                    param1_t1                      <= cached_p1_odd[1];
+                                    param2_t1                      <= cached_p2_odd[1];
+                                    microcode_action_offset_t1_res <= microcode_action_offset_t1_res + 7'd1;
+                                    data_ready_t1                  <= 1'b1;
                                 end
                                 2'd2: begin
-                                    action_t2     <= cached_act_odd[2];
-                                    param0_t2     <= cached_p0_odd[2];
-                                    param1_t2     <= (cached_act_odd[2] == 4'b0000) ? 4'd0 : cached_p1_odd[2];
-                                    param2_t2     <= (cached_act_odd[2] == 4'b0000 || cached_act_odd[2] == 4'b0001) ? 4'd0 : cached_p2_odd[2];
-                                    data_ready_t2 <= 1'b1;
+                                    action_t2                      <= cached_act_odd[2];
+                                    param0_t2                      <= cached_p0_odd[2];
+                                    param1_t2                      <= cached_p1_odd[2];
+                                    param2_t2                      <= cached_p2_odd[2];
+                                    microcode_action_offset_t2_res <= microcode_action_offset_t2_res + 7'd1;
+                                    data_ready_t2                  <= 1'b1;
                                 end
                             endcase
 
@@ -332,68 +360,64 @@ module microcode #(
 
                 ST_WAIT_ACT: begin
                     if (flush_vec[active_t]) begin
-                        wait_cnt <= 3'd0;
+                        wait_cnt <= 4'd0;
                         state    <= ST_IDLE;
                     end else if (!data_arrived) begin
-                        if (wait_cnt != 3'd7) wait_cnt <= wait_cnt + 3'd1;// Hold address steady for FPGA BRAM + pad delay
+                        wait_cnt <= wait_cnt + 4'd1;// Hold address steady for FPGA BRAM + pad delay
                     end else begin
                         wait_cnt         <= 3'd0;
                         latched_act_byte <= bus;
-                        address          <= 12'd1024 + {2'b00, active_base} + {5'b00000, cur_prm_off};
+                        address          <= calc_param_addr(active_base, cur_prm_off);
                         state            <= ST_WAIT_PRM0;
                     end
                 end
     
                 ST_WAIT_PRM0: begin
                     if (flush_vec[active_t]) begin
-                        wait_cnt <= 3'd0;
+                        wait_cnt <= 4'd0;
                         state <= ST_IDLE;
                     end else if (!data_arrived) begin
-                       if (wait_cnt != 3'd7) wait_cnt <= wait_cnt + 3'd1;// Hold address steady for FPGA BRAM + pad delay
+                       wait_cnt <= wait_cnt + 4'd1;// Hold address steady for FPGA BRAM + pad delay
                     end else begin
-                        wait_cnt <= 3'd0;
+                        wait_cnt <= 4'd0;
                         latched_prm0 <= bus;
-                        // Optimization: if both Op0 and Op1 are 0000 (1+1 = 1 byte 'p p'), no 2nd byte needed
-                        if (latched_act_byte[7:4] == 4'b0000 && latched_act_byte[3:0] == 4'b0000 && bus[3:0] != PAD_NIBBLE) begin
-                            extra_reads_needed <= 2'd1;
-                            state              <= ST_COMMIT;
+                        if (bytes_needed == 2'd1) begin
+                            state <= ST_COMMIT;
                         end else begin
-                            address <= 12'd1024 + {2'b00, active_base} + {5'b00000, cur_prm_off + 7'd1};
+                            address <= calc_param_addr(active_base, cur_prm_off + 7'd1);
                             state   <= ST_WAIT_PRM1;
                         end
                     end
                 end
 
-                // Cycle 3: Latch Second Param Byte (p_byte1) & Check if a 3rd Byte is Required
+                //removed next byte read
                 ST_WAIT_PRM1: begin
                     if (flush_vec[active_t]) begin
-                        wait_cnt <= 3'd0;
+                        wait_cnt <= 4'd0;
                         state <= ST_IDLE;
                     end else if (!data_arrived) begin
-                        if (wait_cnt != 3'd7) wait_cnt <= wait_cnt + 3'd1;// Hold address steady for FPGA BRAM + pad delay
+                        wait_cnt <= wait_cnt + 4'd1;// Hold address steady for FPGA BRAM + pad delay
                     end else begin
-                        wait_cnt <= 3'd0;
+                        wait_cnt <= 4'd0;
                         latched_prm1 <= bus;
-                        if (bus[7:4] == PAD_NIBBLE) begin
-                            extra_reads_needed <= 2'd3;
-                            address            <= 12'd1024 + {2'b00, active_base} + {5'b00000, cur_prm_off + 7'd2};
-                            state              <= ST_WAIT_PRM2;
+                        if (bytes_needed == 2'd2) begin
+                            state <= ST_COMMIT;
                         end else begin
-                            extra_reads_needed <= 2'd2;
-                            state              <= ST_COMMIT;
+                            address <= calc_param_addr(active_base, cur_prm_off + 7'd2);
+                            state   <= ST_WAIT_PRM2;
                         end
                     end
                 end
 
-                // Cycle 4: Latch Third Param Byte (p_byte2)
+                //3rd param
                 ST_WAIT_PRM2: begin
                     if (flush_vec[active_t]) begin
-                        wait_cnt <= 3'd0;
+                        wait_cnt <= 4'd0;
                         state <= ST_IDLE;
                     end else if (!data_arrived) begin
-                        if (wait_cnt != 3'd7) wait_cnt <= wait_cnt + 3'd1; // Hold address steady for FPGA BRAM + pad delay
+                        wait_cnt <= wait_cnt + 4'd1; // Hold address steady for FPGA BRAM + pad delay
                     end else begin
-                        wait_cnt <= 3'd0;
+                        wait_cnt <= 4'd0;
                         latched_prm2 <= bus;
                         state        <= ST_COMMIT;
                     end
@@ -407,76 +431,43 @@ module microcode #(
                     end else begin
                         request_data[active_t]   <= 1'b0;
                         importance[active_t]     <= 6'd0;
-                        has_cached_odd[active_t] <= 1'b1;
+
+                        // Only cache Op1 if we started on an even micro-op
+                        has_cached_odd[active_t] <= ~is_odd_jump;
                         cached_act_odd[active_t] <= op1_cmd;
+                        cached_p0_odd[active_t]  <= final_op1_p0;
+                        cached_p1_odd[active_t]  <= final_op1_p1;
+                        cached_p2_odd[active_t]  <= final_op1_p2;
+                        //this is because odd micro ops should not be cached
 
-                        // Parameter Alignment Multiplexer for Cached Op1
-                        if (extra_reads_needed == 2'd1) begin
-                            // 1+1 = 1 byte (p p): Op0 got [7:4], Op1 gets [3:0]
-                            cached_p0_odd[active_t] <= latched_prm0[3:0];
-                            cached_p1_odd[active_t] <= 4'd0;
-                            cached_p2_odd[active_t] <= 4'd0;
-                        end else if (latched_prm0[3:0] == PAD_NIBBLE || op0_cmd == 4'b0000) begin
-                            // First op has 1 parameter ('p x | ...')
-                            if (latched_prm1[7:4] == PAD_NIBBLE) begin
-                                // Pattern: 1+3 = 3 bytes (p x | x p | p p)
-                                cached_p0_odd[active_t] <= latched_prm1[3:0];
-                                cached_p1_odd[active_t] <= (op1_cmd == 4'b0000) ? 4'd0 : latched_prm2[7:4];
-                                cached_p2_odd[active_t] <= (op1_cmd == 4'b0000 || op1_cmd == 4'b0001) ? 4'd0 : latched_prm2[3:0];
-                            end else begin
-                                // Pattern: 1+2 = 2 bytes (p x | p p)
-                                cached_p0_odd[active_t] <= latched_prm1[7:4];
-                                cached_p1_odd[active_t] <= (op1_cmd == 4'b0000) ? 4'd0 : latched_prm1[3:0];
-                                cached_p2_odd[active_t] <= 4'd0;
-                            end
-                        end else begin
-                            // First op starts with 'p p | ...' (2 or 3 parameters)
-                            if (latched_prm1[7:4] == PAD_NIBBLE) begin
-                                // Pattern: 2+2 = 3 bytes (p p | x p | p x)
-                                cached_p0_odd[active_t] <= latched_prm1[3:0];
-                                cached_p1_odd[active_t] <= (op1_cmd == 4'b0000) ? 4'd0 : latched_prm2[7:4];
-                                cached_p2_odd[active_t] <= 4'd0;
-                            end else if (latched_prm1[3:0] == PAD_NIBBLE || op0_cmd == 4'b0001) begin
-                                // Pattern: 2+1 = 2 bytes (p p | p x)
-                                cached_p0_odd[active_t] <= latched_prm1[7:4];
-                                cached_p1_odd[active_t] <= 4'd0;
-                                cached_p2_odd[active_t] <= 4'd0;
-                            end else begin
-                                // Pattern: 3+1 = 2 bytes (p p | p p)
-                                cached_p0_odd[active_t] <= latched_prm1[3:0];
-                                cached_p1_odd[active_t] <= 4'd0;
-                                cached_p2_odd[active_t] <= 4'd0;
-                            end
-                        end
-
-                        // Drive Thread Outputs for Op0 & Advance Offsets by Exact Bytes Consumed
+                        //REMOVED : logic necessary for padding
                         case (active_t)
                             2'd0: begin
-                                action_t0 <= op0_cmd;
-                                param0_t0 <= final_op0_p0;
-                                param1_t0 <= final_op0_p1;
-                                param2_t0 <= final_op0_p2;
+                                action_t0                      <= commit_act;
+                                param0_t0                      <= commit_p0;
+                                param1_t0                      <= commit_p1;
+                                param2_t0                      <= commit_p2;
                                 microcode_action_offset_t0_res <= cur_act_off + 7'd1;
-                                microcode_param_offset_t0_res  <= cur_prm_off + {5'd0, extra_reads_needed};
-                                data_ready_t0 <= 1'b1;
+                                microcode_param_offset_t0_res  <= cur_prm_off + {5'd0, bytes_needed};
+                                data_ready_t0                  <= 1'b1;
                             end
                             2'd1: begin
-                                action_t1 <= op0_cmd;
-                                param0_t1 <= final_op0_p0;
-                                param1_t1 <= final_op0_p1;
-                                param2_t1 <= final_op0_p2;
+                                action_t1                      <= commit_act;
+                                param0_t1                      <= commit_p0;
+                                param1_t1                      <= commit_p1;
+                                param2_t1                      <= commit_p2;
                                 microcode_action_offset_t1_res <= cur_act_off + 7'd1;
-                                microcode_param_offset_t1_res  <= cur_prm_off + {5'd0, extra_reads_needed};
-                                data_ready_t1 <= 1'b1;
+                                microcode_param_offset_t1_res  <= cur_prm_off + {5'd0, bytes_needed};
+                                data_ready_t1                  <= 1'b1;
                             end
                             2'd2: begin
-                                action_t2 <= op0_cmd;
-                                param0_t2 <= final_op0_p0;
-                                param1_t2 <= final_op0_p1;
-                                param2_t2 <= final_op0_p2;
+                                action_t2                      <= commit_act;
+                                param0_t2                      <= commit_p0;
+                                param1_t2                      <= commit_p1;
+                                param2_t2                      <= commit_p2;
                                 microcode_action_offset_t2_res <= cur_act_off + 7'd1;
-                                microcode_param_offset_t2_res  <= cur_prm_off + {5'd0, extra_reads_needed};
-                                data_ready_t2 <= 1'b1;
+                                microcode_param_offset_t2_res  <= cur_prm_off + {5'd0, bytes_needed};
+                                data_ready_t2                  <= 1'b1;
                             end
                         endcase
 
