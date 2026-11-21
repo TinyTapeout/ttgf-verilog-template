@@ -12,9 +12,6 @@ module microcode(
     output reg  [3:0]  param0_t0,
     output reg  [3:0]  param1_t0,
     output reg  [3:0]  param2_t0,
-    output reg  [6:0]  microcode_action_offset_t0_res,
-    output reg  [6:0]  microcode_param_offset_t0_res,
-
 
     input  wire [7:0]  macro_op_t1,
     input  wire [6:0]  microcode_action_offset_t1,
@@ -26,8 +23,6 @@ module microcode(
     output reg  [3:0]  param0_t1,
     output reg  [3:0]  param1_t1,
     output reg  [3:0]  param2_t1,
-    output reg  [6:0]  microcode_action_offset_t1_res,
-    output reg  [6:0]  microcode_param_offset_t1_res,
 
 
     input  wire [7:0]  macro_op_t2,
@@ -40,8 +35,6 @@ module microcode(
     output reg  [3:0]  param0_t2,
     output reg  [3:0]  param1_t2,
     output reg  [3:0]  param2_t2,
-    output reg  [6:0]  microcode_action_offset_t2_res,
-    output reg  [6:0]  microcode_param_offset_t2_res,
 
 
     input  wire [7:0]  bus, //la controller uses this
@@ -51,6 +44,14 @@ module microcode(
 
 );
 
+    reg  [6:0]  microcode_action_offset_t0_res;
+    reg  [6:0]  microcode_param_offset_t0_res;
+    
+    reg  [6:0]  microcode_action_offset_t1_res;
+    reg  [6:0]  microcode_param_offset_t1_res;
+    
+    reg  [6:0]  microcode_action_offset_t2_res;
+    reg  [6:0]  microcode_param_offset_t2_res;
     // 1. Sector Base Address Calculation
     //    0  to 31  (32 ops): 2-byte chunks -> Base = op * 2
     //    32 to 111 (80 ops): 4-byte chunks -> Base = 64  + (op - 32) * 4

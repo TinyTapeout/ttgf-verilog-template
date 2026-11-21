@@ -65,8 +65,9 @@ module thread_command(
         output reg alu_prio_inc,
         //results here
         input [7:0] t4_in,
-        inout [1:0] t1_in,
-        inout [16:0] multiply_in,
+        input [1:0] t1_in,
+        input [16:0] multiply_in,
+        output [3:0] hog_timer,
 
     //overlord interface
         input   wire stall,
@@ -966,49 +967,64 @@ always @(posedge clk or negedge rst_n) begin
                 cmd_buf_clr_ack <= 1'b0; // Ensure ack clears when cmd_buf_clr drops
                 can_execute_this_clock = 1'b0;
                 if(register_address != 5'd0) begin
-                    //valid read address
-                    // if its 5 its the program counter
-                    //anything else goes like normal
-                    //triple read stages
-                    // Valid debug read address (1 to 14) -> triple read stages
-                    if (register_address < 5'd15) begin
-                        // Directly read any 12-trit register using the unified function
-                        // (Note: PC read enable pc_r_enable should be high when register_address == 5'd5)
-                        debug_reg_cache <= read_any_reg_12t(
-                            register_address[3:0], using_macroop_1, // or sel_cmd1 (see Note 2)
-                            alias_addr_12t,
-                            am_buff_12t,
-                            sp0_trib0, sp0_trib1, sp0_trib2,
-                            sp1_trib0, sp1_trib1, sp1_trib2,
-                            spf_trib0, spf_trib1, spf_trib2,
-                            mac_a,mac_b,mac_d,
-                            pc_r_data, gp_reg_6, gp_reg_7, gp_reg_8,
-                            cmd0_reg_0, cmd0_reg_1, cmd0_reg_2, cmd0_reg_3, cmd0_reg_4, cmd0_reg_5,
-                            cmd1_reg_0, cmd1_reg_1, cmd1_reg_2, cmd1_reg_3, cmd1_reg_4, cmd1_reg_5
-                        );
-                    end else begin
+                    if(is_read) begin
+                        //valid read address
+                        // if its 5 its the program counter
+                        //anything else goes like normal
+                        //triple read stages
+                        // Valid debug read address (1 to 14) -> triple read stages
+                        if (register_address < 5'd15) begin
+                            // Directly read any 12-trit register using the unified function
+                            // (Note: PC read enable pc_r_enable should be high when register_address == 5'd5)
+                            debug_reg_cache <= read_any_reg_12t(
+                                register_address[3:0], using_macroop_1, // or sel_cmd1 (see Note 2)
+                                alias_addr_12t,
+                                am_buff_12t,
+                                sp0_trib0, sp0_trib1, sp0_trib2,
+                                sp1_trib0, sp1_trib1, sp1_trib2,
+                                spf_trib0, spf_trib1, spf_trib2,
+                                mac_a,mac_b,mac_d,
+                                pc_r_data, gp_reg_6, gp_reg_7, gp_reg_8,
+                                cmd0_reg_0, cmd0_reg_1, cmd0_reg_2, cmd0_reg_3, cmd0_reg_4, cmd0_reg_5,
+                                cmd1_reg_0, cmd1_reg_1, cmd1_reg_2, cmd1_reg_3, cmd1_reg_4, cmd1_reg_5
+                            );
+                        end else begin
 
-                        //first read the other macro op's parameters (6 of them)
-                        //then read the alias mask buffers
-                        //read action and param counters 8bits each
-                        //carry reg 2 bits
-                        //transmit macro op registers 16 bits
-                        debug_reg_cache <= read_debug_ext(
-                            register_address, using_macroop_1,
-                            cmd0_reg_0, cmd0_reg_1, cmd0_reg_2, cmd0_reg_3, cmd0_reg_4, cmd0_reg_5,
-                            cmd1_reg_0, cmd1_reg_1, cmd1_reg_2, cmd1_reg_3, cmd1_reg_4, cmd1_reg_5,
-                            am_buff_12t, am_buff_4t, am_buff_1t,
-                            alias_addr_12t, alias_addr_4t, alias_addr_1t,
-                            alias_active_4t, alias_active_1t,
-                            action_ctr, param_ctr, carry_reg, macroop_register
-                        );
+                            //first read the other macro op's parameters (6 of them)
+                            //then read the alias mask buffers
+                            //read action and param counters 8bits each
+                            //carry reg 2 bits
+                            //transmit macro op registers 16 bits
+                            debug_reg_cache <= read_debug_ext(
+                                register_address, using_macroop_1,
+                                cmd0_reg_0, cmd0_reg_1, cmd0_reg_2, cmd0_reg_3, cmd0_reg_4, cmd0_reg_5,
+                                cmd1_reg_0, cmd1_reg_1, cmd1_reg_2, cmd1_reg_3, cmd1_reg_4, cmd1_reg_5,
+                                am_buff_12t, am_buff_4t, am_buff_1t,
+                                alias_addr_12t, alias_addr_4t, alias_addr_1t,
+                                alias_active_4t, alias_active_1t,
+                                action_ctr, param_ctr, carry_reg, macroop_register
+                            );
+                        end
+                        case (register_read_stage)
+                            2'b01: dbg_dout <= debug_reg_cache[7:0];
+                            2'b10: dbg_dout <= debug_reg_cache[15:8];
+                            2'b11: dbg_dout <= debug_reg_cache[23:16];
+                            default: dbg_dout <= 8'hAA;
+                        endcase
+
+                        if (register_address == 5'd31) begin
+                            if (register_read_stage[0] == 1'b0) begin
+                                // Stage 0: Active 8-bit macro-op
+                                dbg_dout <= using_macroop_1 ? macroop_register[15:8] : macroop_register[7:0];
+                            end else begin
+                                // Stage 1: Next queued 8-bit macro-op
+                                dbg_dout <= using_macroop_1 ? macroop_register[7:0]  : macroop_register[15:8];
+                            end
+                        end
                     end
-                    case (register_read_stage)
-                        2'b01: dbg_dout <= debug_reg_cache[7:0];
-                        2'b10: dbg_dout <= debug_reg_cache[15:8];
-                        2'b11: dbg_dout <= debug_reg_cache[23:16];
-                        default: dbg_dout <= 8'hAA;
-                    endcase
+                    else begin
+                        
+                    end
                 end
                 else begin
                     //if theres a fence

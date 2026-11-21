@@ -1,3 +1,4 @@
+//the toppest level of all time
 module tt_um_triple_t_devEclipse2 (
     `ifdef USE_POWER_PINS
     inout VDD_3V3,  // Hidden from Yosys, used by OpenROAD
@@ -136,6 +137,19 @@ module tt_um_triple_t_devEclipse2 (
     reg [7:0] uio_out_reg;
     reg [7:0] uio_oe_reg;
 
+
+
+wire ovl_selected = (ui_in[2:0] == 3'b001);
+
+// uo_out: Overlord owns it on 3'b001, logic_container owns it otherwise
+assign uo_out = ovl_selected ? ovl_uo_out : lc_uo_out;
+
+// uio_out / uio_oe: Overlord drives tracker or debug readout when selected
+wire ovl_drive_bus = ovl_selected && (ovl_show_tracker || (ovl_is_read && ovl_reg_address != 5'd0));
+assign uio_out = ovl_selected ? (ovl_show_tracker ? ovl_tracker : ovl_dbg_dout) : lc_uio_out;
+assign uio_oe  = ovl_selected ? (ovl_drive_bus ? 8'hFF : 8'h00)
+
+
     always @(*) begin
         case (mux_sel)
             3'b000: begin
@@ -149,6 +163,9 @@ module tt_um_triple_t_devEclipse2 (
                 uo_out_reg  = uo_001;
                 uio_out_reg = commander_tracker_enable? commander_tracker_data : uio_out_def;
                 uio_oe_reg  = commander_tracker_enable? 8'b11111111 : uio_oe_def;
+
+
+                
             end
             3'b111: begin
                 //le epic standalone mode

@@ -22,7 +22,6 @@ module alu(
     output wire [1:0]  t1_o_t0,
     output wire [15:0] multiply_o_t0,
 
-
     input  wire [2:0]  cmd_t1,
     input  wire [2:0]  tritwise_command_t1,
     input  wire [2:0]  tritshift_tritwise_t1,
