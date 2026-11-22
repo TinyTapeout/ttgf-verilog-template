@@ -471,7 +471,7 @@ endfunction
     wire [23:0] cur_dout = (cur_t == 2'd0) ? d_out_t0    : (cur_t == 2'd1) ? d_out_t1    : d_out_t2;
     wire        cur_full = pipe_full_rej[cur_t];
 
-    wire [2:0] any_t_req = req_mem_access | req_set_pc | req_show_reg;
+    wire [2:0] any_t_req = req_mem_access | req_set_pc | req_show_reg| req_new_cmd;
     wire other_thread_needs_bus =
         (cur_t == 2'd0 && (any_t_req[1] | any_t_req[2])) ||
         (cur_t == 2'd1 && (any_t_req[0] | any_t_req[2])) ||
@@ -625,9 +625,9 @@ endfunction
         case (req_type)
             3'b110: begin // Update PC (3 bytes)
                 case (fpga_phase_3b)
-                    3'b000:  tx_byte = cur_pc[7:0];
-                    3'b001:  tx_byte = cur_pc[15:8];
-                    3'b010:  tx_byte = cur_pc[23:16];
+                    3'b000:  tx_byte = cur_dout[7:0];
+                    3'b001:  tx_byte = cur_dout[15:8];
+                    3'b010:  tx_byte = cur_dout[23:16];
                     default: tx_byte = 8'hAA;
                 endcase
             end
@@ -678,7 +678,7 @@ endfunction
             //spi stuffs
             uo_out[0]   = 1'b0;       // SPI clk placeholder
             uo_out[7]   = 1'b0;       // SPI MISO placeholder
-            
+
             //data phase
             uo_out[2:1] = data_phase; // 00/01/10 active, 11 idle/locked
             uo_out[3]   = cur_full;   // Command register full kickback

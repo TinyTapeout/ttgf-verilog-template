@@ -16,13 +16,17 @@ module tt_um_triple_t_devEclipse2 (
     input  wire       rst_n     // Reset (Active low)
 );
 
-    wire [2:0] mux_sel     = ui_in[7:5];
-    wire [7:0] forwarded_ui = ui_in[7:0]; //fully forwarded
+    wire [2:0] mux_sel = ui_in[2:0];
 
-    // Output busses from the 4 distinct sub-modules
-    wire [7:0] uo_000,  uo_001,  uo_111,  uo_def;
-    wire [7:0] uio_out_000, uio_out_001, uio_out_111, uio_out_def;
-    wire [7:0] uio_oe_000,  uio_oe_001,  uio_oe_111,  uio_oe_def;
+    // Output busses from the distinct sub-modules
+    wire [7:0] uo_000,      uo_001,      uo_111,      uo_def;
+    wire [7:0] uio_out_000, uio_out_111, uio_out_def;
+    wire [7:0] uio_oe_000,  uio_oe_111,  uio_oe_def;
+
+    // Standalone mode (3'b111) placeholders
+    assign uo_111      = 8'h00;
+    assign uio_out_111 = 8'h00;
+    assign uio_oe_111  = 8'h00;
 
     logic_tester testbench(
 
@@ -36,145 +40,155 @@ module tt_um_triple_t_devEclipse2 (
         .rst_n(rst_n),
     );
 
-    //out from commander
-        wire [7:0] commander_tracker_data;
-        wire [7:0] commander_tracker_enable;
-
-        wire [2:0] b2t_translation_err_wire;
-        wire [2:0] microcode_illegal_err_wire;
-        wire [2:0] pc_overflow_err_wire;
-        wire [2:0] micro_op_action_ovf_err_wire;
-        wire [2:0] micro_op_param_ovf_err_wire;
-        wire [2:0] reg_overflow_err_wire;
-
-        wire [1:0] thread_sel_wire;
-        wire [1:0] reg_read_stage_wire;
-        wire [4:0] reg_addr_wire;
-        wire       is_read_wire;
-        wire [2:0] reg_handover_done_wire; //remember on thread side when it stops reading this thread it resets
-
-        wire o_microcode_fence_t0_wire;
-        wire o_microcode_fence_t1_wire;
-        wire o_microcode_fence_t2_wire;
-
-        wire o_direct_instr_t0_wire;
-        wire o_direct_instr_t1_wire;
-        wire o_direct_instr_t2_wire;
-        wire single_execute_t0_wire;
-        wire single_execute_t1_wire;
-        wire single_execute_t2_wire;
-        wire single_execute_ack_t0_wire;
-        wire single_execute_ack_t1_wire;
-        wire single_execute_ack_t2_wire;
-
-        wire cmd_buf_clr_t0_wire;
-        wire cmd_buf_clr_t1_wire;
-        wire cmd_buf_clr_t2_wire;
-
-        wire cmd_buf_clr_ack_t0_wire;
-        wire cmd_buf_clr_ack_t1_wire;
-        wire cmd_buf_clr_ack_t2_wire;
-
-    tt_um_core_commander core_commander (
-        .clk                    (clk),
-        .rst_n                  (rst_n),
-        .ui_in                  (ui_in), 
-        
-        // Output routing
-        .uo_out                 (uo_001),
-        // Telemetry bus to external MUX (routes selected error counter to uio_out when show_tracker=1)
-        .tracker                (commander_tracker_data),
-        .show_tracker           (commander_tracker_enable),
-
-        // -------------------------------------------------------------------------
-        // Per-Thread Error Inputs (3 Threads x 6 Error Types)
-        // Bit 0 = Thread 0, Bit 1 = Thread 1, Bit 2 = Thread 2
-        // -------------------------------------------------------------------------
-        .b2t_translation_err(b2t_translation_err_wire),         // Error ID 3'd0
-        .microcode_illegal_err(microcode_illegal_err_wire),     // Error ID 3'd1
-        .pc_overflow_err(pc_overflow_err_wire),                 // Error ID 3'd2
-        .micro_op_action_ovf_err(micro_op_action_ovf_err_wire), // Error ID 3'd3 (Action overflow)
-        .micro_op_param_ovf_err(micro_op_param_ovf_err_wire),   // Error ID 3'd4 (Param overflow)
-        .reg_overflow_err(reg_overflow_err_wire),               // Error ID 3'd5
-
-        // -------------------------------------------------------------------------
-        // Register & Command Buffer Handover Interface
-        // -------------------------------------------------------------------------
-        .thread_select(thread_sel_wire),             // Active thread: 2'b00=T0, 2'b01=T1, 2'b10=T2
-        .register_read_stage(reg_read_stage_wire),       // Byte chunk (0..2) or Cmd Buffer index (0=Active, 1=Next)
-        .register_address(reg_addr_wire),          // Flat 5-bit address (0..31) incremented per handover
-        .is_read(is_read_wire),                   // 1 = ASIC transmits to FPGA, 0 = ASIC receives from FPGA
-        .reg_handover_done(reg_handover_done_wire),         // Pulled high by active thread when entire register dump finishes
-
-        // -------------------------------------------------------------------------
-        // Per-Thread Execution Control & Handshakes (Threads 0, 1, 2)
-        // -------------------------------------------------------------------------
-        .o_microcode_fence_t0(o_microcode_fence_t0_wire),
-        .o_microcode_fence_t1(o_microcode_fence_t1_wire),
-        .o_microcode_fence_t2(o_microcode_fence_t2_wire),
-
-        .o_direct_instr_t0(o_direct_instr_t0_wire),
-        .o_direct_instr_t1(o_direct_instr_t1_wire),
-        .o_direct_instr_t2(o_direct_instr_t2_wire),
-
-        .single_execute_t0(single_execute_t0_wire),
-        .single_execute_t1(single_execute_t1_wire),
-        .single_execute_t2(single_execute_t2_wire),
-        .single_execute_ack_t0(single_execute_ack_t0_wire),
-        .single_execute_ack_t1(single_execute_ack_t1_wire),
-        .single_execute_ack_t2(single_execute_ack_t2_wire),
-
-        .cmd_buf_clr_t0(cmd_buf_clr_t0_wire),
-        .cmd_buf_clr_t1(cmd_buf_clr_t1_wire),
-        .cmd_buf_clr_t2(cmd_buf_clr_t2_wire),
-        .cmd_buf_clr_ack_t0(cmd_buf_clr_ack_t0_wire),
-        .cmd_buf_clr_ack_t1(cmd_buf_clr_ack_t1_wire),
-        .cmd_buf_clr_ack_t2(cmd_buf_clr_ack_t2_wire)
+    ogic_tester testbench (
+        .VDD_1V65 (ua[0]),
+        .ui_in    (ui_in),
+        .uo_out   (uo_000),
+        .uio_in   (uio_in),
+        .uio_out  (uio_out_000),
+        .uio_oe   (uio_oe_000),
+        .clk      (clk),
+        .rst_n    (rst_n)
     );
+
+    wire [7:0] commander_tracker_data;
+    wire       commander_tracker_enable;
+
+    wire [2:0] pc_overflow_err_wire;
+    wire [2:0] micro_op_action_ovf_err_wire;
+    wire [2:0] micro_op_param_ovf_err_wire;
+    wire [2:0] reg_overflow_err_wire;
+
+    wire [1:0] thread_sel_wire;
+    wire [1:0] reg_read_stage_wire;
+    wire [4:0] reg_addr_wire;
+    wire       is_read_wire;
+    wire [2:0] reg_handover_done_wire;
+    wire [7:0] ovl_dbg_dout_wire;
+
+    wire       o_microcode_fence_t0_wire, o_microcode_fence_t1_wire, o_microcode_fence_t2_wire;
+    wire       o_direct_instr_t0_wire,    o_direct_instr_t1_wire,    o_direct_instr_t2_wire;
+    wire       single_execute_t0_wire,    single_execute_t1_wire,    single_execute_t2_wire;
+    wire       single_execute_ack_t0_wire,single_execute_ack_t1_wire,single_execute_ack_t2_wire;
+    wire       cmd_buf_clr_t0_wire,       cmd_buf_clr_t1_wire,       cmd_buf_clr_t2_wire;
+    wire       cmd_buf_clr_ack_t0_wire,   cmd_buf_clr_ack_t1_wire,   cmd_buf_clr_ack_t2_wire;
+
+tt_um_core_commander core_commander (
+    .clk                     (clk),
+    .rst_n                   (rst_n),
+    .ui_in                   (ui_in),
+    .uo_out                  (uo_001),
+    .tracker                 (commander_tracker_data),
+    .show_tracker            (commander_tracker_enable),
+
+    // Per-Thread Error Inputs (b2t & microcode_illegal cut -> tied low)
+    .b2t_translation_err     (3'b000),
+    .microcode_illegal_err   (3'b000),
+    .pc_overflow_err         (pc_overflow_err_wire),
+    .micro_op_action_ovf_err (micro_op_action_ovf_err_wire),
+    .micro_op_param_ovf_err  (micro_op_param_ovf_err_wire),
+    .reg_overflow_err        (reg_overflow_err_wire),
+
+    // Register & Command Buffer Handover Interface
+    .thread_select           (thread_sel_wire),
+    .register_read_stage     (reg_read_stage_wire),
+    .register_address        (reg_addr_wire),
+    .is_read                 (is_read_wire),
+    .reg_handover_done       (reg_handover_done_wire),
+
+    // Per-Thread Execution Control & Handshakes
+    .o_microcode_fence_t0    (o_microcode_fence_t0_wire),
+    .o_microcode_fence_t1    (o_microcode_fence_t1_wire),
+    .o_microcode_fence_t2    (o_microcode_fence_t2_wire),
+    .o_direct_instr_t0       (o_direct_instr_t0_wire),
+    .o_direct_instr_t1       (o_direct_instr_t1_wire),
+    .o_direct_instr_t2       (o_direct_instr_t2_wire),
+    .single_execute_t0       (single_execute_t0_wire),
+    .single_execute_t1       (single_execute_t1_wire),
+    .single_execute_t2       (single_execute_t2_wire),
+    .single_execute_ack_t0   (single_execute_ack_t0_wire),
+    .single_execute_ack_t1   (single_execute_ack_t1_wire),
+    .single_execute_ack_t2   (single_execute_ack_t2_wire),
+    .cmd_buf_clr_t0          (cmd_buf_clr_t0_wire),
+    .cmd_buf_clr_t1          (cmd_buf_clr_t1_wire),
+    .cmd_buf_clr_t2          (cmd_buf_clr_t2_wire),
+    .cmd_buf_clr_ack_t0      (cmd_buf_clr_ack_t0_wire),
+    .cmd_buf_clr_ack_t1      (cmd_buf_clr_ack_t1_wire),
+    .cmd_buf_clr_ack_t2      (cmd_buf_clr_ack_t2_wire)
+);
     
-    //multiplexer
+logic_container main_logic (
+    .VDD_1V65               (ua[0]),
+    .clk                    (clk),
+    .rst_n                  (rst_n),
+    .ui_in                  (ui_in),
+    .uo_out                 (uo_def),
+    .uio_in                 (uio_in),
+    .uio_out                (uio_out_def),
+    .uio_oe                 (uio_oe_def),
+
+    // Overlord Control & Debug
+    .ovl_thread_sel         (thread_sel_wire),
+    .ovl_stall              (3'b000),
+    .ovl_reg_read_stage     (reg_read_stage_wire),
+    .ovl_reg_address        (reg_addr_wire),
+    .ovl_is_read            (is_read_wire),
+    .ovl_reg_handover_done  (reg_handover_done_wire),
+    .ovl_dbg_dout           (ovl_dbg_dout_wire),
+    .ovl_dbg_din            (uio_in),
+    .ovl_microcode_fence    ({o_microcode_fence_t2_wire, o_microcode_fence_t1_wire, o_microcode_fence_t0_wire}),
+    .ovl_direct_instr       ({o_direct_instr_t2_wire,    o_direct_instr_t1_wire,    o_direct_instr_t0_wire}),
+    .ovl_single_execute     ({single_execute_t2_wire,    single_execute_t1_wire,    single_execute_t0_wire}),
+    .ovl_single_execute_ack ({single_execute_ack_t2_wire,single_execute_ack_t1_wire,single_execute_ack_t0_wire}),
+    .ovl_cmd_buf_clr        ({cmd_buf_clr_t2_wire,       cmd_buf_clr_t1_wire,       cmd_buf_clr_t0_wire}),
+    .ovl_cmd_buf_clr_ack    ({cmd_buf_clr_ack_t2_wire,   cmd_buf_clr_ack_t1_wire,   cmd_buf_clr_ack_t0_wire}),
+
+    // Errors
+    .ovl_pc_overflow        (pc_overflow_err_wire),
+    .ovl_a_ctr_overflow     (micro_op_action_ovf_err_wire),
+    .ovl_p_ctr_overflow     (micro_op_param_ovf_err_wire),
+    .ovl_reg_overflow       (reg_overflow_err_wire),
+    .ovl_offending_id_t0    (),
+    .ovl_offending_id_t1    (),
+    .ovl_offending_id_t2    ()
+);
+
+//multiplexer
     reg [7:0] uo_out_reg;
     reg [7:0] uio_out_reg;
     reg [7:0] uio_oe_reg;
 
+    assign uo_out  = uo_out_reg;
+    assign uio_out = uio_out_reg;
+    assign uio_oe  = uio_oe_reg;
 
+    // Tie off unused signals to prevent synthesis warnings
+    wire _unused = &{ena, 1'b0};
 
-wire ovl_selected = (ui_in[2:0] == 3'b001);
+    reg [7:0] uo_out_reg;
+    reg [7:0] uio_out_reg;
+    reg [7:0] uio_oe_reg;
 
-// uo_out: Overlord owns it on 3'b001, logic_container owns it otherwise
-assign uo_out = ovl_selected ? ovl_uo_out : lc_uo_out;
-
-// uio_out / uio_oe: Overlord drives tracker or debug readout when selected
-wire ovl_drive_bus = ovl_selected && (ovl_show_tracker || (ovl_is_read && ovl_reg_address != 5'd0));
-assign uio_out = ovl_selected ? (ovl_show_tracker ? ovl_tracker : ovl_dbg_dout) : lc_uio_out;
-assign uio_oe  = ovl_selected ? (ovl_drive_bus ? 8'hFF : 8'h00)
-
+    wire ovl_drive_bus = commander_tracker_enable || (is_read_wire && (reg_addr_wire != 5'd0));
 
     always @(*) begin
         case (mux_sel)
-            3'b000: begin
-                //debug
+            3'b000: begin // Debug / Logic Tester
                 uo_out_reg  = uo_000;
                 uio_out_reg = uio_out_000;
                 uio_oe_reg  = uio_oe_000;
             end
-            3'b001: begin
-                //core overlord
+            3'b001: begin // Core Overlord
                 uo_out_reg  = uo_001;
-                uio_out_reg = commander_tracker_enable? commander_tracker_data : uio_out_def;
-                uio_oe_reg  = commander_tracker_enable? 8'b11111111 : uio_oe_def;
-
-
-                
+                uio_out_reg = commander_tracker_enable ? commander_tracker_data : ovl_dbg_dout_wire;
+                uio_oe_reg  = ovl_drive_bus ? 8'hFF : 8'h00;
             end
-            3'b111: begin
-                //le epic standalone mode
-                // this one has internal sram!
+            3'b111: begin // Standalone Mode
+                uo_out_reg  = uo_111;
                 uio_out_reg = uio_out_111;
-                uio_out_reg = uio_oe_111;
-                uo_out_reg = uo_111;
+                uio_oe_reg  = uio_oe_111;
             end
-            default: begin // Covers 010, 011, 100, 101, 110
+            default: begin // 010, 011, 100, 101, 110 -> Logic Container
                 uo_out_reg  = uo_def;
                 uio_out_reg = uio_out_def;
                 uio_oe_reg  = uio_oe_def;

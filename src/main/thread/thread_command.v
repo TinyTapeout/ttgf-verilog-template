@@ -19,8 +19,20 @@ checklist
 17: check timing delays and verify everything is ok
 18: probably simulate on an fpga
 19: from 18, i'll need an even bigger wrapper that does the work for me
-20: ladder reg aliasing
+20: ladder reg aliasing (just the 12 trit ones)
 21: am buffer default states MUST be h55 (to make sure that accidental mask uses don't erase things) 
+22: make sure read commands work to transmit asic data to fpga
+23: remember direct execution exists
+24: as an extra layer of security, make sure is_command is used to modulate command intake
+25: common read write wires.
+26: memory read write stuff
+27. double triple check the command decodings of xxx0
+28. fpga generally is at microcode so remember to make it switch before sending anything
+29. check if the single use masks are respected
+30. there is no mask active reg. just push in h55 and call it a day
+31. it should always be 0 : no mask, 1 : use mask
+32. tritwise works on 1 trit
+33. something something spi
 */
 
 
@@ -70,18 +82,15 @@ module thread_command(
         output [3:0] hog_timer,
 
     //overlord interface
-        input   wire stall,
         input   wire [7:0] bus_data_in,
         input   wire data_valid,
         input   wire data_done,
         output  wire request_set_pc,
         output  wire request_memory_access,
         output  wire is_write_memory,
-        output  wire [23:0] pc_out,
         output  wire [23:0] addr_out,
         input   wire [23:0] d_in,
         output  wire [23:0] d_out,
-        output  wire pipe_empty,
         output  wire pipe_full_rej,
         output  wire request_new_cmd,
 
@@ -322,7 +331,6 @@ function [7:0] read_any_reg_4t;
     end
 endfunction
 
-
 task write_any_reg_4t;
     input use_mask;
     input write_allow;
@@ -547,6 +555,148 @@ function [23:0] read_debug_ext;
     end
 endfunction
 
+//moved below
+//shared read ports
+    reg [3:0] rd_addr_12t;
+    reg [2:0] rd_addr_4t_a, rd_addr_4t_b, rd_addr_4t_c;
+    reg [2:0] rd_addr_1t_a, rd_addr_1t_b;
+
+    always @(*) begin
+        rd_addr_12t  = 4'd0;
+        rd_addr_4t_a = 3'd0;
+        rd_addr_4t_b = 3'd0;
+        rd_addr_4t_c = 3'd0;
+        rd_addr_1t_a = 3'd0;
+        rd_addr_1t_b = 3'd0;
+
+        if (register_address != 5'd0 && register_address < 5'd15) begin
+            rd_addr_12t = register_address[3:0];
+        end else begin
+            case (command)
+                4'b0001: begin // 1-Param Ops
+                    rd_addr_12t  = param_1;
+                    rd_addr_4t_a = param_1[3:1];
+                    rd_addr_1t_a = param_1[3:1];
+                end
+
+                4'b0010: begin // 2-Param Ops
+                    rd_addr_12t  = (execute_stage == 2'b00) ? param_1 : param_2;
+                    rd_addr_4t_a = (param_0 == 4'b0100) ? param_1[3:1] : param_1[2:0];
+                    rd_addr_4t_b = param_2[2:0];
+                    rd_addr_1t_a = (param_0 == 4'b0011) ? param_1[3:1] : param_1[2:0];
+                    rd_addr_1t_b = param_2[2:0];
+                end
+
+                // --- Unified xxx0 3-Parameter Ops ---
+                4'b0011,    // Add / Sub:      param_0[3:1]=A, param_1[3:1]=B
+                4'b0100:    // Reworked MAC:   param_0[3:1]=A, param_1[3:1]=B
+                begin
+                    rd_addr_4t_a = param_0[3:1];
+                    rd_addr_4t_b = param_1[3:1];
+                end
+
+                4'b0101: begin // Add3 (Packed: aaab bbcc cddd)
+                    rd_addr_4t_a = param_0[3:1];
+                    rd_addr_4t_b = {param_0[0], param_1[3:2]};
+                    rd_addr_4t_c = {param_1[1:0], param_2[3]};
+                end
+
+                4'b0110: begin // Trit Shift: param_0[3:1]=A (4t), param_1[3:1]=amt (1t)
+                    rd_addr_4t_a = param_0[3:1];
+                    rd_addr_1t_a = param_1[3:1];
+                end
+
+                4'b0111: begin // Single-Instruction Conditional: param_0[3:1]=eval (1t)
+                    rd_addr_1t_a = param_0[3:1];
+                end
+
+                4'b1100: begin // 12t<->4t (param_1[0]=0) or 4t<->1t (param_1[0]=1)
+                    rd_addr_12t  = param_0;
+                    rd_addr_4t_a = param_1[0] ? param_0[3:1] : param_1[3:1];
+                    rd_addr_1t_a = param_1[3:1];
+                end
+                4'b1000: begin
+                    rd_addr_1t_a = param_0[3:1];
+                    rd_addr_1t_b = param_1[3:1];
+                end  // Tritwise:     param_0[3:1]=A, param_1[3:1]=B
+
+                default: ;
+            endcase
+        end
+    end
+    
+    //shared read ports
+    wire [23:0] shared_rd_12t = read_any_reg_12t(
+        rd_addr_12t, using_macroop_1, alias_addr_12t, am_buff_12t,
+        sp0_trib0, sp0_trib1, sp0_trib2, sp1_trib0, sp1_trib1, sp1_trib2,
+        spf_trib0, spf_trib1, spf_trib2, mac_a, mac_b, mac_c,
+        pc_r_data, gp_reg_6, gp_reg_7, gp_reg_8,
+        cmd0_reg_0, cmd0_reg_1, cmd0_reg_2, cmd0_reg_3, cmd0_reg_4, cmd0_reg_5,
+        cmd1_reg_0, cmd1_reg_1, cmd1_reg_2, cmd1_reg_3, cmd1_reg_4, cmd1_reg_5
+    );
+
+    wire [7:0] shared_rd_4t_a = read_any_reg_4t(
+        rd_addr_4t_a, alias_active_4t, alias_addr_4t, am_buff_4t,
+        sp0_trib0, sp0_trib1, sp0_trib2, sp1_trib0, sp1_trib1, sp1_trib2,
+        spf_trib0, spf_trib1
+    );
+
+    wire [7:0] shared_rd_4t_b = read_any_reg_4t(
+        rd_addr_4t_b, alias_active_4t, alias_addr_4t, am_buff_4t,
+        sp0_trib0, sp0_trib1, sp0_trib2, sp1_trib0, sp1_trib1, sp1_trib2,
+        spf_trib0, spf_trib1
+    );
+
+    wire [7:0] shared_rd_4t_c = read_any_reg_4t(
+        rd_addr_4t_c, alias_active_4t, alias_addr_4t, am_buff_4t,
+        sp0_trib0, sp0_trib1, sp0_trib2, sp1_trib0, sp1_trib1, sp1_trib2,
+        spf_trib0, spf_trib1
+    );
+
+    wire [1:0] shared_rd_1t_a = read_any_reg_1t(
+        rd_addr_1t_a, alias_active_1t, alias_addr_1t, am_buff_1t,
+        spf_flag0, spf_flag1, spf_flag2, spf_flag3,
+        spf_flag4, spf_flag5, spf_flag6, spf_flag7
+    );
+
+    wire [1:0] shared_rd_1t_b = read_any_reg_1t(
+        rd_addr_1t_b, alias_active_1t, alias_addr_1t, am_buff_1t,
+        spf_flag0, spf_flag1, spf_flag2, spf_flag3,
+        spf_flag4, spf_flag5, spf_flag6, spf_flag7
+    );
+
+//data transmit
+localparam [1:0]
+    TX_SHOW_REG  = 2'd0, // req_type 001: Send 24-bit d_out
+    TX_SET_PC    = 2'd1, // req_type 110: Send 24-bit pc_r_data (via d_out)
+    TX_MEM_READ  = 2'd2, // req_type 100: Send 24-bit addr_out (+ ext_addr_out), receive 24-bit d_in
+    TX_MEM_WRITE = 2'd3; // req_type 101: Send 24-bit addr_out (+ ext_addr_out) + 24-bit d_out
+
+task start_bus_tx;
+    input [1:0]  tx_mode;
+    input [23:0] addr_val;
+    input [23:0] data_val;
+    begin
+        addr_out      <= addr_val;
+        d_out         <= data_val;
+        execute_stage <= 2'b01; // Wait for data_done in Stage 1
+        execute_done  <= 1'b0;
+
+        case (tx_mode)
+            TX_SHOW_REG:  request_show_reg      <= 1'b1;
+            TX_SET_PC:    request_set_pc        <= 1'b1;
+            TX_MEM_READ:  begin
+                request_memory_access <= 1'b1;
+                is_write_memory       <= 1'b0;
+            end
+            TX_MEM_WRITE: begin
+                request_memory_access <= 1'b1;
+                is_write_memory       <= 1'b1;
+            end
+        endcase
+    end
+endtask
+
 
 //macro op governing section and state machine
         reg [15:0] macroop_register;
@@ -556,8 +706,6 @@ endfunction
         assign macro_op = using_macroop_1 && !direct_instr ? macroop_register[15:8] : macroop_register[7:0];
         assign sel_cmd1 = using_macroop_1;
 
-        // Request a new command from Overlord whenever pipeline isn't full and not currently streaming
-        assign request_new_cmd = !pipe_full_rej && (op_read_state == 2'b00);        
         // Thread buffer occupancy states
         localparam  THREAD_EMPTY  = 2'b00, // Neither slot has a valid command
                     THREAD_FULL   = 2'b01, // Both slots occupied
@@ -596,6 +744,7 @@ endfunction
         reg        pc_inc_enable;
 
         wire [23:0] pc_r_data;
+        reg [23:0] pc_w_data;
         
         
         reg pc_w_enable;
@@ -608,7 +757,7 @@ endfunction
         .inc_enable(pc_inc_enable),
         .w_enable(pc_w_enable),    // High to overwrite PC with w_data (Jump/Branch)
         .r_enable(pc_r_enable),    // High to drive PC onto r_data bus
-        .w_data(trit_in),      // 12-trit (24-bit) branch target input
+        .w_data(pc_w_data),      // 12-trit (24-bit) branch target input
         .r_data(pc_r_data),      // 12-trit (24-bit) gated read output
         .overflow(pc_overflow)     // Pulses high when wrapping from all +1s to all -1s
         );
@@ -885,8 +1034,9 @@ assign collision = check_reg_collision(
 
 reg do_housekeeping = 1'b0;
 
-
+reg [1:0] execute_stage = 2'b00;
 reg loading_second_slot = 1'b0;
+reg [23:0] tmp_12t_lat;
 
 always @(posedge clk or negedge rst_n) begin
     //this is the main loop of the system
@@ -1194,14 +1344,19 @@ always @(posedge clk or negedge rst_n) begin
                                         end
                                     end
                                     4'b1001: begin
+
+                                        //we need request next command here
+                                        //when pulled high, this should prompt to cycle threads 
                                         //stall until next macro command is in
-                                        if(!direct_instr) begin
-                                            //to prevent a permanent stall, do nothing if direct instr is up
-                                            if(threadstate != THREAD_FULL) begin
-                                                stall = WAIT_PIPEFULL;
-                                            end
-                                            //unfinished: need calls on the thread manager to ask for more instructions
+                                        //to prevent a permanent stall, do nothing if direct instr is up
+                                        if (!direct_instr && (threadstate != THREAD_FULL)) begin
+                                            request_new_cmd <= 1'b1;
+                                            execute_stage   <= 2'b01; // Wait in Stage 1
+                                            execute_done    <= 1'b0;
+                                        end else begin
+                                            execute_done    <= 1'b1;  // Already full or direct_instr active -> continue
                                         end
+
                                     end
                                     4'b1010: begin
                                         //alu priority step up, housekeep
@@ -1212,6 +1367,7 @@ always @(posedge clk or negedge rst_n) begin
                                     4'b1011: begin
                                         //program counter increment
                                         pc_inc_enable <= 1'b1;
+                                        start_bus_tx(TX_SET_PC, 24'hAAAAAA, pc_r_data);
                                         //blocking or non blocking here?
                                         //remember to always request a pc update when we change it inside here to prevent desync after each macro op and also for situations like these
                                     end
@@ -1230,6 +1386,8 @@ always @(posedge clk or negedge rst_n) begin
                                             mac_c     <= 8'hAA; // Ternary 0
                                         end 
                                     end
+
+                                    default: ;
                                 endcase
                             end else if(command == 4'b0001) begin 
                                 execute_done <= 1'b1;
@@ -1255,6 +1413,7 @@ always @(posedge clk or negedge rst_n) begin
                                         reg [7:0] wdata;
                                         begin                              
                                         */
+
                                         case(param_1[1:0])
                                             2'b00:write_any_reg_4t(1'b0,write_allow,{1'b0, param_1[3:2]} + 2'd3,alias_active_4t,alias_addr_4t,mac_a,am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
                                             2'b01:write_any_reg_4t(1'b0,write_allow,{1'b0, param_1[3:2]} + 2'd3,alias_active_4t,alias_addr_4t,mac_b,am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
@@ -1278,139 +1437,103 @@ always @(posedge clk or negedge rst_n) begin
                                         if(write_allow) begin
                                             if(param_1[0]) begin
                                                 case(param_1[3:1])
-                                                3'b000: mac_a <= 8'hFF;
-                                                3'b001: mac_b <= 8'hFF;
-                                                3'b010: mac_c <= 8'hFF;
-                                                3'b011: mac_d <= 8'hFF;
+                                                3'b000: mac_a <= 8'hAA;
+                                                3'b001: mac_b <= 8'hAA;
+                                                3'b010: mac_c <= 8'hAA;
+                                                3'b011: mac_d <= 8'hAA;
                                                 endcase
                                             end
                                             else begin
-                                                case(param_1[3:1])
-                                                3'b000: sp0_trib0 <= 8'hFF;
-                                                3'b001: sp0_trib1 <= 8'hFF;
-                                                3'b010: sp0_trib2 <= 8'hFF;
-                                                
-                                                3'b011: sp1_trib0 <= 8'hFF;
-                                                3'b100: sp1_trib1 <= 8'hFF;
-                                                3'b101: sp1_trib2 <= 8'hFF;
-
-                                                3'b110: spf_trib0 <= 8'hFF;
-                                                3'b111: spf_trib1 <= 8'hFF;
-                                                endcase
+                                                write_any_reg_4t(1'b0,1'b1,param_1[3:1],alias_active_4t,alias_addr_4t,8'hAA,am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
                                                 if(alias_active_4t && alias_addr_4t == param_1[3:1]) begin
                                                     //clear alias
-                                                    alias_active_4t = 1'b0;
+                                                    alias_active_4t <= 1'b0;
                                                     am_buff_4t <= 8'h55;
                                                 end
                                             end
-                                            
                                         end
                                     end
                                     4'b0100: begin
                                         //hold until register change
                                         //when a micro op with that register being used is reached, it must make sure the register is updated BEFORE it can proceed
                                         //12t register address
+                                        hold_reg_addr   <= param_1;
+                                        hold_reg_active <= 1'b1;
                                     end
-                                    4'b0101: begin
-                                        if(write_allow) begin
-                                            if(alias_addr_12t == 4'd0) begin
-                                                am_buff_12t <= read_any_reg_12t(
-                                                    param_1, using_macroop_1,
-                                                    alias_addr_12t,
-                                                    am_buff_12t,
-                                                    sp0_trib0, sp0_trib1, sp0_trib2,
-                                                    sp1_trib0, sp1_trib1, sp1_trib2,
-                                                    spf_trib0, spf_trib1, spf_trib2,
-                                                    ladder_trib0, ladder_trib1, ladder_trib2,
-                                                    pc_r_data, gp_reg_6, gp_reg_7, gp_reg_8,
-                                                    cmd0_reg_0, cmd0_reg_1, cmd0_reg_2, cmd0_reg_3, cmd0_reg_4, cmd0_reg_5,
-                                                    cmd1_reg_0, cmd1_reg_1, cmd1_reg_2, cmd1_reg_3, cmd1_reg_4, cmd1_reg_5
-                                                );
+                                    4'b0101,4'b0110: begin
+                                        if(alias_addr_12t == 4'd0) begin
+                                            if(write_allow) begin
+                                                am_buff_12t <= shared_rd_12t;
+                                                mask_12t_singleuse <= (param_0 == 4'b0101);//singleuse
                                             end
-                                            else begin
-                                                //housekeep to clear aliases first
-                                            end
-                                            mask_12t_singleuse <= 1'b1;
+                                        end
+                                        else begin
+                                            do_housekeeping = 1'b1;
+                                            execute_stage <= 2'b01;
+                                            execute_done <= 1'b0;
+                                            //housekeep to clear aliases first
+                                        end
                                             //remember for masks if aliasing is active remember they share the same registers so clear the aliases first
                                             //set single use mask for 12 trits
                                             //the value at that 12t address will be copied into the mask buffer
                                             //param 1 is the addresss of the 12 trits that will be copied into the mask
-                                        end
                                     end
-                                    4'b0110: begin
-                                        //*ignores write enable like a boss* (nevermind)
-                                        if(write_allow) begin
-                                            if(alias_addr_12t != 4'd0) begin
-                                                am_buff_12t <= read_any_reg_12t(
-                                                    param_1, using_macroop_1,
-                                                    alias_addr_12t,
-                                                    am_buff_12t,
-                                                    sp0_trib0, sp0_trib1, sp0_trib2,
-                                                    sp1_trib0, sp1_trib1, sp1_trib2,
-                                                    spf_trib0, spf_trib1, spf_trib2,
-                                                    ladder_trib0, ladder_trib1, ladder_trib2,
-                                                    pc_r_data, gp_reg_6, gp_reg_7, gp_reg_8,
-                                                    cmd0_reg_0, cmd0_reg_1, cmd0_reg_2, cmd0_reg_3, cmd0_reg_4, cmd0_reg_5,
-                                                    cmd1_reg_0, cmd1_reg_1, cmd1_reg_2, cmd1_reg_3, cmd1_reg_4, cmd1_reg_5
-                                                );
-                                            end
-                                            else begin
-                                                //housekeep to clear aliases first
-                                                //if write enable is off, it should still run through
-                                            end
-                                            mask_12t_singleuse <= 1'b0;
-                                            //mask will not clear automatically for 12 trits
-                                            //the value at that 12t address will be copied into the mask buffer
-                                            //param 1 is the addresss of the 12 trits that will be copied into the mask
-                                        end
-                                    end
+                                        // 4'b0110: begin
+                                        //     if(write_allow) begin
+                                        //         if(alias_addr_12t != 4'd0) begin
+                                        //             am_buff_12t <= read_any_reg_12t(
+                                        //                 param_1, using_macroop_1,
+                                        //                 alias_addr_12t,
+                                        //                 am_buff_12t,
+                                        //                 sp0_trib0, sp0_trib1, sp0_trib2,
+                                        //                 sp1_trib0, sp1_trib1, sp1_trib2,
+                                        //                 spf_trib0, spf_trib1, spf_trib2,
+                                        //                 ladder_trib0, ladder_trib1, ladder_trib2,
+                                        //                 pc_r_data, gp_reg_6, gp_reg_7, gp_reg_8,
+                                        //                 cmd0_reg_0, cmd0_reg_1, cmd0_reg_2, cmd0_reg_3, cmd0_reg_4, cmd0_reg_5,
+                                        //                 cmd1_reg_0, cmd1_reg_1, cmd1_reg_2, cmd1_reg_3, cmd1_reg_4, cmd1_reg_5
+                                        //             );
+                                        //         end
+                                        //         else begin
+                                        //             //housekeep to clear aliases first
+                                        //             //if write enable is off, it should still run through
+                                        //         end
+                                        //         mask_12t_singleuse <= 1'b0;
+                                        //         //mask will not clear automatically for 12 trits
+                                        //         //the value at that 12t address will be copied into the mask buffer
+                                        //         //param 1 is the addresss of the 12 trits that will be copied into the mask
+                                        //     end
+                                        // end
                                     4'b0111: begin
                                         //4t mask
-                                        if(write_allow) begin
-                                            if(!alias_active_4t) begin
-                                                am_4t <= read_any_reg_4t(
-                                                    param_1[3:1],
-                                                    alias_active_4t,
-                                                    alias_addr_4t,
-                                                    am_buff_4t,
-                                                    sp0_trib0, sp0_trib1, sp0_trib2,
-                                                    sp1_trib0, sp1_trib1, sp1_trib2,
-                                                    spf_trib0, spf_trib1
-                                                );
-                                                if(param_1[0] == 1'b0) begin
-                                                    //xxx0 : single use
-                                                    mask_4t_singleuse <= 1'b1;
-                                                end else begin
-                                                    //xxx1 : will not clear
-                                                    mask_4t_singleuse <= 1'b0;
-                                                end
-                                            end else begin
-                                                //housekeep
+                                        if(!alias_active_4t) begin
+                                                if(write_allow) begin
+                                                am_buff_4t <= shared_rd_4t_a;
+                                                //xxx0 : single use
+                                                //xxx1 : will not clear
+                                                mask_4t_singleuse <= ~param_1[0];
                                             end
+                                        end else begin
+                                            //housekeep
+                                            do_housekeeping = 1'b1;
+                                            execute_stage <= 2'b01;
+                                            execute_done <= 1'b0;
                                         end
                                     end
                                     4'b1000: begin
                                         //1t mask
-                                        if(write_allow) begin
-                                            if(!alias_active_1t) begin
-                                                read_any_reg_1t(
-                                                    param_1[3:1],
-                                                    alias_active_1t,
-                                                    alias_addr_1t,
-                                                    am_buff_1t,
-                                                    spf_flag0, spf_flag1, spf_flag2, spf_flag3, spf_flag4, spf_flag5, spf_flag6, spf_flag7
-                                                );
-                                                if(param_1[0] == 1'b0) begin
-                                                    //xxx0 : single use
-                                                    mask_1t_singleuse <= 1'b1;
-                                                end else begin
-                                                    //xxx1 : will not clear
-                                                    mask_1t_singleuse <= 1'b0;
-                                                end
+                                        if(!alias_active_1t) begin
+                                            if(write_allow) begin
+                                                am_buff_1t <= shared_rd_1t_a;
+                                                //xxx0 : single use
+                                                //xxx1 : will not clear
+                                                mask_1t_singleuse <= ~param_1[0];
                                             end
-                                            else begin
-                                                
-                                            end
+                                        end else begin
+                                            //housekeep
+                                            do_housekeeping = 1'b1;
+                                            execute_stage <= 2'b01;
+                                            execute_done <= 1'b0;
                                         end
                                     end
                                     4'b1001: begin
@@ -1421,33 +1544,12 @@ always @(posedge clk or negedge rst_n) begin
                                         if(write_allow) begin
                                             if(param_1[0] == 1'b0) begin
                                                 //xxx0 : action
-                                                case(param_1[3:1])
-                                                    3'b000: action_ctr <= sp0_trib0;
-                                                    3'b001: action_ctr <= sp0_trib1;
-                                                    3'b010: action_ctr <= sp0_trib2;
-                                                    
-                                                    3'b011: action_ctr <= sp1_trib0;
-                                                    3'b100: action_ctr <= sp1_trib1;
-                                                    3'b101: action_ctr <= sp1_trib2;
-
-                                                    3'b110: action_ctr <= spf_trib0;
-                                                    3'b111: action_ctr <= spf_trib1;
-                                                endcase
+                                                action_ctr <= shared_rd_4t_a;
                                             end else begin
                                                 //xxx1 : param
-                                                case(param_1[3:1])
-                                                    3'b000: param_ctr <= sp0_trib0;
-                                                    3'b001: param_ctr <= sp0_trib1;
-                                                    3'b010: param_ctr <= sp0_trib2;
-                                                    
-                                                    3'b011: param_ctr <= sp1_trib0;
-                                                    3'b100: param_ctr <= sp1_trib1;
-                                                    3'b101: param_ctr <= sp1_trib2;
-
-                                                    3'b110: param_ctr <= spf_trib0;
-                                                    3'b111: param_ctr <= spf_trib1;
-                                                endcase
+                                                param_ctr <= shared_rd_4t_b;
                                             end
+                                            flush <= 1'b1;
                                         end
                                     end
                                     4'b1010: begin
@@ -1455,6 +1557,7 @@ always @(posedge clk or negedge rst_n) begin
                                         //this works to provide memory read writes
                                         //this needs to work in conjunction with the memory bus
                                         //need 2 finish
+                                        start_bus_tx(TX_MEM_READ, shared_rd_12t, 24'hAAAAAA);
                                     end
                                     4'b1011: begin
                                         //alu hogging
@@ -1471,74 +1574,105 @@ always @(posedge clk or negedge rst_n) begin
                                     4'b1101: begin
                                         //show register data on bus
                                         //param 1 is reg addr
-                                        d_out <= shared_rd_12t; request_show_reg <= 1'b1; execute_stage <= 2'b01; execute_done <= 1'b0;
+                                        start_bus_tx(TX_SHOW_REG, 24'hAAAAAA, shared_rd_12t);
+                                        // d_out <= shared_rd_12t; request_show_reg <= 1'b1; execute_stage <= 2'b01; execute_done <= 1'b0;
                                     end
                                     4'b1110: begin
                                         //use the singular spi to do stuff i guess
                                         //param 1 is reg addr for spi, read as 24 bits
                                         //remember to add ownership stuff. send data to the thread control
+                                        //placeholder
+                                        execute_done <= 1'b0;
+                                        execute_stage <= 2'b01;
                                     end
                                 endcase
                             end 
                             else if(command == 4'b0010) begin 
                                 // 2 parameters
                                 case(param_0)
-                                    4'b0000: begin
+                                    4'b0000,4'b0010: begin
                                         //register A copy to register B (12 trits) without mask
                                         //param1 regA addr
                                         //param2 regB addr
                                         //we are strapped for addresses so this will have to do
-                                    end
-                                    4'b0001: begin
-                                        //1 trit reg write
-                                        //param1 xx00, xx is the immediate value, 01 means normal register space, 10 means that write into carry reg
-                                        //param2 xxx0, xxx is the address, and 1 here means the mask is used
-                                    end
-                                    4'b0010: begin
+                                        tmp_12t_lat   <= shared_rd_12t; //latch source before Stage 1
+                                        execute_stage <= 2'b01;
                                         //register A copy to register B (12 trits) with mask
                                         //param1 regA addr
                                         //param2 regB addr
                                     end
-                                    4'b0011: begin
-                                        //1 trit reg move
-                                        //param 1 (addr from) xxx0 : use mask
-                                        //param 1 (addr from) xxx1 : skip mask
-                                        //param 2 (addr to)   xxx0
+
+
+                                    //by collapsing all of the commands to deal with them later, we need not deal with them now
+                                    4'b0001, 4'b0011, 4'b0100, 4'b1100, 4'b1101, 4'b1110: begin
+                                        execute_stage <= 2'b01;
                                     end
-                                    4'b0100: begin
-                                        //4 trit reg move
-                                        //param 1 (addr from) xxx0 : use mask
-                                        //param 1 (addr from) xxx1 : skip mask
-                                        //param 2 (addr to)   xxx0
-                                    end
+                                    /*
+                                        4'b0001: begin
+                                            //1 trit reg write
+                                            //param1 xx00, xx is the immediate value, 01 means normal register space, 10 means that write into carry reg
+                                            //param2 xxx0, xxx is the address, and 1 here means the mask is used
+                                            execute_stage <= 2'b01;
+                                        end
+                                        4'b0011: begin
+                                            //1 trit reg move
+                                            //param 1 (addr from) xxx0 : use mask
+                                            //param 1 (addr from) xxx1 : skip mask
+                                            //param 2 (addr to)   xxx0
+                                            execute_stage <= 2'b01;
+                                        end
+                                        4'b0100: begin
+                                            //4 trit reg move
+                                            //param 1 (addr from) xxx0 : use mask
+                                            //param 1 (addr from) xxx1 : skip mask
+                                            //param 2 (addr to)   xxx0
+                                            execute_stage <= 2'b01;
+                                        end
+                                    */
                                     4'b0101: begin
                                         //due to the shoddy construction of things, you cant swap and mask
                                         //reg swap 12t
                                         //param 1 and 2 : addresses of A and B
+                                        if (alias_addr_12t != 4'd0) do_housekeeping = 1'b1;
+                                        tmp_12t_lat   <= shared_rd_12t;
+                                        execute_stage <= 2'b01;
                                     end
                                     4'b0110: begin
                                         //reg swap 4t
                                         //param 1 and 2 : addresses of A and B
+                                        if (alias_active_4t) do_housekeeping = 1'b1;
+                                        execute_stage <= 2'b01;
                                     end
                                     4'b0111: begin
                                         //reg swap 1t
                                         //param 1 and 2 : addresses of A and B
+                                        if (alias_active_1t) do_housekeeping = 1'b1;
+                                        execute_stage <= 2'b01;
                                     end
                                     4'b1000: begin
                                         //read extended register (the extended register is basically just ram stored on another fpga)
                                         //param 1 Local reg addr 12T
                                         //param 2 Extended reg addr 12t
+                                        start_bus_tx(TX_MEM_READ, {16'hAAAA, param_2, 4'hA}, 24'hAAAAAA);
                                     end
                                     4'b1001: begin
                                         //write extended register
                                         //param 1 Local reg addr 12T
                                         //param 2 Extended reg addr 12t
+                                        if (write_allow) start_bus_tx(TX_MEM_WRITE, {16'hAAAA, param_2, 4'hA}, shared_rd_12t);
+                                        else             execute_done <= 1'b1;
+                                        //if (write_allow)
+                                        //     start_bus_tx(TX_MEM_WRITE, mem_addr_24b, mem_data_24b);
+                                        // else
+                                        //     execute_done <= 1'b1;
                                     end
                                     4'b1010: begin
                                         //hop parameter counter using immediate
-                                        if(write_allow) begin
-                                            param_ctr <= {param_1,param_2};
+                                        if (write_allow) begin
+                                            param_ctr <= {param_1, param_2};
+                                            flush     <= 1'b1;
                                         end
+                                        execute_done <= 1'b1;
                                         //param 1 t3 t2
                                         //param 2 t1 t0
                                         //trits are encoded into 2 bits, using override encoding
@@ -1548,10 +1682,13 @@ always @(posedge clk or negedge rst_n) begin
                                         //param 1 t3 t2
                                         //param 2 t1 t0
                                         //trits are encoded into 2 bits, using override encoding
-                                        if(write_allow) begin
-                                            action_ctr <= {param_1,param_2};
+                                        if (write_allow) begin
+                                            action_ctr <= {param_1, param_2};
+                                            flush      <= 1'b1;
                                         end
+                                        execute_done <= 1'b1;
                                     end
+                                    /*
                                     4'b1100: begin
                                         //Generate mask
                                         //param 1
@@ -1573,10 +1710,17 @@ always @(posedge clk or negedge rst_n) begin
                                         //param 1: ADDR from
                                         //param 2: ADDR to 
                                     end
+                                    */
                                     4'b1111: begin
                                         //mac mul without pumping
                                         //OR mac move
+                                        alu_cmd       <= 3'd2;
+                                        alu_t4_a      <= shared_rd_4t_a;
+                                        alu_t4_b      <= shared_rd_4t_b;
+                                        alu_cmd_ready <= 1'b1;
+                                        execute_stage <= 2'b01;
                                     end
+                                    default: execute_done <= 1'b1;
                                 endcase
                             end
                             else begin
@@ -1588,13 +1732,19 @@ always @(posedge clk or negedge rst_n) begin
                                         xxx0: add
                                         xxx1: sub
                                         Operand B address 4 trit
-                                        0xxx:regular store
-                                        1xxx:invert store
+                                        xxx0:regular store
+                                        xxx1:invert store
 
                                         Result store address 4 trit
-                                        0xxx: skip mask
-                                        1xxx: masked
+                                        xxx0: skip mask
+                                        xxx1: masked
                                         */
+                                        alu_cmd       <= 3'd1;
+                                        alu_t4_a      <= shared_rd_4t_a;
+                                        alu_t4_b      <= param_0[0] ? apply_mask_4t(shared_rd_4t_b, 8'h00) : shared_rd_4t_b;
+                                        alu_t1_a      <= carry_reg;
+                                        alu_cmd_ready <= 1'b1;
+                                        execute_stage <= 2'b01;
                                     end
                                     4'b0100: begin
                                         //reworked mac
@@ -1606,6 +1756,11 @@ always @(posedge clk or negedge rst_n) begin
                                         param 2 Operand B address 4 trit bbb0
                                         param 3 operand C address 4 trit ccc0
                                         */
+                                        alu_cmd       <= 3'd2;
+                                        alu_t4_a      <= (param_0[0] && mask_4t_active) ? apply_mask_4t(shared_rd_4t_a, am_buff_4t) : shared_rd_4t_a;
+                                        alu_t4_b      <= (param_1[0] && mask_4t_active) ? apply_mask_4t(shared_rd_4t_b, am_buff_4t) : shared_rd_4t_b;
+                                        alu_cmd_ready <= 1'b1;
+                                        execute_stage <= 2'b01;
                                     end
                                     4'b0101: begin
                                         //add 3 A + B + C = D
@@ -1615,59 +1770,92 @@ always @(posedge clk or negedge rst_n) begin
                                         param 3 operand C address 4 trit cddd
                                         result stored at address D
                                         */
+                                        alu_cmd       <= 3'd6;
+                                        alu_t4_a      <= shared_rd_4t_a;
+                                        alu_t4_b      <= shared_rd_4t_b;
+                                        alu_t4_c      <= shared_rd_4t_c;
+                                        alu_t1_a      <= carry_reg;
+                                        alu_cmd_ready <= 1'b1;
+                                        execute_stage <= 2'b01;
                                     end
                                     4'b0110: begin
                                         //trit shift
                                         /*
                                         remember to modify alu to support this
                                         address A (original) : xxx , address B (shift amt): yyy (yyy is the 1 trit register address (here the balanced ternary instead is more like 1,2,3))
-                                        00xxxyyy : local, no mask
-                                        01xxxyyy : overflow/underflow , depending on shift dir , no mask
-                                        10xxxyyy : use mask, local
-                                        11xxxyyy : over/underflow, use mask 
+                                        xxx0yyy0 : local, no mask
+                                        xxx0yyy1 : overflow/underflow , depending on shift dir , no mask
+                                        xxx1yyy0 : use mask, local
+                                        xxx1yyy1 : over/underflow, use mask 
                                         //the mask is applied to the thing before shifting
 
                                         Result address (4 trits) zzz0 : shift towards infinity, zzz1 : shift towards 0
                                         */
+                                        alu_cmd       <= 3'd7;
+                                        alu_t4_a      <= (param_0[0] && mask_4t_active) ? apply_mask_4t(shared_rd_4t_a, am_buff_4t) : shared_rd_4t_a;
+                                        alu_t1_a      <= shared_rd_1t_a;
+                                        alu_shift_cmd <= {param_1[0], param_2[0], 1'b0};
+                                        alu_cmd_ready <= 1'b1;
+                                        execute_stage <= 2'b01;
                                     end
                                     4'b0111: begin
                                         /*
                                         single instruction conditional
                                         param 0:
                                         xxx is 1 trit logical evaluation address
-                                        1xxx: execute if equal
-                                        0xxx: execute if unequal
+                                        xxx1: execute if equal
+                                        xxx0: execute if unequal
                                         param 1&2 action rom addresses are aaa and param rom is ppp
                                         aaap ppt0
                                         t0 here is an immediate trit, where it checks if the evaluation address equals to this and writes the action and params when equal or unequal
                                         use override encoding 00 : -1 , 01 :  1 , 10|11 : 0
-
                                         */
+                                        if (write_allow) begin
+                                            if (param_0[0] == (shared_rd_1t_a == ((param_2[1:0] == 2'b11) ? 2'b10 : param_2[1:0]))) begin
+                                                action_ctr <= {5'b0, param_1[3:1]};
+                                                param_ctr  <= {5'b0, param_1[0], param_2[3:2]};
+                                                flush      <= 1'b1;
+                                            end
+                                        end
+                                        execute_done <= 1'b1;
                                     end
+                                        // 4'b1000: begin
+                                        //     //tritwise 1
+                                        //     //params 012 , a against b , store value at c
+                                        //     /*
+                                        //         aaab bbb ccc0 : skip mask
+                                        //         aaab bbb ccc1 : use mask
+                                        //     */
+                                        // end
+                                        // 4'b1001: begin
+                                        //     //tritwise 2
+                                        //     //params 012 , a against b , store value at c
+                                        //     /*
+                                        //         aaab bbb ccc0 : skip mask
+                                        //         aaab bbb ccc1 : use mask
+                                        //     */
+                                        // end
+                                        // 4'b1010: begin
+                                        //     //tritwise 3
+                                        //     //params 012 , a against b , store value at c
+                                        //     /*
+                                        //         aaab bbb ccc0 : skip mask
+                                        //         aaab bbb ccc1 : use mask
+                                        //     */
+                                        // end
+                                    
                                     4'b1000: begin
-                                        //tritwise 1
-                                        //params 012 , a against b , store value at c
-                                        /*
-                                            aaab bbb ccc0 : skip mask
-                                            aaab bbb ccc1 : use mask
-                                        */
-                                    end
-                                    4'b1001: begin
-                                        //tritwise 2
-                                        //params 012 , a against b , store value at c
-                                        /*
-                                            aaab bbb ccc0 : skip mask
-                                            aaab bbb ccc1 : use mask
-                                        */
-                                    end
-                                    4'b1010: begin
-                                        //tritwise 3
-                                        //params 012 , a against b , store value at c
-                                        /*
-                                            aaab bbb ccc0 : skip mask
-                                            aaab bbb ccc1 : use mask
-                                        */
-                                    end
+                                        case ({param_0[0], param_1[0]})
+                                            2'b00:   alu_cmd <= 3'd3; // Tritwise 1
+                                            2'b01:   alu_cmd <= 3'd4; // Tritwise 2
+                                            2'b10:   alu_cmd <= 3'd5; // Tritwise 3
+                                            default: alu_cmd <= 3'd3; // Spare
+                                        endcase
+                                        alu_t1_a      <= shared_rd_1t_a;
+                                        alu_t1_b      <= shared_rd_1t_b;
+                                        alu_cmd_ready <= 1'b1;
+                                        execute_stage <= 2'b01;
+                                    end                                       
                                     4'b1011: begin
                                         /*
                                         4 trit imm conversion
@@ -1676,6 +1864,7 @@ always @(posedge clk or negedge rst_n) begin
                                             t3t2 t1t0 xxx0 : use mask
                                             xxx is store address
                                         */
+                                        execute_stage <= 2'b01;
                                     end
                                     4'b1100: begin
                                         /*
@@ -1684,26 +1873,29 @@ always @(posedge clk or negedge rst_n) begin
                                             param 1: 4/1t addr (if the lsb is 0, its a 12-4 trit; if the lsb is 1, its a 4-1)
                                             param 2:Which trit to copy (2 bits) + mask result bit + direction bit
                                         */
+                                        execute_stage <= 2'b01;
                                     end
                                     //we have 3 left over. maybe one day it can do something
+                                    default: execute_done <= 1'b1;
                                 endcase
                             end
 
                             //important! remember to increment based on command
-                            if(command == 4'b0000) begin
-                                // 0 parameters
-                                p_pc_inc = 1'b1;
-                                p_pc_inc_amt = 2'b01;
-                            end else if(command == 4'b0001) begin 
-                                // 1 parameter
-                                p_pc_inc = 1'b1;
-                                p_pc_inc_amt = 2'b10;
-                            end 
-                            else begin
-                                p_pc_inc = 1'b1;
-                                p_pc_inc_amt = 2'b11;
-                            end
 
+                            //nevermind we removed this
+                                // if(command == 4'b0000) begin
+                                //     // 0 parameters
+                                //     p_pc_inc = 1'b1;
+                                //     p_pc_inc_amt = 2'b01;
+                                // end else if(command == 4'b0001) begin 
+                                //     // 1 parameter
+                                //     p_pc_inc = 1'b1;
+                                //     p_pc_inc_amt = 2'b10;
+                                // end 
+                                // else begin
+                                //     p_pc_inc = 1'b1;
+                                //     p_pc_inc_amt = 2'b11;
+                                // end
 
                             //housekeeping stage
                             /*
@@ -1716,11 +1908,278 @@ always @(posedge clk or negedge rst_n) begin
                             //for data to be written, check if the command can skip data masking then either mask or write
                             //data masking stage
                             //write stage
-
                         end else if(command_data_sent) begin
                             //this is for multi stage execution
                             //at most you have 4 stages because reasons (its harder to mess up in 4 cycles)
                             //during this time you can still request microcode
+                            //this is for the stall but i havent done the rest of it
+
+                            case (execute_stage)
+                                2'b01: begin
+                                    //wait until next command comes in
+                                    if (command == 4'b0000 && param_0 == 4'b1001) begin
+                                        if (threadstate == THREAD_FULL || direct_instr) begin
+                                            request_new_cmd <= 1'b0;
+                                            execute_stage   <= 2'b00;
+                                            execute_done    <= 1'b1;
+                                        end
+                                    end 
+                                    else if (request_show_reg || request_set_pc || request_memory_access) begin
+                                        //bus wait
+                                        if (data_done) begin
+                                            if (request_memory_access && !is_write_memory && write_allow) begin
+                                                /*
+                                                    input use_mask;
+                                                    input        write_allow;
+                                                    input [3:0]  addr;
+                                                    input        sel_cmd1;
+                                                    // Alias check inputs
+                                                    inout [3:0]  alias_addr_12t;
+                                                    inout [23:0] am_12t;
+                                                    input [23:0] data_12t;
+                                                    output pc_wen;
+                                                    output [23:0] pc_val;
+                                                    // Scratchpads, Flags (with spf_trib2), Ladder
+                                                    output [7:0]  sp0_t0, sp0_t1, sp0_t2;
+                                                    output [7:0]  sp1_t0, sp1_t1, sp1_t2;
+                                                    output [7:0]  spf_t0, spf_t1, spf_t2;
+                                                    
+                                                    //ladder
+                                                    output [7:0] mac_a, mac_b,mac_d; // Incoming product:   | D | C |
+                                                    // PC & Secondary Registers
+                                                    output [23:0] gp6, gp7, gp8;
+                                                    output [23:0] c0_0, c0_1, c0_2, c0_3, c0_4, c0_5;
+                                                    output [23:0] c1_0, c1_1, c1_2, c1_3, c1_4, c1_5;
+                                                    
+                                                    reg [23:0] wdata;
+                                                    */
+
+                                                write_any_reg_12t(1'b0,1'b1,param_1,using_macroop_1,alias_addr_12t,am_buff_12t,d_in,pc_w_enable,pc_w_data,{sp0_t0,sp0_t1,sp0_t2},{sp1_t0,sp0_t1,sp0_t2},{spf_t0,spf_t1,spf_t2},gp6,gp7,gp8,cmd0_reg_0,cmd0_reg_1,cmd0_reg_2,cmd0_reg_3,cmd0_reg_4,cmd0_reg_5,cmd1_reg_0,cmd1_reg_1,cmd1_reg_2,cmd1_reg_3,cmd1_reg_4,cmd1_reg_5);
+                                            end
+                                            request_show_reg      <= 1'b0;
+                                            request_set_pc        <= 1'b0;
+                                            request_memory_access <= 1'b0;
+                                            is_write_memory       <= 1'b0;
+                                            execute_stage         <= 2'b00;
+                                            execute_done          <= 1'b1;
+                                        end
+                                    end 
+                                    else if ((command == 4'b0010 && param_0 == 4'b1111) ||
+                                                command == 4'b0011 || command == 4'b0100 || command == 4'b0101 ||
+                                                command == 4'b0110 || command == 4'b1000) begin
+                                        //alu op section
+                                        if (alu_res_ready) begin
+                                            alu_cmd_ready  <= 1'b0; //release ALU lock
+                                            alu_res_4t_lat <= alu_t4_o;
+                                            alu_res_1t_lat <= alu_t1_o;
+                                            if (command == 4'b0010 && param_0 == 4'b1111) begin
+                                                if (write_allow) begin
+                                                    if (param_1[3]) begin //mac seed -> B,A
+                                                        mac_a <= alu_multiply_o[7:0]; mac_b <= alu_multiply_o[15:8]; mac_carry <= 2'b10;
+                                                    end else begin        //mac mul  -> D,C
+                                                        mac_c <= alu_multiply_o[7:0]; mac_d <= alu_multiply_o[15:8];
+                                                    end
+                                                end
+                                                execute_stage <= 2'b00;
+                                                execute_done  <= 1'b1;
+                                            end else if (command == 4'b0100) begin
+                                                if (write_allow) begin
+                                                    mac_c <= alu_multiply_o[7:0];
+                                                    mac_d <= alu_multiply_o[15:8];
+                                                end
+                                                execute_stage <= 2'b10; //mac B+C & pump in stage 2
+                                            end else begin
+                                                execute_stage <= 2'b10; //masked writeback in stage 2
+                                            end
+                                        end
+                                    end else if (command == 4'b0001) begin
+                                    //after housekeeping mask stuffs
+                                        if (write_allow) begin
+                                            case (param_0)
+                                                4'b0101, 4'b0110: begin
+                                                    am_buff_12t        <= shared_rd_12t;
+                                                    mask_12t_active    <= 1'b1;
+                                                    mask_12t_singleuse <= (param_0 == 4'b0101);
+                                                end
+                                                4'b0111: begin
+                                                    am_buff_4t        <= shared_rd_4t_a;
+                                                    mask_4t_active    <= 1'b1;
+                                                    mask_4t_singleuse <= ~param_1[0];
+                                                end
+                                                4'b1000: begin
+                                                    am_buff_1t        <= shared_rd_1t_a;
+                                                    mask_1t_active    <= 1'b1;
+                                                    mask_1t_singleuse <= ~param_1[0];
+                                                end
+                                                default: ;
+                                            endcase
+                                        end
+                                        execute_stage <= 2'b00;
+                                        execute_done  <= 1'b1;
+
+                                    // 1E. 2-Parameter Non-ALU Commits (Copies, Moves, Swaps, Imm, Gen)
+                                    end else if (command == 4'b0010) begin
+                                        if (write_allow) begin
+                                            case (param_0)
+                                                4'b0000,// 12t Copy (no mask)
+                                                4'b0010: begin// 12t Copy (masked)
+
+                                                    write_any_reg_12t(param_0[1],1'b1,param_2,using_macroop_1,alias_addr_12t,am_buff_12t,tmp_12t_lat,pc_w_enable,pc_w_data,{sp0_t0,sp0_t1,sp0_t2},{sp1_t0,sp0_t1,sp0_t2},{spf_t0,spf_t1,spf_t2},gp6,gp7,gp8,cmd0_reg_0,cmd0_reg_1,cmd0_reg_2,cmd0_reg_3,cmd0_reg_4,cmd0_reg_5,cmd1_reg_0,cmd1_reg_1,cmd1_reg_2,cmd1_reg_3,cmd1_reg_4,cmd1_reg_5);
+                                                    if (mask_12t_singleuse) alias_addr_12t <= 4'd0;
+                                                end
+                                                4'b0001: begin // 1t Imm Write
+                                                    if (param_1[1:0] == 2'b10)
+                                                        //write to carry reg
+                                                        carry_reg <= (param_2[0] && mask_1t_active) ? apply_mask_1t(param_1[3:2], am_buff_1t) : param_1[3:2];
+                                                    else
+                                                        /*
+                                                        input use_mask;
+                                                        input write_allow;
+                                                        input [2:0] addr_1t;
+                                                        input [1:0] data_1t;
+                                                        inout       alias_active_1t;
+                                                        input [2:0] alias_addr_1t;
+                                                        inout [1:0] am_1t;
+                                                        output [1:0] f0, f1, f2, f3, f4, f5, f6, f7;
+
+                                                        reg [1:0] wdata;
+                                                        */
+                                                        //
+                                                        write_any_reg_1t(param_2[0],1'b1,param_2[3:1], param_1[3:2],alias_active_1t,alias_addr_1t,am_buff_1t,spf_flag0,spf_flag1,spf_flag2,spf_flag3,spf_flag4,spf_flag5,spf_flag6,spf_flag7);
+                                                    if (param_2[0] && mask_1t_singleuse) am_buff_1t <= 2'b01;//set to * by 1
+                                                end
+                                                4'b0011: begin // 1t mv (param_1[0]=1: use mask, =0: skip mask)
+                                                    write_any_reg_1t(param_2[0],1'b1,param_2[3:1], param_1[3:2],alias_active_1t,alias_addr_1t,am_buff_1t,spf_flag0,spf_flag1,spf_flag2,spf_flag3,spf_flag4,spf_flag5,spf_flag6,spf_flag7);
+                                                    if (!param_1[0] && mask_1t_singleuse) am_buff_1t <= 2'b01;//set to * by 1
+                                                end
+                                                4'b0100: begin // 4t Move (param_1[0] =1: use mask, =0: skip mask)
+
+                                                    //mask,wallow,
+                                                    write_any_reg_4t(param_1[0],1'b1,param_1[3:1],alias_active_4t,alias_addr_4t,shared_rd_4t_a,am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
+                                                    if (!param_1[0] && mask_4t_singleuse) am_buff_1t <= 2'b01;//set to * by 1
+                                                end
+                                                4'b0101: begin // 12t Swap (A=param_1 written FIRST, B=param_2 aliased)
+                                                    am_buff_12t    <= tmp_12t_lat;
+                                                    alias_addr_12t <= param_2;
+                                                    write_any_reg_12t(1'b0,1'b1,param_1,using_macroop_1,alias_addr_12t,am_buff_12t,shared_rd_12t,pc_w_enable,pc_w_data,{sp0_t0,sp0_t1,sp0_t2},{sp1_t0,sp0_t1,sp0_t2},{spf_t0,spf_t1,spf_t2},gp6,gp7,gp8,cmd0_reg_0,cmd0_reg_1,cmd0_reg_2,cmd0_reg_3,cmd0_reg_4,cmd0_reg_5,cmd1_reg_0,cmd1_reg_1,cmd1_reg_2,cmd1_reg_3,cmd1_reg_4,cmd1_reg_5);
+                                                    //stage 1 shared_rd_12t reads param_2
+                                                end
+                                                4'b0110: begin // 4t Swap (A=param_1[3:1] written FIRST, B=param_2[3:1] aliased)
+                                                    //yes i know there is no mask, but convention guys
+                                                    am_buff_4t      <= shared_rd_4t_a;
+                                                    alias_addr_4t   <= param_2[3:1];
+                                                    alias_active_4t <= 1'b1;
+                                                    //due to the shoddy nature of this construct, YES YOU CAN SWAP SOMETHING WITH ITSELF
+                                                    //why? idk
+                                                    write_any_reg_4t(1'b0,1'b1,param_1[3:1],alias_active_4t,alias_addr_4t,shared_rd_4t_b,am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
+                                                end
+                                                4'b0111: begin // 1t Swap (A=param_1[2:0] written FIRST, B=param_2[2:0] aliased)
+                                                    am_buff_1t      <= shared_rd_1t_a;
+                                                    alias_addr_1t   <= param_2[2:0];
+                                                    alias_active_1t <= 1'b1;
+                                                    write_any_reg_1t(1'b0,1'b1,param_1[3:1],shared_rd_1t_b ,alias_active_1t,alias_addr_1t,am_buff_1t,spf_flag0,spf_flag1,spf_flag2,spf_flag3,spf_flag4,spf_flag5,spf_flag6,spf_flag7);
+                                                end
+                                                4'b1101: begin // Generate Value (fill 12t/4t/1t with param_1[3:2])
+                                                    case (param_1[1:0])
+                                                        2'b00: write_any_reg_12t(1'b0,1'b1,param_2,using_macroop_1,alias_addr_12t,am_buff_12t,{12{param_1[3:2]}},pc_w_enable,pc_w_data,{sp0_t0,sp0_t1,sp0_t2},{sp1_t0,sp0_t1,sp0_t2},{spf_t0,spf_t1,spf_t2},gp6,gp7,gp8,cmd0_reg_0,cmd0_reg_1,cmd0_reg_2,cmd0_reg_3,cmd0_reg_4,cmd0_reg_5,cmd1_reg_0,cmd1_reg_1,cmd1_reg_2,cmd1_reg_3,cmd1_reg_4,cmd1_reg_5);
+                                                        2'b01: write_any_reg_4t(1'b0,1'b1,param_2[3:1],alias_active_4t,alias_addr_4t,{4{param_1[3:2]}},am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
+                                                        2'b10: write_any_reg_1t(1'b0,1'b1,param_2[3:1],param_1[3:2],alias_active_1t,alias_addr_1t,am_buff_1t,spf_flag0,spf_flag1,spf_flag2,spf_flag3,spf_flag4,spf_flag5,spf_flag6,spf_flag7);
+                                                        default: ;
+                                                    endcase
+                                                end
+                                                default: ;
+                                            endcase
+                                        end
+                                        execute_stage <= 2'b00;
+                                        execute_done  <= 1'b1;
+                                    // 1F. 4-Trit imm load (1011) and slice transfer (1100)
+                                    end else begin
+                                        if (write_allow && command == 4'b1011) begin
+                                            write_any_reg_4t(param_2[0],1'b1,param_2[3:1],alias_active_4t,alias_addr_4t,{param_0, param_1},am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
+                                            if (param_2[0] && mask_4t_singleuse) am_buff_4t <= 8'h55;
+                                        end
+                                        execute_stage <= 2'b00;
+                                        execute_done  <= 1'b1;
+                                    end
+                                end
+
+                                2'b10: begin
+                                    if (command == 4'b0100) begin
+                                        // mac: kick A out (masked by param_2[0]), A <= B+C, B <= D
+                                        if (write_allow) begin
+                                            write_any_reg_4t(param_2[0],1'b1,param_2[3:1],alias_active_4t,alias_addr_4t,mac_a,am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
+                                            mac_a     <= mac_sum;
+                                            mac_b     <= mac_d;
+                                            mac_carry <= mac_cout;
+                                            if ((param_0[0] || param_1[0] || param_2[0]) && mask_4t_singleuse) am_buff_4t <= 8'h55;
+                                        end
+                                    end else if (write_allow) begin
+                                        case (command)
+                                            // 0011:Add/Sub — param_1[0]=invert store, param_2[3:1]=dest, param_2[0]=mask
+                                            4'b0011: begin
+                                                carry_reg <= alu_res_1t_lat;
+                                                write_any_reg_4t(param_2[0],1'b1,param_2[3:1],alias_active_4t,alias_addr_4t,param_1[0] ? apply_mask_4t(alu_res_4t_lat, 8'h00) : alu_res_4t_lat ,am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
+                                                if (param_2[0] && mask_4t_singleuse) am_buff_4t <= 8'h55;
+                                            end
+
+                                            // 0101:Add3 — dest = param_2[2:0]
+                                            4'b0101: begin
+                                                carry_reg <= alu_res_1t_lat;
+                                                write_any_reg_4t(1'b0,1'b1,param_2[2:0],alias_active_4t,alias_addr_4t,alu_res_4t_lat,am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
+                                            end
+
+                                            // 0110:Trit Shift — dest = param_2[3:1] (mask was pre-applied in Stage 0)
+                                            4'b0110: begin
+                                                //ts is frying me
+                                                write_any_reg_4t(1'b0,1'b1,param_2[3:1],alias_active_4t,alias_addr_4t,alu_res_4t_lat,am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
+                                                if (param_0[0] && mask_4t_singleuse) am_buff_4t <= 8'h55;
+                                            end
+
+                                            // 1000:tritwise — dest = param_2[3:1], mask = param_2[0]
+                                            4'b1000: begin
+                                                //this is 1 trit
+                                                write_any_reg_1t(param_2[0],1'b1,param_2[3:1],alu_res_1t_lat,alias_active_1t,alias_addr_1t,am_buff_1t,spf_flag0,spf_flag1,spf_flag2,spf_flag3,spf_flag4,spf_flag5,spf_flag6,spf_flag7);
+                                                if (param_2[0] && mask_1t_singleuse) am_buff_1t <= 1'b01;
+                                            end
+
+                                            default: ;
+                                        endcase
+                                    end
+                                    execute_stage <= 2'b00;
+                                    execute_done  <= 1'b1;
+                                end
+
+
+                                //free space!
+                                default: begin
+                                    execute_stage <= 2'b00;
+                                    execute_done  <= 1'b1;
+                                end
+                            endcase
+
+                            // if (command == 4'b0000 && param_0 == 4'b1001) begin
+                            //     if (threadstate == THREAD_FULL || direct_instr) begin
+                            //         request_new_cmd <= 1'b0;
+                            //         execute_stage   <= 2'b00;
+                            //         execute_done    <= 1'b1;
+                            //     end
+                            // end
+                            // //stage 1
+                            // if (request_show_reg || request_set_pc || request_memory_access) begin
+                            //     if (data_done) begin
+                            //         // If this was a Memory Read (100), commit the 24-bit d_in back to the target 12t reg
+                            //         if (request_memory_access && !is_write_memory && write_allow) begin
+                            //             write_reg_12t(param_1, d_in);
+                            //         end
+
+                            //         request_show_reg      <= 1'b0;
+                            //         request_set_pc        <= 1'b0;
+                            //         request_memory_access <= 1'b0;
+                            //         is_write_memory       <= 1'b0;
+                            //         execute_stage         <= 2'b00;
+                            //         execute_done          <= 1'b1;
+                            //     end
+                            // end
                         end else begin
                             //Housekeeping
                             do_housekeeping = 1'b1;
