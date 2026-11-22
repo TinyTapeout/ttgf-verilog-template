@@ -8,16 +8,16 @@ module ternary_to_unsigned_binary_logic_convert_4t (
     output wire [6:0] out_bin
 );
 
-    // --- Unbalanced Base-3 Mapping ---
-    // Converts balanced dual-wire encoding directly into an unsigned +40 offset space:
-    // 01 (-1)       -> 2'd0
-    // 00 (0) or 11  -> 2'd1  (Safely defaults illegal 11 states to 0 weight)
-    // 10 (+1)       -> 2'd2
-    
-    wire [1:0] u3 = (in_trits[7:6] == 2'b10) ? 2'd2 : ((in_trits[7:6] == 2'b01) ? 2'd0 : 2'd1);
-    wire [1:0] u2 = (in_trits[5:4] == 2'b10) ? 2'd2 : ((in_trits[5:4] == 2'b01) ? 2'd0 : 2'd1);
-    wire [1:0] u1 = (in_trits[3:2] == 2'b10) ? 2'd2 : ((in_trits[3:2] == 2'b01) ? 2'd0 : 2'd1);
-    wire [1:0] u0 = (in_trits[1:0] == 2'b10) ? 2'd2 : ((in_trits[1:0] == 2'b01) ? 2'd0 : 2'd1);
+    //updated mappings
+
+    //now 10 / 11 = +1
+    //00 = 0
+    //01 = 2
+    //checks if its tern0 first, puts that to d1. if not, checks the msb and assigns to either 2 or 0
+    wire [1:0] u3 = (in_trits[7] == 1'b1) ? 2'd1 : ((in_trits[6] == 1'b1) ? 2'd2 : 2'd0);
+    wire [1:0] u2 = (in_trits[5] == 1'b1) ? 2'd1 : ((in_trits[4] == 1'b1) ? 2'd2 : 2'd0);
+    wire [1:0] u1 = (in_trits[3] == 1'b1) ? 2'd1 : ((in_trits[2] == 1'b1) ? 2'd2 : 2'd0);
+    wire [1:0] u0 = (in_trits[1] == 1'b1) ? 2'd1 : ((in_trits[0] == 1'b1) ? 2'd2 : 2'd0);
 
     // --- Final Unsigned Adder Tree ---
     // Weights: 3^3=27, 3^2=9, 3^1=3, 3^0=1

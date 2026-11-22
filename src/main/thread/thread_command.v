@@ -108,7 +108,15 @@ module thread_command(
         output wire a_ctr_overflow,
         output wire p_ctr_overflow,
         output wire reg_overflow,
-        output wire [3:0] offending_id
+        output wire [3:0] offending_id,
+
+    //bus comms
+    input  wire        bus_is_cmd,      //1 = macro-op byte, 0 = 24-bit param byte
+    input  wire [2:0]  bus_param_idx,   //target param register index (from ui_in[7:5])
+    input  wire [1:0]  bus_byte_phase,  //incoming byte chunk (00, 01, 10)
+    output reg         request_show_reg,//triggers req_type 3'b001 (0001:1101)
+    output reg  [15:0] ext_addr_out     // 8-trit (16-bit) high memory address (0001:1100)
+    //the actual bytes come in through bus_data_phase
 );
 
 //register section
@@ -877,6 +885,9 @@ assign collision = check_reg_collision(
 
 reg do_housekeeping = 1'b0;
 
+
+reg loading_second_slot = 1'b0;
+
 always @(posedge clk or negedge rst_n) begin
     //this is the main loop of the system
     if (!rst_n) begin
@@ -916,6 +927,9 @@ always @(posedge clk or negedge rst_n) begin
         am_buff_4t         <= 8'h55;
         am_buff_1t         <= 2'b01;
 
+        //uhhhh
+        loading_second_slot <= 1'b0;
+
         //top reggies
         // {sp0_trib2, sp0_trib1, sp0_trib0} <= 24'hAAAAAA;
         // {sp1_trib2, sp1_trib1, sp1_trib0} <= 24'hAAAAAA;
@@ -936,6 +950,13 @@ always @(posedge clk or negedge rst_n) begin
         // alu_res_mul_lat <= 16'hAAAA;
         // hold_reg_addr <= 4'b0;
         hold_reg_active <= 1'b0;
+
+        hog_timer             <= 4'd0;
+        request_show_reg      <= 1'b0;
+        request_set_pc        <= 1'b0;
+        request_memory_access <= 1'b0;
+        is_write_memory       <= 1'b0;
+        ext_addr_out          <= 16'hAAAA; // 8 trits of canonical zero
 
     end else begin
         
@@ -1439,15 +1460,18 @@ always @(posedge clk or negedge rst_n) begin
                                         //alu hogging
                                         //for big operations that need alu max priority on all processes
                                         //param 1 is a binary number up to 16
+                                        hog_timer <= param_1;
                                     end
                                     4'b1100: begin
-                                        //save to the extended memory address (so you can get up to 263GiB of addressable ram)
+                                        //save to the extended memory address (so you can get up to 9.7GiB of addressable ram)
                                         //this gets sent to the thread manager and saved there
                                         //each thread has their own little memory address
+                                        if (write_allow) ext_addr_out <= shared_rd_12t[15:0];
                                     end
                                     4'b1101: begin
                                         //show register data on bus
                                         //param 1 is reg addr
+                                        d_out <= shared_rd_12t; request_show_reg <= 1'b1; execute_stage <= 2'b01; execute_done <= 1'b0;
                                     end
                                     4'b1110: begin
                                         //use the singular spi to do stuff i guess
@@ -1707,58 +1731,189 @@ always @(posedge clk or negedge rst_n) begin
             // macro op acquisition section
 
             //command in section; check if direct execution mode has been locked
-            if(ret_micro) begin
+            if (ret_micro) begin
+                ret_micro <= 1'b0;
                 // open for business
-                    if(pipe_full_rej) begin
-                        //normal, shows that it is ready for data!                
-                        if(!data_valid) begin //if there is no data in
-                            pipe_full_rej = 1'b0;
-                            opstate = op_wait_cmd;
-                            //the state handles itself here
-                            if(using_macroop_1) begin
-                                threadstate = THREAD_EMPTY1;
-                            end
-                            else begin
-                                threadstate = THREAD_EMPTY0;
-                            end
-                        end
-                        else begin 
-                            if(using_macroop_1) begin
-                                //thus macro op 0 shoulde be used at this moment
-                                //writes into macro_op 1
-                                macroop_register[15:8] <= bus_data_in;
-                                threadstate = THREAD_EMPTY1;
-                            end
-                            else begin
-                                macroop_register[7:0] <= bus_data_in;
-                                threadstate = THREAD_EMPTY0;
-                            end
-
-                            op_read_state = 2'b01;
-                            //if there is incoming data, then it is treated as the first incoming data
-                            using_macroop_1 <= ~using_macroop_1; //non blocking to execute at the end of the cycle
-                        end
-                    end
-                    else begin
-                        //the pipe is fully empty
-                        //warn
-                        if(!data_valid) begin //if there is no data in
-                            pipe_empty = 1'b1;
-                            //pull pipe empty
-                            threadstate = THREAD_EMPTY;
-                            //the state handles itself here
-                        end
-                        else begin //if there is incoming data, then it is treated as the first incoming data
-                            macroop_register[7:0] <= bus_data_in; //if fully empty then you should of course fill from command 0
-                            using_macroop_1 <= 1'b0;
-                            op_read_state = 2'b01;
-                        end
-                    end
-                    //ret micro is now 0
+                if (pipe_full_rej) begin
+                    // Queued buffer is ready! flip active buffer and start its microcode immediately.
+                    // remember on fpga side it should always keep input is command high and have a macro op ready at all times
+                    //normal, shows that it is ready for data!
+                    using_macroop_1 <= ~using_macroop_1;
+                    pipe_full_rej   <= 1'b0;
+                    //the state handles itself here
+                    threadstate     <= using_macroop_1 ? THREAD_EMPTY1 : THREAD_EMPTY0;
+                    action_ctr      <= 8'h00; // Canonical ternary 0
+                    param_ctr       <= 8'h00;
+                    flush           <= 1'b1;  // 1-cycle pulse to microcode fetcher
+                end else begin
+                    // No queued macro-op waiting -> pipe is now completely empty
+                    pipe_empty          <= 1'b1;
+                    threadstate         <= THREAD_EMPTY;
+                    loading_second_slot <= 1'b0;
+                end
             end
 
-            //these are outside of returning micro because they can keep executing / reading the second command while the device is stil ticking
+            //param and command streaming 
+            //protocol: ui_in[7:5] counts down 6..1 for params; 0 = safe dock / 0-param
+            //when a new command is loaded in, the commander should start presubmitting microcode requests
+            //even when it's still receiving the rest of the params
+            //as well as check if its 11xxxxxx, indicating that the streamed data should be used as a micro op
+            //
+            //for direct execution, its loaded into a separate buffer, splitting the data into 11aaaa-- bbbbcccc dddd----
+            if (data_valid && !pipe_full_rej) begin
+                if (bus_is_cmd) begin
+                    //8-Bit Macro-Op Byte (1-byte transfer, phase 00 -> 11) ---
+                    if (bus_data_in[7:6] == 2'b11) begin
+                        // Direct Execution Mode: 11aaaa--
+                        direct_exec_active <= 1'b1;
+                        direct_cmd         <= bus_data_in[5:2];
+                    end else begin
+                        direct_exec_active <= 1'b0;
 
+                        if (threadstate == THREAD_EMPTY) begin
+                            // Pipe empty -> load Slot 0 and pre-fetch microcode immediately
+                            macroop_register[7:0] <= bus_data_in;
+                            using_macroop_1       <= 1'b0;
+                            pipe_empty            <= 1'b0;
+                            threadstate           <= THREAD_EMPTY1;
+                            loading_second_slot   <= 1'b0;
+                            action_ctr            <= 8'h00;
+                            param_ctr             <= 8'h00;
+                            flush                 <= 1'b1; // Pre-fetch while params stream in
+                        end else begin
+                            // Load inactive slot (opposite of using_macroop_1)
+                            if (using_macroop_1)
+                                macroop_register[7:0]  <= bus_data_in;
+                            else
+                                macroop_register[15:8] <= bus_data_in;
+
+                            if (bus_param_idx == 3'd0) begin
+                                // 0-param macro-op in 2nd slot -> pipe is immediately full
+                                threadstate         <= THREAD_FULL;
+                                pipe_full_rej       <= 1'b1;
+                                loading_second_slot <= 1'b0;
+                            end else begin
+                                loading_second_slot <= 1'b1;
+                            end
+                        end
+                    end
+                end else begin
+                    //param
+                    if (direct_exec_active) begin
+                        //split 11aaaa-- | bbbbcccc | dddd----
+                        if (bus_byte_phase == 2'b00) begin
+                            direct_p0 <= bus_data_in[7:4];
+                            direct_p1 <= bus_data_in[3:0];
+                        end else if (bus_byte_phase == 2'b01) begin
+                            direct_p2         <= bus_data_in[7:4];
+                            direct_exec_ready <= 1'b1;
+                        end
+                    end else if (bus_param_idx != 3'd0) begin
+                        // Ignore bus_param_idx == 3'd0 (safe dock)
+                        case (bus_byte_phase)
+                            2'b00: cmd_param_reg[7:0]   <= bus_data_in;
+                            2'b01: cmd_param_reg[15:8]  <= bus_data_in;
+                            2'b10: begin
+                                cmd_param_reg[23:16] <= bus_data_in;
+                                cmd_param_id         <= bus_param_idx; // 6 down to 1
+                                cmd_we               <= 1'b1;          // 1-cycle strobe (next clk commits)
+
+                                // Final parameter (index 1) of the 2nd slot finished -> pipe full
+                                if (bus_param_idx == 3'd1 && loading_second_slot) begin
+                                    threadstate         <= THREAD_FULL;
+                                    pipe_full_rej       <= 1'b1;
+                                    loading_second_slot <= 1'b0;
+                                end
+                            end
+                            default: ;
+                        endcase
+                    end
+                end
+            end
+
+
+            /* from module ports
+                input   wire stall,
+                input   wire [7:0] bus_data_in,
+                input   wire data_valid,
+                input   wire data_done,
+                output  wire request_set_pc,
+                output  wire request_memory_access,
+                output  wire is_write_memory,
+                output  wire [23:0] pc_out,
+                output  wire [23:0] addr_out,
+                input   wire [23:0] d_in,  //data in as part of a memory read write is also 12 trits 
+                output  wire [23:0] d_out, //data out is directly 12 trits
+                output  wire pipe_empty,
+                output  wire pipe_full_rej,
+                output  wire request_new_cmd, //set to high when that one micro op
+
+
+                //bus comms
+                input  wire        bus_is_cmd,      //1 = macro-op byte, 0 = 24-bit param byte
+                input  wire [2:0]  bus_param_idx,   //target param register index (from ui_in[7:5])
+                input  wire [1:0]  bus_byte_phase,  //incoming byte chunk (00, 01, 10)
+                output reg         request_show_reg,//triggers req_type 3'b001 (0001:1101)
+                output reg  [15:0] ext_addr_out     // 8-trit (16-bit) high memory address (0001:1100)
+
+                the overlord is the thread manager. can i reuse some ports for the same functionality?            
+            */
+
+            // if(ret_micro) begin
+                //         if(pipe_full_rej) begin
+                //             //normal, shows that it is ready for data!                
+                //             if(!data_valid) begin //if there is no data in
+                //                 pipe_full_rej = 1'b0;
+                //                 opstate = op_wait_cmd;
+                //                 //the state handles itself here
+                //                 if(using_macroop_1) begin
+                //                     threadstate = THREAD_EMPTY1;
+                //                 end
+                //                 else begin
+                //                     threadstate = THREAD_EMPTY0;
+                //                 end
+                //             end
+                //             else begin
+                //                 if(bus_is_cmd) begin
+                //                     if(using_macroop_1) begin
+                //                         //thus macro op 0 shoulde be used at this moment
+                //                         //writes into macro_op 1
+                //                         macroop_register[15:8] <= bus_data_in;
+                //                         threadstate = THREAD_EMPTY1;
+                //                     end
+                //                     else begin
+                //                         macroop_register[7:0] <= bus_data_in;
+                //                         threadstate = THREAD_EMPTY0;
+                //                     end
+
+                //                     op_read_state = 2'b01;
+                //                     //if there is incoming data, then it is treated as the first incoming data
+                //                     using_macroop_1 <= ~using_macroop_1; //non blocking to execute at the end of the cycle
+                //                 end
+                //             end
+                //         end
+                //         else begin
+                //             //the pipe is fully empty
+                //             //warn
+                //             if(!data_valid) begin //if there is no data in
+                //                 pipe_empty = 1'b1;
+                //                 //pull pipe empty
+                //                 threadstate = THREAD_EMPTY;
+                //                 //the state handles itself here
+                //             end
+                //             else begin //if there is incoming data, then it is treated as the first incoming data
+                //                 macroop_register[7:0] <= bus_data_in; //if fully empty then you should of course fill from command 0
+                //                 using_macroop_1 <= 1'b0;
+                //                 op_read_state <= 2'b01;
+                //             end
+                //         end
+                //         //ret micro is now 0
+                // end
+
+
+            /*
+            //do i need these sections below or are they handled in the logic already?
+            //these are outside of returning micro because they can keep executing / reading the second command while the device is stil ticking
             if (data_valid) begin
                 case (op_read_state)
                     2'b01: begin
@@ -1783,6 +1938,7 @@ always @(posedge clk or negedge rst_n) begin
 
             if(data_done) begin
                 
+                //make sure it works with whatever is happenigs
                 op_read_state <= 2'b00;
                 cmd_param_id  <= 3'd1;
                 // on the overlord side, make sure that when data done is sent, the bus is still transmitting properly,
@@ -1808,14 +1964,8 @@ always @(posedge clk or negedge rst_n) begin
                     threadstate <= THREAD_FULL;
                     pipe_full_rej <= 1'b1;
                 end
-
-                //when a new command is loaded in, the commander should start presubmitting microcode requests
-                //even when it's still receiving the rest of the params
-                //as well as check if its 11xxxxxx, indicating that the streamed data should be used as a micro op
-                //
-                //for direct execution, its loaded into a separate buffer, splitting the data into 11aaaa-- bbbbcccc dddd----
-
             end
+            */
 
         end
         else begin
