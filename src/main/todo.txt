@@ -8,3 +8,6 @@ check for most feature completion
 remember to wire up error tracking and handle core dumping
 
 check microcode delays
+
+
+enable logic tester and native macros later
