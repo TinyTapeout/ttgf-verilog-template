@@ -68,6 +68,13 @@ pinout:
   #might not get em but fuh it 
   
   ua[0]: "the singular power line. please take good care of it. thanks." #1.65v 
+  ua[1]: "unused" #1.65v 
+  ua[2]: "unused" #1.65v 
+  ua[3]: "unused" #1.65v 
+  ua[4]: "unused" #1.65v 
+  ua[5]: "unused" #1.65v 
+  ua[6]: "unused" #1.65v 
+  ua[7]: "unused" #1.65v 
 
 # Do not change!
 yaml_version: 6
