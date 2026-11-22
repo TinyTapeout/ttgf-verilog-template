@@ -47,14 +47,14 @@ pinout:
   ui[7]: "variable, see doc"
 
   # Outputs
-  uio[0]: "variable, see doc"
-  uio[1]: "variable, see doc"
-  uio[2]: "variable, see doc"
-  uio[3]: "variable, see doc"
-  uio[4]: "variable, see doc"
-  uio[5]: "variable, see doc"
-  uio[6]: "variable, see doc"
-  uio[7]: "variable, see doc"
+  uo[0]: "variable, see doc"
+  uo[1]: "variable, see doc"
+  uo[2]: "variable, see doc"
+  uo[3]: "variable, see doc"
+  uo[4]: "variable, see doc"
+  uo[5]: "variable, see doc"
+  uo[6]: "variable, see doc"
+  uo[7]: "variable, see doc"
 
   # Bidirectional pins
   uio[0]: "variable but mostly used as data bus 0"
@@ -73,8 +73,6 @@ pinout:
   ua[3]: "unused" #1.65v 
   ua[4]: "unused" #1.65v 
   ua[5]: "unused" #1.65v 
-  ua[6]: "unused" #1.65v 
-  ua[7]: "unused" #1.65v 
 
 # Do not change!
 yaml_version: 6
