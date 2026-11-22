@@ -17,21 +17,21 @@ project:
   # Source files must be in ./src and you must list each source file separately, one per line.
   # Don't forget to also update `PROJECT_SOURCES` in test/Makefile.
   source_files:
-    - "src/main/tt_um_triple_t_devEclipse2.v"
-    - "src/main/tt_um_core_commander.v"
-    - "src/main/ternary_to_unsigned_binary_logic_convert_4t.v"
-    - "src/main/logic_container.v"
-    - "src/main/thread/microcode.v"
-    - "src/main/thread/ternary_pc_4t.v"
-    - "src/main/thread/ternary_pc_12t.v"
-    - "src/main/thread/thread_command.v"
-    - "src/main/alu/alu.v"
-    - "src/main/alu/native_wrapper-sim.v" # fix later ah
-    - "src/main/alu/bt_add_4t.v"
-    - "src/main/alu/bt_add3_4t.v"
-    - "src/main/alu/bt_fa_1t.v"
-    - "src/main/alu/bt_fa3_1t.v"
-    - "src/main/alu/bt_mul_4t.v"
+    - "main/tt_um_triple_t_devEclipse2.v"
+    - "main/tt_um_core_commander.v"
+    - "main/ternary_to_unsigned_binary_logic_convert_4t.v"
+    - "main/logic_container.v"
+    - "main/thread/microcode.v"
+    - "main/thread/ternary_pc_4t.v"
+    - "main/thread/ternary_pc_12t.v"
+    - "main/thread/thread_command.v"
+    - "main/alu/alu.v"
+    - "main/alu/native_wrapper-sim.v" # fix later ah
+    - "main/alu/bt_add_4t.v"
+    - "main/alu/bt_add3_4t.v"
+    - "main/alu/bt_fa_1t.v"
+    - "main/alu/bt_fa3_1t.v"
+    - "main/alu/bt_mul_4t.v"
   analog_pins: 1
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
 # This section is for the datasheet/website. Use descriptive names (e.g., RX, TX, MOSI, SCL, SEG_A, etc.).
