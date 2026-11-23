@@ -2,6 +2,7 @@
 //original written by azzy
 //updated by gemini
 //fixed by azzy
+`default_nettype none
 module tt_um_core_commander (
     input  wire [7:0] ui_in,    // [2:0] enable tag (3'b001), [6:3] cmd_opcode, [7] FPGA read/write ack
     output wire [7:0] uo_out,   // Multiplexed status / address / error / handshake outputs
@@ -534,8 +535,6 @@ module tt_um_core_commander (
 
                         // 1110 (Free Slot): Clear All Error Counters & Alert Flag for Selected Thread
                         4'b1110: begin
-                            err_b2t_t[thread_select]         <= 8'b0;
-                            err_ucode_t[thread_select]       <= 8'b0;
                             err_pc_ovf_t[thread_select]      <= 8'b0;
                             err_uop_act_ovf_t[thread_select] <= 8'b0;
                             err_uop_prm_ovf_t[thread_select] <= 8'b0;

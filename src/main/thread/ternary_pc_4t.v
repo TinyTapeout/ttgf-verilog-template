@@ -1,3 +1,4 @@
+`default_nettype none
 module ternary_pc_4t (
     input  wire       clk,
     input  wire       rst_n,       // Active-low synchronous/asynchronous reset

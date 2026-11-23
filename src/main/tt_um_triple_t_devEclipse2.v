@@ -1,3 +1,4 @@
+`default_nettype none
 //the toppest level of all time
 module tt_um_triple_t_devEclipse2 (
     `ifdef USE_POWER_PINS
@@ -116,7 +117,6 @@ logic_container main_logic (
 
     // Overlord Control & Debug
     .ovl_thread_sel         (thread_sel_wire),
-    .ovl_stall              (3'b000),
     .ovl_reg_read_stage     (reg_read_stage_wire),
     .ovl_reg_address        (reg_addr_wire),
     .ovl_is_read            (is_read_wire),

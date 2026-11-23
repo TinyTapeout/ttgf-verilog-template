@@ -618,7 +618,6 @@ task update_secondary_regs;
     end
 endtask
 
-
 function [23:0] read_debug_ext;
     input [4:0]  addr;
     input        active_bank; // Pass using_macroop_1 so ~active_bank reads the OTHER bank
@@ -907,6 +906,44 @@ endtask
 
         reg [1:0] carry_reg;
 
+wire [7:0] mac_sum;
+wire [1:0] mac_c0, mac_c1, mac_c2, mac_cout;
+
+bt_fa_1t u_fa0 (
+    .a    (mac_b[1:0]),
+    .b    (mac_c[1:0]),
+    .cin  (mac_carry),
+    .sum  (mac_sum[1:0]),
+    .cout (mac_c0)
+);
+
+bt_fa_1t u_fa1 (
+    .a    (mac_b[3:2]),
+    .b    (mac_c[3:2]),
+    .cin  (mac_c0),
+    .sum  (mac_sum[3:2]),
+    .cout (mac_c1)
+);
+
+bt_fa_1t u_fa2 (
+    .a    (mac_b[5:4]),
+    .b    (mac_c[5:4]),
+    .cin  (mac_c1),
+    .sum  (mac_sum[5:4]),
+    .cout (mac_c2)
+);
+
+bt_fa_1t u_fa3 (
+    .a    (mac_b[7:6]),
+    .b    (mac_c[7:6]),
+    .cin  (mac_c2),
+    .sum  (mac_sum[7:6]),
+    .cout (mac_cout)
+);
+
+
+
+assign reg_handover_done = (register_address == 5'd25);
 
 //aliased buffers / masks
     //stands for alias mask buffer
@@ -930,8 +967,6 @@ endtask
         reg        cmd_we;
         reg [1:0]  op_read_state; // 00: idle, 01: byte 0, 10: byte 1, 11: byte 2 & write
 
-
-
 task on_pc_modified;
     begin
         pc_tx_pending <= 1'b1;
@@ -945,137 +980,70 @@ task on_pc_modified;
 endtask
 
 task execute_alias_write;
-    // ctrl
-    input        write_allow;
-    input        active;
-    input        using_macroop_1;
-    input [3:0]  addr_12t_in;
-    input        active_4t_in;
-    input [2:0]  addr_4t;
-    input        active_1t_in;
-    input [2:0]  addr_1t;
-    
-    //pipe tasks
-    input        pipe_w_en;
-    input [2:0]  pipe_addr;
-    input [23:0] bin_trit_in;
-
-    // next state
-    output reg [3:0]  addr_12t_next;
-    output reg        active_4t_next;
-    output reg        active_1t_next;
-    output reg        pc_w_en;
-    output reg [23:0] pc_w_data;
-    //special handling for program counter
-
-    // Alias Buffers (cleared after release)
-    inout [23:0] buff_12t;
-    inout [7:0]  buff_4t;
-    inout [1:0]  buff_1t;
-
-    //top registers
-    inout [7:0]  sp0_t0, sp0_t1, sp0_t2;
-    inout [7:0]  sp1_t0, sp1_t1, sp1_t2;
-    inout [1:0]  f0, f1, f2, f3, f4, f5, f6, f7;
-    inout [7:0]  spf_t2;
-    inout [7:0]  lad_t0, lad_t1, lad_t2;
-    inout [23:0] gp6, gp7, gp8;
-    inout [23:0] c0_0, c0_1, c0_2, c0_3, c0_4, c0_5;
-    inout [23:0] c1_0, c1_1, c1_2, c1_3, c1_4, c1_5;
-
-    // internal controls
-    reg        sec_w_en;
-    reg        ovr_en;
-    reg        ovr_sel;
-    reg [23:0] sec_w_data;
-
+    input active;
+    input is_ret_carryover; // Pass ret_micro here!
+    reg   alias_bank;
     begin
-        // Hold current alias flags by default; clear single-cycle strobes
-        addr_12t_next  = addr_12t_in;
-        active_4t_next = active_4t_in;
-        active_1t_next = active_1t_in;
-
-        pc_w_en        = 1'b0;
-        pc_w_data      = buff_12t;
-        sec_w_en       = 1'b0;
-        ovr_en         = 1'b0;
-        ovr_sel        = 1'b0;
-        sec_w_data     = buff_12t;
+        alias_bank = is_ret_carryover ? ~using_macroop_1 : using_macroop_1;
 
         if (active) begin
-            // 12t
-            if (addr_12t_in != 4'b0000) begin
+            // 12t alias commit
+            if (alias_addr_12t != 4'd0) begin
                 if (write_allow) begin
-                    if (addr_12t_in >= 4'd5) begin
-                        if (addr_12t_in == 4'd5) begin
-                            pc_w_en   = 1'b1;
-                            on_pc_modified;
-                            pc_w_data = buff_12t;
-                        end else begin
-                            sec_w_en   = 1'b1;
-                            ovr_en     = 1'b1;
-                            ovr_sel    = ~using_macroop_1;
-                            sec_w_data = buff_12t;
-                        end
-                    end else begin
-                        case (addr_12t_in)
-                            4'd1: {sp0_t2, sp0_t1, sp0_t0} = buff_12t;
-                            4'd2: {sp1_t2, sp1_t1, sp1_t0} = buff_12t;
-                            4'd3: {spf_t2, f7, f6, f5, f4, f3, f2, f1, f0} = buff_12t;
-                            4'd4: {lad_t2, lad_t1, lad_t0} = buff_12t;
-                        endcase
-                    end
-                end
-                // Clear alias address & buffer regardless of write_allow
-                addr_12t_next = 4'b0000;
-                buff_12t      = 24'h555555;
-            end
-
-            //4t
-            if (active_4t_in) begin
-                if (write_allow) begin
-                    case (addr_4t)
-                        3'd0: sp0_t0 = buff_4t;
-                        3'd1: sp0_t1 = buff_4t;
-                        3'd2: sp0_t2 = buff_4t;
-                        3'd3: sp1_t0 = buff_4t;
-                        3'd4: sp1_t1 = buff_4t;
-                        3'd5: sp1_t2 = buff_4t;
-                        3'd6: {f3, f2, f1, f0} = buff_4t; // spf_trib0
-                        3'd7: {f7, f6, f5, f4} = buff_4t; // spf_trib1
+                    case (alias_addr_12t)
+                        4'd1: {sp0_trib2, sp0_trib1, sp0_trib0} <= am_buff_12t;
+                        4'd2: {sp1_trib2, sp1_trib1, sp1_trib0} <= am_buff_12t;
+                        4'd3: {spf_trib2, spf_flag7, spf_flag6, spf_flag5, spf_flag4,
+                                          spf_flag3, spf_flag2, spf_flag1, spf_flag0} <= am_buff_12t;
+                        4'd4: {mac_d, mac_b, mac_a} <= am_buff_12t;
+                        default: write_secondary_reg(1'b1, alias_addr_12t, alias_bank, am_buff_12t);
                     endcase
                 end
-                active_4t_next = 1'b0;
-                buff_4t        = 8'h55;
+                alias_addr_12t <= 4'd0;
+                am_buff_12t    <= 24'h555555;
             end
 
-            //1trit
-            if (active_1t_in) begin
+            // 4t alias commit
+            if (alias_active_4t) begin
                 if (write_allow) begin
-                    case (addr_1t)
-                        3'd0: f0 = buff_1t;
-                        3'd1: f1 = buff_1t;
-                        3'd2: f2 = buff_1t;
-                        3'd3: f3 = buff_1t;
-                        3'd4: f4 = buff_1t;
-                        3'd5: f5 = buff_1t;
-                        3'd6: f6 = buff_1t;
-                        3'd7: f7 = buff_1t;
+                    case (alias_addr_4t)
+                        3'd0: sp0_trib0 <= am_buff_4t;
+                        3'd1: sp0_trib1 <= am_buff_4t;
+                        3'd2: sp0_trib2 <= am_buff_4t;
+                        3'd3: sp1_trib0 <= am_buff_4t;
+                        3'd4: sp1_trib1 <= am_buff_4t;
+                        3'd5: sp1_trib2 <= am_buff_4t;
+                        3'd6: {spf_flag3, spf_flag2, spf_flag1, spf_flag0} <= am_buff_4t;
+                        3'd7: {spf_flag7, spf_flag6, spf_flag5, spf_flag4} <= am_buff_4t;
                     endcase
                 end
-                active_1t_next = 1'b0;
-                buff_1t        = 2'b01;
+                alias_active_4t <= 1'b0;
+                am_buff_4t      <= 8'h55;
+            end
+
+            // 1t alias commit
+            if (alias_active_1t) begin
+                if (write_allow) begin
+                    case (alias_addr_1t)
+                        3'd0: spf_flag0 <= am_buff_1t;
+                        3'd1: spf_flag1 <= am_buff_1t;
+                        3'd2: spf_flag2 <= am_buff_1t;
+                        3'd3: spf_flag3 <= am_buff_1t;
+                        3'd4: spf_flag4 <= am_buff_1t;
+                        3'd5: spf_flag5 <= am_buff_1t;
+                        3'd6: spf_flag6 <= am_buff_1t;
+                        3'd7: spf_flag7 <= am_buff_1t;
+                    endcase
+                end
+                alias_active_1t <= 1'b0;
+                am_buff_1t      <= 2'b01;
             end
         end
 
-        //always process background command pipe writes (overrides alias on collision)
-        update_secondary_regs(
-            sec_w_en, addr_12t_in, sec_w_data, using_macroop_1, ovr_en, ovr_sel,
-            pipe_w_en, pipe_addr, bin_trit_in,
-            gp6, gp7, gp8,
-            c0_0, c0_1, c0_2, c0_3, c0_4, c0_5,
-            c1_0, c1_1, c1_2, c1_3, c1_4, c1_5
-        );
+        // Background command-pipe parameter commit (overrides alias on collision)
+        if (cmd_we) begin
+            write_secondary_reg(1'b1, {1'b0, cmd_param_id} + 4'd8, cmd_target_bank, cmd_param_reg);
+        end
     end
 endtask
 //masking funcs
@@ -1132,8 +1100,6 @@ function [23:0] apply_mask_12t;
     end
 endfunction
 
-
-
 reg can_execute_this_clock = 1'b1;
 reg [3:0]  exec_cmd_lat, exec_p0_lat, exec_p1_lat, exec_p2_lat;
 reg [7:0]  alu_res_4t_lat;
@@ -1187,6 +1153,9 @@ wire       exec_valid = direct_exec_ready || (command_data_sent && (threadstate 
 
 reg [23:0] debug_reg_cache = 24'b0;
 reg pipe_empty = 1'b0;
+
+reg cmd_target_bank;
+
 
 always @(posedge clk or negedge rst_n) begin
     //this is the main loop of the system
@@ -1259,9 +1228,9 @@ always @(posedge clk or negedge rst_n) begin
         ext_addr_out          <= 16'hAAAA; // 8 trits of canonical zero
         direct_exec_active <= 1'b0;
         direct_exec_ready <= 1'b0;
+        cmd_target_bank <= 1'b0;
 
     end else begin
-        
         execute_done <= 1'b0;
         can_execute_this_clock = 1'b0; // non blocking temp var
         pc_inc_enable          <= 1'b0;
@@ -1332,9 +1301,9 @@ always @(posedge clk or negedge rst_n) begin
                             );
                         end
                         case (register_read_stage)
-                            2'b01: dbg_dout <= debug_reg_cache[7:0];
-                            2'b10: dbg_dout <= debug_reg_cache[15:8];
-                            2'b11: dbg_dout <= debug_reg_cache[23:16];
+                            2'b00: dbg_dout <= debug_reg_cache[7:0];
+                            2'b01: dbg_dout <= debug_reg_cache[15:8];
+                            2'b10: dbg_dout <= debug_reg_cache[23:16];
                             default: dbg_dout <= 8'hAA;
                         endcase
 
@@ -1762,7 +1731,7 @@ always @(posedge clk or negedge rst_n) begin
                             else if(exec_cmd == 4'b0010) begin 
                                 // 2 parameters
                                 case(exec_p0)
-                                    4'b0000,4'b0010: begin
+                                    4'b0000,4'b0010,4'b1110: begin
                                         //register A copy to register B (12 trits) without mask
                                         //param1 regA addr
                                         //param2 regB addr
@@ -1773,13 +1742,16 @@ always @(posedge clk or negedge rst_n) begin
                                         //param1 regA addr
                                         //param2 regB addr
                                     end
-
-
                                     //by collapsing all of the commands to deal with them later, we need not deal with them now
-                                    4'b0001, 4'b0011, 4'b0100, 4'b1100, 4'b1101, 4'b1110: begin
+                                    4'b0001, 4'b0011, 4'b0100, 4'b1101: begin
+                                        if (alias_addr_12t != 4'd0) do_housekeeping = 1'b1;
                                         execute_stage <= 2'b01;
                                     end
+                                    4'b1100: begin
+                                       if (alias_addr_12t != 4'd0) do_housekeeping = 1'b1; 
+                                    end
                                     /*
+
                                         4'b0001: begin
                                             //1 trit reg write
                                             //param1 xx00, xx is the immediate value, 01 means normal register space, 10 means that write into carry reg
@@ -2306,6 +2278,27 @@ always @(posedge clk or negedge rst_n) begin
                                                         default: ;
                                                     endcase
                                                 end
+
+                                                4'b1100: begin // Generate Mask into am_buff_12t
+                                                    // exec_p1: 0=error, 1..3=4t trib fill, 4..15=single trit pos (0..11)
+                                                    // exec_p2[3:2]=trit value, exec_p2[1]=0 single-use / 1 persistent
+                                                    if (exec_p1 == 4'd0) begin
+                                                        reg_ovf_r      <= 1'b1;
+                                                        offending_id_r <= exec_cmd;
+                                                    end else begin
+                                                        am_buff_12t        <= 24'h555555;
+                                                        mask_12t_singleuse <= ~exec_p2[1];
+                                                        case (exec_p1)
+                                                            4'd1: am_buff_12t[7:0]   <= {4{exec_p2[3:2]}};
+                                                            4'd2: am_buff_12t[15:8]  <= {4{exec_p2[3:2]}};
+                                                            4'd3: am_buff_12t[23:16] <= {4{exec_p2[3:2]}};
+                                                            default: am_buff_12t[(exec_p1 - 4'd4)*2 +: 2] <= exec_p2[3:2];
+                                                        endcase
+                                                    end
+                                                end
+                                                4'b1110: begin // Write 12t to NEXT command parameter space (~using_macroop_1)
+                                                    write_any_reg_12t(1'b0, 1'b1, exec_p2, ~using_macroop_1, tmp_12t_lat);
+                                                end
                                                 default: ;
                                             endcase
                                         end
@@ -2316,10 +2309,39 @@ always @(posedge clk or negedge rst_n) begin
                                         if (write_allow && command == 4'b1011) begin
                                             write_any_reg_4t(exec_p2[0],1'b1,exec_p2[3:1],{param_0, exec_p1});
                                             if (exec_p2[0] && mask_4t_singleuse) am_buff_4t <= 8'h55;
+                                        end else if (write_allow && exec_cmd == 4'b1100) begin
+                                            if (!exec_p1[0]) begin // 12t <-> 4t
+                                                if (!exec_p2[0]) begin // Extract 4t from 12t
+                                                    write_any_reg_4t(exec_p2[1], 1'b1, exec_p1[3:1],
+                                                        (exec_p2[3:2] == 2'd0) ? shared_rd_12t[7:0]  :
+                                                        (exec_p2[3:2] == 2'd1) ? shared_rd_12t[15:8] : shared_rd_12t[23:16]);
+                                                    if (exec_p2[1] && mask_4t_singleuse) am_buff_4t <= 8'h55;
+                                                end else begin         // Insert 4t into 12t
+                                                    write_any_reg_12t(exec_p2[1], 1'b1, exec_p0, using_macroop_1,
+                                                        (exec_p2[3:2] == 2'd0) ? {shared_rd_12t[23:8],  shared_rd_4t_a} :
+                                                        (exec_p2[3:2] == 2'd1) ? {shared_rd_12t[23:16], shared_rd_4t_a, shared_rd_12t[7:0]} :
+                                                                                {shared_rd_4t_a, shared_rd_12t[15:0]});
+                                                    if (exec_p2[1] && mask_12t_singleuse) am_buff_12t <= 24'h555555;
+                                                end
+                                            end else begin         // 4t <-> 1t
+                                                if (!exec_p2[0]) begin // Extract 1t from 4t
+                                                    write_any_reg_1t(exec_p2[1], 1'b1, exec_p1[3:1],
+                                                        shared_rd_4t_a[exec_p2[3:2]*2 +: 2]);
+                                                    if (exec_p2[1] && mask_1t_singleuse) am_buff_1t <= 2'b01;
+                                                end else begin         // Insert 1t into 4t
+                                                    write_any_reg_4t(exec_p2[1], 1'b1, exec_p0[3:1],
+                                                        (exec_p2[3:2] == 2'd0) ? {shared_rd_4t_a[7:2], shared_rd_1t_a} :
+                                                        (exec_p2[3:2] == 2'd1) ? {shared_rd_4t_a[7:4], shared_rd_1t_a, shared_rd_4t_a[1:0]} :
+                                                        (exec_p2[3:2] == 2'd2) ? {shared_rd_4t_a[7:6], shared_rd_1t_a, shared_rd_4t_a[3:0]} :
+                                                                                {shared_rd_1t_a, shared_rd_4t_a[5:0]});
+                                                    if (exec_p2[1] && mask_4t_singleuse) am_buff_4t <= 8'h55;
+                                                end
+                                            end
                                         end
                                         execute_stage <= 2'b00;
                                         execute_done  <= 1'b1;
                                     end
+                                    
                                 end
 
                                 2'b10: begin
@@ -2430,85 +2452,6 @@ always @(posedge clk or negedge rst_n) begin
                     loading_second_slot <= 1'b0;
                 end
             end
-
-            //param and command streaming 
-            //protocol: ui_in[7:5] counts down 6..1 for params; 0 = safe dock / 0-param
-            //when a new command is loaded in, the commander should start presubmitting microcode requests
-            //even when it's still receiving the rest of the params
-            //as well as check if its 11xxxxxx, indicating that the streamed data should be used as a micro op
-            //
-            //for direct execution, its loaded into a separate buffer, splitting the data into 11aaaa-- bbbbcccc dddd----
-            if (data_valid && !pipe_full_rej) begin
-                if (bus_is_cmd) begin
-                    //8-Bit Macro-Op Byte (1-byte transfer, phase 00 -> 11) ---
-                    if (bus_data_in[7:6] == 2'b11) begin
-                        // Direct Execution Mode: 11aaaa--
-                        direct_exec_active <= 1'b1;
-                        direct_cmd         <= bus_data_in[5:2];
-                    end else begin
-                        direct_exec_active <= 1'b0;
-
-                        if (threadstate == THREAD_EMPTY && !direct_exec_ready) begin
-                            // Pipe empty -> load Slot 0 and pre-fetch microcode immediately
-                            macroop_register[7:0] <= bus_data_in;
-                            using_macroop_1       <= 1'b0;
-                            pipe_empty            <= 1'b0;
-                            threadstate           <= THREAD_EMPTY1;
-                            loading_second_slot   <= 1'b0;
-                            action_ctr            <= 8'h00;
-                            param_ctr             <= 8'h00;
-                            flush                 <= 1'b1; // Pre-fetch while params stream in
-                        end else begin
-                            // Load inactive slot (opposite of using_macroop_1)
-                            if (using_macroop_1)
-                                macroop_register[7:0]  <= bus_data_in;
-                            else
-                                macroop_register[15:8] <= bus_data_in;
-
-                            if (bus_param_idx == 3'd0) begin
-                                // 0-param macro-op in 2nd slot -> pipe is immediately full
-                                threadstate         <= THREAD_FULL;
-                                pipe_full_rej       <= 1'b1;
-                                loading_second_slot <= 1'b0;
-                            end else begin
-                                loading_second_slot <= 1'b1;
-                            end
-                        end
-                    end
-                end else begin
-                    //param
-                    if (direct_exec_active) begin
-                        //split 11aaaa-- | bbbbcccc | dddd----
-                        if (bus_byte_phase == 2'b00) begin
-                            direct_p0 <= bus_data_in[7:4];
-                            direct_p1 <= bus_data_in[3:0];
-                        end else if (bus_byte_phase == 2'b01) begin
-                            direct_p2         <= bus_data_in[7:4];
-                            direct_exec_ready <= 1'b1;
-                        end
-                    end else if (bus_param_idx != 3'd0) begin
-                        // Ignore bus_param_idx == 3'd0 (safe dock)
-                        case (bus_byte_phase)
-                            2'b00: cmd_param_reg[7:0]   <= bus_data_in;
-                            2'b01: cmd_param_reg[15:8]  <= bus_data_in;
-                            2'b10: begin
-                                cmd_param_reg[23:16] <= bus_data_in;
-                                cmd_param_id         <= bus_param_idx; // 6 down to 1
-                                cmd_we               <= 1'b1;          // 1-cycle strobe (next clk commits)
-
-                                // Final parameter (index 1) of the 2nd slot finished -> pipe full
-                                if (bus_param_idx == 3'd1 && loading_second_slot) begin
-                                    threadstate         <= THREAD_FULL;
-                                    pipe_full_rej       <= 1'b1;
-                                    loading_second_slot <= 1'b0;
-                                end
-                            end
-                            default: ;
-                        endcase
-                    end
-                end
-            end
-
 
             /* from module ports
                 input   wire stall,
@@ -2649,26 +2592,87 @@ always @(posedge clk or negedge rst_n) begin
         else begin
             do_housekeeping = 1'b0;
         end
+        //param and command streaming 
+        //protocol: ui_in[7:5] counts down 6..1 for params; 0 = safe dock / 0-param
+        //when a new command is loaded in, the commander should start presubmitting microcode requests
+        //even when it's still receiving the rest of the params
+        //as well as check if its 11xxxxxx, indicating that the streamed data should be used as a micro op
+        //
+        //for direct execution, its loaded into a separate buffer, splitting the data into 11aaaa-- bbbbcccc dddd----
+        if (data_valid && !pipe_full_rej) begin
+            if (bus_is_cmd) begin
+                //8-Bit Macro-Op Byte (1-byte transfer, phase 00 -> 11) ---
+                if (bus_data_in[7:6] == 2'b11) begin
+                    // Direct Execution Mode: 11aaaa--
+                    direct_exec_active <= 1'b1;
+                    direct_cmd         <= bus_data_in[5:2];
+                end else begin
+                    direct_exec_active <= 1'b0;
 
-        execute_alias_write(
-            write_allow, (do_housekeeping && can_execute_this_clock), using_macroop_1,
-            alias_addr_12t, alias_active_4t, alias_addr_4t, alias_active_1t, alias_addr_1t,
-            cmd_we, cmd_param_id,cmd_param_reg,
-            // Next-state alias flags & PC write port
-            alias_addr_12t, alias_active_4t, alias_active_1t,
-            pc_w_enable, pc_w_data,
-            // Alias buffers (cleared on release)
-            am_buff_12t, am_buff_4t, am_buff_1t,
-            // Direct Top-Level Registers
-            sp0_trib0, sp0_trib1, sp0_trib2,
-            sp1_trib0, sp1_trib1, sp1_trib2,
-            spf_flag0, spf_flag1, spf_flag2, spf_flag3, spf_flag4, spf_flag5, spf_flag6, spf_flag7,
-            spf_trib2,
-            mac_a, mac_b, mac_d,
-            gp_reg_6, gp_reg_7, gp_reg_8,
-            cmd0_reg_0, cmd0_reg_1, cmd0_reg_2, cmd0_reg_3, cmd0_reg_4, cmd0_reg_5,
-            cmd1_reg_0, cmd1_reg_1, cmd1_reg_2, cmd1_reg_3, cmd1_reg_4, cmd1_reg_5
-        );
+                    if (threadstate == THREAD_EMPTY && !direct_exec_ready) begin
+                        // Pipe empty -> load Slot 0 and pre-fetch microcode immediately
+                        macroop_register[7:0] <= bus_data_in;
+                        using_macroop_1       <= 1'b0;
+                        pipe_empty            <= 1'b0;
+                        threadstate           <= THREAD_EMPTY1;
+                        loading_second_slot   <= 1'b0;
+                        action_ctr            <= 8'h00;
+                        param_ctr             <= 8'h00;
+                        flush                 <= 1'b1; // Pre-fetch while params stream in
+                    end else begin
+                        // Load inactive slot (opposite of using_macroop_1)
+                        if (using_macroop_1)
+                            macroop_register[7:0]  <= bus_data_in;
+                        else
+                            macroop_register[15:8] <= bus_data_in;
+
+                        if (bus_param_idx == 3'd0) begin
+                            // 0-param macro-op in 2nd slot -> pipe is immediately full
+                            threadstate         <= THREAD_FULL;
+                            pipe_full_rej       <= 1'b1;
+                            loading_second_slot <= 1'b0;
+                        end else begin
+                            loading_second_slot <= 1'b1;
+                        end
+                    end
+                end
+            end else begin
+                //param
+                if (direct_exec_active) begin
+                    //split 11aaaa-- | bbbbcccc | dddd----
+                    if (bus_byte_phase == 2'b00) begin
+                        direct_p0 <= bus_data_in[7:4];
+                        direct_p1 <= bus_data_in[3:0];
+                    end else if (bus_byte_phase == 2'b01) begin
+                        direct_p2         <= bus_data_in[7:4];
+                        direct_exec_ready <= 1'b1;
+                    end
+
+                end else if (bus_param_idx != 3'd0) begin
+                    // Ignore bus_param_idx == 3'd0 (safe dock)
+                    case (bus_byte_phase)
+                        2'b00: cmd_param_reg[7:0]   <= bus_data_in;
+                        2'b01: cmd_param_reg[15:8]  <= bus_data_in;
+                        2'b10: begin
+                            cmd_param_reg[23:16] <= bus_data_in;
+                            cmd_param_id         <= bus_param_idx; // 6 down to 1
+                            cmd_we               <= 1'b1;          // 1-cycle strobe (next clk commits)
+                            cmd_target_bank <= loading_second_slot ? ~using_macroop_1 : using_macroop_1;
+                            // Final parameter (index 1) of the 2nd slot finished -> pipe full
+                            if (bus_param_idx == 3'd1 && loading_second_slot) begin
+                                threadstate         <= THREAD_FULL;
+                                pipe_full_rej       <= 1'b1;
+                                loading_second_slot <= 1'b0;
+                            end
+                        end
+                        default: ;
+                    endcase
+                end
+            end
+        end
+
+        //housekeeping
+        execute_alias_write(do_housekeeping && can_execute_this_clock, ret_micro);
         //housekeep here?
     end
 end

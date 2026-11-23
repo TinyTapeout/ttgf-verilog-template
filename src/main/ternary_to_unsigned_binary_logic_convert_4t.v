@@ -1,5 +1,5 @@
 `timescale 1ns / 1ps
-
+`default_nettype none
 module ternary_to_unsigned_binary_logic_convert_4t (
     // 8 wires total: [7:6] for Trit 3 (MSB), down to [1:0] for Trit 0 (LSB)
     input  wire [7:0] in_trits,

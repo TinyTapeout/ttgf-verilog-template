@@ -1,3 +1,4 @@
+`default_nettype none
 module logic_tester(
     inout VDD_1V65,
     input clk,

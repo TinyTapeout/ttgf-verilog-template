@@ -22,7 +22,6 @@ module logic_container(
     //sounds like some evil shi from wolfenstein
     // Core Overlord / Debug Interface (Shared controls + thread select)
     input  wire [1:0]  ovl_thread_sel,      //selects which thread Overlord is debugging (0, 1, 2)
-    input  wire [2:0]  ovl_stall,           //per-thread stall [t2, t1, t0]
     input  wire [1:0]  ovl_reg_read_stage,  //byte chunk (0->1->2)
     input  wire [4:0]  ovl_reg_address,     //5-bit address (31)
     input  wire        ovl_is_read,         //read write toggle
@@ -46,73 +45,134 @@ module logic_container(
     output wire [3:0]  ovl_offending_id_t2
 );
 
-
+/*
 //interconnects!
-//thread 0
-    wire [2:0]  cmd_t0_wire, tritwise_cmd_t0_wire, shift_wise_cmd_t0_wire;
-    wire        cmd_ready_t0_wire, res_ready_t0_wire, prio_inc_t0_wire;
-    wire [7:0]  t4_a_t0_wire, t4_b_t0_wire, t4_c_t0_wire, t4_o_t0_wire;
-    wire [1:0]  t1_a_t0_wire, t1_b_t0_wire, t1_o_t0_wire;
-    wire [15:0] mul_o_t0_wire;
-    wire [3:0]  hog_t0_wire;
-//thread 1
-    wire [2:0]  cmd_t1_wire, tritwise_cmd_t1_wire, shift_wise_cmd_t1_wire;
-    wire        cmd_ready_t1_wire, res_ready_t1_wire, prio_inc_t1_wire;
-    wire [7:0]  t4_a_t1_wire, t4_b_t1_wire, t4_c_t1_wire, t4_o_t1_wire;
-    wire [1:0]  t1_a_t1_wire, t1_b_t1_wire, t1_o_t1_wire;
-    wire [15:0] mul_o_t1_wire;
-    wire [3:0]  hog_t1_wire;
-//thread 2
-    wire [2:0]  cmd_t2_wire, tritwise_cmd_t2_wire, shift_wise_cmd_t2_wire;
-    wire        cmd_ready_t2_wire, res_ready_t2_wire, prio_inc_t2_wire;
-    wire [7:0]  t4_a_t2_wire, t4_b_t2_wire, t4_c_t2_wire, t4_o_t2_wire;
-    wire [1:0]  t1_a_t2_wire, t1_b_t2_wire, t1_o_t2_wire;
-    wire [15:0] mul_o_t2_wire;
-    wire [3:0]  hog_t2_wire;
+    //thread 0
+        wire [2:0]  cmd_t0_wire, tritwise_cmd_t0_wire, shift_wise_cmd_t0_wire;
+        wire        cmd_ready_t0_wire, res_ready_t0_wire, prio_inc_t0_wire;
+        wire [7:0]  t4_a_t0_wire, t4_b_t0_wire, t4_c_t0_wire, t4_o_t0_wire;
+        wire [1:0]  t1_a_t0_wire, t1_b_t0_wire, t1_o_t0_wire;
+        wire [15:0] mul_o_t0_wire;
+        wire [3:0]  hog_t0_wire;
+    //thread 1
+        wire [2:0]  cmd_t1_wire, tritwise_cmd_t1_wire, shift_wise_cmd_t1_wire;
+        wire        cmd_ready_t1_wire, res_ready_t1_wire, prio_inc_t1_wire;
+        wire [7:0]  t4_a_t1_wire, t4_b_t1_wire, t4_c_t1_wire, t4_o_t1_wire;
+        wire [1:0]  t1_a_t1_wire, t1_b_t1_wire, t1_o_t1_wire;
+        wire [15:0] mul_o_t1_wire;
+        wire [3:0]  hog_t1_wire;
+    //thread 2
+        wire [2:0]  cmd_t2_wire, tritwise_cmd_t2_wire, shift_wise_cmd_t2_wire;
+        wire        cmd_ready_t2_wire, res_ready_t2_wire, prio_inc_t2_wire;
+        wire [7:0]  t4_a_t2_wire, t4_b_t2_wire, t4_c_t2_wire, t4_o_t2_wire;
+        wire [1:0]  t1_a_t2_wire, t1_b_t2_wire, t1_o_t2_wire;
+        wire [15:0] mul_o_t2_wire;
+        wire [3:0]  hog_t2_wire;
 
-//its called circuitry baby, look it up
-    wire [7:0]  macro_op_t0, macro_op_t1, macro_op_t2;
-    wire [7:0]  action_ctr_t0, action_ctr_t1, action_ctr_t2;
-    wire [7:0]  param_ctr_t0,  param_ctr_t1,  param_ctr_t2;
-    wire [6:0]  conv_act_t0,   conv_act_t1,   conv_act_t2;
-    wire [6:0]  conv_prm_t0,   conv_prm_t1,   conv_prm_t2;
+    //its called circuitry baby, look it up
+        wire [7:0]  macro_op_t0, macro_op_t1, macro_op_t2;
+        wire [7:0]  action_ctr_t0, action_ctr_t1, action_ctr_t2;
+        wire [7:0]  param_ctr_t0,  param_ctr_t1,  param_ctr_t2;
+        wire [6:0]  conv_act_t0,   conv_act_t1,   conv_act_t2;
+        wire [6:0]  conv_prm_t0,   conv_prm_t1,   conv_prm_t2;
 
-    wire [3:0]  micro_cmd_t0, micro_p0_t0, micro_p1_t0, micro_p2_t0;
-    wire [3:0]  micro_cmd_t1, micro_p0_t1, micro_p1_t1, micro_p2_t1;
-    wire [3:0]  micro_cmd_t2, micro_p0_t2, micro_p1_t2, micro_p2_t2;
-    wire        micro_req_t0, micro_sent_t0, micro_flush_t0;
-    wire        micro_req_t1, micro_sent_t1, micro_flush_t1;
-    wire        micro_req_t2, micro_sent_t2, micro_flush_t2;
+        wire [3:0]  micro_cmd_t0, micro_p0_t0, micro_p1_t0, micro_p2_t0;
+        wire [3:0]  micro_cmd_t1, micro_p0_t1, micro_p1_t1, micro_p2_t1;
+        wire [3:0]  micro_cmd_t2, micro_p0_t2, micro_p1_t2, micro_p2_t2;
+        wire        micro_req_t0, micro_sent_t0, micro_flush_t0;
+        wire        micro_req_t1, micro_sent_t1, micro_flush_t1;
+        wire        micro_req_t2, micro_sent_t2, micro_flush_t2;
+
+        wire [11:0] microcode_address;
+        wire [7:0]  dbus = {uio_in[2:0], ui_in[7:3]};
+        wire        cycle_threads;
+        wire        microcode_idle;
+
+    //debug and snoop
+        wire [2:0]  req_show_reg, req_set_pc, req_mem_access, is_write_mem;
+        wire [2:0]  pipe_empty, pipe_full_rej, req_new_cmd;
+        wire [23:0] pc_out_t0,   pc_out_t1,   pc_out_t2;
+        wire [23:0] addr_out_t0, addr_out_t1, addr_out_t2;
+        wire [15:0] ext_addr_t0, ext_addr_t1, ext_addr_t2; // 8-trit (16-bit) high memory address for up to 9.7 gb of ram
+        wire [23:0] d_out_t0,    d_out_t1,    d_out_t2;
+    //data bus
+        reg  [7:0]  bus_data_out;      // Sanitized 8-bit stream for macro-op / params
+        reg  [2:0]  bus_param_idx;     // Forwarded ui_in[7:5] (param reg index)
+        reg  [1:0]  bus_byte_phase;    // Byte chunk (00, 01, 10) of incoming 24-bit param
+        reg         bus_is_cmd;        // 1 = 8-bit macro-op, 0 = 24-bit param byte
+        reg  [2:0]  thread_data_valid; // 1-cycle strobe per thread when byte latched
+        reg  [2:0]  thread_mem_done;   // 1-cycle strobe per thread when PC/mem/reg op finishes
+        reg  [23:0] mem_d_in;          // Assembled 24-bit read data from FPGA
+
+        wire [2:0]  dbg_handover_done;
+        wire [7:0]  dbg_dout_t0, dbg_dout_t1, dbg_dout_t2;
+
+        //debug readback to Overlord
+        assign ovl_reg_handover_done = dbg_handover_done;
+        assign ovl_dbg_dout          = (ovl_thread_sel == 2'd0) ? dbg_dout_t0 :
+                                    (ovl_thread_sel == 2'd1) ? dbg_dout_t1 :
+                                                                dbg_dout_t2;
+*/
+
+    wire [2:0]  cmd_w         [0:2];
+    wire [2:0]  tw_cmd_w      [0:2];
+    wire [2:0]  shift_cmd_w   [0:2];
+    wire [2:0]  cmd_ready_w;
+    wire [2:0]  res_ready_w;
+    wire [2:0]  prio_inc_w;
+    wire [7:0]  t4_a_w        [0:2];
+    wire [7:0]  t4_b_w        [0:2];
+    wire [7:0]  t4_c_w        [0:2];
+    wire [7:0]  t4_o_w        [0:2];
+    wire [1:0]  t1_a_w        [0:2];
+    wire [1:0]  t1_b_w        [0:2];
+    wire [1:0]  t1_o_w        [0:2];
+    wire [15:0] mul_o_w       [0:2];
+    wire [3:0]  hog_w         [0:2];
+
+    // Per-thread Microcode arrays
+    wire [7:0]  macro_op_w    [0:2];
+    wire [7:0]  action_ctr_w  [0:2];
+    wire [7:0]  param_ctr_w   [0:2];
+    wire [3:0]  micro_cmd_w   [0:2];
+    wire [3:0]  micro_p0_w    [0:2];
+    wire [3:0]  micro_p1_w    [0:2];
+    wire [3:0]  micro_p2_w    [0:2];
+    wire [2:0]  micro_req_w;
+    wire [2:0]  micro_sent_w;
+    wire [2:0]  micro_flush_w;
 
     wire [11:0] microcode_address;
     wire [7:0]  dbus = {uio_in[2:0], ui_in[7:3]};
     wire        cycle_threads;
     wire        microcode_idle;
 
-//debug and snoop
+    // Per-thread Bus / Debug arrays
     wire [2:0]  req_show_reg, req_set_pc, req_mem_access, is_write_mem;
-    wire [2:0]  pipe_empty, pipe_full_rej, req_new_cmd;
-    wire [23:0] pc_out_t0,   pc_out_t1,   pc_out_t2;
-    wire [23:0] addr_out_t0, addr_out_t1, addr_out_t2;
-    wire [15:0] ext_addr_t0, ext_addr_t1, ext_addr_t2; // 8-trit (16-bit) high memory address for up to 9.7 gb of ram
-    wire [23:0] d_out_t0,    d_out_t1,    d_out_t2;
-//data bus
-    reg  [7:0]  bus_data_out;      // Sanitized 8-bit stream for macro-op / params
-    reg  [2:0]  bus_param_idx;     // Forwarded ui_in[7:5] (param reg index)
-    reg  [1:0]  bus_byte_phase;    // Byte chunk (00, 01, 10) of incoming 24-bit param
-    reg         bus_is_cmd;        // 1 = 8-bit macro-op, 0 = 24-bit param byte
-    reg  [2:0]  thread_data_valid; // 1-cycle strobe per thread when byte latched
-    reg  [2:0]  thread_mem_done;   // 1-cycle strobe per thread when PC/mem/reg op finishes
-    reg  [23:0] mem_d_in;          // Assembled 24-bit read data from FPGA
-
+    wire [2:0]  pipe_full_rej, req_new_cmd;
+    wire [23:0] addr_out_w    [0:2];
+    wire [15:0] ext_addr_w    [0:2];
+    wire [23:0] d_out_w       [0:2];
     wire [2:0]  dbg_handover_done;
-    wire [7:0]  dbg_dout_t0, dbg_dout_t1, dbg_dout_t2;
+    wire [7:0]  dbg_dout_w    [0:2];
+    wire [3:0]  offending_id_w[0:2];
 
-    //debug readback to Overlord
+    // Bus staging registers
+    reg  [7:0]  bus_data_out;
+    reg  [2:0]  bus_param_idx;
+    reg  [1:0]  bus_byte_phase;
+    reg         bus_is_cmd;
+    reg  [2:0]  thread_data_valid;
+    reg  [2:0]  thread_mem_done;
+    reg  [23:0] mem_d_in;
+
     assign ovl_reg_handover_done = dbg_handover_done;
-    assign ovl_dbg_dout          = (ovl_thread_sel == 2'd0) ? dbg_dout_t0 :
-                                   (ovl_thread_sel == 2'd1) ? dbg_dout_t1 :
-                                                              dbg_dout_t2;
+    assign ovl_dbg_dout          = (ovl_thread_sel == 2'd0) ? dbg_dout_w[0] :
+                                   (ovl_thread_sel == 2'd1) ? dbg_dout_w[1] : dbg_dout_w[2];
+    assign ovl_offending_id_t0   = offending_id_w[0];
+    assign ovl_offending_id_t1   = offending_id_w[1];
+    assign ovl_offending_id_t2   = offending_id_w[2];
+
 
 
 //3 threads 1 core
@@ -121,324 +181,161 @@ alu core_0 (
         .clk                   (clk),
         .rst_n                 (rst_n),
 
-        //thread 0
-        .cmd_t0                (cmd_t0_wire),
-        .tritwise_command_t0   (tritwise_cmd_t0_wire),
-        .tritshift_tritwise_t0 (shift_wise_cmd_t0_wire),
-        .cmd_ready_t0          (cmd_ready_t0_wire),
-        .prio_inc_t0           (prio_inc_t0_wire),
-        .hog_time_t0           (hog_t0_wire),
-        .res_ready_t0          (res_ready_t0_wire),
-        .t4_a_i_t0             (t4_a_t0_wire),
-        .t4_b_i_t0             (t4_b_t0_wire),
-        .t4_c_i_t0             (t4_c_t0_wire),
-        .t4_o_t0               (t4_o_t0_wire),
-        .t1_a_i_t0             (t1_a_t0_wire),
-        .t1_b_i_t0             (t1_b_t0_wire),
-        .t1_o_t0               (t1_o_t0_wire),
-        .multiply_o_t0         (mul_o_t0_wire),
+        .cmd_t0                (cmd_w[0]),       .tritwise_command_t0   (tw_cmd_w[0]),
+        .tritshift_tritwise_t0 (shift_cmd_w[0]), .cmd_ready_t0          (cmd_ready_w[0]),
+        .prio_inc_t0           (prio_inc_w[0]),  .hog_time_t0           (hog_w[0]),
+        .res_ready_t0          (res_ready_w[0]), .t4_a_i_t0             (t4_a_w[0]),
+        .t4_b_i_t0             (t4_b_w[0]),      .t4_c_i_t0             (t4_c_w[0]),
+        .t4_o_t0               (t4_o_w[0]),      .t1_a_i_t0             (t1_a_w[0]),
+        .t1_b_i_t0             (t1_b_w[0]),      .t1_o_t0               (t1_o_w[0]),
+        .multiply_o_t0         (mul_o_w[0]),
 
-        .cmd_t1                (cmd_t1_wire),
-        .tritwise_command_t1   (tritwise_cmd_t1_wire),
-        .tritshift_tritwise_t1 (shift_wise_cmd_t1_wire),
-        .cmd_ready_t1          (cmd_ready_t1_wire),
-        .prio_inc_t1           (prio_inc_t1_wire),
-        .hog_time_t1           (hog_t1_wire),
-        .res_ready_t1          (res_ready_t1_wire),
-        .t4_a_i_t1             (t4_a_t1_wire),
-        .t4_b_i_t1             (t4_b_t1_wire),
-        .t4_c_i_t1             (t4_c_t1_wire),
-        .t4_o_t1               (t4_o_t1_wire),
-        .t1_a_i_t1             (t1_a_t1_wire),
-        .t1_b_i_t1             (t1_b_t1_wire),
-        .t1_o_t1               (t1_o_t1_wire),
-        .multiply_o_t1         (mul_o_t1_wire),
+        .cmd_t1                (cmd_w[1]),       .tritwise_command_t1   (tw_cmd_w[1]),
+        .tritshift_tritwise_t1 (shift_cmd_w[1]), .cmd_ready_t1          (cmd_ready_w[1]),
+        .prio_inc_t1           (prio_inc_w[1]),  .hog_time_t1           (hog_w[1]),
+        .res_ready_t1          (res_ready_w[1]), .t4_a_i_t1             (t4_a_w[1]),
+        .t4_b_i_t1             (t4_b_w[1]),      .t4_c_i_t1             (t4_c_w[1]),
+        .t4_o_t1               (t4_o_w[1]),      .t1_a_i_t1             (t1_a_w[1]),
+        .t1_b_i_t1             (t1_b_w[1]),      .t1_o_t1               (t1_o_w[1]),
+        .multiply_o_t1         (mul_o_w[1]),
 
-        .cmd_t2                (cmd_t2_wire),
-        .tritwise_command_t2   (tritwise_cmd_t2_wire),
-        .tritshift_tritwise_t2 (shift_wise_cmd_t2_wire),
-        .cmd_ready_t2          (cmd_ready_t2_wire),
-        .prio_inc_t2           (prio_inc_t2_wire),
-        .hog_time_t2           (hog_t2_wire), // TODO: wire once hog_time is added to thread_command
-        .res_ready_t2          (res_ready_t2_wire),
-        .t4_a_i_t2             (t4_a_t2_wire),
-        .t4_b_i_t2             (t4_b_t2_wire),
-        .t4_c_i_t2             (t4_c_t2_wire),
-        .t4_o_t2               (t4_o_t2_wire),
-        .t1_a_i_t2             (t1_a_t2_wire),
-        .t1_b_i_t2             (t1_b_t2_wire),
-        .t1_o_t2               (t1_o_t2_wire),
-        .multiply_o_t2         (mul_o_t2_wire)
+        .cmd_t2                (cmd_w[2]),       .tritwise_command_t2   (tw_cmd_w[2]),
+        .tritshift_tritwise_t2 (shift_cmd_w[2]), .cmd_ready_t2          (cmd_ready_w[2]),
+        .prio_inc_t2           (prio_inc_w[2]),  .hog_time_t2           (hog_w[2]),
+        .res_ready_t2          (res_ready_w[2]), .t4_a_i_t2             (t4_a_w[2]),
+        .t4_b_i_t2             (t4_b_w[2]),      .t4_c_i_t2             (t4_c_w[2]),
+        .t4_o_t2               (t4_o_w[2]),      .t1_a_i_t2             (t1_a_w[2]),
+        .t1_b_i_t2             (t1_b_w[2]),      .t1_o_t2               (t1_o_w[2]),
+        .multiply_o_t2         (mul_o_w[2])
     );
 
 microcode microcode_parser (
-    .clk                            (clk),
-    .rst_n                          (rst_n),
-    //from 1  to 31 , each micro op corresponds to 2 byte chunked reads
-    //from 32 to 112, each micro op corresponds to 4 byte chunked reads
-    //from 113 to 191, each micro op corresponds to 8 byte chunked reads
-    // uses an 1024 offset for parameters
-    // 32 x 2 + 80 x 4 + 80 x 8 = 1024
-    //anything beyond 191 is ILLEGAL and should never be seen
-    // Thread 0
-    .macro_op_t0                    (macro_op_t0),
-    .microcode_action_offset_t0     (conv_act_t0),
-    .microcode_param_offset_t0      (conv_prm_t0),
-    .next_microop_t0                (micro_req_t0),
-    .flush_t0                       (micro_flush_t0),
-    //this forces the microcode handler to pause, flush cache and read from action position & param position, as well as macro op position
+        .clk                        (clk),
+        .rst_n                      (rst_n),
+        //from 1  to 31 , each micro op corresponds to 2 byte chunked reads
+        //from 32 to 112, each micro op corresponds to 4 byte chunked reads
+        //from 113 to 191, each micro op corresponds to 8 byte chunked reads
+        // uses an 1024 offset for parameters
+        // 32 x 2 + 80 x 4 + 80 x 8 = 1024
+        //anything beyond 191 is ILLEGAL and should never be seen
+        // Thread 1
+        .macro_op_t0                (macro_op_w[0]),
+        .microcode_action_offset_t0 (action_ctr_w[0]), // 8-bit raw ternary (converted inside microcode)
+        .microcode_param_offset_t0  (param_ctr_w[0]),
+        .next_microop_t0            (micro_req_w[0]),
+        .flush_t0                   (micro_flush_w[0]),
+        //this forces the microcode handler to pause, flush cache and read from action position & param position, as well as macro op position
         //chunked reads mean that you start from indexes 0 , 4 , 8 , 12, etc, but the offsets can allow it to read any position
         //the params are chunked separately, on the same chip but with an offset
-    .data_ready_t0                  (micro_sent_t0),
-    .action_t0                      (micro_cmd_t0),
-    .param0_t0                      (micro_p0_t0),
-    .param1_t0                      (micro_p1_t0),
-    .param2_t0                      (micro_p2_t0),
-    
-    // Thread 1
-    .macro_op_t1                    (macro_op_t1),
-    .microcode_action_offset_t1     (conv_act_t1),
-    .microcode_param_offset_t1      (conv_prm_t1),
-    .next_microop_t1                (micro_req_t1),
-    .flush_t1                       (micro_flush_t1),
-    .data_ready_t1                  (micro_sent_t1),
-    .action_t1                      (micro_cmd_t1),
-    .param0_t1                      (micro_p0_t1),
-    .param1_t1                      (micro_p1_t1),
-    .param2_t1                      (micro_p2_t1),
+        .data_ready_t0              (micro_sent_w[0]),
+        .action_t0                  (micro_cmd_w[0]),
+        .param0_t0                  (micro_p0_w[0]),
+        .param1_t0                  (micro_p1_w[0]),
+        .param2_t0                  (micro_p2_w[0]),
 
-    // Thread 2
-    .macro_op_t2                    (macro_op_t2),
-    .microcode_action_offset_t2     (conv_act_t2),
-    .microcode_param_offset_t2      (conv_prm_t2),
-    .next_microop_t2                (micro_req_t2),
-    .flush_t2                       (micro_flush_t2),
-    .data_ready_t2                  (micro_sent_t2),
-    .action_t2                      (micro_cmd_t2),
-    .param0_t2                      (micro_p0_t2),
-    .param1_t2                      (micro_p1_t2),
-    .param2_t2                      (micro_p2_t2),
+        .macro_op_t1                (macro_op_w[1]),
+        .microcode_action_offset_t1 (action_ctr_w[1]),
+        .microcode_param_offset_t1  (param_ctr_w[1]),
+        .next_microop_t1            (micro_req_w[1]),
+        .flush_t1                   (micro_flush_w[1]),
+        .data_ready_t1              (micro_sent_w[1]),
+        .action_t1                  (micro_cmd_w[1]),
+        .param0_t1                  (micro_p0_w[1]),
+        .param1_t1                  (micro_p1_w[1]),
+        .param2_t1                  (micro_p2_w[1]),
 
-    // Main SRAM/FPGA Bus
-    .bus                            (dbus),
-    .address                        (microcode_address),
-    .cycle_threads                  (cycle_threads),
-    .microcode_idle                 (microcode_idle)
-);
+        .macro_op_t2                (macro_op_w[2]),
+        .microcode_action_offset_t2 (action_ctr_w[2]),
+        .microcode_param_offset_t2  (param_ctr_w[2]),
+        .next_microop_t2            (micro_req_w[2]),
+        .flush_t2                   (micro_flush_w[2]),
+        .data_ready_t2              (micro_sent_w[2]),
+        .action_t2                  (micro_cmd_w[2]),
+        .param0_t2                  (micro_p0_w[2]),
+        .param1_t2                  (micro_p1_w[2]),
+        .param2_t2                  (micro_p2_w[2]),
 
-thread_command thread0_command (
-    .clk                        (clk),
-    .rst_n                      (rst_n),
-    .macro_op                   (macro_op_t0),
-    .action_counter             (action_ctr_t0),
-    .param_counter              (param_ctr_t0),
-    .flush                      (micro_flush_t0),
-    .command                    (micro_cmd_t0),
-    .param_0                    (micro_p0_t0),
-    .param_1                    (micro_p1_t0),
-    .param_2                    (micro_p2_t0),
-    .command_req_new            (micro_req_t0),
-    .command_data_sent          (micro_sent_t0),
+        .bus                        (dbus),
+        .address                    (microcode_address),
+        .cycle_threads              (cycle_threads),
+        .microcode_idle             (microcode_idle)
+    );
 
-    .alu_command                (cmd_t0_wire),
-    .tritwise_command           (tritwise_cmd_t0_wire),
-    .tritshift_tritwise_command (shift_wise_cmd_t0_wire),
-    .cmd_ready                  (cmd_ready_t0_wire),
-    .res_ready_in               (res_ready_t0_wire),
-    .t4_a_out                   (t4_a_t0_wire),
-    .t4_b_out                   (t4_b_t0_wire),
-    .t4_c_out                   (t4_c_t0_wire),
-    .t1_a_out                   (t1_a_t0_wire),
-    .t1_b_out                   (t1_b_t0_wire),
-    .alu_prio_inc               (prio_inc_t0_wire),
-    .hog_timer                  (hog_t0_wire),
-    .t4_in                      (t4_o_t0_wire),
-    .t1_in                      (t1_o_t0_wire),
-    .multiply_in                (mul_o_t0_wire),
+    // -------------------------------------------------------------------------
+    // 3x Thread Command Units (Generated)
+    // -------------------------------------------------------------------------
+    genvar t;
+    generate
+        for (t = 0; t < 3; t = t + 1) begin : gen_threads
+            thread_command u_thread (
+                .clk                        (clk),
+                .rst_n                      (rst_n),
+                .macro_op                   (macro_op_w[t]),
+                .action_counter             (action_ctr_w[t]),
+                .param_counter              (param_ctr_w[t]),
+                .flush                      (micro_flush_w[t]),
+                .command                    (micro_cmd_w[t]),
+                .param_0                    (micro_p0_w[t]),
+                .param_1                    (micro_p1_w[t]),
+                .param_2                    (micro_p2_w[t]),
+                .command_req_new            (micro_req_w[t]),
+                .command_data_sent          (micro_sent_w[t]),
 
-    .stall                      (ovl_stall[0]),
-    .bus_data_in                (bus_data_out),
-    .bus_is_cmd                 (bus_is_cmd),
-    .bus_param_idx              (bus_param_idx),
-    .bus_byte_phase             (bus_byte_phase),
-    .data_valid                 (thread_data_valid[0]),
-    .data_done                  (thread_mem_done[0]),
-    .request_show_reg           (req_show_reg[0]),
-    .request_set_pc             (req_set_pc[0]),
-    .request_memory_access      (req_mem_access[0]),
-    .is_write_memory            (is_write_mem[0]),
-    .pc_out                     (pc_out_t0),
-    .addr_out                   (addr_out_t0),
-    .ext_addr_out               (ext_addr_t0),
-    .d_in                       (mem_d_in),
-    .d_out                      (d_out_t0),
-    .pipe_empty                 (pipe_empty[0]),
-    .pipe_full_rej              (pipe_full_rej[0]),
-    .request_new_cmd            (req_new_cmd[0]),
+                .alu_command                (cmd_w[t]),
+                .tritwise_command           (tw_cmd_w[t]),
+                .tritshift_tritwise_command (shift_cmd_w[t]),
+                .alu_command_ready          (cmd_ready_w[t]),
+                .alu_res_ready              (res_ready_w[t]),
+                .alu_t4_a                   (t4_a_w[t]),
+                .alu_t4_b                   (t4_b_w[t]),
+                .alu_t4_c                   (t4_c_w[t]),
+                .alu_t1_a                   (t1_a_w[t]),
+                .alu_t1_b                   (t1_b_w[t]),
+                .alu_prio_inc               (prio_inc_w[t]),
+                .alu_t4_o                   (t4_o_w[t]),
+                .alu_t1_o                   (t1_o_w[t]),
+                .alu_multiply_o             (mul_o_w[t]),
+                .hog_timer                  (hog_w[t]),
 
-    .register_read_stage        (ovl_reg_read_stage),
-    .register_address           ((ovl_thread_sel == 2'd0) ? ovl_reg_address : 5'd0),
-    .is_read                    (ovl_is_read),
-    .reg_handover_done          (dbg_handover_done[0]),
-    .dbg_dout                   (dbg_dout_t0),
-    .dbg_din                    (ovl_dbg_din),
-    .microcode_fence            (ovl_microcode_fence[0]),
-    .direct_instr               (ovl_direct_instr[0]),
-    .single_execute             (ovl_single_execute[0]),
-    .single_execute_ack         (ovl_single_execute_ack[0]),
-    .cmd_buf_clr                (ovl_cmd_buf_clr[0]),
-    .cmd_buf_clr_ack            (ovl_cmd_buf_clr_ack[0]),
+                .bus_data_in                (bus_data_out),
+                .bus_is_cmd                 (bus_is_cmd),
+                .bus_param_idx              (bus_param_idx),
+                .bus_byte_phase             (bus_byte_phase),
+                .data_valid                 (thread_data_valid[t]),
+                .data_done                  (thread_mem_done[t]),
+                .request_show_reg           (req_show_reg[t]),
+                .request_set_pc             (req_set_pc[t]),
+                .request_memory_access      (req_mem_access[t]),
+                .is_write_memory            (is_write_mem[t]),
+                .addr_out                   (addr_out_w[t]),
+                .ext_addr_out               (ext_addr_w[t]),
+                .d_in                       (mem_d_in),
+                .d_out                      (d_out_w[t]),
+                .pipe_full_rej              (pipe_full_rej[t]),
+                .request_new_cmd            (req_new_cmd[t]),
 
-    .pc_overflow                (ovl_pc_overflow[0]),
-    .a_ctr_overflow             (ovl_a_ctr_overflow[0]),
-    .p_ctr_overflow             (ovl_p_ctr_overflow[0]),
-    .reg_overflow               (ovl_reg_overflow[0]),
-    .offending_id               (ovl_offending_id_t0)
-);
+                .register_read_stage        (ovl_reg_read_stage),
+                .register_address           ((ovl_thread_sel == t[1:0]) ? ovl_reg_address : 5'd0),
+                .is_read                    (ovl_is_read),
+                .reg_handover_done          (dbg_handover_done[t]),
+                .dbg_dout                   (dbg_dout_w[t]),
+                .dbg_din                    (ovl_dbg_din),
+                .microcode_fence            (ovl_microcode_fence[t]),
+                .direct_instr               (ovl_direct_instr[t]),
+                .single_execute             (ovl_single_execute[t]),
+                .single_execute_ack         (ovl_single_execute_ack[t]),
+                .cmd_buf_clr                (ovl_cmd_buf_clr[t]),
+                .cmd_buf_clr_ack            (ovl_cmd_buf_clr_ack[t]),
 
-ternary_to_unsigned_binary_logic_convert_4t t2ubActr_t0 (.in_trits(action_ctr_t0), .out_bin(conv_act_t0));
-ternary_to_unsigned_binary_logic_convert_4t t2ubPctr_t0 (.in_trits(param_ctr_t0),  .out_bin(conv_prm_t0));
+                .pc_overflow                (ovl_pc_overflow[t]),
+                .a_ctr_overflow             (ovl_a_ctr_overflow[t]),
+                .p_ctr_overflow             (ovl_p_ctr_overflow[t]),
+                .reg_overflow               (ovl_reg_overflow[t]),
+                .offending_id               (offending_id_w[t])
+            );
+        end
+    endgenerate
 
-thread_command thread1_command (
-    .clk                        (clk),
-    .rst_n                      (rst_n),
-    .macro_op                   (macro_op_t1),
-    .action_counter             (action_ctr_t1),
-    .param_counter              (param_ctr_t1),
-    .flush                      (micro_flush_t1),
-    .command                    (micro_cmd_t1),
-    .param_0                    (micro_p0_t1),
-    .param_1                    (micro_p1_t1),
-    .param_2                    (micro_p2_t1),
-    .command_req_new            (micro_req_t1),
-    .command_data_sent          (micro_sent_t1),
-
-    .alu_command                (cmd_t1_wire),
-    .tritwise_command           (tritwise_cmd_t1_wire),
-    .tritshift_tritwise_command (shift_wise_cmd_t1_wire),
-    .cmd_ready                  (cmd_ready_t1_wire),
-    .res_ready_in               (res_ready_t1_wire),
-    .t4_a_out                   (t4_a_t1_wire),
-    .t4_b_out                   (t4_b_t1_wire),
-    .t4_c_out                   (t4_c_t1_wire),
-    .t1_a_out                   (t1_a_t1_wire),
-    .t1_b_out                   (t1_b_t1_wire),
-    .alu_prio_inc               (prio_inc_t1_wire),
-    .t4_in                      (t4_o_t1_wire),
-    .t1_in                      (t1_o_t1_wire),
-    .multiply_in                (mul_o_t1_wire),
-
-    .stall                      (ovl_stall[1]),
-    .bus_data_in                (uio_in),
-    .data_valid                 (ui_in[3] && (ui_in[2:0] == 3'b011)),
-    .data_done                  (1'b0),
-    .request_set_pc             (req_set_pc[1]),
-    .request_memory_access      (req_mem_access[1]),
-    .is_write_memory            (is_write_mem[1]),
-    .pc_out                     (pc_out_t1),
-    .addr_out                   (addr_out_t1),
-    .d_in                       (24'hAAAAAA),
-    .d_out                      (d_out_t1),
-    .pipe_empty                 (pipe_empty[1]),
-    .pipe_full_rej              (pipe_full_rej[1]),
-    .request_new_cmd            (req_new_cmd[1]),
-
-    .register_read_stage        (ovl_reg_read_stage),
-    .register_address           ((ovl_thread_sel == 2'd1) ? ovl_reg_address : 5'd0),
-    .is_read                    (ovl_is_read),
-    .reg_handover_done          (dbg_handover_done[1]),
-    .dbg_dout                   (dbg_dout_t1),
-    .dbg_din                    (ovl_dbg_din),
-    .microcode_fence            (ovl_microcode_fence[1]),
-    .direct_instr               (ovl_direct_instr[1]),
-    .single_execute             (ovl_single_execute[1]),
-    .single_execute_ack         (ovl_single_execute_ack[1]),
-    .cmd_buf_clr                (ovl_cmd_buf_clr[1]),
-    .cmd_buf_clr_ack            (ovl_cmd_buf_clr_ack[1]),
-
-    .pc_overflow                (ovl_pc_overflow[1]),
-    .a_ctr_overflow             (ovl_a_ctr_overflow[1]),
-    .p_ctr_overflow             (ovl_p_ctr_overflow[1]),
-    .reg_overflow               (ovl_reg_overflow[1]),
-    .offending_id               (ovl_offending_id_t1),
-    .hog_timer                  (hog_t1_wire)
-);
-
-ternary_to_unsigned_binary_logic_convert_4t t2ubActr_t1 (.in_trits(action_ctr_t1), .out_bin(conv_act_t1));
-ternary_to_unsigned_binary_logic_convert_4t t2ubPctr_t1 (.in_trits(param_ctr_t1),  .out_bin(conv_prm_t1));
-
-thread_command thread2_command (
-    .clk                        (clk),
-    .rst_n                      (rst_n),
-    .macro_op                   (macro_op_t2),
-    .action_counter             (action_ctr_t2),
-    .param_counter              (param_ctr_t2),
-    .flush                      (micro_flush_t2),
-    .command                    (micro_cmd_t2),
-    .param_0                    (micro_p0_t2),
-    .param_1                    (micro_p1_t2),
-    .param_2                    (micro_p2_t2),
-    .command_req_new            (micro_req_t2),
-    .command_data_sent          (micro_sent_t2),
-
-    .alu_command                (cmd_t2_wire),
-    .tritwise_command           (tritwise_cmd_t2_wire),
-    .tritshift_tritwise_command (shift_wise_cmd_t2_wire),
-    .cmd_ready                  (cmd_ready_t2_wire),
-    .res_ready_in               (res_ready_t2_wire),
-    .t4_a_out                   (t4_a_t2_wire),
-    .t4_b_out                   (t4_b_t2_wire),
-    .t4_c_out                   (t4_c_t2_wire),
-    .t1_a_out                   (t1_a_t2_wire),
-    .t1_b_out                   (t1_b_t2_wire),
-    .alu_prio_inc               (prio_inc_t2_wire),
-    .hog_timer                  (hog_t2_wire),
-    .t4_in                      (t4_o_t2_wire),
-    .t1_in                      (t1_o_t2_wire),
-    .multiply_in                (mul_o_t2_wire),
-
-    .stall                      (ovl_stall[2]),
-    .bus_data_in                (bus_data_out),
-    .bus_is_cmd                 (bus_is_cmd),
-    .bus_param_idx              (bus_param_idx),
-    .bus_byte_phase             (bus_byte_phase),
-    .data_valid                 (thread_data_valid[2]),
-    .data_done                  (thread_mem_done[2]),
-    .request_show_reg           (req_show_reg[2]),
-    .request_set_pc             (req_set_pc[2]),
-    .request_memory_access      (req_mem_access[2]),
-    .is_write_memory            (is_write_mem[2]),
-    .pc_out                     (pc_out_t2),
-    .addr_out                   (addr_out_t2),
-    .ext_addr_out               (ext_addr_t2),
-    .d_in                       (mem_d_in),
-    .d_out                      (d_out_t2),
-    .pipe_empty                 (pipe_empty[2]),
-    .pipe_full_rej              (pipe_full_rej[2]),
-    .request_new_cmd            (req_new_cmd[2]),
-
-    .register_read_stage        (ovl_reg_read_stage),
-    .register_address           ((ovl_thread_sel == 2'd2) ? ovl_reg_address : 5'd0),
-    .is_read                    (ovl_is_read),
-    .reg_handover_done          (dbg_handover_done[2]),
-    .dbg_dout                   (dbg_dout_t2),
-    .dbg_din                    (ovl_dbg_din),
-    .microcode_fence            (ovl_microcode_fence[2]),
-    .direct_instr               (ovl_direct_instr[2]),
-    .single_execute             (ovl_single_execute[2]),
-    .single_execute_ack         (ovl_single_execute_ack[2]),
-    .cmd_buf_clr                (ovl_cmd_buf_clr[2]),
-    .cmd_buf_clr_ack            (ovl_cmd_buf_clr_ack[2]),
-
-    .pc_overflow                (ovl_pc_overflow[2]),
-    .a_ctr_overflow             (ovl_a_ctr_overflow[2]),
-    .p_ctr_overflow             (ovl_p_ctr_overflow[2]),
-    .reg_overflow               (ovl_reg_overflow[2]),
-    .offending_id               (ovl_offending_id_t2)
-);
-
-ternary_to_unsigned_binary_logic_convert_4t t2ubActr_t2 (.in_trits(action_ctr_t2), .out_bin(conv_act_t2));
-ternary_to_unsigned_binary_logic_convert_4t t2ubPctr_t2 (.in_trits(param_ctr_t2),  .out_bin(conv_prm_t2));
 
 //reinforcement of canonical zero as 2'b10
 function [7:0] sanitize_trits_8b;
@@ -463,11 +360,11 @@ endfunction
     wire       fpga_is_cmd   = ui_in[4];   // 1 = macro-op, 0 = param (FPGA->ASIC)
     wire [2:0] fpga_phase_3b = ui_in[7:5]; //param addr (FPGA->ASIC) / byte idx (ASIC->FPGA)
 
-    wire [23:0] cur_pc   = (cur_t == 2'd0) ? pc_out_t0   : (cur_t == 2'd1) ? pc_out_t1   : pc_out_t2; //program counter
-    wire [23:0] cur_addr = (cur_t == 2'd0) ? addr_out_t0 : (cur_t == 2'd1) ? addr_out_t1 : addr_out_t2;
-    wire [15:0] cur_ext  = (cur_t == 2'd0) ? ext_addr_t0 : (cur_t == 2'd1) ? ext_addr_t1 : ext_addr_t2;
-    wire [23:0] cur_dout = (cur_t == 2'd0) ? d_out_t0    : (cur_t == 2'd1) ? d_out_t1    : d_out_t2;
-    wire        cur_full = pipe_full_rej[cur_t];
+    //cut pc
+    wire [23:0] cur_addr      = addr_out_w[cur_t];
+    wire [15:0] cur_ext       = ext_addr_w[cur_t];
+    wire [23:0] cur_dout      = d_out_w[cur_t];
+    wire        cur_full      = pipe_full_rej[cur_t];
 
     wire [2:0] any_t_req = req_mem_access | req_set_pc | req_show_reg| req_new_cmd;
     wire other_thread_needs_bus =
@@ -494,42 +391,46 @@ endfunction
         BUS_MEM_TURN = 3'd4, //Mem Read Turnaround: 1-cycle High-Z dead time + handshake
         BUS_MEM_RD   = 3'd5; //Mem Read Data: FPGA drives uio_in, ASIC latches 3 bytes
 
+
+
     reg [2:0] bus_state;
+    reg [2:0] active_req_type; // Latched so !microcode_idle cannot hijack mid-TX
     reg [1:0] data_phase;
     reg       hs_prev;
     reg       mem_data_phase; // 0 = 5-byte address, 1 = 3-byte write data (101)
-    reg       turn_ready;     // Guarantees >= 1 full High-Z clock before FPGA drives
-
+    reg       turn_ready; // Guarantees >= 1 full High-Z clock before FPGA drives
+    reg [2:0] rx_is_direct;    // Per-thread flag: 1 when expecting 2 raw direct-exec bytes
     wire hs_rise   =  fpga_hs && !hs_prev;
     wire hs_fall   = !fpga_hs &&  hs_prev;
     wire hs_toggle =  fpga_hs ^   hs_prev;
 
+
+
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             bus_state         <= BUS_IDLE;
+            active_req_type   <= 3'b000;
             data_phase        <= 2'b11;
             hs_prev           <= 1'b0;
             mem_data_phase    <= 1'b0;
             turn_ready        <= 1'b0;
+            rx_is_direct      <= 3'b000;
             thread_data_valid <= 3'b000;
             thread_mem_done   <= 3'b000;
         end else begin
             hs_prev           <= fpga_hs;
             thread_data_valid <= 3'b000;
             thread_mem_done   <= 3'b000;
-            //reset stuffs
 
-            if (!is_thread) begin 
-
-                //microcode state
-                bus_state      <= BUS_IDLE;
-                data_phase     <= 2'b11;
-                mem_data_phase <= 1'b0;
-                turn_ready     <= 1'b0;
+            if (!is_thread) begin
+                bus_state       <= BUS_IDLE;
+                active_req_type <= 3'b000;
+                data_phase      <= 2'b11;
+                mem_data_phase  <= 1'b0;
+                turn_ready      <= 1'b0;
             end else begin
                 case (bus_state)
                     BUS_IDLE: begin
-                        //lock data phase to 11 to not do shi
                         data_phase     <= 2'b11;
                         mem_data_phase <= 1'b0;
                         turn_ready     <= 1'b0;
@@ -537,17 +438,16 @@ endfunction
                         if (req_type != 3'b000) begin
                             if (hs_rise && (req_type == 3'b001 || req_type == 3'b100 ||
                                             req_type == 3'b101 || req_type == 3'b110)) begin
-                                bus_state <= BUS_ASIC_TX;
+                                active_req_type <= req_type;
+                                bus_state       <= BUS_ASIC_TX;
                             end
                         end else if (hs_rise && !cur_full) begin
-                            //wait receive
                             data_phase <= 2'b00;
                             bus_state  <= BUS_RX_WAIT;
                         end
                     end
 
                     BUS_RX_WAIT: begin
-                        // 1 cycle blank to make sure no collisions
                         if (hs_fall) bus_state <= BUS_RX_STRM;
                     end
 
@@ -556,14 +456,23 @@ endfunction
                             bus_is_cmd               <= fpga_is_cmd;
                             bus_param_idx            <= fpga_phase_3b;
                             bus_byte_phase           <= data_phase;
-                            bus_data_out             <= fpga_is_cmd ? uio_in : sanitize_trits_8b(uio_in);
+                            // Skip ternary sanitization for macro-op bytes AND direct-exec param bytes
+                            bus_data_out             <= (fpga_is_cmd || rx_is_direct[cur_t]) ? uio_in : sanitize_trits_8b(uio_in);
                             thread_data_valid[cur_t] <= 1'b1;
 
-                            if (fpga_is_cmd || (data_phase == 2'b10)) begin
-                                data_phase <= 2'b11; //lock input until next hs_rise in BUS_IDLE
-                                bus_state  <= BUS_IDLE;
+                            if (fpga_is_cmd) begin
+                                rx_is_direct[cur_t] <= (uio_in[7:6] == 2'b11);
+                                data_phase          <= 2'b11;
+                                bus_state           <= BUS_IDLE;
+                            end else if (rx_is_direct[cur_t] && (data_phase == 2'b01)) begin
+                                rx_is_direct[cur_t] <= 1'b0; // 2-byte direct-exec payload complete
+                                data_phase          <= 2'b11;
+                                bus_state           <= BUS_IDLE;
+                            end else if (data_phase == 2'b10) begin
+                                data_phase          <= 2'b11;
+                                bus_state           <= BUS_IDLE;
                             end else begin
-                                data_phase <= data_phase + 2'd1;
+                                data_phase          <= data_phase + 2'd1;
                             end
                         end
                     end
@@ -571,14 +480,15 @@ endfunction
                     BUS_ASIC_TX: begin
                         data_phase <= 2'b11;
                         if (hs_toggle && (fpga_phase_3b == 3'b111)) begin
-                            if (req_type == 3'b100) begin
+                            if (active_req_type == 3'b100) begin
                                 turn_ready <= 1'b0;
                                 bus_state  <= BUS_MEM_TURN;
-                            end else if (req_type == 3'b101 && !mem_data_phase) begin
+                            end else if (active_req_type == 3'b101 && !mem_data_phase) begin
                                 mem_data_phase <= 1'b1;
                             end else begin
                                 thread_mem_done[cur_t] <= 1'b1;
                                 mem_data_phase         <= 1'b0;
+                                active_req_type        <= 3'b000;
                                 bus_state              <= BUS_IDLE;
                             end
                         end
@@ -586,8 +496,8 @@ endfunction
 
                     BUS_MEM_TURN: begin
                         if (!turn_ready) begin
-                            turn_ready <= 1'b1;  // 1 guaranteed High-Z dead cycle
-                            data_phase <= 2'b00; // Signal FPGA: safe to drive bus
+                            turn_ready <= 1'b1;
+                            data_phase <= 2'b00;
                         end else if (hs_toggle) begin
                             data_phase <= 2'b11;
                             bus_state  <= BUS_MEM_RD;
@@ -603,6 +513,7 @@ endfunction
                                 3'b010: mem_d_in[23:16] <= sanitize_trits_8b(uio_in);
                                 3'b111: begin
                                     thread_mem_done[cur_t] <= 1'b1;
+                                    active_req_type        <= 3'b000;
                                     bus_state              <= BUS_IDLE;
                                 end
                                 default: ;
@@ -619,9 +530,9 @@ endfunction
     //TX Byte Selector (ASIC -> FPGA)
     reg [7:0] tx_byte;
     always @(*) begin
-        tx_byte = 8'hAA; //ternary zero
-        case (req_type)
-            3'b110: begin // Update PC (3 bytes)
+        tx_byte = 8'hAA;//canon 0
+        case (active_req_type)
+            3'b110, 3'b001: begin // can also be pc
                 case (fpga_phase_3b)
                     3'b000:  tx_byte = cur_dout[7:0];
                     3'b001:  tx_byte = cur_dout[15:8];
@@ -629,15 +540,7 @@ endfunction
                     default: tx_byte = 8'hAA;
                 endcase
             end
-            3'b001: begin // Showing Register Data (3 bytes)
-                case (fpga_phase_3b)
-                    3'b000:  tx_byte = cur_dout[7:0];
-                    3'b001:  tx_byte = cur_dout[15:8];
-                    3'b010:  tx_byte = cur_dout[23:16];
-                    default: tx_byte = 8'hAA;
-                endcase
-            end
-            3'b100, 3'b101: begin // Memory Read (5B Addr) / Memory Write (5B Addr -> 3B Data)
+            3'b100, 3'b101: begin
                 if (!mem_data_phase) begin
                     case (fpga_phase_3b)
                         3'b000:  tx_byte = cur_addr[7:0];
@@ -659,7 +562,6 @@ endfunction
             default: tx_byte = 8'hAA;
         endcase
     end
-
     // External Pin Output Multiplexer
     always @(*) begin
         uo_out  = 8'h00;
@@ -676,11 +578,11 @@ endfunction
             //spi stuffs
             uo_out[0]   = 1'b0;       // SPI clk placeholder
             uo_out[7]   = 1'b0;       // SPI MISO placeholder
-
+            uo_out[6:4] = (bus_state == BUS_ASIC_TX || bus_state == BUS_MEM_TURN || bus_state == BUS_MEM_RD)
+                          ? active_req_type : req_type; // Request type [2:0]
             //data phase
             uo_out[2:1] = data_phase; // 00/01/10 active, 11 idle/locked
             uo_out[3]   = cur_full;   // Command register full kickback
-            uo_out[6:4] = req_type;   // Request type [2:0]
 
             if (bus_state == BUS_ASIC_TX) begin
                 uio_out = tx_byte;
