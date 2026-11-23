@@ -1,5 +1,5 @@
 module alu(
-    inout  wire        VDD_1V65,
+    // inout  wire        VDD_1V65,
 
     input  wire        clk,
     input  wire        rst_n,
@@ -230,7 +230,7 @@ module alu(
 
     //native wrapper below
     native_wrapper_sim native_alu(
-        .VDD_1V65           (VDD_1V65),
+        // .VDD_1V65           (VDD_1V65),
 
         .active_cmd_t0      (active_cmd_t0),
         .active_cmd_t1      (active_cmd_t1),

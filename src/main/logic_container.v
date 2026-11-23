@@ -8,7 +8,7 @@ can also do memory read and writes through the io for all 3 threads, as well as 
 //also logic testing etc is done somewhere else, preferably somewhere that i can't see
 module logic_container(
     
-    inout VDD_1V65,
+    // inout VDD_1V65,
     input clk,
     input rst_n,
 
@@ -177,7 +177,7 @@ module logic_container(
 
 //3 threads 1 core
 alu core_0 (
-        .VDD_1V65              (VDD_1V65),
+        // .VDD_1V65              (VDD_1V65),
         .clk                   (clk),
         .rst_n                 (rst_n),
 

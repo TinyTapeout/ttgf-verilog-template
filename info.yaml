@@ -8,8 +8,8 @@ project:
   clock_hz:     50000000       # Clock frequency in Hz (or 0 if not applicable)
 
   # How many tiles your design occupies? A single tile is about 340x160 uM.
-  tiles: "3x4"          # Valid values: 1x1, 1x2, 2x2, 3x2, 4x2, 3x4 or 4x4
-
+  tiles: "4x6"          # Valid values: 1x1, 1x2, 2x2, 3x2, 4x2, 3x4 or 4x4
+  # analog_pins: 2
   # Your top module name must start with "tt_um_". Make it unique by including your github username:
   top_module:  "tt_um_triple_t_devEclipse2"
 
@@ -70,12 +70,8 @@ pinout:
   uio[7]: "variable but mostly used as data bus 7"
   #might not get em but fuh it 
   
-  ua[0]: "the singular power line. please take good care of it. thanks." #1.65v 
-  ua[1]: "unused" #1.65v 
-  ua[2]: "unused" #1.65v 
-  ua[3]: "unused" #1.65v 
-  ua[4]: "unused" #1.65v 
-  ua[5]: "unused" #1.65v 
+  # ua[0]: "the singular power line. please take good care of it. thanks." #1.65v 
+  # ua[1]: "spare one we keep in the boot" #1.65v
 
 # Do not change!
 yaml_version: 6

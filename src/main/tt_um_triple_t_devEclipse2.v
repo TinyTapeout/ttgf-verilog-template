@@ -11,7 +11,7 @@ module tt_um_triple_t_devEclipse2 (
     input  wire [7:0] uio_in,   // IOs: Input path (Pins 8-15)
     output wire [7:0] uio_out,  // IOs: Output path (Pins 8-15)
     output wire [7:0] uio_oe,   // IOs: Enable path (active high: 1=drive, 0=high-Z)
-    inout  wire [7:0] ua,
+    // inout  wire [7:0] ua,
     input  wire       ena,      // Always 1 when powered
     input  wire       clk,      // Clock 
     input  wire       rst_n     // Reset (Active low)
@@ -106,7 +106,7 @@ tt_um_core_commander core_commander (
 );
     
 logic_container main_logic (
-    .VDD_1V65               (ua[0]),
+    // .VDD_1V65               (ua[0]),
     .clk                    (clk),
     .rst_n                  (rst_n),
     .ui_in                  (ui_in),
