@@ -8,9 +8,7 @@ module tt_um_core_commander (
     input  wire       clk,
     input  wire       rst_n,
 
-
     
-
     // Telemetry bus to external MUX (routes selected error counter to uio_out when show_tracker=1)
     output reg  [7:0] tracker,
     output reg        show_tracker,
@@ -19,8 +17,6 @@ module tt_um_core_commander (
     // Per-Thread Error Inputs (3 Threads x 6 Error Types)
     // Bit 0 = Thread 0, Bit 1 = Thread 1, Bit 2 = Thread 2
     // -------------------------------------------------------------------------
-    input  wire [2:0] b2t_translation_err,       // Error ID 3'd0
-    input  wire [2:0] microcode_illegal_err,     // Error ID 3'd1
     input  wire [2:0] pc_overflow_err,           // Error ID 3'd2
     input  wire [2:0] micro_op_action_ovf_err,   // Error ID 3'd3 (Action overflow)
     input  wire [2:0] micro_op_param_ovf_err,    // Error ID 3'd4 (Param overflow)
@@ -102,16 +98,12 @@ module tt_um_core_commander (
     // -------------------------------------------------------------------------
     // 6 Error Counter Arrays (3 Threads x 6 Error Types) & Latched Offender Info
     // -------------------------------------------------------------------------
-    reg [7:0] err_b2t_t         [0:2]; // ID 3'd0       //b2t translation error
-    reg [7:0] err_ucode_t       [0:2]; // ID 3'd1       //microcode
     reg [7:0] err_pc_ovf_t      [0:2]; // ID 3'd2       //program counter overflow
     reg [7:0] err_uop_act_ovf_t [0:2]; // ID 3'd3       //micro pc action overflow
     reg [7:0] err_uop_prm_ovf_t [0:2]; // ID 3'd4       //micro pc param overflow
     reg [7:0] err_reg_ovf_t     [0:2]; // ID 3'd5       //register overflow
 
     //these are asynchronously assigned
-    reg [2:0] prev_b2t_err;
-    reg [2:0] prev_ucode_err;
     reg [2:0] prev_pc_ovf_err;
     reg [2:0] prev_uop_act_err;
     reg [2:0] prev_uop_prm_err;
@@ -136,8 +128,6 @@ module tt_um_core_commander (
             2'b00: begin
                 show_tracker = 1'b1;
                 case (error_id_select)
-                    3'd0:    tracker = err_b2t_t[0];
-                    3'd1:    tracker = err_ucode_t[0];
                     3'd2:    tracker = err_pc_ovf_t[0];
                     3'd3:    tracker = err_uop_act_ovf_t[0];
                     3'd4:    tracker = err_uop_prm_ovf_t[0];
@@ -149,8 +139,6 @@ module tt_um_core_commander (
             2'b01: begin
                 show_tracker = 1'b1;
                 case (error_id_select)
-                    3'd0:    tracker = err_b2t_t[1];
-                    3'd1:    tracker = err_ucode_t[1];
                     3'd2:    tracker = err_pc_ovf_t[1];
                     3'd3:    tracker = err_uop_act_ovf_t[1];
                     3'd4:    tracker = err_uop_prm_ovf_t[1];
@@ -162,8 +150,6 @@ module tt_um_core_commander (
             2'b10: begin
                 show_tracker = 1'b1;
                 case (error_id_select)
-                    3'd0:    tracker = err_b2t_t[2];
-                    3'd1:    tracker = err_ucode_t[2];
                     3'd2:    tracker = err_pc_ovf_t[2];
                     3'd3:    tracker = err_uop_act_ovf_t[2];
                     3'd4:    tracker = err_uop_prm_ovf_t[2];
@@ -231,28 +217,20 @@ module tt_um_core_commander (
         if (!rst_n) begin
             
             //replaced that with hard coded stuff cause i dont trust the verilog
-                err_b2t_t[0]         <= 8'b0;
-                err_ucode_t[0]       <= 8'b0;
                 err_pc_ovf_t[0]      <= 8'b0;
                 err_uop_act_ovf_t[0] <= 8'b0;
                 err_uop_prm_ovf_t[0] <= 8'b0;
                 err_reg_ovf_t[0]     <= 8'b0;
             //err thread 1
-                err_b2t_t[1]         <= 8'b0;
-                err_ucode_t[1]       <= 8'b0;
                 err_pc_ovf_t[1]      <= 8'b0;
                 err_uop_act_ovf_t[1] <= 8'b0;
                 err_uop_prm_ovf_t[1] <= 8'b0;
                 err_reg_ovf_t[1]     <= 8'b0;
             //err thread 2
-                err_b2t_t[2]         <= 8'b0;
-                err_ucode_t[2]       <= 8'b0;
                 err_pc_ovf_t[2]      <= 8'b0;
                 err_uop_act_ovf_t[2] <= 8'b0;
                 err_uop_prm_ovf_t[2] <= 8'b0;
                 err_reg_ovf_t[2]     <= 8'b0;
-            prev_b2t_err        <= 3'b0;
-            prev_ucode_err      <= 3'b0;
             prev_pc_ovf_err     <= 3'b0;
             prev_uop_act_err    <= 3'b0;
             prev_uop_prm_err    <= 3'b0;
@@ -287,8 +265,6 @@ module tt_um_core_commander (
             // -----------------------------------------------------------------
             // 1. Rising-Edge Error Detection, Auto-Fence, and Offender Latching
             // -----------------------------------------------------------------
-            prev_b2t_err     <= b2t_translation_err;
-            prev_ucode_err   <= microcode_illegal_err;
             prev_pc_ovf_err  <= pc_overflow_err;
             prev_uop_act_err <= micro_op_action_ovf_err;
             prev_uop_prm_err <= micro_op_param_ovf_err;
@@ -302,9 +278,7 @@ module tt_um_core_commander (
             
                 for (i = 0; i < 3; i = i + 1) begin
                     // Check if ANY error triggered for this thread on this clock cycle
-                    if ((b2t_translation_err[i] && !prev_b2t_err[i]) ||
-                        (microcode_illegal_err[i] && !prev_ucode_err[i]) ||
-                        (pc_overflow_err[i] && !prev_pc_ovf_err[i]) ||
+                    if ((pc_overflow_err[i] && !prev_pc_ovf_err[i]) ||
                         (micro_op_action_ovf_err[i] && !prev_uop_act_err[i]) ||
                         (micro_op_param_ovf_err[i] && !prev_uop_prm_err[i]) ||
                         (reg_overflow_err[i] && !prev_reg_ovf_err[i])) begin
@@ -315,9 +289,7 @@ module tt_um_core_commander (
                         end else begin
                             // First error detected this cycle, latch its details
                             offending_thread <= i[1:0];
-                            if      (b2t_translation_err[i] && !prev_b2t_err[i])           offending_error_id <= 3'd0;
-                            else if (microcode_illegal_err[i] && !prev_ucode_err[i])       offending_error_id <= 3'd1;
-                            else if (pc_overflow_err[i] && !prev_pc_ovf_err[i])            offending_error_id <= 3'd2;
+                            if (pc_overflow_err[i] && !prev_pc_ovf_err[i])            offending_error_id <= 3'd2;
                             else if (micro_op_action_ovf_err[i] && !prev_uop_act_err[i])   offending_error_id <= 3'd3;
                             else if (micro_op_param_ovf_err[i] && !prev_uop_prm_err[i])    offending_error_id <= 3'd4;
                             else if (reg_overflow_err[i] && !prev_reg_ovf_err[i])          offending_error_id <= 3'd5;
@@ -328,8 +300,6 @@ module tt_um_core_commander (
                         microcode_fence[i] <= 1'b1; // Auto-fence the offending thread
                     end
                     // Increment the individual counters regardless of collisions
-                    if (b2t_translation_err[i] && !prev_b2t_err[i])           err_b2t_t[i]         <= err_b2t_t[i] + 1'b1;
-                    if (microcode_illegal_err[i] && !prev_ucode_err[i])       err_ucode_t[i]       <= err_ucode_t[i] + 1'b1;
                     if (pc_overflow_err[i] && !prev_pc_ovf_err[i])            err_pc_ovf_t[i]      <= err_pc_ovf_t[i] + 1'b1;
                     if (micro_op_action_ovf_err[i] && !prev_uop_act_err[i])   err_uop_act_ovf_t[i] <= err_uop_act_ovf_t[i] + 1'b1;
                     if (micro_op_param_ovf_err[i] && !prev_uop_prm_err[i])    err_uop_prm_ovf_t[i] <= err_uop_prm_ovf_t[i] + 1'b1;

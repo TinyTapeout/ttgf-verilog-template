@@ -4,9 +4,7 @@
 for the logic container it is in charge of handling command streaming into the things, 
 can also do memory read and writes through the io for all 3 threads, as well as handling the changes between microcode, thread command intake and stuff 
 */
-
-
-
+`default_nettype none
 //also logic testing etc is done somewhere else, preferably somewhere that i can't see
 module logic_container(
     
@@ -16,7 +14,7 @@ module logic_container(
 
     input  wire [7:0] ui_in,    // Dedicated inputs (Pins 0-7)
     output reg [7:0] uo_out,   // Dedicated outputs (Pins 16-23)
-    input  reg [7:0] uio_in,   // IOs: Input path (Pins 8-15)
+    input  wire [7:0] uio_in,   // IOs: Input path (Pins 8-15)
     output reg [7:0] uio_out,  // IOs: Output path (Pins 8-15)
     output reg [7:0] uio_oe,   // IOs: Enable path (active high: 1=drive, 0=high-Z)
 
@@ -28,7 +26,7 @@ module logic_container(
     input  wire [1:0]  ovl_reg_read_stage,  //byte chunk (0->1->2)
     input  wire [4:0]  ovl_reg_address,     //5-bit address (31)
     input  wire        ovl_is_read,         //read write toggle
-    output wire        ovl_reg_handover_done,
+    output wire [2:0]  ovl_reg_handover_done,
     output wire [7:0]  ovl_dbg_dout,
     input  wire [7:0]  ovl_dbg_din,
     input  wire [2:0]  ovl_microcode_fence, //threadly basis

@@ -1,3 +1,4 @@
+`default_nettype none
 module microcode(
     input  wire        clk,
     input  wire        rst_n,
@@ -40,8 +41,7 @@ module microcode(
     input  wire [7:0]  bus, //la controller uses this
     output reg  [11:0] address,
     output wire         cycle_threads,
-    output wire        microcode_idle,
-
+    output wire        microcode_idle
 );
 
     reg  [6:0]  microcode_action_offset_t0_res;

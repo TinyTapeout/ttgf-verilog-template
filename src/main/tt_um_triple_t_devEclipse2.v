@@ -28,30 +28,17 @@ module tt_um_triple_t_devEclipse2 (
     assign uio_out_111 = 8'h00;
     assign uio_oe_111  = 8'h00;
 
-
 //enable later
-    // logic_tester testbench(
-
-    //     VDD_1V65(ua[0]),
-    //     .ui_in(ui_in),    // Dedicated inputs (Pins 0-7)
-    //     .uo_out(uo_000),   // Dedicated outputs (Pins 16-23)
-    //     .uio_in(uio_in),   // IOs: Input path (Pins 8-15)
-    //     .uio_out(uio_out_000),  // IOs: Output path (Pins 8-15)
-    //     .uio_oe(uio_oe_000),   // IOs: Enable path (active high: 1=drive, 0=high-Z)
-    //     .clk(clk),
-    //     .rst_n(rst_n),
+    // logic_tester testbench (
+    //     .VDD_1V65 (ua[0]),
+    //     .ui_in    (ui_in),
+    //     .uo_out   (uo_000),
+    //     .uio_in   (uio_in),
+    //     .uio_out  (uio_out_000),
+    //     .uio_oe   (uio_oe_000),
+    //     .clk      (clk),
+    //     .rst_n    (rst_n)
     // );
-
-    ogic_tester testbench (
-        .VDD_1V65 (ua[0]),
-        .ui_in    (ui_in),
-        .uo_out   (uo_000),
-        .uio_in   (uio_in),
-        .uio_out  (uio_out_000),
-        .uio_oe   (uio_oe_000),
-        .clk      (clk),
-        .rst_n    (rst_n)
-    );
 
     wire [7:0] commander_tracker_data;
     wire       commander_tracker_enable;
@@ -84,8 +71,6 @@ tt_um_core_commander core_commander (
     .show_tracker            (commander_tracker_enable),
 
     // Per-Thread Error Inputs (b2t & microcode_illegal cut -> tied low)
-    .b2t_translation_err     (3'b000),
-    .microcode_illegal_err   (3'b000),
     .pc_overflow_err         (pc_overflow_err_wire),
     .micro_op_action_ovf_err (micro_op_action_ovf_err_wire),
     .micro_op_param_ovf_err  (micro_op_param_ovf_err_wire),

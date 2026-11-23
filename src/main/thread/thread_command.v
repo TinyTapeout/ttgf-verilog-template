@@ -33,9 +33,11 @@ checklist
 31. it should always be 0 : no mask, 1 : use mask
 32. tritwise works on 1 trit
 33. something something spi
+34. direct execution its a thing
+35. alias write is kind of old, need fixing
 */
 
-
+`default_nettype none
 module thread_command(
     input wire clk,
     input wire rst_n,
@@ -43,7 +45,7 @@ module thread_command(
         output wire [7:0] macro_op,
         output wire [7:0] action_counter,
         output wire [7:0] param_counter,
-        output wire flush,
+        output reg flush,
         input wire [3:0] command,
         input wire [3:0] param_0,
         input wire [3:0] param_1,
@@ -63,36 +65,36 @@ module thread_command(
         */
 
     //alu interface
-        output  wire [2:0] alu_command,
-        output  wire [2:0] tritwise_command,
-        output  wire [2:0] tritshift_tritwise_command, //trit shifts up to 3 front and back
-        output  wire cmd_ready,
-        input   wire res_ready_in,
-        //4 trit. replace these with binary coding
-        output [7:0] t4_a_out,
-        output [7:0] t4_b_out,
-        output [7:0] t4_c_out,
-        output [1:0] t1_a_out,
-        output [1:0] t1_b_out,
+        output  reg [2:0] alu_command,
+        output  reg [2:0] tritwise_command,
+        output  reg [2:0] tritshift_tritwise_command, //trit shifts up to 3 front and back
+        output  reg alu_command_ready,
+        input   wire alu_res_ready,
+        //4 trit
+        output reg [7:0] alu_t4_a,
+        output reg [7:0] alu_t4_b,
+        output reg [7:0] alu_t4_c,
+        output reg [1:0] alu_t1_a,
+        output reg [1:0] alu_t1_b,
         output reg alu_prio_inc,
         //results here
-        input [7:0] t4_in,
-        input [1:0] t1_in,
-        input [16:0] multiply_in,
-        output [3:0] hog_timer,
+        input wire [7:0] alu_t4_o,
+        input wire [1:0] alu_t1_o,
+        input wire [15:0] alu_multiply_o,
+        output reg [3:0] hog_timer,
 
     //overlord interface
         input   wire [7:0] bus_data_in,
         input   wire data_valid,
         input   wire data_done,
-        output  wire request_set_pc,
-        output  wire request_memory_access,
-        output  wire is_write_memory,
-        output  wire [23:0] addr_out,
+        output  reg request_set_pc,
+        output  reg request_memory_access,
+        output  reg is_write_memory,
+        output  reg [23:0] addr_out,
         input   wire [23:0] d_in,
-        output  wire [23:0] d_out,
-        output  wire pipe_full_rej,
-        output  wire request_new_cmd,
+        output  reg [23:0] d_out,
+        output  reg pipe_full_rej,
+        output  reg request_new_cmd,
 
 
 
@@ -103,7 +105,7 @@ module thread_command(
         //if reg address is not zero, read is active
         input   wire is_read,                   // 1 = ASIC transmits to FPGA, 0 = ASIC receives from FPGA
         output  wire reg_handover_done,         // Pulled high by active thread when entire register dump finishes
-        output  wire [7:0] dbg_dout,
+        output  reg [7:0] dbg_dout,
         input   wire [7:0] dbg_din,    
         input   wire       microcode_fence, //pauses execute after 1 micro op
         input   wire       direct_instr,    //skips the buffer; always hold 1 instruction
@@ -161,7 +163,7 @@ function [23:0] read_any_reg_12t;
                 4'd3: read_any_reg_12t = {spf_t2, spf_t1, spf_t0};
                 4'd4: read_any_reg_12t = {mac_d, mac_b, mac_a};
                 default: read_any_reg_12t = read_secondary_reg(
-                    1'b1, addr, sel_cmd1, pc_val,
+                    1'b1, addr, using_macroop_1, pc_val,
                     gp6, gp7, gp8,
                     c0_0, c0_1, c0_2, c0_3, c0_4, c0_5,
                     c1_0, c1_1, c1_2, c1_3, c1_4, c1_5
@@ -171,48 +173,102 @@ function [23:0] read_any_reg_12t;
     end
 endfunction
 
-task write_any_reg_12t;
-    input use_mask;
-    input        write_allow;
+// task write_any_reg_12t;
+//     input use_mask;
+//     input        write_allow;
+//     input [3:0]  addr;
+//     input        sel_cmd1;
+//     // Alias check inputs
+//     inout [3:0]  alias_addr_12t;
+//     inout [23:0] am_12t;
+//     input [23:0] data_12t;
+//     output pc_wen;
+//     inout [23:0] pc_val;
+//     // Scratchpads, Flags (with spf_trib2), Ladder
+//     inout [7:0]  sp0_t0, sp0_t1, sp0_t2;
+//     inout [7:0]  sp1_t0, sp1_t1, sp1_t2;
+//     inout [7:0]  spf_t2;
+//     inout [1:0] f0, f1, f2, f3, f4, f5, f6, f7;
+//     //ladder
+//     inout [7:0] mac_a,mac_b,mac_d; // Incoming product:   | D | C |
+//     // PC & Secondary Registers
+//     inout [23:0] gp6, gp7, gp8;
+//     inout [23:0] c0_0, c0_1, c0_2, c0_3, c0_4, c0_5;
+//     inout [23:0] c1_0, c1_1, c1_2, c1_3, c1_4, c1_5;
+    
+//     reg [23:0] wdata;
+//     begin
+//         if(write_allow) begin
+//             wdata = (alias_addr_12t == 4'd0 && use_mask) ? apply_mask_12t(data_12t, am_12t) : data_12t;
+//             case (addr)
+//                 4'd1: {sp0_t2, sp0_t1, sp0_t0} <= wdata;
+//                 4'd2: {sp1_t2, sp1_t1, sp1_t0} <= wdata;
+//                 4'd3: {spf_t2, f7, f6, f5, f4, f3, f2, f1, f0} <= wdata;
+//                 4'd4: {mac_d, mac_b, mac_a} <= wdata;
+//                 default: write_secondary_reg(
+//                     1'b1, addr, sel_cmd1, use_mask, alias_addr_12t, am_12t, data_12t, pc_wen, pc_val,
+//                     gp6, gp7, gp8,
+//                     c0_0, c0_1, c0_2, c0_3, c0_4, c0_5,
+//                     c1_0, c1_1, c1_2, c1_3, c1_4, c1_5
+//                 );
+//             endcase
+//             if (alias_addr_12t == addr) begin
+//                 alias_addr_12t <= 4'd0;
+//                 am_12t         <= 24'h555555;
+//             end
+//         end
+//     end
+// endtask
+
+task write_secondary_reg;
+    input        w_allow;
     input [3:0]  addr;
-    input        sel_cmd1;
-    // Alias check inputs
-    inout [3:0]  alias_addr_12t;
-    inout [23:0] am_12t;
-    input [23:0] data_12t;
-    output pc_wen;
-    output [23:0] pc_val;
-    // Scratchpads, Flags (with spf_trib2), Ladder
-    output [7:0]  sp0_t0, sp0_t1, sp0_t2;
-    output [7:0]  sp1_t0, sp1_t1, sp1_t2;
-    output [7:0]  spf_t0, spf_t1, spf_t2;
-    
-    //ladder
-    output [7:0] mac_a, mac_b,mac_d; // Incoming product:   | D | C |
-    // PC & Secondary Registers
-    output [23:0] gp6, gp7, gp8;
-    output [23:0] c0_0, c0_1, c0_2, c0_3, c0_4, c0_5;
-    output [23:0] c1_0, c1_1, c1_2, c1_3, c1_4, c1_5;
-    
-    reg [23:0] wdata;
+    input        sel_c1;
+    input [23:0] wdata;
     begin
-        if(write_allow) begin
-            wdata = (alias_addr_12t == 4'd0 && use_mask) ? apply_mask_12t(data_12t, am_12t) : data_12t;
+        if (w_allow) begin
             case (addr)
-                4'd1: {sp0_t2, sp0_t1, sp0_t0} = wdata;
-                4'd2: {sp1_t2, sp1_t1, sp1_t0} = wdata;
-                4'd3: {spf_t2, spf_t1, spf_t0} = wdata;
-                4'd4: {mac_d, mac_b, mac_a} = wdata;
-                default: write_secondary_reg(
-                    1'b1, addr, sel_cmd1, use_mask, alias_addr_12t, am_12t, data_12t, pc_wen, pc_val,
-                    gp6, gp7, gp8,
-                    c0_0, c0_1, c0_2, c0_3, c0_4, c0_5,
-                    c1_0, c1_1, c1_2, c1_3, c1_4, c1_5
-                );
+                4'd5:  begin
+                    pc_w_data   <= wdata;
+                    pc_w_enable <= 1'b1;
+                    on_pc_modified;
+                end
+                4'd6:  gp_reg_6 <= wdata;
+                4'd7:  gp_reg_7 <= wdata;
+                4'd8:  gp_reg_8 <= wdata;
+                4'd9:  if (sel_c1) cmd1_reg_0 <= wdata; else cmd0_reg_0 <= wdata;
+                4'd10: if (sel_c1) cmd1_reg_1 <= wdata; else cmd0_reg_1 <= wdata;
+                4'd11: if (sel_c1) cmd1_reg_2 <= wdata; else cmd0_reg_2 <= wdata;
+                4'd12: if (sel_c1) cmd1_reg_3 <= wdata; else cmd0_reg_3 <= wdata;
+                4'd13: if (sel_c1) cmd1_reg_4 <= wdata; else cmd0_reg_4 <= wdata;
+                4'd14: if (sel_c1) cmd1_reg_5 <= wdata; else cmd0_reg_5 <= wdata;
+                default: ;
             endcase
-            if (alias_addr_12t == addr) begin
-                alias_addr_12t = 4'd0;
-                am_12t         = 24'h555555;
+        end
+    end
+endtask
+
+task write_any_reg_12t;
+    input        use_mask;
+    input        w_allow;
+    input [3:0]  addr;
+    input        sel_c1;
+    input [23:0] data_12t;
+    reg   [23:0] wdata;
+    begin
+        if (w_allow) begin
+            wdata = (alias_addr_12t == 4'd0 && use_mask) ? apply_mask_12t(data_12t, am_buff_12t) : data_12t;
+            case (addr)
+                4'd1: {sp0_trib2, sp0_trib1, sp0_trib0} <= wdata;
+                4'd2: {sp1_trib2, sp1_trib1, sp1_trib0} <= wdata;
+                4'd3: {spf_trib2, spf_flag7, spf_flag6, spf_flag5, spf_flag4,
+                                  spf_flag3, spf_flag2, spf_flag1, spf_flag0} <= wdata;
+                4'd4: {mac_d, mac_b, mac_a} <= wdata;
+                default: write_secondary_reg(1'b1, addr, sel_c1, wdata);
+            endcase
+            if (alias_addr_12t == addr && addr != 4'd0) begin
+                alias_addr_12t <= 4'd0;
+                am_buff_12t    <= 24'h555555;
             end
         end
     end
@@ -247,60 +303,87 @@ function [23:0] read_secondary_reg;
     end
 endfunction
 
-task write_secondary_reg;
-    input        write_allow;
-    input [3:0]  addr;
-    input        sel_cmd1;
-    input use_mask;
-    inout alias_addr_12t;
-    input [23:0] am_12t;
-    input [23:0] data_12t;
-    output pc_wen;
-    output [23:0] pc_val;
-    output [23:0] gp6, gp7, gp8;
-    output [23:0] c0_0, c0_1, c0_2, c0_3, c0_4, c0_5;
-    output [23:0] c1_0, c1_1, c1_2, c1_3, c1_4, c1_5;
+// task write_secondary_reg;
+//     input        write_allow;
+//     input [3:0]  addr;
+//     input        sel_cmd1;
+//     input use_mask;
+//     inout [3:0] alias_addr_12t;
+//     inout [23:0] am_12t;
+//     input [23:0] data_12t;
+//     output pc_wen;
+//     inout [23:0] pc_val;
+//     inout [23:0] gp6, gp7, gp8;
+//     inout [23:0] c0_0, c0_1, c0_2, c0_3, c0_4, c0_5;
+//     inout [23:0] c1_0, c1_1, c1_2, c1_3, c1_4, c1_5;
 
-    reg [23:0] wdata;
+//     reg [23:0] wdata;
+//     begin
+
+//         if(write_allow) begin
+//             wdata = (alias_addr_12t == 4'd0 && use_mask) ? apply_mask_12t(data_12t, am_12t) : data_12t;
+//             case (addr)
+//                 4'd5:  begin
+//                     pc_val = wdata;
+//                     pc_wen = 1'b1;
+//                 end
+//                 4'd6: gp6 = wdata;
+//                 4'd7: gp7 = wdata;
+//                 4'd8: gp8 = wdata;
+//                 default: begin 
+//                     if(sel_cmd1) begin
+//                         case (addr)
+//                             4'd9:  c1_0 = wdata;
+//                             4'd10: c1_1 = wdata;
+//                             4'd11: c1_2 = wdata;
+//                             4'd12: c1_3 = wdata;
+//                             4'd13: c1_4 = wdata;
+//                             4'd14: c1_5 = wdata;
+//                         endcase
+//                     end
+//                     else begin
+//                         case (addr)
+//                             4'd9:  c0_0 = wdata;
+//                             4'd10: c0_1 = wdata;
+//                             4'd11: c0_2 = wdata;
+//                             4'd12: c0_3 = wdata;
+//                             4'd13: c0_4 = wdata;
+//                             4'd14: c0_5 = wdata;
+//                         endcase
+//                     end
+//                 end
+//             endcase
+//             if (alias_addr_12t == addr) begin
+//                 alias_addr_12t = 4'd0;
+//                 am_12t         = 24'h555555;
+//             end
+//         end
+//     end
+// endtask
+
+task write_any_reg_4t;
+    input       use_mask;
+    input       w_allow;
+    input [2:0] addr_4t;
+    input [7:0] data_4t;
+    reg   [7:0] wdata;
     begin
-
-        if(write_allow) begin
-            wdata = (alias_addr_12t == 4'd0 && use_mask) ? apply_mask_12t(data_12t, am_12t) : data_12t;
-        end
-        case (addr)
-            4'd5:  begin
-                pc_val = wdata;
-                pc_wen = 1'b1;
+        if (w_allow) begin
+            wdata = (!alias_active_4t && use_mask) ? apply_mask_4t(data_4t, am_buff_4t) : data_4t;
+            case (addr_4t)
+                3'd0: sp0_trib0 <= wdata;
+                3'd1: sp0_trib1 <= wdata;
+                3'd2: sp0_trib2 <= wdata;
+                3'd3: sp1_trib0 <= wdata;
+                3'd4: sp1_trib1 <= wdata;
+                3'd5: sp1_trib2 <= wdata;
+                3'd6: {spf_flag3, spf_flag2, spf_flag1, spf_flag0} <= wdata;
+                3'd7: {spf_flag7, spf_flag6, spf_flag5, spf_flag4} <= wdata;
+            endcase
+            if (alias_active_4t && (alias_addr_4t == addr_4t)) begin
+                alias_active_4t <= 1'b0;
+                am_buff_4t      <= 8'h55;
             end
-            4'd6: gp6 = wdata;
-            4'd7: gp7 = wdata;
-            4'd8: gp8 = wdata;
-            default: begin 
-                if(sel_cmd1) begin
-                    case (addr)
-                        4'd9:  c1_0 = wdata;
-                        4'd10: c1_1 = wdata;
-                        4'd11: c1_2 = wdata;
-                        4'd12: c1_3 = wdata;
-                        4'd13: c1_4 = wdata;
-                        4'd14: c1_5 = wdata;
-                    endcase
-                end
-                else begin
-                    case (addr)
-                        4'd9:  c0_0 = wdata;
-                        4'd10: c0_1 = wdata;
-                        4'd11: c0_2 = wdata;
-                        4'd12: c0_3 = wdata;
-                        4'd13: c0_4 = wdata;
-                        4'd14: c0_5 = wdata;
-                    endcase
-                end
-            end
-        endcase
-        if (alias_addr_12t == addr) begin
-            alias_addr_12t = 4'd0;
-            am_12t         = 24'h555555;
         end
     end
 endtask
@@ -331,40 +414,41 @@ function [7:0] read_any_reg_4t;
     end
 endfunction
 
-task write_any_reg_4t;
-    input use_mask;
-    input write_allow;
-    input [2:0] addr_4t;
-    inout       alias_active_4t;
-    input [2:0] alias_addr_4t;
-    input [7:0] data_4t;
+    // task write_any_reg_4t;
+    //     input use_mask;
+    //     input write_allow;
+    //     input [2:0] addr_4t;
+    //     inout       alias_active_4t;
+    //     input [2:0] alias_addr_4t;
+    //     input [7:0] data_4t;
 
-    inout [7:0] am_4t;
-    output [7:0] sp0_t0, sp0_t1, sp0_t2;
-    output [7:0] sp1_t0, sp1_t1, sp1_t2;
-    output [7:0] spf_t0, spf_t1;
+    //     inout [7:0] am_4t;
+    //     inout [7:0] sp0_t0, sp0_t1, sp0_t2;
+    //     inout [7:0] sp1_t0, sp1_t1, sp1_t2;
+    //     inout [1:0] f0, f1, f2, f3, f4, f5, f6, f7;
 
-    reg [7:0] wdata;
-    begin
-        if(write_allow) begin
-            wdata = (!alias_active_4t && use_mask) ? apply_mask_4t(data_4t, am_4t) : data_4t;
-            case (addr_4t)
-                3'd0: sp0_t0 = wdata;
-                3'd1: sp0_t1 = wdata;
-                3'd2: sp0_t2 = wdata;
-                3'd3: sp1_t0 = wdata;
-                3'd4: sp1_t1 = wdata;
-                3'd5: sp1_t2 = wdata;
-                3'd6: spf_t0 = wdata;
-                3'd7: spf_t1 = wdata;
-            endcase
-            if (alias_active_4t && (alias_addr_4t == addr_4t)) begin
-                alias_active_4t = 1'b0;
-                am_4t      = 8'h55;
-            end
-        end
-    end
-endtask
+
+    //     reg [7:0] wdata;
+    //     begin
+    //         if(write_allow) begin
+    //             wdata = (!alias_active_4t && use_mask) ? apply_mask_4t(data_4t, am_4t) : data_4t;
+    //             case (addr_4t)
+    //                 3'd0: sp0_t0 = wdata;
+    //                 3'd1: sp0_t1 = wdata;
+    //                 3'd2: sp0_t2 = wdata;
+    //                 3'd3: sp1_t0 = wdata;
+    //                 3'd4: sp1_t1 = wdata;
+    //                 3'd5: sp1_t2 = wdata;
+    //                 3'd6: {f3,f2,f1,f0} = wdata;
+    //                 3'd7: {f7,f6,f5,f4} = wdata;
+    //             endcase
+    //             if (alias_active_4t && (alias_addr_4t == addr_4t)) begin
+    //                 alias_active_4t = 1'b0;
+    //                 am_4t      = 8'h55;
+    //             end
+    //         end
+    //     end
+    // endtask
 
 //read 1t func
 function [1:0] read_any_reg_1t;
@@ -391,34 +475,61 @@ function [1:0] read_any_reg_1t;
     end
 endfunction
 
+    // task write_any_reg_1t;
+    //     input use_mask;
+    //     input write_allow;
+    //     input [2:0] addr_1t;
+    //     input [1:0] data_1t;
+    //     inout       alias_active_1t;
+    //     input [2:0] alias_addr_1t;
+    //     inout [1:0] am_1t;
+    //     inout [1:0] f0, f1, f2, f3, f4, f5, f6, f7;
+
+    //     reg [1:0] wdata;
+    //     begin
+    //         if(write_allow)begin
+    //             wdata = (!alias_active_1t && use_mask) ? apply_mask_1t(data_1t, am_1t) : data_1t;
+    //             case (addr_1t)
+    //                     3'd0: f0 = wdata;
+    //                     3'd1: f1 = wdata;
+    //                     3'd2: f2 = wdata;
+    //                     3'd3: f3 = wdata;
+    //                     3'd4: f4 = wdata;
+    //                     3'd5: f5 = wdata;
+    //                     3'd6: f6 = wdata;
+    //                     3'd7: f7 = wdata;
+    //             endcase
+
+    //             if (alias_active_1t && (alias_addr_1t == addr_1t)) begin
+    //                 alias_active_1t = 1'b0;
+    //                 am_1t = 2'b01;
+    //             end
+    //         end
+    //     end
+    // endtask
+
 task write_any_reg_1t;
-    input use_mask;
-    input write_allow;
+    input       use_mask;
+    input       w_allow;
     input [2:0] addr_1t;
     input [1:0] data_1t;
-    inout       alias_active_1t;
-    input [2:0] alias_addr_1t;
-    inout [1:0] am_1t;
-    output [1:0] f0, f1, f2, f3, f4, f5, f6, f7;
-
-    reg [1:0] wdata;
+    reg   [1:0] wdata;
     begin
-        if(write_allow)begin
-            wdata = (!alias_active_1t && use_mask) ? apply_mask_1t(data_1t, am_1t) : data_1t;
+        if (w_allow) begin
+            wdata = (!alias_active_1t && use_mask) ? apply_mask_1t(data_1t, am_buff_1t) : data_1t;
             case (addr_1t)
-                    3'd0: f0 = wdata;
-                    3'd1: f1 = wdata;
-                    3'd2: f2 = wdata;
-                    3'd3: f3 = wdata;
-                    3'd4: f4 = wdata;
-                    3'd5: f5 = wdata;
-                    3'd6: f6 = wdata;
-                    3'd7: f7 = wdata;
+                3'd0: spf_flag0 <= wdata;
+                3'd1: spf_flag1 <= wdata;
+                3'd2: spf_flag2 <= wdata;
+                3'd3: spf_flag3 <= wdata;
+                3'd4: spf_flag4 <= wdata;
+                3'd5: spf_flag5 <= wdata;
+                3'd6: spf_flag6 <= wdata;
+                3'd7: spf_flag7 <= wdata;
             endcase
-
             if (alias_active_1t && (alias_addr_1t == addr_1t)) begin
-                alias_active_1t = 1'b0;
-                am_1t = 2'b01;
+                alias_active_1t <= 1'b0;
+                am_buff_1t      <= 2'b01;
             end
         end
     end
@@ -574,51 +685,52 @@ endfunction
         end else begin
             case (command)
                 4'b0001: begin // 1-Param Ops
-                    rd_addr_12t  = param_1;
-                    rd_addr_4t_a = param_1[3:1];
-                    rd_addr_1t_a = param_1[3:1];
+                    rd_addr_12t  = exec_p1;
+                    rd_addr_4t_a = exec_p1[3:1];
+                    rd_addr_1t_a = exec_p1[3:1];
                 end
 
                 4'b0010: begin // 2-Param Ops
-                    rd_addr_12t  = (execute_stage == 2'b00) ? param_1 : param_2;
-                    rd_addr_4t_a = (param_0 == 4'b0100) ? param_1[3:1] : param_1[2:0];
-                    rd_addr_4t_b = param_2[2:0];
-                    rd_addr_1t_a = (param_0 == 4'b0011) ? param_1[3:1] : param_1[2:0];
-                    rd_addr_1t_b = param_2[2:0];
+                    rd_addr_12t  = (execute_stage == 2'b00) ? exec_p1 : exec_p2;
+
+                    rd_addr_4t_a = (param_0 == 4'b1111) ? exec_p1[2:0] : exec_p1[3:1];
+                    rd_addr_4t_b = (param_0 == 4'b1111) ? exec_p2[2:0] : exec_p2[3:1];
+                    rd_addr_1t_a = exec_p1[3:1];
+                    rd_addr_1t_b = exec_p2[3:1];
                 end
 
                 // --- Unified xxx0 3-Parameter Ops ---
-                4'b0011,    // Add / Sub:      param_0[3:1]=A, param_1[3:1]=B
-                4'b0100:    // Reworked MAC:   param_0[3:1]=A, param_1[3:1]=B
+                4'b0011,    // Add / Sub:      param_0[3:1]=A, exec_p1[3:1]=B
+                4'b0100:    // Reworked MAC:   param_0[3:1]=A, exec_p1[3:1]=B
                 begin
                     rd_addr_4t_a = param_0[3:1];
-                    rd_addr_4t_b = param_1[3:1];
+                    rd_addr_4t_b = exec_p1[3:1];
                 end
 
                 4'b0101: begin // Add3 (Packed: aaab bbcc cddd)
                     rd_addr_4t_a = param_0[3:1];
-                    rd_addr_4t_b = {param_0[0], param_1[3:2]};
-                    rd_addr_4t_c = {param_1[1:0], param_2[3]};
+                    rd_addr_4t_b = {param_0[0], exec_p1[3:2]};
+                    rd_addr_4t_c = {exec_p1[1:0], exec_p2[3]};
                 end
 
-                4'b0110: begin // Trit Shift: param_0[3:1]=A (4t), param_1[3:1]=amt (1t)
+                4'b0110: begin // Trit Shift: param_0[3:1]=A (4t), exec_p1[3:1]=amt (1t)
                     rd_addr_4t_a = param_0[3:1];
-                    rd_addr_1t_a = param_1[3:1];
+                    rd_addr_1t_a = exec_p1[3:1];
                 end
 
                 4'b0111: begin // Single-Instruction Conditional: param_0[3:1]=eval (1t)
                     rd_addr_1t_a = param_0[3:1];
                 end
 
-                4'b1100: begin // 12t<->4t (param_1[0]=0) or 4t<->1t (param_1[0]=1)
+                4'b1100: begin // 12t<->4t (exec_p1[0]=0) or 4t<->1t (exec_p1[0]=1)
                     rd_addr_12t  = param_0;
-                    rd_addr_4t_a = param_1[0] ? param_0[3:1] : param_1[3:1];
-                    rd_addr_1t_a = param_1[3:1];
+                    rd_addr_4t_a = exec_p1[0] ? param_0[3:1] : exec_p1[3:1];
+                    rd_addr_1t_a = exec_p1[3:1];
                 end
                 4'b1000: begin
                     rd_addr_1t_a = param_0[3:1];
-                    rd_addr_1t_b = param_1[3:1];
-                end  // Tritwise:     param_0[3:1]=A, param_1[3:1]=B
+                    rd_addr_1t_b = exec_p1[3:1];
+                end  // Tritwise:     param_0[3:1]=A, exec_p1[3:1]=B
 
                 default: ;
             endcase
@@ -629,7 +741,7 @@ endfunction
     wire [23:0] shared_rd_12t = read_any_reg_12t(
         rd_addr_12t, using_macroop_1, alias_addr_12t, am_buff_12t,
         sp0_trib0, sp0_trib1, sp0_trib2, sp1_trib0, sp1_trib1, sp1_trib2,
-        spf_trib0, spf_trib1, spf_trib2, mac_a, mac_b, mac_c,
+        spf_trib0, spf_trib1, spf_trib2, mac_a, mac_b, mac_d,
         pc_r_data, gp_reg_6, gp_reg_7, gp_reg_8,
         cmd0_reg_0, cmd0_reg_1, cmd0_reg_2, cmd0_reg_3, cmd0_reg_4, cmd0_reg_5,
         cmd1_reg_0, cmd1_reg_1, cmd1_reg_2, cmd1_reg_3, cmd1_reg_4, cmd1_reg_5
@@ -697,14 +809,12 @@ task start_bus_tx;
     end
 endtask
 
-
 //macro op governing section and state machine
         reg [15:0] macroop_register;
         reg using_macroop_1;//remember to only flip after macro op 1 finishes
 
         // Expose active macro-op to the microcode parser
         assign macro_op = using_macroop_1 && !direct_instr ? macroop_register[15:8] : macroop_register[7:0];
-        assign sel_cmd1 = using_macroop_1;
 
         // Thread buffer occupancy states
         localparam  THREAD_EMPTY  = 2'b00, // Neither slot has a valid command
@@ -712,8 +822,6 @@ endtask
                     THREAD_EMPTY0 = 2'b10, // Slot 0 empty, Slot 1 active
                     THREAD_EMPTY1 = 2'b11; // Slot 1 empty, Slot 0 active
         reg [1:0]   threadstate = THREAD_EMPTY;
-
-
 
 //moved to higher level in order to widen bus
         //parameter registers
@@ -749,7 +857,8 @@ endtask
         
         reg pc_w_enable;
         
-        reg pc_r_enable;
+        wire pc_r_enable;
+        
 
         ternary_pc_12t program_counter (
         .clk(clk),
@@ -821,12 +930,25 @@ endtask
         reg        cmd_we;
         reg [1:0]  op_read_state; // 00: idle, 01: byte 0, 10: byte 1, 11: byte 2 & write
 
+
+
+task on_pc_modified;
+    begin
+        pc_tx_pending <= 1'b1;
+        // Drop the next latched macro-op (keep the currently executing slot)
+        if (threadstate == THREAD_FULL) begin
+            threadstate   <= using_macroop_1 ? THREAD_EMPTY0 : THREAD_EMPTY1;
+            pipe_full_rej <= 1'b0;
+        end
+        loading_second_slot <= 1'b0;
+    end
+endtask
+
 task execute_alias_write;
     // ctrl
     input        write_allow;
     input        active;
     input        using_macroop_1;
-    input        sel_cmd1;
     input [3:0]  addr_12t_in;
     input        active_4t_in;
     input [2:0]  addr_4t;
@@ -887,6 +1009,7 @@ task execute_alias_write;
                     if (addr_12t_in >= 4'd5) begin
                         if (addr_12t_in == 4'd5) begin
                             pc_w_en   = 1'b1;
+                            on_pc_modified;
                             pc_w_data = buff_12t;
                         end else begin
                             sec_w_en   = 1'b1;
@@ -947,7 +1070,7 @@ task execute_alias_write;
 
         //always process background command pipe writes (overrides alias on collision)
         update_secondary_regs(
-            sec_w_en, addr_12t_in, sec_w_data, sel_cmd1, ovr_en, ovr_sel,
+            sec_w_en, addr_12t_in, sec_w_data, using_macroop_1, ovr_en, ovr_sel,
             pipe_w_en, pipe_addr, bin_trit_in,
             gp6, gp7, gp8,
             c0_0, c0_1, c0_2, c0_3, c0_4, c0_5,
@@ -955,7 +1078,6 @@ task execute_alias_write;
         );
     end
 endtask
-
 //masking funcs
 function [1:0] apply_mask_1t;
     input [1:0] val;
@@ -967,23 +1089,23 @@ function [1:0] apply_mask_1t;
     end
 endfunction //shrunked
 
-// function [1:0] apply_mask_1t;
-//     input [1:0] val;
-//     input [1:0] m;
-//     begin
-//         case (m)
-//             2'b01: apply_mask_1t = (val == 2'b11) ? 2'b10 : val; // * (+1)
-//             2'b00: begin                                         // * (-1)
-//                 case (val)
-//                     2'b00:   apply_mask_1t = 2'b01;
-//                     2'b01:   apply_mask_1t = 2'b00;
-//                     default: apply_mask_1t = 2'b10;
-//                 endcase
-//             end
-//             default: apply_mask_1t = 2'b10;                      // * (0)
-//         endcase
-//     end
-// endfunction
+    // function [1:0] apply_mask_1t;
+    //     input [1:0] val;
+    //     input [1:0] m;
+    //     begin
+    //         case (m)
+    //             2'b01: apply_mask_1t = (val == 2'b11) ? 2'b10 : val; // * (+1)
+    //             2'b00: begin                                         // * (-1)
+    //                 case (val)
+    //                     2'b00:   apply_mask_1t = 2'b01;
+    //                     2'b01:   apply_mask_1t = 2'b00;
+    //                     default: apply_mask_1t = 2'b10;
+    //                 endcase
+    //             end
+    //             default: apply_mask_1t = 2'b10;                      // * (0)
+    //         endcase
+    //     end
+    // endfunction
 
 function [7:0] apply_mask_4t;
     input [7:0] val;
@@ -1024,13 +1146,22 @@ reg        hold_reg_active;
 reg execute_done = 1'b0;
 
 //i should find a use for them later
-assign pc_r_enable = (register_address == 5'd5) || (r_enable && t_addr_in == 4'd5);
+
+reg pc_tx_pending; // Reset to 1'b0 in if (!rst_n)
+
+assign pc_r_enable = (register_address == 5'd5) ||
+                     (rd_addr_12t == 4'd5) ||
+                     pc_tx_pending;
+//assign pc_r_enable = (register_address == 5'd5) || (r_enable && t_addr_in == 4'd5);
 
 assign collision = check_reg_collision(
-    (write_allow && do_housekeeping_w && (alias_addr_12t >= 4'd6)),
+    (write_allow && do_housekeeping && (alias_addr_12t >= 4'd6)),
     alias_addr_12t, sel_cmd1, 1'b1, ~using_macroop_1,
-    command_write_enable, commandpipe_address
+    cmd_we,cmd_param_id
 );
+
+assign action_counter = action_ctr;
+assign param_counter = param_ctr;
 
 reg do_housekeeping = 1'b0;
 
@@ -1038,10 +1169,30 @@ reg [1:0] execute_stage = 2'b00;
 reg loading_second_slot = 1'b0;
 reg [23:0] tmp_12t_lat;
 
+reg write_allow = 1'b1;  
+
+
+//declarations
+reg       direct_exec_active;
+reg       direct_exec_ready;
+reg [3:0] direct_cmd, direct_p0, direct_p1, direct_p2;
+
+//muxed execution inputs (use exec_* in rd_addr_* mux and Stage 0/1/2)
+wire [3:0] exec_cmd   = direct_exec_ready ? direct_cmd : command;
+wire [3:0] exec_p0    = direct_exec_ready ? direct_p0  : param_0;
+wire [3:0] exec_p1    = direct_exec_ready ? direct_p1  : param_1;
+wire [3:0] exec_p2    = direct_exec_ready ? direct_p2  : param_2;
+wire       exec_valid = direct_exec_ready || (command_data_sent && (threadstate != THREAD_EMPTY));
+
+
+reg [23:0] debug_reg_cache = 24'b0;
+reg pipe_empty = 1'b0;
+
 always @(posedge clk or negedge rst_n) begin
     //this is the main loop of the system
     if (!rst_n) begin
         //control & state        
+        write_allow <= 1'b1;
         threadstate        <= THREAD_EMPTY;
         macroop_register   <= 16'b0;
         using_macroop_1    <= 1'b0;
@@ -1052,11 +1203,10 @@ always @(posedge clk or negedge rst_n) begin
         execute_done       <= 1'b0;
         execute_stage      <= 2'b00;
         command_req_new    <= 1'b0;
-
         // pulses and handshakes
         cmd_buf_clr_ack    <= 1'b0;
         single_execute_ack <= 1'b0;
-        pc_increment       <= 1'b0;
+        pc_inc_enable       <= 1'b0;
         pc_w_enable        <= 1'b0;
         //pc_w_data          <= 24'hAAAAAA;
         cmd_we             <= 1'b0;
@@ -1107,18 +1257,21 @@ always @(posedge clk or negedge rst_n) begin
         request_memory_access <= 1'b0;
         is_write_memory       <= 1'b0;
         ext_addr_out          <= 16'hAAAA; // 8 trits of canonical zero
+        direct_exec_active <= 1'b0;
+        direct_exec_ready <= 1'b0;
 
     end else begin
         
         execute_done <= 1'b0;
         can_execute_this_clock = 1'b0; // non blocking temp var
-        pc_increment          <= 1'b0;
+        pc_inc_enable          <= 1'b0;
         pc_w_enable           <= 1'b0;
         cmd_we                <= 1'b0;
         pipe_empty            <= (threadstate == THREAD_EMPTY);
         command_req_new       <= 1'b0;
         alu_prio_inc          <= 1'b0;
         flush <= 1'b0;
+        hog_timer <= 4'd0;
         do_housekeeping = 1'b0;
         //this block executes beforehand to do... something    
             if(cmd_buf_clr) begin
@@ -1133,6 +1286,8 @@ always @(posedge clk or negedge rst_n) begin
                 {spf_flag3, spf_flag2, spf_flag1, spf_flag0} <= 8'hAA;
                 {spf_flag7, spf_flag6, spf_flag5, spf_flag4} <= 8'hAA;
                 cmd_buf_clr_ack <= 1'b1;
+                direct_exec_active <= 1'b0;
+                direct_exec_ready <= 1'b0;
             end
             else begin
                 cmd_buf_clr_ack <= 1'b0; // Ensure ack clears when cmd_buf_clr drops
@@ -1235,7 +1390,7 @@ always @(posedge clk or negedge rst_n) begin
                     pc_inc_enable <= 1'b1; // Finishing a command increments the thread PC
                     //resets parameter program counter
                     param_ctr <= 8'b00000000;
-                    action_counter_ctr <= 8'b00000000;
+                    action_ctr <= 8'b00000000;
                     //yes it is intentional that we can override it later
 
 
@@ -1244,7 +1399,6 @@ always @(posedge clk or negedge rst_n) begin
                     //best clock for housekeeping btw
                     //make sure that the aliased buffers that write into the command parameter addresses are written into the new command parameter space
                     //excellent for doing carry over stuff, which is intended behaviour
-                    
                     //here is a special case where if a param is aliased it should swap it over to the next macro op command param space 
                     do_housekeeping = 1'b1;
                     //end of housekeeping
@@ -1255,7 +1409,7 @@ always @(posedge clk or negedge rst_n) begin
                     pc_inc_enable <= 1'b0;
                     if(threadstate == THREAD_EMPTY) begin
                         //literally idle
-                        pipe_empty = 1'b1;
+                        pipe_empty <= 1'b1;
                         //do housekeeping here
                         do_housekeeping = 1'b1;
                         //twiddle thumbs or something idk
@@ -1268,26 +1422,35 @@ always @(posedge clk or negedge rst_n) begin
                         //if no micro op or no alu, do nothing
 
                         //check if the logic leading up to micro op handling is sound
-                        if(execute_done) begin // execute done refers to the micro instruction
+
+                        if (pc_tx_pending && execute_stage == 2'b00) begin
+                            pc_tx_pending <= 1'b0;
+                            start_bus_tx(TX_SET_PC, 24'hAAAAAA, pc_r_data); // Drives d_out + request_set_pc, waits for data_done in Stage 1
+                        end
+                        else if(execute_done) begin // execute done refers to the micro instruction
                             //request new from microcode
                             //if there was a jump previously, use a flush and make sure action counter and param counter are visible
                             // then command_req_new is inverted to show new request
-                            command_req_new <= 1'b1;
+                            if (direct_exec_ready) begin
+                                direct_exec_ready <= 1'b0; // Consumed direct micro-op; don't poke microcode
+                            end else begin
+                                command_req_new   <= 1'b1;
+                            end
                             execute_done <= 1'b0;
-                        end else if(command_data_sent && execute_stage == 2'b0) begin
+                        end else if(exec_valid && execute_stage == 2'b0) begin
                             //read command input
                             execute_done <= 1'b0;
                             //for some single clock stuff you can non block it back to 1 later
                             
-                            if(command == 4'b0000) begin
+                            if(exec_cmd == 4'b0000) begin
                                 // 0 parameters
                                 execute_done <= 1'b1; //auto sets to 1 
-                                case(param_0)
+                                case(exec_p0)
                                     4'b0001: begin
                                         //mac ladder flush
                                         if(write_allow) begin
                                             {mac_a,mac_b,mac_c,mac_d} <= 32'hAAAAAAAA;
-                                            mac_carry <= 2'b0;
+                                            mac_carry <= 2'b10;
                                         end
                                     end
                                     4'b0010: begin
@@ -1367,7 +1530,8 @@ always @(posedge clk or negedge rst_n) begin
                                     4'b1011: begin
                                         //program counter increment
                                         pc_inc_enable <= 1'b1;
-                                        start_bus_tx(TX_SET_PC, 24'hAAAAAA, pc_r_data);
+                                        on_pc_modified;
+                                        // start_bus_tx(TX_SET_PC, 24'hAAAAAA, pc_r_data);
                                         //blocking or non blocking here?
                                         //remember to always request a pc update when we change it inside here to prevent desync after each macro op and also for situations like these
                                     end
@@ -1389,10 +1553,10 @@ always @(posedge clk or negedge rst_n) begin
 
                                     default: ;
                                 endcase
-                            end else if(command == 4'b0001) begin 
+                            end else if(exec_cmd == 4'b0001) begin 
                                 execute_done <= 1'b1;
                                 // 1 parameter
-                                case(param_0)
+                                case(exec_p0)
                                     4'b0001: begin
                                         //mac read with imm
                                         //due to space limitations, this is constrained to 4 4t scratchpads, which are the 3 in sp1 and flag
@@ -1411,20 +1575,28 @@ always @(posedge clk or negedge rst_n) begin
                                         output [7:0] spf_t0, spf_t1;
 
                                         reg [7:0] wdata;
-                                        begin                              
+                                        begin                             
+
+
+                                        input       use_mask;
+                                            input       w_allow;
+                                            input [2:0] addr_4t;
+                                            input [7:0] data_4t;
+                                            reg   [7:0] wdata;
+                                            begin
                                         */
 
-                                        case(param_1[1:0])
-                                            2'b00:write_any_reg_4t(1'b0,write_allow,{1'b0, param_1[3:2]} + 2'd3,alias_active_4t,alias_addr_4t,mac_a,am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
-                                            2'b01:write_any_reg_4t(1'b0,write_allow,{1'b0, param_1[3:2]} + 2'd3,alias_active_4t,alias_addr_4t,mac_b,am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
-                                            2'b10:write_any_reg_4t(1'b0,write_allow,{1'b0, param_1[3:2]} + 2'd3,alias_active_4t,alias_addr_4t,mac_c,am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
-                                            2'b11:write_any_reg_4t(1'b0,write_allow,{1'b0, param_1[3:2]} + 2'd3,alias_active_4t,alias_addr_4t,mac_d,am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
+                                        case(exec_p1[1:0])
+                                            2'b00:write_any_reg_4t(1'b0,write_allow,{1'b0, exec_p1[3:2]} + 2'd3,mac_a);
+                                            2'b01:write_any_reg_4t(1'b0,write_allow,{1'b0, exec_p1[3:2]} + 2'd3,mac_b);
+                                            2'b10:write_any_reg_4t(1'b0,write_allow,{1'b0, exec_p1[3:2]} + 2'd3,mac_c);
+                                            2'b11:write_any_reg_4t(1'b0,write_allow,{1'b0, exec_p1[3:2]} + 2'd3,mac_d);
                                         endcase
                                     end
                                     4'b0010: begin
                                         //mac pump. param is overflow destination
                                         if(write_allow) begin
-                                            write_any_reg_4t(param_1[0],1'b1,param_1[3:1],alias_active_4t,alias_addr_4t,mac_a,am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
+                                            write_any_reg_4t(exec_p1[0],1'b1,exec_p1[3:1],mac_a);
                                             mac_a <= mac_c;
                                             mac_b <= mac_d;
                                         end
@@ -1435,8 +1607,8 @@ always @(posedge clk or negedge rst_n) begin
                                         // Xxx0: clear scratchpads
                                         // Xxx1: clear mac ladder section
                                         if(write_allow) begin
-                                            if(param_1[0]) begin
-                                                case(param_1[3:1])
+                                            if(exec_p1[0]) begin
+                                                case(exec_p1[3:1])
                                                 3'b000: mac_a <= 8'hAA;
                                                 3'b001: mac_b <= 8'hAA;
                                                 3'b010: mac_c <= 8'hAA;
@@ -1444,8 +1616,8 @@ always @(posedge clk or negedge rst_n) begin
                                                 endcase
                                             end
                                             else begin
-                                                write_any_reg_4t(1'b0,1'b1,param_1[3:1],alias_active_4t,alias_addr_4t,8'hAA,am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
-                                                if(alias_active_4t && alias_addr_4t == param_1[3:1]) begin
+                                                write_any_reg_4t(1'b0,1'b1,exec_p1[3:1],8'hAA);
+                                                if(alias_active_4t && alias_addr_4t == exec_p1[3:1]) begin
                                                     //clear alias
                                                     alias_active_4t <= 1'b0;
                                                     am_buff_4t <= 8'h55;
@@ -1457,14 +1629,14 @@ always @(posedge clk or negedge rst_n) begin
                                         //hold until register change
                                         //when a micro op with that register being used is reached, it must make sure the register is updated BEFORE it can proceed
                                         //12t register address
-                                        hold_reg_addr   <= param_1;
+                                        hold_reg_addr   <= exec_p1;
                                         hold_reg_active <= 1'b1;
                                     end
                                     4'b0101,4'b0110: begin
                                         if(alias_addr_12t == 4'd0) begin
                                             if(write_allow) begin
                                                 am_buff_12t <= shared_rd_12t;
-                                                mask_12t_singleuse <= (param_0 == 4'b0101);//singleuse
+                                                mask_12t_singleuse <= (exec_p0 == 4'b0101);//singleuse
                                             end
                                         end
                                         else begin
@@ -1482,7 +1654,7 @@ always @(posedge clk or negedge rst_n) begin
                                         //     if(write_allow) begin
                                         //         if(alias_addr_12t != 4'd0) begin
                                         //             am_buff_12t <= read_any_reg_12t(
-                                        //                 param_1, using_macroop_1,
+                                        //                 exec_p1, using_macroop_1,
                                         //                 alias_addr_12t,
                                         //                 am_buff_12t,
                                         //                 sp0_trib0, sp0_trib1, sp0_trib2,
@@ -1511,7 +1683,7 @@ always @(posedge clk or negedge rst_n) begin
                                                 am_buff_4t <= shared_rd_4t_a;
                                                 //xxx0 : single use
                                                 //xxx1 : will not clear
-                                                mask_4t_singleuse <= ~param_1[0];
+                                                mask_4t_singleuse <= ~exec_p1[0];
                                             end
                                         end else begin
                                             //housekeep
@@ -1527,7 +1699,7 @@ always @(posedge clk or negedge rst_n) begin
                                                 am_buff_1t <= shared_rd_1t_a;
                                                 //xxx0 : single use
                                                 //xxx1 : will not clear
-                                                mask_1t_singleuse <= ~param_1[0];
+                                                mask_1t_singleuse <= ~exec_p1[0];
                                             end
                                         end else begin
                                             //housekeep
@@ -1542,12 +1714,12 @@ always @(posedge clk or negedge rst_n) begin
                                         //xxx1 : param
                                         //xxx is the address of the 4 trit chunk
                                         if(write_allow) begin
-                                            if(param_1[0] == 1'b0) begin
+                                            if(exec_p1[0] == 1'b0) begin
                                                 //xxx0 : action
                                                 action_ctr <= shared_rd_4t_a;
                                             end else begin
                                                 //xxx1 : param
-                                                param_ctr <= shared_rd_4t_b;
+                                                param_ctr <= shared_rd_4t_a;
                                             end
                                             flush <= 1'b1;
                                         end
@@ -1563,7 +1735,7 @@ always @(posedge clk or negedge rst_n) begin
                                         //alu hogging
                                         //for big operations that need alu max priority on all processes
                                         //param 1 is a binary number up to 16
-                                        hog_timer <= param_1;
+                                        hog_timer <= exec_p1;
                                     end
                                     4'b1100: begin
                                         //save to the extended memory address (so you can get up to 9.7GiB of addressable ram)
@@ -1587,9 +1759,9 @@ always @(posedge clk or negedge rst_n) begin
                                     end
                                 endcase
                             end 
-                            else if(command == 4'b0010) begin 
+                            else if(exec_cmd == 4'b0010) begin 
                                 // 2 parameters
-                                case(param_0)
+                                case(exec_p0)
                                     4'b0000,4'b0010: begin
                                         //register A copy to register B (12 trits) without mask
                                         //param1 regA addr
@@ -1653,13 +1825,13 @@ always @(posedge clk or negedge rst_n) begin
                                         //read extended register (the extended register is basically just ram stored on another fpga)
                                         //param 1 Local reg addr 12T
                                         //param 2 Extended reg addr 12t
-                                        start_bus_tx(TX_MEM_READ, {16'hAAAA, param_2, 4'hA}, 24'hAAAAAA);
+                                        start_bus_tx(TX_MEM_READ, {16'hAAAA, exec_p2, 4'hA}, 24'hAAAAAA);
                                     end
                                     4'b1001: begin
                                         //write extended register
                                         //param 1 Local reg addr 12T
                                         //param 2 Extended reg addr 12t
-                                        if (write_allow) start_bus_tx(TX_MEM_WRITE, {16'hAAAA, param_2, 4'hA}, shared_rd_12t);
+                                        if (write_allow) start_bus_tx(TX_MEM_WRITE, {16'hAAAA, exec_p2, 4'hA}, shared_rd_12t);
                                         else             execute_done <= 1'b1;
                                         //if (write_allow)
                                         //     start_bus_tx(TX_MEM_WRITE, mem_addr_24b, mem_data_24b);
@@ -1669,7 +1841,7 @@ always @(posedge clk or negedge rst_n) begin
                                     4'b1010: begin
                                         //hop parameter counter using immediate
                                         if (write_allow) begin
-                                            param_ctr <= {param_1, param_2};
+                                            param_ctr <= {exec_p1, exec_p2};
                                             flush     <= 1'b1;
                                         end
                                         execute_done <= 1'b1;
@@ -1683,7 +1855,7 @@ always @(posedge clk or negedge rst_n) begin
                                         //param 2 t1 t0
                                         //trits are encoded into 2 bits, using override encoding
                                         if (write_allow) begin
-                                            action_ctr <= {param_1, param_2};
+                                            action_ctr <= {exec_p1, exec_p2};
                                             flush      <= 1'b1;
                                         end
                                         execute_done <= 1'b1;
@@ -1714,17 +1886,17 @@ always @(posedge clk or negedge rst_n) begin
                                     4'b1111: begin
                                         //mac mul without pumping
                                         //OR mac move
-                                        alu_cmd       <= 3'd2;
+                                        alu_command       <= 3'd2;
                                         alu_t4_a      <= shared_rd_4t_a;
                                         alu_t4_b      <= shared_rd_4t_b;
-                                        alu_cmd_ready <= 1'b1;
+                                        alu_command_ready <= 1'b1;
                                         execute_stage <= 2'b01;
                                     end
                                     default: execute_done <= 1'b1;
                                 endcase
                             end
                             else begin
-                                case(command)
+                                case(exec_cmd)
                                     4'b0011: begin
                                         // trit add/subtract using the alu
                                         /*
@@ -1739,11 +1911,11 @@ always @(posedge clk or negedge rst_n) begin
                                         xxx0: skip mask
                                         xxx1: masked
                                         */
-                                        alu_cmd       <= 3'd1;
+                                        alu_command       <= 3'd1;
                                         alu_t4_a      <= shared_rd_4t_a;
                                         alu_t4_b      <= param_0[0] ? apply_mask_4t(shared_rd_4t_b, 8'h00) : shared_rd_4t_b;
                                         alu_t1_a      <= carry_reg;
-                                        alu_cmd_ready <= 1'b1;
+                                        alu_command_ready <= 1'b1;
                                         execute_stage <= 2'b01;
                                     end
                                     4'b0100: begin
@@ -1756,10 +1928,10 @@ always @(posedge clk or negedge rst_n) begin
                                         param 2 Operand B address 4 trit bbb0
                                         param 3 operand C address 4 trit ccc0
                                         */
-                                        alu_cmd       <= 3'd2;
-                                        alu_t4_a      <= (param_0[0] && mask_4t_active) ? apply_mask_4t(shared_rd_4t_a, am_buff_4t) : shared_rd_4t_a;
-                                        alu_t4_b      <= (param_1[0] && mask_4t_active) ? apply_mask_4t(shared_rd_4t_b, am_buff_4t) : shared_rd_4t_b;
-                                        alu_cmd_ready <= 1'b1;
+                                        alu_command       <= 3'd2;
+                                        alu_t4_a      <= (param_0[0] && !alias_active_4t) ? apply_mask_4t(shared_rd_4t_a, am_buff_4t) : shared_rd_4t_a;
+                                        alu_t4_b      <= (exec_p1[0] && !alias_active_4t) ? apply_mask_4t(shared_rd_4t_b, am_buff_4t) : shared_rd_4t_b;
+                                        alu_command_ready <= 1'b1;
                                         execute_stage <= 2'b01;
                                     end
                                     4'b0101: begin
@@ -1770,12 +1942,12 @@ always @(posedge clk or negedge rst_n) begin
                                         param 3 operand C address 4 trit cddd
                                         result stored at address D
                                         */
-                                        alu_cmd       <= 3'd6;
+                                        alu_command       <= 3'd6;
                                         alu_t4_a      <= shared_rd_4t_a;
                                         alu_t4_b      <= shared_rd_4t_b;
                                         alu_t4_c      <= shared_rd_4t_c;
                                         alu_t1_a      <= carry_reg;
-                                        alu_cmd_ready <= 1'b1;
+                                        alu_command_ready <= 1'b1;
                                         execute_stage <= 2'b01;
                                     end
                                     4'b0110: begin
@@ -1791,12 +1963,30 @@ always @(posedge clk or negedge rst_n) begin
 
                                         Result address (4 trits) zzz0 : shift towards infinity, zzz1 : shift towards 0
                                         */
-                                        alu_cmd       <= 3'd7;
-                                        alu_t4_a      <= (param_0[0] && mask_4t_active) ? apply_mask_4t(shared_rd_4t_a, am_buff_4t) : shared_rd_4t_a;
+                                        /*
+                                        alu_command       <= 3'd7;
+                                        alu_t4_a      <= (param_0[0] && !alias_active_4t) ? apply_mask_4t(shared_rd_4t_a, am_buff_4t) : shared_rd_4t_a;
                                         alu_t1_a      <= shared_rd_1t_a;
-                                        alu_shift_cmd <= {param_1[0], param_2[0], 1'b0};
-                                        alu_cmd_ready <= 1'b1;
+                                        tritshift_tritwise_command <= {dir, amt[1:0]};
+                                        alu_command_ready <= 1'b1;
                                         execute_stage <= 2'b01;
+                                        */
+                                        alu_command <= 3'd7;
+                                        alu_t4_a    <= (exec_p0[0] && !alias_active_4t)
+                                                    ? apply_mask_4t(shared_rd_4t_a, am_buff_4t)
+                                                    : shared_rd_4t_a;
+
+                                        // Window select: local -> 2'b10 (Center); ovf/udf -> 2'b00 (Left) if dir=inf, 2'b01 (Right) if dir=0
+                                        alu_t1_a    <= exec_p1[0] ? {1'b0, exec_p2[0]} : 2'b10;
+
+                                        // {dir (1=left/inf, 0=right/0), amt (2'b00->1, 2'b10/11->2, 2'b01->3)}
+                                        tritshift_tritwise_command <= {
+                                            ~exec_p2[0],
+                                            shared_rd_1t_a[1] ? 2'd2 : (shared_rd_1t_a[0] ? 2'd3 : 2'd1)
+                                        };
+
+                                        alu_command_ready <= 1'b1;
+                                        execute_stage     <= 2'b01;
                                     end
                                     4'b0111: begin
                                         /*
@@ -1811,9 +2001,9 @@ always @(posedge clk or negedge rst_n) begin
                                         use override encoding 00 : -1 , 01 :  1 , 10|11 : 0
                                         */
                                         if (write_allow) begin
-                                            if (param_0[0] == (shared_rd_1t_a == ((param_2[1:0] == 2'b11) ? 2'b10 : param_2[1:0]))) begin
-                                                action_ctr <= {5'b0, param_1[3:1]};
-                                                param_ctr  <= {5'b0, param_1[0], param_2[3:2]};
+                                            if (param_0[0] == (shared_rd_1t_a == ((exec_p2[1:0] == 2'b11) ? 2'b10 : exec_p2[1:0]))) begin
+                                                action_ctr <= {5'b0, exec_p1[3:1]};
+                                                param_ctr  <= {5'b0, exec_p1[0], exec_p2[3:2]};
                                                 flush      <= 1'b1;
                                             end
                                         end
@@ -1845,15 +2035,15 @@ always @(posedge clk or negedge rst_n) begin
                                         // end
                                     
                                     4'b1000: begin
-                                        case ({param_0[0], param_1[0]})
-                                            2'b00:   alu_cmd <= 3'd3; // Tritwise 1
-                                            2'b01:   alu_cmd <= 3'd4; // Tritwise 2
-                                            2'b10:   alu_cmd <= 3'd5; // Tritwise 3
-                                            default: alu_cmd <= 3'd3; // Spare
+                                        case ({param_0[0], exec_p1[0]})
+                                            2'b00:   alu_command <= 3'd3; // Tritwise 1
+                                            2'b01:   alu_command <= 3'd4; // Tritwise 2
+                                            2'b10:   alu_command <= 3'd5; // Tritwise 3
+                                            default: alu_command <= 3'd3; // Spare
                                         endcase
                                         alu_t1_a      <= shared_rd_1t_a;
                                         alu_t1_b      <= shared_rd_1t_b;
-                                        alu_cmd_ready <= 1'b1;
+                                        alu_command_ready <= 1'b1;
                                         execute_stage <= 2'b01;
                                     end                                       
                                     4'b1011: begin
@@ -1908,7 +2098,7 @@ always @(posedge clk or negedge rst_n) begin
                             //for data to be written, check if the command can skip data masking then either mask or write
                             //data masking stage
                             //write stage
-                        end else if(command_data_sent) begin
+                        end else if(exec_valid) begin
                             //this is for multi stage execution
                             //at most you have 4 stages because reasons (its harder to mess up in 4 cycles)
                             //during this time you can still request microcode
@@ -1952,9 +2142,19 @@ always @(posedge clk or negedge rst_n) begin
                                                     output [23:0] c1_0, c1_1, c1_2, c1_3, c1_4, c1_5;
                                                     
                                                     reg [23:0] wdata;
+
+
+                                                    task write_any_reg_12t;
+                                                        input        use_mask;
+                                                        input        w_allow;
+                                                        input [3:0]  addr;
+                                                        input        sel_c1;
+                                                        input [23:0] data_12t;
+                                                        reg   [23:0] wdata;
+                                                        begin
                                                     */
 
-                                                write_any_reg_12t(1'b0,1'b1,param_1,using_macroop_1,alias_addr_12t,am_buff_12t,d_in,pc_w_enable,pc_w_data,{sp0_t0,sp0_t1,sp0_t2},{sp1_t0,sp0_t1,sp0_t2},{spf_t0,spf_t1,spf_t2},gp6,gp7,gp8,cmd0_reg_0,cmd0_reg_1,cmd0_reg_2,cmd0_reg_3,cmd0_reg_4,cmd0_reg_5,cmd1_reg_0,cmd1_reg_1,cmd1_reg_2,cmd1_reg_3,cmd1_reg_4,cmd1_reg_5);
+                                                write_any_reg_12t(1'b0,1'b1,exec_p1,using_macroop_1,d_in);
                                             end
                                             request_show_reg      <= 1'b0;
                                             request_set_pc        <= 1'b0;
@@ -1969,12 +2169,12 @@ always @(posedge clk or negedge rst_n) begin
                                                 command == 4'b0110 || command == 4'b1000) begin
                                         //alu op section
                                         if (alu_res_ready) begin
-                                            alu_cmd_ready  <= 1'b0; //release ALU lock
+                                            alu_command_ready  <= 1'b0; //release ALU lock
                                             alu_res_4t_lat <= alu_t4_o;
                                             alu_res_1t_lat <= alu_t1_o;
                                             if (command == 4'b0010 && param_0 == 4'b1111) begin
                                                 if (write_allow) begin
-                                                    if (param_1[3]) begin //mac seed -> B,A
+                                                    if (exec_p1[3]) begin //mac seed -> B,A
                                                         mac_a <= alu_multiply_o[7:0]; mac_b <= alu_multiply_o[15:8]; mac_carry <= 2'b10;
                                                     end else begin        //mac mul  -> D,C
                                                         mac_c <= alu_multiply_o[7:0]; mac_d <= alu_multiply_o[15:8];
@@ -1998,18 +2198,18 @@ always @(posedge clk or negedge rst_n) begin
                                             case (param_0)
                                                 4'b0101, 4'b0110: begin
                                                     am_buff_12t        <= shared_rd_12t;
-                                                    mask_12t_active    <= 1'b1;
+                                                    //mask_12t_active    <= 1'b1;
                                                     mask_12t_singleuse <= (param_0 == 4'b0101);
                                                 end
                                                 4'b0111: begin
                                                     am_buff_4t        <= shared_rd_4t_a;
-                                                    mask_4t_active    <= 1'b1;
-                                                    mask_4t_singleuse <= ~param_1[0];
+                                                    //mask_4t_active    <= 1'b1;
+                                                    mask_4t_singleuse <= ~exec_p1[0];
                                                 end
                                                 4'b1000: begin
                                                     am_buff_1t        <= shared_rd_1t_a;
-                                                    mask_1t_active    <= 1'b1;
-                                                    mask_1t_singleuse <= ~param_1[0];
+                                                    //mask_1t_active    <= 1'b1;
+                                                    mask_1t_singleuse <= ~exec_p1[0];
                                                 end
                                                 default: ;
                                             endcase
@@ -2024,13 +2224,25 @@ always @(posedge clk or negedge rst_n) begin
                                                 4'b0000,// 12t Copy (no mask)
                                                 4'b0010: begin// 12t Copy (masked)
 
-                                                    write_any_reg_12t(param_0[1],1'b1,param_2,using_macroop_1,alias_addr_12t,am_buff_12t,tmp_12t_lat,pc_w_enable,pc_w_data,{sp0_t0,sp0_t1,sp0_t2},{sp1_t0,sp0_t1,sp0_t2},{spf_t0,spf_t1,spf_t2},gp6,gp7,gp8,cmd0_reg_0,cmd0_reg_1,cmd0_reg_2,cmd0_reg_3,cmd0_reg_4,cmd0_reg_5,cmd1_reg_0,cmd1_reg_1,cmd1_reg_2,cmd1_reg_3,cmd1_reg_4,cmd1_reg_5);
-                                                    if (mask_12t_singleuse) alias_addr_12t <= 4'd0;
+                                                    //i thinked write any reg resolves am
+
+                                                    /*
+                                                    task write_any_reg_12t;
+                                                        input        use_mask;
+                                                        input        w_allow;
+                                                        input [3:0]  addr;
+                                                        input        sel_c1;
+                                                        input [23:0] data_12t;
+                                                        reg   [23:0] wdata;
+                                                        begin
+                                                    */
+                                                    write_any_reg_12t(param_0[1],1'b1,exec_p2,using_macroop_1,tmp_12t_lat);
+                                                    if (param_0[1] && mask_12t_singleuse) am_buff_12t <= 24'h555555;
                                                 end
                                                 4'b0001: begin // 1t Imm Write
-                                                    if (param_1[1:0] == 2'b10)
+                                                    if (exec_p1[1:0] == 2'b10)
                                                         //write to carry reg
-                                                        carry_reg <= (param_2[0] && mask_1t_active) ? apply_mask_1t(param_1[3:2], am_buff_1t) : param_1[3:2];
+                                                        carry_reg <= (exec_p2[0] && !alias_active_1t) ? apply_mask_1t(exec_p1[3:2], am_buff_1t) : exec_p1[3:2];
                                                     else
                                                         /*
                                                         input use_mask;
@@ -2043,47 +2255,54 @@ always @(posedge clk or negedge rst_n) begin
                                                         output [1:0] f0, f1, f2, f3, f4, f5, f6, f7;
 
                                                         reg [1:0] wdata;
+
+                                                        task write_any_reg_1t;
+                                                            input       use_mask;
+                                                            input       w_allow;
+                                                            input [2:0] addr_1t;
+                                                            input [1:0] data_1t;
+                                                            reg   [1:0] wdata;
                                                         */
                                                         //
-                                                        write_any_reg_1t(param_2[0],1'b1,param_2[3:1], param_1[3:2],alias_active_1t,alias_addr_1t,am_buff_1t,spf_flag0,spf_flag1,spf_flag2,spf_flag3,spf_flag4,spf_flag5,spf_flag6,spf_flag7);
-                                                    if (param_2[0] && mask_1t_singleuse) am_buff_1t <= 2'b01;//set to * by 1
+                                                        write_any_reg_1t(exec_p2[0],1'b1,exec_p2[3:1], exec_p1[3:2]);
+                                                    if (exec_p2[0] && mask_1t_singleuse) am_buff_1t <= 2'b01;//set to * by 1
                                                 end
-                                                4'b0011: begin // 1t mv (param_1[0]=1: use mask, =0: skip mask)
-                                                    write_any_reg_1t(param_2[0],1'b1,param_2[3:1], param_1[3:2],alias_active_1t,alias_addr_1t,am_buff_1t,spf_flag0,spf_flag1,spf_flag2,spf_flag3,spf_flag4,spf_flag5,spf_flag6,spf_flag7);
-                                                    if (!param_1[0] && mask_1t_singleuse) am_buff_1t <= 2'b01;//set to * by 1
+                                                4'b0011: begin // 1t mv (exec_p1[0]=1: use mask, =0: skip mask)
+                                                    write_any_reg_1t(exec_p1[0],1'b1,exec_p2[3:1], shared_rd_1t_a);
+                                                    if (exec_p1[0] && mask_1t_singleuse) am_buff_1t <= 2'b01;//set to * by 1
                                                 end
-                                                4'b0100: begin // 4t Move (param_1[0] =1: use mask, =0: skip mask)
+                                                4'b0100: begin // 4t Move (exec_p1[0] =1: use mask, =0: skip mask)
 
                                                     //mask,wallow,
-                                                    write_any_reg_4t(param_1[0],1'b1,param_1[3:1],alias_active_4t,alias_addr_4t,shared_rd_4t_a,am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
-                                                    if (!param_1[0] && mask_4t_singleuse) am_buff_1t <= 2'b01;//set to * by 1
+                                                    write_any_reg_4t(exec_p1[0],1'b1,exec_p2[3:1],shared_rd_4t_a);
+                                                    if (exec_p1[0] && mask_4t_singleuse) am_buff_4t <= 8'h55;//set to * by 1
                                                 end
-                                                4'b0101: begin // 12t Swap (A=param_1 written FIRST, B=param_2 aliased)
+                                                4'b0101: begin // 12t Swap (A=exec_p1 written FIRST, B=exec_p2 aliased)
                                                     am_buff_12t    <= tmp_12t_lat;
-                                                    alias_addr_12t <= param_2;
-                                                    write_any_reg_12t(1'b0,1'b1,param_1,using_macroop_1,alias_addr_12t,am_buff_12t,shared_rd_12t,pc_w_enable,pc_w_data,{sp0_t0,sp0_t1,sp0_t2},{sp1_t0,sp0_t1,sp0_t2},{spf_t0,spf_t1,spf_t2},gp6,gp7,gp8,cmd0_reg_0,cmd0_reg_1,cmd0_reg_2,cmd0_reg_3,cmd0_reg_4,cmd0_reg_5,cmd1_reg_0,cmd1_reg_1,cmd1_reg_2,cmd1_reg_3,cmd1_reg_4,cmd1_reg_5);
-                                                    //stage 1 shared_rd_12t reads param_2
+                                                    alias_addr_12t <= exec_p2;
+                                                    write_any_reg_12t(1'b0,1'b1,exec_p1,using_macroop_1,shared_rd_12t);
+                                                    //stage 1 shared_rd_12t reads exec_p2
                                                 end
-                                                4'b0110: begin // 4t Swap (A=param_1[3:1] written FIRST, B=param_2[3:1] aliased)
+                                                4'b0110: begin // 4t Swap (A=exec_p1[3:1] written FIRST, B=exec_p2[3:1] aliased)
                                                     //yes i know there is no mask, but convention guys
                                                     am_buff_4t      <= shared_rd_4t_a;
-                                                    alias_addr_4t   <= param_2[3:1];
+                                                    alias_addr_4t   <= exec_p2[3:1];
                                                     alias_active_4t <= 1'b1;
                                                     //due to the shoddy nature of this construct, YES YOU CAN SWAP SOMETHING WITH ITSELF
                                                     //why? idk
-                                                    write_any_reg_4t(1'b0,1'b1,param_1[3:1],alias_active_4t,alias_addr_4t,shared_rd_4t_b,am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
+                                                    write_any_reg_4t(1'b0,1'b1,exec_p1[3:1],shared_rd_4t_b);
                                                 end
-                                                4'b0111: begin // 1t Swap (A=param_1[2:0] written FIRST, B=param_2[2:0] aliased)
+                                                4'b0111: begin // 1t Swap (A=exec_p1[2:0] written FIRST, B=exec_p2[2:0] aliased)
                                                     am_buff_1t      <= shared_rd_1t_a;
-                                                    alias_addr_1t   <= param_2[2:0];
+                                                    alias_addr_1t   <= exec_p2[3:1];
                                                     alias_active_1t <= 1'b1;
-                                                    write_any_reg_1t(1'b0,1'b1,param_1[3:1],shared_rd_1t_b ,alias_active_1t,alias_addr_1t,am_buff_1t,spf_flag0,spf_flag1,spf_flag2,spf_flag3,spf_flag4,spf_flag5,spf_flag6,spf_flag7);
+                                                    write_any_reg_1t(1'b0,1'b1,exec_p1[3:1],shared_rd_1t_b);
                                                 end
-                                                4'b1101: begin // Generate Value (fill 12t/4t/1t with param_1[3:2])
-                                                    case (param_1[1:0])
-                                                        2'b00: write_any_reg_12t(1'b0,1'b1,param_2,using_macroop_1,alias_addr_12t,am_buff_12t,{12{param_1[3:2]}},pc_w_enable,pc_w_data,{sp0_t0,sp0_t1,sp0_t2},{sp1_t0,sp0_t1,sp0_t2},{spf_t0,spf_t1,spf_t2},gp6,gp7,gp8,cmd0_reg_0,cmd0_reg_1,cmd0_reg_2,cmd0_reg_3,cmd0_reg_4,cmd0_reg_5,cmd1_reg_0,cmd1_reg_1,cmd1_reg_2,cmd1_reg_3,cmd1_reg_4,cmd1_reg_5);
-                                                        2'b01: write_any_reg_4t(1'b0,1'b1,param_2[3:1],alias_active_4t,alias_addr_4t,{4{param_1[3:2]}},am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
-                                                        2'b10: write_any_reg_1t(1'b0,1'b1,param_2[3:1],param_1[3:2],alias_active_1t,alias_addr_1t,am_buff_1t,spf_flag0,spf_flag1,spf_flag2,spf_flag3,spf_flag4,spf_flag5,spf_flag6,spf_flag7);
+                                                4'b1101: begin // Generate Value (fill 12t/4t/1t with exec_p1[3:2])
+                                                    case (exec_p1[1:0])
+                                                        2'b00: write_any_reg_12t(1'b0,1'b1,exec_p2,using_macroop_1,{12{exec_p1[3:2]}});
+                                                        2'b01: write_any_reg_4t(1'b0,1'b1,exec_p2[3:1],{4{exec_p1[3:2]}});
+                                                        2'b10: write_any_reg_1t(1'b0,1'b1,exec_p2[3:1],exec_p1[3:2]);
                                                         default: ;
                                                     endcase
                                                 end
@@ -2095,8 +2314,8 @@ always @(posedge clk or negedge rst_n) begin
                                     // 1F. 4-Trit imm load (1011) and slice transfer (1100)
                                     end else begin
                                         if (write_allow && command == 4'b1011) begin
-                                            write_any_reg_4t(param_2[0],1'b1,param_2[3:1],alias_active_4t,alias_addr_4t,{param_0, param_1},am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
-                                            if (param_2[0] && mask_4t_singleuse) am_buff_4t <= 8'h55;
+                                            write_any_reg_4t(exec_p2[0],1'b1,exec_p2[3:1],{param_0, exec_p1});
+                                            if (exec_p2[0] && mask_4t_singleuse) am_buff_4t <= 8'h55;
                                         end
                                         execute_stage <= 2'b00;
                                         execute_done  <= 1'b1;
@@ -2105,41 +2324,41 @@ always @(posedge clk or negedge rst_n) begin
 
                                 2'b10: begin
                                     if (command == 4'b0100) begin
-                                        // mac: kick A out (masked by param_2[0]), A <= B+C, B <= D
+                                        // mac: kick A out (masked by exec_p2[0]), A <= B+C, B <= D
                                         if (write_allow) begin
-                                            write_any_reg_4t(param_2[0],1'b1,param_2[3:1],alias_active_4t,alias_addr_4t,mac_a,am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
+                                            write_any_reg_4t(exec_p2[0],1'b1,exec_p2[3:1],mac_a);
                                             mac_a     <= mac_sum;
                                             mac_b     <= mac_d;
                                             mac_carry <= mac_cout;
-                                            if ((param_0[0] || param_1[0] || param_2[0]) && mask_4t_singleuse) am_buff_4t <= 8'h55;
+                                            if ((param_0[0] || exec_p1[0] || exec_p2[0]) && mask_4t_singleuse) am_buff_4t <= 8'h55;
                                         end
                                     end else if (write_allow) begin
                                         case (command)
-                                            // 0011:Add/Sub — param_1[0]=invert store, param_2[3:1]=dest, param_2[0]=mask
+                                            // 0011:Add/Sub — exec_p1[0]=invert store, exec_p2[3:1]=dest, exec_p2[0]=mask
                                             4'b0011: begin
                                                 carry_reg <= alu_res_1t_lat;
-                                                write_any_reg_4t(param_2[0],1'b1,param_2[3:1],alias_active_4t,alias_addr_4t,param_1[0] ? apply_mask_4t(alu_res_4t_lat, 8'h00) : alu_res_4t_lat ,am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
-                                                if (param_2[0] && mask_4t_singleuse) am_buff_4t <= 8'h55;
+                                                write_any_reg_4t(exec_p2[0],1'b1,exec_p2[3:1],exec_p1[0] ? apply_mask_4t(alu_res_4t_lat, 8'h00) : alu_res_4t_lat);
+                                                if (exec_p2[0] && mask_4t_singleuse) am_buff_4t <= 8'h55;
                                             end
 
-                                            // 0101:Add3 — dest = param_2[2:0]
+                                            // 0101:Add3 — dest = exec_p2[2:0]
                                             4'b0101: begin
                                                 carry_reg <= alu_res_1t_lat;
-                                                write_any_reg_4t(1'b0,1'b1,param_2[2:0],alias_active_4t,alias_addr_4t,alu_res_4t_lat,am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
+                                                write_any_reg_4t(1'b0,1'b1,exec_p2[2:0],alu_res_4t_lat);
                                             end
 
-                                            // 0110:Trit Shift — dest = param_2[3:1] (mask was pre-applied in Stage 0)
+                                            // 0110:Trit Shift — dest = exec_p2[3:1] (mask was pre-applied in Stage 0)
                                             4'b0110: begin
                                                 //ts is frying me
-                                                write_any_reg_4t(1'b0,1'b1,param_2[3:1],alias_active_4t,alias_addr_4t,alu_res_4t_lat,am_buff_4t,sp0_trib0,sp0_trib1,sp0_trib2,sp1_trib0,sp1_trib1,sp1_trib2,spf_trib0,spf_trib1);
+                                                write_any_reg_4t(1'b0,1'b1,exec_p2[3:1],alu_res_4t_lat);
                                                 if (param_0[0] && mask_4t_singleuse) am_buff_4t <= 8'h55;
                                             end
 
-                                            // 1000:tritwise — dest = param_2[3:1], mask = param_2[0]
+                                            // 1000:tritwise — dest = exec_p2[3:1], mask = exec_p2[0]
                                             4'b1000: begin
                                                 //this is 1 trit
-                                                write_any_reg_1t(param_2[0],1'b1,param_2[3:1],alu_res_1t_lat,alias_active_1t,alias_addr_1t,am_buff_1t,spf_flag0,spf_flag1,spf_flag2,spf_flag3,spf_flag4,spf_flag5,spf_flag6,spf_flag7);
-                                                if (param_2[0] && mask_1t_singleuse) am_buff_1t <= 1'b01;
+                                                write_any_reg_1t(exec_p2[0],1'b1,exec_p2[3:1],alu_res_1t_lat);
+                                                if (exec_p2[0] && mask_1t_singleuse) am_buff_1t <= 2'b01;
                                             end
 
                                             default: ;
@@ -2169,7 +2388,7 @@ always @(posedge clk or negedge rst_n) begin
                             //     if (data_done) begin
                             //         // If this was a Memory Read (100), commit the 24-bit d_in back to the target 12t reg
                             //         if (request_memory_access && !is_write_memory && write_allow) begin
-                            //             write_reg_12t(param_1, d_in);
+                            //             write_reg_12t(exec_p1, d_in);
                             //         end
 
                             //         request_show_reg      <= 1'b0;
@@ -2229,7 +2448,7 @@ always @(posedge clk or negedge rst_n) begin
                     end else begin
                         direct_exec_active <= 1'b0;
 
-                        if (threadstate == THREAD_EMPTY) begin
+                        if (threadstate == THREAD_EMPTY && !direct_exec_ready) begin
                             // Pipe empty -> load Slot 0 and pre-fetch microcode immediately
                             macroop_register[7:0] <= bus_data_in;
                             using_macroop_1       <= 1'b0;
@@ -2432,9 +2651,9 @@ always @(posedge clk or negedge rst_n) begin
         end
 
         execute_alias_write(
-            write_allow, (do_housekeeping && can_execute_this_clock), using_macroop_1, sel_cmd1,
+            write_allow, (do_housekeeping && can_execute_this_clock), using_macroop_1,
             alias_addr_12t, alias_active_4t, alias_addr_4t, alias_active_1t, alias_addr_1t,
-            command_write_enable, commandpipe_address, binary_trit_in,
+            cmd_we, cmd_param_id,cmd_param_reg,
             // Next-state alias flags & PC write port
             alias_addr_12t, alias_active_4t, alias_active_1t,
             pc_w_enable, pc_w_data,
@@ -2445,7 +2664,7 @@ always @(posedge clk or negedge rst_n) begin
             sp1_trib0, sp1_trib1, sp1_trib2,
             spf_flag0, spf_flag1, spf_flag2, spf_flag3, spf_flag4, spf_flag5, spf_flag6, spf_flag7,
             spf_trib2,
-            ladder_trib0, ladder_trib1, ladder_trib2,
+            mac_a, mac_b, mac_d,
             gp_reg_6, gp_reg_7, gp_reg_8,
             cmd0_reg_0, cmd0_reg_1, cmd0_reg_2, cmd0_reg_3, cmd0_reg_4, cmd0_reg_5,
             cmd1_reg_0, cmd1_reg_1, cmd1_reg_2, cmd1_reg_3, cmd1_reg_4, cmd1_reg_5
