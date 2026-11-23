@@ -72,9 +72,15 @@ pinout:
   
   # ua[0]: "the singular power line. please take good care of it. thanks." #1.65v 
   # ua[1]: "spare one we keep in the boot" #1.65v
-
+"CLOCK_PERIOD": 25,
+"RUN_DESIGN_REPAIR": false,
 "DESIGN_REPAIR_MAX_SLEW_PCT": 0,
 "DESIGN_REPAIR_MAX_CAP_PCT": 0,
+"HOLD_SLACK_MARGIN": 0.0,
+"PL_RESIZER_HOLD_SLACK_MARGIN": 0.0,
+"GRT_RESIZER_HOLD_SLACK_MARGIN": 0.0,
+"PL_RESIZER_HOLD_MAX_BUFFER_PCT": 10,
+"GRT_RESIZER_HOLD_MAX_BUFFER_PCT": 10
 "DESIGN_REPAIR_MAX_WIRE_LENGTH": 0,
 "RSZ_DONT_TOUCH_RX": ".*clk.*|.*rst.*"
 # Do not change!
