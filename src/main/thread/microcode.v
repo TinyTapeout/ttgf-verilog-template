@@ -200,8 +200,8 @@ module microcode(
 
     // Op1 always starts immediately after Op0 at nib[n0]
     wire [3:0] final_op1_p0 = nib[n0];
-    wire [3:0] final_op1_p1 = (n1 >= 2'd2) ? nib[n0 + 2'd1] : 4'd0;
-    wire [3:0] final_op1_p2 = (n1 == 2'd3) ? nib[n0 + 2'd2] : 4'd0;
+    wire [3:0] final_op1_p1 = (n1 >= 2'd2) ? nib[{1'b0, n0} + 3'd1] : 4'd0;
+    wire [3:0] final_op1_p2 = (n1 == 2'd3) ? nib[{1'b0, n0} + 3'd2] : 4'd0;
 
     // Select Op0 (even index) or Op1 (odd jump index) for immediate output in ST_COMMIT
     //fixes jump instruction problems

@@ -141,17 +141,7 @@ logic_container main_logic (
 );
 
 //multiplexer
-    reg [7:0] uo_out_reg;
-    reg [7:0] uio_out_reg;
-    reg [7:0] uio_oe_reg;
-
-    assign uo_out  = uo_out_reg;
-    assign uio_out = uio_out_reg;
-    assign uio_oe  = uio_oe_reg;
-
-    // Tie off unused signals to prevent synthesis warnings
-    wire _unused = &{ena, 1'b0};
-
+    
     reg [7:0] uo_out_reg;
     reg [7:0] uio_out_reg;
     reg [7:0] uio_oe_reg;
@@ -189,4 +179,5 @@ logic_container main_logic (
 
     // Tie off unused signals to prevent synthesis warnings
     wire _unused = &{ena, 1'b0};
+    assign uo_000 = 8'h00; assign uio_out_000 = 8'h00; assign uio_oe_000 = 8'h00;
 endmodule
