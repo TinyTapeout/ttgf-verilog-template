@@ -35,7 +35,7 @@ project:
     - "main/alu/simulated/tritwise_1.v"
     - "main/alu/simulated/tritwise_2.v"
     - "main/alu/simulated/tritwise_3.v"
-  analog_pins: 1
+  analog_pins: 0
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
 # This section is for the datasheet/website. Use descriptive names (e.g., RX, TX, MOSI, SCL, SEG_A, etc.).
 pinout:
