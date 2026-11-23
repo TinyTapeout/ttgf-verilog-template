@@ -73,5 +73,9 @@ pinout:
   # ua[0]: "the singular power line. please take good care of it. thanks." #1.65v 
   # ua[1]: "spare one we keep in the boot" #1.65v
 
+"DESIGN_REPAIR_MAX_SLEW_PCT": 0,
+"DESIGN_REPAIR_MAX_CAP_PCT": 0,
+"DESIGN_REPAIR_MAX_WIRE_LENGTH": 0,
+"RSZ_DONT_TOUCH_RX": ".*clk.*|.*rst.*"
 # Do not change!
 yaml_version: 6
