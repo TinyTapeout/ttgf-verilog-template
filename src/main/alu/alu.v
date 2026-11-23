@@ -229,7 +229,7 @@ module alu(
                                 (active_cmd_t2 == 3'd7) ? 2'd2 : 2'b11;
 
     //native wrapper below
-    native_wrapper native_alu(
+    native_wrapper_sim native_alu(
         .VDD_1V65           (VDD_1V65),
 
         .active_cmd_t0      (active_cmd_t0),

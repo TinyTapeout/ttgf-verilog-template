@@ -1,5 +1,4 @@
-(* keep_hierarchy = "true" *)
-module native_wrapper (
+module native_wrapper_sim (
     inout  wire        VDD_1V65,
 
     input  wire [2:0]  active_cmd_t0,

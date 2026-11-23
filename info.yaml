@@ -26,7 +26,7 @@ project:
     - "main/thread/ternary_pc_12t.v"
     - "main/thread/thread_command.v"
     - "main/alu/alu.v"
-    - "main/alu/native_wrapper-sim.v" # fix later ah
+    - "main/alu/native_wrapper_sim.v" # fix later ah
     - "main/alu/simulated/bt_add_4t.v"
     - "main/alu/simulated/bt_add3_4t.v"
     - "main/alu/simulated/bt_fa_1t.v"

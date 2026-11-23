@@ -16,7 +16,7 @@ PROJECT_SOURCES = \
 	main/thread/ternary_pc_12t.v \
 	main/thread/thread_command.v \
 	main/alu/alu.v \
-	main/alu/native_wrapper-sim.v \
+	main/alu/native_wrapper_sim.v \
 	main/alu/bt_add_4t.v \
 	main/alu/bt_add3_4t.v \
 	main/alu/bt_fa_1t.v \
