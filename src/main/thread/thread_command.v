@@ -92,7 +92,7 @@ module thread_command(
         output  reg [23:0] addr_out,
         input   wire [23:0] d_in,
         output  reg [23:0] d_out,
-        output  reg pipe_full_rej,
+        output  wire pipe_full_rej,
 
 
     //debug core components
@@ -219,6 +219,8 @@ reg [3:0] offending_id_r;
         reg [1:0] mac_carry;
 
         reg [1:0] carry_reg;
+
+assign pipe_full_rej = macroop_pipe_full || direct_exec_ready || direct_exec_active;
 
 wire [7:0] mac_sum;
 wire [1:0] mac_c0, mac_c1, mac_c2, mac_cout;
@@ -792,7 +794,7 @@ task on_pc_modified;
         // Clear the second preloaded macro-op (keep currently executing slot)
         if (threadstate == THREAD_FULL) begin
             threadstate   <= using_macroop_1 ? THREAD_EMPTY0 : THREAD_EMPTY1;
-            pipe_full_rej <= 1'b0;
+            macroop_pipe_full <= 1'b0;
         end
         loading_second_slot <= 1'b0;
     end
@@ -1123,7 +1125,7 @@ always @(posedge clk or negedge rst_n) begin
         pc_w_enable        <= 1'b0;
         //pc_w_data          <= 24'hAAAAAA;
         cmd_we             <= 1'b0;
-        pipe_full_rej      <= 1'b0;
+        macroop_pipe_full      <= 1'b0;
         //debug_reg_cache    <= 24'hAAAAAA;
         //dbg_dout           <= 8'hAA;
 
@@ -1446,9 +1448,9 @@ always @(posedge clk or negedge rst_n) begin
                     //here is a special case where if a param is aliased it should swap it over to the next macro op command param space 
                     do_housekeeping = 1'b1;
                     //end of housekeeping
-                    if (pipe_full_rej) begin
+                    if (macroop_pipe_full) begin
                         using_macroop_1 <= ~using_macroop_1;
-                        pipe_full_rej   <= 1'b0;
+                        macroop_pipe_full   <= 1'b0;
                         threadstate     <= using_macroop_1 ? THREAD_EMPTY1 : THREAD_EMPTY0;
                         trigger_ucode_flush;
                     end else begin
@@ -2449,12 +2451,12 @@ always @(posedge clk or negedge rst_n) begin
                 // if (ret_micro) begin
                 //     ret_micro <= 1'b0;
                 //     // open for business
-                //     if (pipe_full_rej) begin
+                //     if (macroop_pipe_full) begin
                 //         // Queued buffer is ready! flip active buffer and start its microcode immediately.
                 //         // remember on fpga side it should always keep input is command high and have a macro op ready at all times
                 //         //normal, shows that it is ready for data!
                 //         using_macroop_1 <= ~using_macroop_1;
-                //         pipe_full_rej   <= 1'b0;
+                //         macroop_pipe_full   <= 1'b0;
                 //         //the state handles itself here
                 //         threadstate     <= using_macroop_1 ? THREAD_EMPTY1 : THREAD_EMPTY0;
                 //         action_ctr      <= 8'h00; // Canonical ternary 0
@@ -2479,7 +2481,7 @@ always @(posedge clk or negedge rst_n) begin
         //as well as check if its 11xxxxxx, indicating that the streamed data should be used as a micro op
         //
         //for direct execution, its loaded into a separate buffer, splitting the data into 11aaaa-- bbbbcccc dddd----
-        if (data_valid && !pipe_full_rej) begin
+        if (data_valid && !macroop_pipe_full) begin
             if (bus_is_cmd) begin
                 //8-Bit Macro-Op Byte (1-byte transfer, phase 00 -> 11) ---
                 if (bus_data_in[7:6] == 2'b11) begin
@@ -2510,7 +2512,7 @@ always @(posedge clk or negedge rst_n) begin
                         if (bus_param_idx == 3'd0) begin
                             // 0-param macro-op in 2nd slot -> pipe is immediately full
                             threadstate         <= THREAD_FULL;
-                            pipe_full_rej       <= 1'b1;
+                            macroop_pipe_full       <= 1'b1;
                             loading_second_slot <= 1'b0;
                         end else begin
                             loading_second_slot <= 1'b1;
@@ -2542,7 +2544,7 @@ always @(posedge clk or negedge rst_n) begin
                             // Final parameter (index 1) of the 2nd slot finished -> pipe full
                             if (bus_param_idx == 3'd1 && loading_second_slot) begin
                                 threadstate         <= THREAD_FULL;
-                                pipe_full_rej       <= 1'b1;
+                                macroop_pipe_full       <= 1'b1;
                                 loading_second_slot <= 1'b0;
                             end
                         end

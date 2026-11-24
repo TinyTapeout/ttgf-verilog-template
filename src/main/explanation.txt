@@ -28,3 +28,13 @@ dealiasing data
 handling read/write masks
 
 the masks read first, 
+
+
+
+test
+
+all micro ops
+memory read writes
+overlord stuff
+microcode shenanigans
+math testing
