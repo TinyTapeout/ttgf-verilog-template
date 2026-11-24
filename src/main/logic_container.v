@@ -24,7 +24,7 @@ module logic_container(
     input  wire [1:0]  ovl_reg_read_stage,  //byte chunk (0->1->2)
     input  wire [4:0]  ovl_reg_address,     //5-bit address (31)
     input  wire        ovl_is_read,         //read write toggle
-    output wire [2:0]  ovl_reg_handover_done,
+    output wire  ovl_reg_handover_done,
     output wire [7:0]  ovl_dbg_dout,
     input  wire [7:0]  ovl_dbg_din,
     input  wire ovl_microcode_fence, //threadly basis
@@ -186,35 +186,35 @@ native_wrapper_sim native_alu(
         .multiplier_out_0   (mul_o_w)
     );
 
-microcode microcode_parser (
-        .clk                        (clk),
-        .rst_n                      (rst_n),
-        //from 1  to 31 , each micro op corresponds to 2 byte chunked reads
-        //from 32 to 112, each micro op corresponds to 4 byte chunked reads
-        //from 113 to 191, each micro op corresponds to 8 byte chunked reads
-        // uses an 1024 offset for parameters
-        // 32 x 2 + 80 x 4 + 80 x 8 = 1024
-        //anything beyond 191 is ILLEGAL and should never be seen
-        // Thread 1
-        .macro_op_t0                (macro_op_w),
-        .microcode_action_offset_t0 (action_ctr_w), // 8-bit raw ternary (converted inside microcode)
-        .microcode_param_offset_t0  (param_ctr_w),
-        .next_microop_t0            (micro_req_w),
-        .flush_t0                   (micro_flush_w),
-        //this forces the microcode handler to pause, flush cache and read from action position & param position, as well as macro op position
-        //chunked reads mean that you start from indexes 0 , 4 , 8 , 12, etc, but the offsets can allow it to read any position
-        //the params are chunked separately, on the same chip but with an offset
-        .data_ready_t0              (micro_sent_w),
-        .action_t0                  (micro_cmd_w),
-        .param0_t0                  (micro_p0_w),
-        .param1_t0                  (micro_p1_w),
-        .param2_t0                  (micro_p2_w),
+// microcode microcode_parser (
+//         .clk                        (clk),
+//         .rst_n                      (rst_n),
+//         //from 1  to 31 , each micro op corresponds to 2 byte chunked reads
+//         //from 32 to 112, each micro op corresponds to 4 byte chunked reads
+//         //from 113 to 191, each micro op corresponds to 8 byte chunked reads
+//         // uses an 1024 offset for parameters
+//         // 32 x 2 + 80 x 4 + 80 x 8 = 1024
+//         //anything beyond 191 is ILLEGAL and should never be seen
+//         // Thread 1
+//         .macro_op_t0                (macro_op_w),
+//         .microcode_action_offset_t0 (action_ctr_w), // 8-bit raw ternary (converted inside microcode)
+//         .microcode_param_offset_t0  (param_ctr_w),
+//         .next_microop_t0            (micro_req_w),
+//         .flush_t0                   (micro_flush_w),
+//         //this forces the microcode handler to pause, flush cache and read from action position & param position, as well as macro op position
+//         //chunked reads mean that you start from indexes 0 , 4 , 8 , 12, etc, but the offsets can allow it to read any position
+//         //the params are chunked separately, on the same chip but with an offset
+//         .data_ready_t0              (micro_sent_w),
+//         .action_t0                  (micro_cmd_w),
+//         .param0_t0                  (micro_p0_w),
+//         .param1_t0                  (micro_p1_w),
+//         .param2_t0                  (micro_p2_w),
 
-        .bus                        (dbus),
-        .address                    (microcode_address),
-        .cycle_threads              (cycle_threads),
-        .microcode_idle             (microcode_idle)
-    );
+//         .bus                        (dbus),
+//         .address                    (microcode_address),
+//         .cycle_threads              (cycle_threads),
+//         .microcode_idle             (microcode_idle)
+//     );
 
 //back to 1 thread...
 
@@ -222,22 +222,15 @@ microcode microcode_parser (
             thread_command u_thread (
                 .clk                        (clk),
                 .rst_n                      (rst_n),
-                .macro_op                   (macro_op_w),
-                .action_counter             (action_ctr_w),
-                .param_counter              (param_ctr_w),
-                .flush                      (micro_flush_w),
-                .command                    (micro_cmd_w),
-                .param_0                    (micro_p0_w),
-                .param_1                    (micro_p1_w),
-                .param_2                    (micro_p2_w),
-                .command_req_new            (micro_req_w),
-                .command_data_sent          (micro_sent_w),
+
+                .ucode_bus                  (dbus),
+                .ucode_address              (microcode_address),
+                .cycle_threads              (cycle_threads),
+                .microcode_idle             (microcode_idle),
 
                 .alu_command                (cmd_w),
                 .tritwise_command           (tw_cmd_w),
                 .tritshift_tritwise_command (shift_cmd_w),
-                .alu_command_ready          (cmd_ready_w),
-                .alu_res_ready              (cmd_ready_w),
                 .alu_t4_a                   (t4_a_w),
                 .alu_t4_b                   (t4_b_w),
                 .alu_t4_c                   (t4_c_w),
@@ -338,7 +331,7 @@ endfunction
     reg       hs_prev;
     reg       mem_data_phase; // 0 = 5-byte address, 1 = 3-byte write data (101)
     reg       turn_ready; // Guarantees >= 1 full High-Z clock before FPGA drives
-    reg [2:0] rx_is_direct;    // Per-thread flag: 1 when expecting 2 raw direct-exec bytes
+    reg rx_is_direct;    // Per-thread flag: 1 when expecting 2 raw direct-exec bytes
     wire hs_rise   =  fpga_hs && !hs_prev;
     wire hs_fall   = !fpga_hs &&  hs_prev;
     wire hs_toggle =  fpga_hs ^   hs_prev;
@@ -358,8 +351,8 @@ endfunction
             thread_mem_done   <= 1'b0;
         end else begin
             hs_prev           <= fpga_hs;
-            thread_data_valid <= 3'b000;
-            thread_mem_done   <= 3'b000;
+            thread_data_valid <= 1'b0;
+            thread_mem_done   <= 1'b0;
             if (!is_thread) begin
                 bus_state       <= BUS_IDLE;
                 active_req_type <= 3'b000;
