@@ -75,9 +75,7 @@ module tt_um_core_commander (
     // When the bus is active (not idle), lock down ALL threads
     wire bus_active = (controller_state != state_idle);
 
-    assign o_microcode_fence_t0 = microcode_fence[0] | bus_active;
-    assign o_microcode_fence_t1 = microcode_fence[1] | bus_active;
-    assign o_microcode_fence_t2 = microcode_fence[2] | bus_active;
+    assign o_microcode_fence_t0 = microcode_fence | bus_active;
 
     assign o_direct_instr_t0    = direct_instruction;
 
@@ -356,7 +354,7 @@ module tt_um_core_commander (
                             is_read                        <= 1'b0;
                             showing_errors                 <= 1'b0;
                             error_id_select                <= 3'd0;
-                            microcode_fence[thread_select] <= 1'b1;
+                            microcode_fence                <= 1'b1;
                         end
 
                         // 0110: Command Buffer Dump (0=Active 8-bit macro-op, 1=Next 8-bit macro-op)

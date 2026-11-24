@@ -134,7 +134,7 @@ reg [3:0] offending_id_r;
         reg using_macroop_1;//remember to only flip after macro op 1 finishes
 
         // Expose active macro-op to the microcode parser
-        assign macro_op = using_macroop_1 && !direct_instr ? macroop_register[15:8] : macroop_register[7:0];
+        wire [7:0] active_macro_op = (using_macroop_1 && !direct_instr) ? macroop_register[15:8] : macroop_register[7:0];
 
         // Thread buffer occupancy states
         localparam  THREAD_EMPTY  = 2'b00, // Neither slot has a valid command
@@ -1111,7 +1111,6 @@ always @(posedge clk or negedge rst_n) begin
         threadstate        <= THREAD_EMPTY;
         macroop_register   <= 16'b0;
         using_macroop_1    <= 1'b0;
-        op_read_state      <= 2'b00;
         cmd_param_id       <= 3'd1;      // 1-indexed to match commandpipe_address (1..6)
         //cmd_param_reg      <= 24'hAAAAAA;
         ret_micro          <= 1'b0;
@@ -1533,7 +1532,6 @@ always @(posedge clk or negedge rst_n) begin
                                         4'b0100: begin
                                             //return
                                             ret_micro <= 1'b1;
-                                            flush <= 1'b1;
                                             action_ctr <= 7'd0;
                                             param_ctr  <= 7'd0;
                                             has_cached_odd   <= 1'b0;
@@ -1919,7 +1917,6 @@ always @(posedge clk or negedge rst_n) begin
                                             alu_command       <= 3'd2;
                                             alu_t4_a      <= shared_rd_4t_a;
                                             alu_t4_b      <= shared_rd_4t_b;
-                                            alu_command_ready <= 1'b1;
                                             execute_stage <= 2'b01;
                                         end
                                         default: execute_done <= 1'b1;
@@ -2044,7 +2041,6 @@ always @(posedge clk or negedge rst_n) begin
                                             tritwise_command  <= {exec_p0[0], exec_p1[0], exec_p2[0]}; // Or {exec_p0[0], exec_p1[0], exec_p2[0]} for 8 sub-ops
                                             alu_t1_a          <= shared_rd_1t_a;
                                             alu_t1_b          <= shared_rd_1t_b;
-                                            alu_command_ready <= 1'b1;
                                             execute_stage     <= 2'b01;
                                         end                                       
                                         4'b1011: begin
@@ -2177,8 +2173,6 @@ always @(posedge clk or negedge rst_n) begin
                                         exec_cmd == 4'b0011 || exec_cmd == 4'b0100 || exec_cmd == 4'b0101 ||
                                         exec_cmd == 4'b0110 || exec_cmd == 4'b1000 || exec_cmd == 4'b1001 || exec_cmd == 4'b1010) begin
                                         //alu op section
-                                        if (alu_res_ready) begin
-                                            alu_command_ready  <= 1'b0; //release ALU lock
                                             alu_res_4t_lat <= alu_t4_o;
                                             alu_res_1t_lat <= alu_t1_o;
                                             if (exec_cmd == 4'b0010 && exec_p0 == 4'b1111) begin
@@ -2200,7 +2194,6 @@ always @(posedge clk or negedge rst_n) begin
                                             end else begin
                                                 execute_stage <= 2'b10; //masked writeback in stage 2
                                             end
-                                        end
                                     end else if (exec_cmd == 4'b0001) begin
                                     //after housekeeping mask stuffs
                                         if (write_allow) begin
@@ -2492,7 +2485,7 @@ always @(posedge clk or negedge rst_n) begin
                 if (bus_data_in[7:6] == 2'b11) begin
                     // Direct Execution Mode: 11aaaa--
                     direct_exec_active <= 1'b1;
-                    direct_cmd         <= bus_data_in[5:2];
+                    exec_cmd         <= bus_data_in[5:2];
                 end else begin
                     direct_exec_active <= 1'b0;
 
@@ -2529,10 +2522,10 @@ always @(posedge clk or negedge rst_n) begin
                 if (direct_exec_active) begin
                     //split 11aaaa-- | bbbbcccc | dddd----
                     if (bus_byte_phase == 2'b00) begin
-                        direct_p0 <= bus_data_in[7:4];
-                        direct_p1 <= bus_data_in[3:0];
+                        exec_p0 <= bus_data_in[7:4];
+                        exec_p1 <= bus_data_in[3:0];
                     end else if (bus_byte_phase == 2'b01) begin
-                        direct_p2         <= bus_data_in[7:4];
+                        exec_p2         <= bus_data_in[7:4];
                         direct_exec_ready <= 1'b1;
                     end
 
