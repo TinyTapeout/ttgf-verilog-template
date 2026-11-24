@@ -220,7 +220,7 @@ reg [3:0] offending_id_r;
 
         reg [1:0] carry_reg;
 
-assign pipe_full_rej = macroop_pipe_full || direct_exec_ready || direct_exec_active;
+assign pipe_full_rej = macroop_pipe_full || direct_exec_ready;
 
 wire [7:0] mac_sum;
 wire [1:0] mac_c0, mac_c1, mac_c2, mac_cout;
@@ -310,6 +310,7 @@ reg        ucode_data_ready;
 wire       exec_valid = direct_exec_ready || (ucode_data_ready && (threadstate != THREAD_EMPTY));
 
 reg do_housekeeping = 1'b0;
+reg macroop_pipe_full;
 
 reg [23:0] debug_reg_cache;
 reg [4:0]  prev_reg_addr;
@@ -2529,6 +2530,7 @@ always @(posedge clk or negedge rst_n) begin
                     end else if (bus_byte_phase == 2'b01) begin
                         exec_p2         <= bus_data_in[7:4];
                         direct_exec_ready <= 1'b1;
+                        direct_exec_active <= 1'b0;
                     end
 
                 end else if (bus_param_idx != 3'd0) begin
