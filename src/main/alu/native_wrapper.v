@@ -1,6 +1,6 @@
 (* keep_hierarchy = "true" *)
 module native_wrapper (
-    inout  wire        VDD_1V65,
+    // inout  wire        VDD_1V65,
 
     input  wire [2:0]  active_cmd_t0,
     input  wire [2:0]  active_cmd_t1,

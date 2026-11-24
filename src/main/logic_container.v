@@ -167,25 +167,23 @@ module logic_container(
     assign ovl_offending_id_t0   = offending_id_w;
 
 
-//3 threads 1 core
-alu core_0 (
-        // .VDD_1V65              (VDD_1V65),
-        .clk                   (clk),
-        .rst_n                 (rst_n),
+//1 thread 1 core
+native_wrapper_sim native_alu(
+        // .VDD_1V65           (VDD_1V65),
 
-        .cmd_t0                (cmd_w),       
-        .tritwise_command_t0   (tw_cmd_w),
-        .tritshift_tritwise_t0 (shift_cmd_w), 
-        .cmd_ready_t0          (cmd_ready_w),
-        .res_ready_t0          (res_ready_w), 
-        .t4_a_i_t0             (t4_a_w),
-        .t4_b_i_t0             (t4_b_w),      
-        .t4_c_i_t0             (t4_c_w),
-        .t4_o_t0               (t4_o_w),      
-        .t1_a_i_t0             (t1_a_w),
-        .t1_b_i_t0             (t1_b_w),      
-        .t1_o_t0               (t1_o_w),
-        .multiply_o_t0         (mul_o_w)
+        .active_cmd_t0      (cmd_w),
+
+        // Thread 0
+        .trit4_in_a_0       (t4_a_w),
+        .trit4_in_b_0       (t4_b_w),
+        .trit4_in_c_0       (t4_c_w),
+        .tritwise_control_0 (tw_cmd_w),
+        .shift_control_0    (shift_cmd_w),
+        .trit4_in_cin_0     (t1_a_w),
+        .trit1_in_b_0       (t1_b_w),
+        .trit4_out_0        (t4_o_w),
+        .trit4_out_cout_0   (t1_o_w),
+        .multiplier_out_0   (mul_o_w)
     );
 
 microcode microcode_parser (
@@ -219,6 +217,8 @@ microcode microcode_parser (
     );
 
 //back to 1 thread...
+
+
             thread_command u_thread (
                 .clk                        (clk),
                 .rst_n                      (rst_n),
@@ -237,7 +237,7 @@ microcode microcode_parser (
                 .tritwise_command           (tw_cmd_w),
                 .tritshift_tritwise_command (shift_cmd_w),
                 .alu_command_ready          (cmd_ready_w),
-                .alu_res_ready              (res_ready_w),
+                .alu_res_ready              (cmd_ready_w),
                 .alu_t4_a                   (t4_a_w),
                 .alu_t4_b                   (t4_b_w),
                 .alu_t4_c                   (t4_c_w),

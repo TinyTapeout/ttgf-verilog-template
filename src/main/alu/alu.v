@@ -1,5 +1,5 @@
 module alu(
-    // inout  wire        VDD_1V65,
+    inout  wire        VDD_1V65,
 
     input  wire        clk,
     input  wire        rst_n,
@@ -64,7 +64,7 @@ module alu(
 
     // thread hogging regs
     reg [1:0] hog_owner;   // 2'd0 = t0, 2'd1 = t1, 2'd2 = t2, 2'd3 = none
-    // reg [4:0] hog_counter; // Counts down remaining hog cycles (max 15*2 + 2 = 32 -> needs 6 bits if 32, using [5:0])
+    reg [4:0] hog_counter; // Counts down remaining hog cycles (max 15*2 + 2 = 32 -> needs 6 bits if 32, using [5:0])
 
     //hog counter with 6 bits to hold 32
     reg [5:0] hog_cycles_rem;
@@ -230,7 +230,7 @@ module alu(
 
     //native wrapper below
     native_wrapper_sim native_alu(
-        // .VDD_1V65           (VDD_1V65),
+        .VDD_1V65           (VDD_1V65),
 
         .active_cmd_t0      (active_cmd_t0),
         .active_cmd_t1      (active_cmd_t1),

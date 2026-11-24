@@ -36,6 +36,7 @@ checklist
 34. direct execution its a thing
 35. alias write is kind of old, need fixing
 36. make sure the cycle threads command and micro stuff is being called
+37. no more threads!
 */
 
 `default_nettype none

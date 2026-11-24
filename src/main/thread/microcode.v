@@ -14,30 +14,6 @@ module microcode(
     output reg  [3:0]  param1_t0,
     output reg  [3:0]  param2_t0,
 
-    input  wire [7:0]  macro_op_t1,
-    input  wire [7:0]  microcode_action_offset_t1,
-    input  wire [7:0]  microcode_param_offset_t1,
-    input  wire        next_microop_t1,
-    input  wire        flush_t1,
-    output reg         data_ready_t1,
-    output reg  [3:0]  action_t1,
-    output reg  [3:0]  param0_t1,
-    output reg  [3:0]  param1_t1,
-    output reg  [3:0]  param2_t1,
-
-
-    input  wire [7:0]  macro_op_t2,
-    input  wire [7:0]  microcode_action_offset_t2,
-    input  wire [7:0]  microcode_param_offset_t2,
-    input  wire        next_microop_t2,
-    input  wire        flush_t2,
-    output reg         data_ready_t2,
-    output reg  [3:0]  action_t2,
-    output reg  [3:0]  param0_t2,
-    output reg  [3:0]  param1_t2,
-    output reg  [3:0]  param2_t2,
-
-
     input  wire [7:0]  bus, //la controller uses this
     output reg  [11:0] address,
     output wire         cycle_threads,

@@ -44,24 +44,23 @@ module tt_um_triple_t_devEclipse2 (
     wire [7:0] commander_tracker_data;
     wire       commander_tracker_enable;
 
-    wire [2:0] pc_overflow_err_wire;
-    wire [2:0] micro_op_action_ovf_err_wire;
-    wire [2:0] micro_op_param_ovf_err_wire;
-    wire [2:0] reg_overflow_err_wire;
+    wire pc_overflow_err_wire;
+    wire micro_op_action_ovf_err_wire;
+    wire micro_op_param_ovf_err_wire;
+    wire reg_overflow_err_wire;
 
-    wire [1:0] thread_sel_wire;
     wire [1:0] reg_read_stage_wire;
     wire [4:0] reg_addr_wire;
     wire       is_read_wire;
     wire [2:0] reg_handover_done_wire;
     wire [7:0] ovl_dbg_dout_wire;
 
-    wire       o_microcode_fence_t0_wire, o_microcode_fence_t1_wire, o_microcode_fence_t2_wire;
-    wire       o_direct_instr_t0_wire,    o_direct_instr_t1_wire,    o_direct_instr_t2_wire;
-    wire       single_execute_t0_wire,    single_execute_t1_wire,    single_execute_t2_wire;
-    wire       single_execute_ack_t0_wire,single_execute_ack_t1_wire,single_execute_ack_t2_wire;
-    wire       cmd_buf_clr_t0_wire,       cmd_buf_clr_t1_wire,       cmd_buf_clr_t2_wire;
-    wire       cmd_buf_clr_ack_t0_wire,   cmd_buf_clr_ack_t1_wire,   cmd_buf_clr_ack_t2_wire;
+    wire       o_microcode_fence_t0_wire;
+    wire       o_direct_instr_t0_wire;
+    wire       single_execute_t0_wire;
+    wire       single_execute_ack_t0_wire;
+    wire       cmd_buf_clr_t0_wire;
+    wire       cmd_buf_clr_ack_t0_wire;
 
 tt_um_core_commander core_commander (
     .clk                     (clk),
@@ -78,7 +77,6 @@ tt_um_core_commander core_commander (
     .reg_overflow_err        (reg_overflow_err_wire),
 
     // Register & Command Buffer Handover Interface
-    .thread_select           (thread_sel_wire),
     .register_read_stage     (reg_read_stage_wire),
     .register_address        (reg_addr_wire),
     .is_read                 (is_read_wire),
@@ -86,23 +84,11 @@ tt_um_core_commander core_commander (
 
     // Per-Thread Execution Control & Handshakes
     .o_microcode_fence_t0    (o_microcode_fence_t0_wire),
-    .o_microcode_fence_t1    (o_microcode_fence_t1_wire),
-    .o_microcode_fence_t2    (o_microcode_fence_t2_wire),
     .o_direct_instr_t0       (o_direct_instr_t0_wire),
-    .o_direct_instr_t1       (o_direct_instr_t1_wire),
-    .o_direct_instr_t2       (o_direct_instr_t2_wire),
     .single_execute_t0       (single_execute_t0_wire),
-    .single_execute_t1       (single_execute_t1_wire),
-    .single_execute_t2       (single_execute_t2_wire),
     .single_execute_ack_t0   (single_execute_ack_t0_wire),
-    .single_execute_ack_t1   (single_execute_ack_t1_wire),
-    .single_execute_ack_t2   (single_execute_ack_t2_wire),
     .cmd_buf_clr_t0          (cmd_buf_clr_t0_wire),
-    .cmd_buf_clr_t1          (cmd_buf_clr_t1_wire),
-    .cmd_buf_clr_t2          (cmd_buf_clr_t2_wire),
     .cmd_buf_clr_ack_t0      (cmd_buf_clr_ack_t0_wire),
-    .cmd_buf_clr_ack_t1      (cmd_buf_clr_ack_t1_wire),
-    .cmd_buf_clr_ack_t2      (cmd_buf_clr_ack_t2_wire)
 );
     
 logic_container main_logic (
@@ -116,28 +102,25 @@ logic_container main_logic (
     .uio_oe                 (uio_oe_def),
 
     // Overlord Control & Debug
-    .ovl_thread_sel         (thread_sel_wire),
     .ovl_reg_read_stage     (reg_read_stage_wire),
     .ovl_reg_address        (reg_addr_wire),
     .ovl_is_read            (is_read_wire),
     .ovl_reg_handover_done  (reg_handover_done_wire),
     .ovl_dbg_dout           (ovl_dbg_dout_wire),
     .ovl_dbg_din            (uio_in),
-    .ovl_microcode_fence    ({o_microcode_fence_t2_wire, o_microcode_fence_t1_wire, o_microcode_fence_t0_wire}),
-    .ovl_direct_instr       ({o_direct_instr_t2_wire,    o_direct_instr_t1_wire,    o_direct_instr_t0_wire}),
-    .ovl_single_execute     ({single_execute_t2_wire,    single_execute_t1_wire,    single_execute_t0_wire}),
-    .ovl_single_execute_ack ({single_execute_ack_t2_wire,single_execute_ack_t1_wire,single_execute_ack_t0_wire}),
-    .ovl_cmd_buf_clr        ({cmd_buf_clr_t2_wire,       cmd_buf_clr_t1_wire,       cmd_buf_clr_t0_wire}),
-    .ovl_cmd_buf_clr_ack    ({cmd_buf_clr_ack_t2_wire,   cmd_buf_clr_ack_t1_wire,   cmd_buf_clr_ack_t0_wire}),
+    .ovl_microcode_fence    (o_microcode_fence_t0_wire),
+    .ovl_direct_instr       (o_direct_instr_t0_wire),
+    .ovl_single_execute     (single_execute_t0_wire),
+    .ovl_single_execute_ack (single_execute_ack_t0_wire),
+    .ovl_cmd_buf_clr        (cmd_buf_clr_t0_wire),
+    .ovl_cmd_buf_clr_ack    (cmd_buf_clr_ack_t0_wire),
 
     // Errors
     .ovl_pc_overflow        (pc_overflow_err_wire),
     .ovl_a_ctr_overflow     (micro_op_action_ovf_err_wire),
     .ovl_p_ctr_overflow     (micro_op_param_ovf_err_wire),
     .ovl_reg_overflow       (reg_overflow_err_wire),
-    .ovl_offending_id_t0    (),
-    .ovl_offending_id_t1    (),
-    .ovl_offending_id_t2    ()
+    .ovl_offending_id_t0    (),//need to implpement
 );
 
 //multiplexer
