@@ -75,21 +75,23 @@
   "DRT_THREADS": 8,
 
   "RUN_DESIGN_REPAIR": false,
-"PL_RESIZER_HOLD_MAX_BUFFER_PCT": 5,
-"GRT_RESIZER_HOLD_MAX_BUFFER_PCT": 5,
-"PL_RESIZER_SETUP_MAX_BUFFER_PCT": 1,
-"GRT_RESIZER_SETUP_MAX_BUFFER_PCT": 1,
-"RSZ_DONT_USE_CELLS": [
-  "gf180mcu_fd_sc_mcu7t5v0__dlyb_1",
-  "gf180mcu_fd_sc_mcu7t5v0__dlyb_2",
-  "gf180mcu_fd_sc_mcu7t5v0__dlyb_4",
-  "gf180mcu_fd_sc_mcu7t5v0__dlya_1",
-  "gf180mcu_fd_sc_mcu7t5v0__dlya_2",
-  "gf180mcu_fd_sc_mcu7t5v0__dlya_4"
-],
-"DESIGN_REPAIR_MAX_SLEW_PCT": 0,
-"DESIGN_REPAIR_MAX_CAP_PCT": 0,
-"HOLD_SLACK_MARGIN": 0.0,
-"DESIGN_REPAIR_MAX_WIRE_LENGTH": 0,
-"RSZ_DONT_TOUCH_RX": ".*clk.*|.*rst.*"
+  "PL_RESIZER_HOLD_MAX_BUFFER_PCT": 5,
+  "GRT_RESIZER_HOLD_MAX_BUFFER_PCT": 5,
+  "PL_RESIZER_SETUP_MAX_BUFFER_PCT": 1,
+  "GRT_RESIZER_SETUP_MAX_BUFFER_PCT": 1,
+  "RSZ_DONT_USE_CELLS": [
+    "gf180mcu_fd_sc_mcu7t5v0__dlyb_1",
+    "gf180mcu_fd_sc_mcu7t5v0__dlyb_2",
+    "gf180mcu_fd_sc_mcu7t5v0__dlyb_4",
+    "gf180mcu_fd_sc_mcu7t5v0__dlya_1",
+    "gf180mcu_fd_sc_mcu7t5v0__dlya_2",
+    "gf180mcu_fd_sc_mcu7t5v0__dlya_4"
+  ],
+  "DESIGN_REPAIR_MAX_SLEW_PCT": 0,
+  "DESIGN_REPAIR_MAX_CAP_PCT": 0,
+  "HOLD_SLACK_MARGIN": 0.0,
+  "DESIGN_REPAIR_MAX_WIRE_LENGTH": 0,
+  "RSZ_DONT_TOUCH_RX": ".*clk.*",
+  "SYNTH_STRATEGY": "AREA 0",
+  "SYNTH_MAX_FANOUT": 16
 }
