@@ -126,18 +126,6 @@ module logic_container(
     wire [1:0]  t1_o_w;
     wire [15:0] mul_o_w;
 
-    // Per-thread Microcode arrays
-    wire [7:0]  macro_op_w;
-    wire [7:0]  action_ctr_w;
-    wire [7:0]  param_ctr_w;
-    wire [3:0]  micro_cmd_w;
-    wire [3:0]  micro_p0_w;
-    wire [3:0]  micro_p1_w;
-    wire [3:0]  micro_p2_w;
-    wire [2:0]  micro_req_w;
-    wire [2:0]  micro_sent_w;
-    wire [2:0]  micro_flush_w;
-
     wire [11:0] microcode_address;
     wire [7:0]  dbus = {uio_in[2:0], ui_in[7:3]};
     wire        cycle_threads;
