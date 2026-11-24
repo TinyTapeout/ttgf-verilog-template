@@ -1014,6 +1014,86 @@ task execute_alias_write;
     end
 endtask
 
+
+reg [3:0] wr_addr_12t;
+always @(*) begin
+    wr_addr_12t = 4'd0;
+    case (exec_cmd)
+        4'b0001: if (exec_p0 == 4'b1010) wr_addr_12t = exec_p1; // TX_MEM_READ writeback
+        4'b0010: if (exec_p0 == 4'b0000 || exec_p0 == 4'b0010 ||
+                        exec_p0 == 4'b0101 || exec_p0 == 4'b1101) wr_addr_12t = exec_p2;
+        4'b1100: if (!exec_p1[0] && exec_p2[0]) wr_addr_12t = exec_p0; // 4t -> 12t insert
+        default: ;
+    endcase
+end
+
+wire uses_12t_1 = (rd_addr_12t == 4'd1) || (wr_addr_12t == 4'd1);
+wire uses_12t_2 = (rd_addr_12t == 4'd2) || (wr_addr_12t == 4'd2);
+wire uses_12t_3 = (rd_addr_12t == 4'd3) || (wr_addr_12t == 4'd3);
+
+// 2. Collect all 4t addresses read OR written (including 12t->4t extract & 1t->4t insert)
+reg [2:0] wr_addr_4t;
+reg       wr_en_4t;
+always @(*) begin
+    wr_addr_4t = 3'd0;
+    wr_en_4t   = 1'b0;
+    case (exec_cmd)
+        4'b0001: if (exec_p0 == 4'b0001) begin
+            wr_addr_4t = {1'b0, exec_p1[3:2]} + 3'd3;
+            wr_en_4t   = 1'b1;
+        end else if (exec_p0 == 4'b0010 || exec_p0 == 4'b0011) begin
+            wr_addr_4t = exec_p1[3:1];
+            wr_en_4t   = 1'b1;
+        end
+        4'b0010: if (exec_p0 == 4'b0100 || exec_p0 == 4'b0110 ||
+                    (exec_p0 == 4'b1101 && exec_p1[1:0] == 2'b01)) begin
+            wr_addr_4t = exec_p2[3:1];
+            wr_en_4t   = 1'b1;
+        end
+        4'b0011, 4'b0100, 4'b0110: begin
+            wr_addr_4t = exec_p2[3:1];
+            wr_en_4t   = 1'b1;
+        end
+        4'b0101: begin
+            wr_addr_4t = exec_p2[2:0];
+            wr_en_4t   = 1'b1;
+        end
+        4'b1011: begin
+            wr_addr_4t = exec_p2[3:1];
+            wr_en_4t   = 1'b1;
+        end
+        4'b1100: if (!exec_p1[0] && !exec_p2[0]) begin // 12t -> 4t extract
+            wr_addr_4t = exec_p1[3:1];
+            wr_en_4t   = 1'b1;
+        end else if (exec_p1[0] && exec_p2[0]) begin   // 1t -> 4t insert
+            wr_addr_4t = exec_p0[3:1];
+            wr_en_4t   = 1'b1;
+        end
+        default: ;
+    endcase
+end
+
+wire uses_4t_6 = (rd_addr_4t_a == 3'd6) || (rd_addr_4t_b == 3'd6) ||
+                    (rd_addr_4t_c == 3'd6) || (wr_en_4t && wr_addr_4t == 3'd6);
+wire uses_4t_7 = (rd_addr_4t_a == 3'd7) || (rd_addr_4t_b == 3'd7) ||
+                    (rd_addr_4t_c == 3'd7) || (wr_en_4t && wr_addr_4t == 3'd7);
+
+// 3. Check overlap against active 4t and 1t aliases
+wire hazard_12t_vs_4t = alias_active_4t && (
+    (uses_12t_1 && (alias_addr_4t <= 3'd2)) ||
+    (uses_12t_2 && (alias_addr_4t >= 3'd3 && alias_addr_4t <= 3'd5)) ||
+    (uses_12t_3 && (alias_addr_4t >= 3'd6))
+);
+
+wire hazard_12t_vs_1t = alias_active_1t && uses_12t_3;
+
+wire hazard_4t_vs_1t  = alias_active_1t && (
+    (uses_4t_6 && !alias_addr_1t[2]) || // 1t 0..3 inside 4t 6
+    (uses_4t_7 &&  alias_addr_1t[2])    // 1t 4..7 inside 4t 7
+);
+
+wire sub_alias_stall = hazard_12t_vs_4t || hazard_12t_vs_1t || hazard_4t_vs_1t;
+
 reg can_execute_this_clock;
 
 always @(posedge clk or negedge rst_n) begin
@@ -1415,7 +1495,7 @@ always @(posedge clk or negedge rst_n) begin
                             execute_done <= 1'b0;
                         end else if(exec_valid && execute_stage == 2'b0) begin
 
-                            if (hold_stall) begin
+                            if (hold_stall || sub_alias_stall) begin
                                 do_housekeeping = 1'b1; // Stall until hold_reg_addr is written
                             end else begin
                                 //read command input
