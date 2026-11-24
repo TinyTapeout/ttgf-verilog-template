@@ -185,7 +185,7 @@ alu core_0 (
         .t1_a_i_t0             (t1_a_w),
         .t1_b_i_t0             (t1_b_w),      
         .t1_o_t0               (t1_o_w),
-        .multiply_o_t0         (mul_o_w),
+        .multiply_o_t0         (mul_o_w)
     );
 
 microcode microcode_parser (
