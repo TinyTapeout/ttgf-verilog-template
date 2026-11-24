@@ -424,7 +424,7 @@ endfunction
                             end else if (active_req_type == 3'b101 && !mem_data_phase) begin
                                 mem_data_phase <= 1'b1;
                             end else begin
-                                thread_mem_done[cur_t] <= 1'b1;
+                                thread_mem_done <= 1'b1;
                                 mem_data_phase         <= 1'b0;
                                 active_req_type        <= 3'b000;
                                 bus_state              <= BUS_IDLE;
