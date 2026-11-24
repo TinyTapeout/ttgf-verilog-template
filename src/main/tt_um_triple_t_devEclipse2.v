@@ -88,7 +88,7 @@ tt_um_core_commander core_commander (
     .single_execute_t0       (single_execute_t0_wire),
     .single_execute_ack_t0   (single_execute_ack_t0_wire),
     .cmd_buf_clr_t0          (cmd_buf_clr_t0_wire),
-    .cmd_buf_clr_ack_t0      (cmd_buf_clr_ack_t0_wire),
+    .cmd_buf_clr_ack_t0      (cmd_buf_clr_ack_t0_wire)
 );
     
 logic_container main_logic (
@@ -120,7 +120,7 @@ logic_container main_logic (
     .ovl_a_ctr_overflow     (micro_op_action_ovf_err_wire),
     .ovl_p_ctr_overflow     (micro_op_param_ovf_err_wire),
     .ovl_reg_overflow       (reg_overflow_err_wire),
-    .ovl_offending_id_t0    (),//need to implpement
+    .ovl_offending_id_t0    ()//need to implpement
 );
 
 //multiplexer
