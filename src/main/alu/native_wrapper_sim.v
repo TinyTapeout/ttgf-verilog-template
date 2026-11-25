@@ -20,31 +20,21 @@ module native_wrapper_sim (
     localparam [7:0]  OV_ZERO_4T = {4{OV_ZERO_1T}}; // 8'b10_10_10_10
     localparam [15:0] OV_ZERO_8T = {8{OV_ZERO_1T}}; // 16'b1010_1010_1010_1010
 
-    //4trit adder
-        wire [7:0] bin_adder_sum;
-    wire [1:0] bin_adder_cout;
-
-    bt_add_4t addermodule (
-        .a    (trit4_in_a_0),
-        .b    (trit4_in_b_0),
-        .cin  (trit4_in_cin_0),
-        .sum  (bin_adder_sum),
-        .cout (bin_adder_cout)
-    );
-
-    //4 trit 3adder
     wire [7:0] bin_add3_sum;
     wire [1:0] bin_add3_cout;
+    wire [7:0] add3_in_c = (active_cmd_t0 == 3'd6) ? trit4_in_c_0 : OV_ZERO_4T;
 
-       bt_add3_4t adder3 (
+    bt_add3_4t adder3 (
         .a    (trit4_in_a_0),
         .b    (trit4_in_b_0),
-        .c    (trit4_in_c_0),
+        .c    (add3_in_c),
         .cin  (trit4_in_cin_0),
         .sum  (bin_add3_sum),
         .cout (bin_add3_cout)
     );
-    
+
+    // Output selection (both 3'd1 and 3'd6 use adder3)
+
     //hello everybody my name is multiplier
         wire [15:0] bin_mult_out;
 
@@ -96,15 +86,13 @@ module native_wrapper_sim (
                                (trit4_in_cin_0[0]) ? shifted_canvas[7:0]  :
                                                      shifted_canvas[23:16];
     // Output selection
-    assign trit4_out_0 = (active_cmd_t0 == 3'd1) ? bin_adder_sum :
-                         (active_cmd_t0 == 3'd6) ? bin_add3_sum  :
-                         (active_cmd_t0 == 3'd7) ? bin_shift_res : OV_ZERO_4T;
+    assign trit4_out_0 = (active_cmd_t0 == 3'd1 || active_cmd_t0 == 3'd6) ? bin_add3_sum :
+                         (active_cmd_t0 == 3'd7)                          ? bin_shift_res : OV_ZERO_4T;
 
-    assign trit4_out_cout_0 = (active_cmd_t0 == 3'd1) ? bin_adder_cout :
-                              (active_cmd_t0 == 3'd3) ? bin_tw1_out    :
-                              (active_cmd_t0 == 3'd4) ? bin_tw2_out    :
-                              (active_cmd_t0 == 3'd5) ? bin_tw3_out    :
-                              (active_cmd_t0 == 3'd6) ? bin_add3_cout  : OV_ZERO_1T;
+    assign trit4_out_cout_0 = (active_cmd_t0 == 3'd1 || active_cmd_t0 == 3'd6) ? bin_add3_cout :
+                              (active_cmd_t0 == 3'd3)                          ? bin_tw1_out   :
+                              (active_cmd_t0 == 3'd4)                          ? bin_tw2_out   :
+                              (active_cmd_t0 == 3'd5)                          ? bin_tw3_out   : OV_ZERO_1T;
 
     assign multiplier_out_0 = (active_cmd_t0 == 3'd2) ? bin_mult_out : OV_ZERO_8T;
 

@@ -94,7 +94,7 @@ module tt_um_core_commander (
     reg prev_reg_ovf_err;
 
     reg       new_error_flag;     //this one has a reset command
-    reg offending_thread;   // Shown on uo_out[4:3] when new_error_flag == 1
+    // reg offending_thread;   // Shown on uo_out[4:3] when new_error_flag == 1
     reg [2:0] offending_error_id; // Shown on uo_out[2:0] when new_error_flag == 1
 
     reg       showing_errors;
@@ -162,8 +162,7 @@ module tt_um_core_commander (
     wire uop_prm_ovf_rise = micro_op_param_ovf_err  && !prev_uop_prm_err;
     wire reg_ovf_rise     = reg_overflow_err        && !prev_reg_ovf_err;
 
-    integer i;
-    always @(posedge clk or negedge rst_n) begin
+    always @(posedge clk) begin
         if (!rst_n) begin
             
             //replaced that with hard coded stuff cause i dont trust the verilog
@@ -171,10 +170,10 @@ module tt_um_core_commander (
                 err_uop_act_ovf_t <= 8'b0;
                 err_uop_prm_ovf_t <= 8'b0;
                 err_reg_ovf_t     <= 8'b0;
-            prev_pc_ovf_err     <= 3'b0;
-            prev_uop_act_err    <= 3'b0;
-            prev_uop_prm_err    <= 3'b0;
-            prev_reg_ovf_err    <= 3'b0;
+            prev_pc_ovf_err     <= 1'b0;
+            prev_uop_act_err    <= 1'b0;
+            prev_uop_prm_err    <= 1'b0;
+            prev_reg_ovf_err    <= 1'b0;
 
             new_error_flag      <= 1'b0;
             offending_error_id  <= 3'd0;

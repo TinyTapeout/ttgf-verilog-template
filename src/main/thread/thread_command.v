@@ -116,7 +116,8 @@ module thread_command(
         output wire a_ctr_overflow,
         output wire p_ctr_overflow,
         output wire reg_overflow,
-        output wire [3:0] offending_id
+        output wire [3:0] offending_id,
+        input wire is_micro
 
     // //spi
     // output reg  [11:0] spi_tx_data,      // 12 bits: 1 for +1 (2'b01), 0 otherwise (nti)
@@ -222,42 +223,6 @@ reg [3:0] offending_id_r;
 
 assign pipe_full_rej = macroop_pipe_full || direct_exec_ready;
 
-wire [7:0] mac_sum;
-wire [1:0] mac_c0, mac_c1, mac_c2, mac_cout;
-
-bt_fa_1t u_fa0 (
-    .a    (mac_b[1:0]),
-    .b    (mac_c[1:0]),
-    .cin  (mac_carry),
-    .sum  (mac_sum[1:0]),
-    .cout (mac_c0)
-);
-
-bt_fa_1t u_fa1 (
-    .a    (mac_b[3:2]),
-    .b    (mac_c[3:2]),
-    .cin  (mac_c0),
-    .sum  (mac_sum[3:2]),
-    .cout (mac_c1)
-);
-
-bt_fa_1t u_fa2 (
-    .a    (mac_b[5:4]),
-    .b    (mac_c[5:4]),
-    .cin  (mac_c1),
-    .sum  (mac_sum[5:4]),
-    .cout (mac_c2)
-);
-
-bt_fa_1t u_fa3 (
-    .a    (mac_b[7:6]),
-    .b    (mac_c[7:6]),
-    .cin  (mac_c2),
-    .sum  (mac_sum[7:6]),
-    .cout (mac_cout)
-);
-
-
 reg [6:0] action_ctr;
 reg [6:0] param_ctr;
 
@@ -309,7 +274,7 @@ reg [3:0]  exec_cmd, exec_p0, exec_p1, exec_p2;
 reg        ucode_data_ready;
 wire       exec_valid = direct_exec_ready || (ucode_data_ready && (threadstate != THREAD_EMPTY));
 
-reg do_housekeeping = 1'b0;
+reg do_housekeeping;
 reg macroop_pipe_full;
 
 reg [23:0] debug_reg_cache;
@@ -340,7 +305,7 @@ localparam [2:0]
 
     wire early_exit   = (wait_cnt >= 4'd2) && (ucode_bus != 8'hFF);
     wire timed_out    = (wait_cnt == 4'd15);
-    wire data_arrived = early_exit || timed_out;
+    wire data_arrived = (early_exit || timed_out);
 
     assign microcode_idle = !ucode_req && (ucode_state == ST_IDLE);
     wire   bus_needed     = ucode_req && !has_cached_odd;
@@ -434,7 +399,7 @@ localparam [2:0]
     
     //shared read ports
     wire [23:0] shared_rd_12t = read_any_reg_12t(
-        rd_addr_12t, using_macroop_1, alias_addr_12t, am_buff_12t,
+        rd_addr_12t, sel_cmd1, alias_addr_12t, am_buff_12t,
         sp0_trib0, sp0_trib1, sp0_trib2, sp1_trib0, sp1_trib1, sp1_trib2,
         spf_trib0, spf_trib1, spf_trib2, mac_a, mac_b, mac_d,
         pc_r_data, gp_reg_6, gp_reg_7, gp_reg_8,
@@ -680,7 +645,7 @@ function [23:0] read_any_reg_12t;
                 4'd3: read_any_reg_12t = {spf_t2, spf_t1, spf_t0};
                 4'd4: read_any_reg_12t = {mac_d, mac_b, mac_a};
                 default: read_any_reg_12t = read_secondary_reg(
-                    1'b1, addr, using_macroop_1, pc_val,
+                    1'b1, addr, sel_cmd1, pc_val,
                     gp6, gp7, gp8,
                     c0_0, c0_1, c0_2, c0_3, c0_4, c0_5,
                     c1_0, c1_1, c1_2, c1_3, c1_4, c1_5
@@ -781,8 +746,7 @@ function [23:0] read_debug_ext;
             // 5'd23: [23:16]={2'b0, carry_reg, alias_active_1t, alias_addr_1t} | [15:8]=action_ctr | [7:0]=param_ctr
             5'd23: read_debug_ext = {2'b0, carry, act_1t, addr_1t, act_ctr, prm_ctr};
 
-            // 5'd31: [23:16]=8'b0 | [15:0]=macroop_register
-            5'd31: read_debug_ext = {8'b0, macroop_reg};
+            5'd24,5'd31: read_debug_ext = {8'b0, macroop_reg};
 
             default: read_debug_ext = 24'hAAAAAA;
         endcase
@@ -1099,7 +1063,7 @@ wire sub_alias_stall = hazard_12t_vs_4t || hazard_12t_vs_1t || hazard_4t_vs_1t;
 
 reg can_execute_this_clock;
 
-always @(posedge clk or negedge rst_n) begin
+always @(posedge clk) begin
     //this is the main loop of the system
     if (!rst_n) begin
         //control & state        
@@ -1152,6 +1116,7 @@ always @(posedge clk or negedge rst_n) begin
         //  spf_flag3, spf_flag2, spf_flag1, spf_flag0} <= 16'hAAAA;
         // {mac_a,mac_b,mac_c,mac_d} <= 32'hAAAAAAAA;
         mac_carry <= 2'b10;
+        reg_ovf_r <= 1'b0;
         // gp_reg_6    <= 24'hAAAAAA; gp_reg_7     <= 24'hAAAAAA; gp_reg_8     <= 24'hAAAAAA;
         // cmd0_reg_0  <= 24'hAAAAAA; cmd0_reg_1   <= 24'hAAAAAA; cmd0_reg_2   <= 24'hAAAAAA;
         // cmd0_reg_3  <= 24'hAAAAAA; cmd0_reg_4   <= 24'hAAAAAA; cmd0_reg_5   <= 24'hAAAAAA;
@@ -1181,7 +1146,11 @@ always @(posedge clk or negedge rst_n) begin
         ucode_req             <= 1'b0;
         ucode_data_ready      <= 1'b0;
         has_cached_odd        <= 1'b0;
+        mask_12t_singleuse    <= 1'b0;
+        mask_4t_singleuse     <= 1'b0;
+        mask_1t_singleuse     <= 1'b0;
     end else begin
+        reg_ovf_r <= 1'b0;
         execute_done <= 1'b0;
         can_execute_this_clock = 1'b0; // non blocking temp var
         pc_inc_enable         <= 1'b0;
@@ -1219,7 +1188,9 @@ always @(posedge clk or negedge rst_n) begin
                 end
 
                 ST_WAIT_ACT: begin
-                    if (!data_arrived) begin
+                    if (!is_micro) begin
+                        wait_cnt <= 4'd0;
+                    end else if (!data_arrived ) begin
                         wait_cnt <= wait_cnt + 4'd1;
                     end else begin
                         wait_cnt         <= 4'd0;
@@ -1230,7 +1201,9 @@ always @(posedge clk or negedge rst_n) begin
                 end
 
                 ST_WAIT_PRM0: begin
-                    if (!data_arrived) begin
+                    if (!is_micro) begin
+                        wait_cnt <= 4'd0;
+                    end else if (!data_arrived) begin
                         wait_cnt <= wait_cnt + 4'd1;
                     end else begin
                         wait_cnt           <= 4'd0;
@@ -1245,7 +1218,9 @@ always @(posedge clk or negedge rst_n) begin
                 end
 
                 ST_WAIT_PRM1: begin
-                    if (!data_arrived) begin
+                    if (!is_micro) begin
+                        wait_cnt <= 4'd0;
+                    end else if (!data_arrived) begin
                         wait_cnt <= wait_cnt + 4'd1;
                     end else begin
                         wait_cnt            <= 4'd0;
@@ -1383,8 +1358,8 @@ always @(posedge clk or negedge rst_n) begin
                                             carry_reg       <= dbg_wdata_24b[21:20];
                                             alias_active_1t <= dbg_wdata_24b[19];
                                             alias_addr_1t   <= dbg_wdata_24b[18:16];
-                                            action_ctr      <= dbg_wdata_24b[15:8];
-                                            param_ctr       <= dbg_wdata_24b[7:0];
+                                            action_ctr      <= dbg_wdata_24b[14:8];
+                                            param_ctr       <= dbg_wdata_24b[6:0];
                                         end
                                         5'd24: macroop_register <= dbg_wdata_24b[15:0];
                                         default: ;
@@ -1606,10 +1581,13 @@ always @(posedge clk or negedge rst_n) begin
                                         4'b1101: begin
                                             //mac add but just takes whatever is in spot c and throws it onto b, clearing c in the process
                                             if (write_allow) begin
-                                                mac_b     <= mac_sum;
-                                                mac_carry <= mac_cout;
-                                                mac_c     <= 8'hAA; // Ternary 0
-                                            end 
+                                                alu_command   <= 3'd1;
+                                                alu_t4_a      <= mac_b;
+                                                alu_t4_b      <= mac_c;
+                                                alu_t1_a      <= mac_carry;
+                                                execute_stage <= 2'b01;
+                                                execute_done  <= 1'b0;
+                                            end
                                         end
 
                                         default: ;
@@ -1751,13 +1729,13 @@ always @(posedge clk or negedge rst_n) begin
                                             if(write_allow) begin
                                                 if(exec_p1[0] == 1'b0) begin
                                                     //xxx0 : action
-                                                    action_ctr <= shared_rd_4t_a;
+                                                    action_ctr <= hop_bin_val;
                                                 end else begin
                                                     //xxx1 : param
-                                                    param_ctr <= shared_rd_4t_a;
+                                                    param_ctr <= hop_bin_val;
                                                 end
                                                 trigger_ucode_flush;
-                                                execute_done <= 1'b0;
+                                                execute_done <= 1'b1;
                                             end
                                         end
                                         4'b1010: begin
@@ -1872,7 +1850,7 @@ always @(posedge clk or negedge rst_n) begin
                                         4'b1010: begin
                                             //hop parameter counter using immediate
                                             if (write_allow) begin
-                                                param_ctr <= {exec_p1, exec_p2};
+                                                param_ctr <= hop_bin_val;
                                                 trigger_ucode_flush;
                                             end
                                             execute_done <= 1'b1;
@@ -1886,7 +1864,7 @@ always @(posedge clk or negedge rst_n) begin
                                             //param 2 t1 t0
                                             //trits are encoded into 2 bits, using override encoding
                                             if (write_allow) begin
-                                                action_ctr <= {exec_p1, exec_p2};
+                                                action_ctr <= hop_bin_val;
                                                 trigger_ucode_flush;
                                             end
                                             execute_done <= 1'b1;
@@ -1957,6 +1935,7 @@ always @(posedge clk or negedge rst_n) begin
                                             param 2 Operand B address 4 trit bbb0
                                             param 3 operand C address 4 trit ccc0
                                             */
+
                                             alu_command       <= 3'd2;
                                             alu_t4_a      <= (exec_p0[0] && !alias_active_4t) ? apply_mask_4t(shared_rd_4t_a, am_buff_4t) : shared_rd_4t_a;
                                             alu_t4_b      <= (exec_p1[0] && !alias_active_4t) ? apply_mask_4t(shared_rd_4t_b, am_buff_4t) : shared_rd_4t_b;
@@ -2046,7 +2025,6 @@ always @(posedge clk or negedge rst_n) begin
                                             alu_t1_b          <= shared_rd_1t_b;
                                             execute_stage     <= 2'b01;
                                         end
-                                        
                                         4'b1011: begin
                                             /*
                                             4 trit imm conversion
@@ -2120,6 +2098,14 @@ always @(posedge clk or negedge rst_n) begin
                                     //         execute_stage <= 2'b00;
                                     //         execute_done  <= 1'b1;
                                     //     end
+                                    end else if (exec_cmd == 4'b0000 && exec_p0 == 4'b1101) begin
+                                        if (write_allow) begin
+                                            mac_b     <= alu_t4_o;
+                                            mac_carry <= alu_t1_o;
+                                            mac_c     <= 8'hAA;
+                                        end
+                                        execute_stage <= 2'b00;
+                                        execute_done  <= 1'b1;
                                     end
                                     else if (request_show_reg || request_set_pc || request_memory_access) begin
                                         //bus wait
@@ -2190,10 +2176,15 @@ always @(posedge clk or negedge rst_n) begin
                                                 execute_stage <= 2'b00;
                                                 execute_done  <= 1'b1;
                                             end else if (exec_cmd == 4'b0100) begin
+
                                                 if (write_allow) begin
                                                     mac_c <= alu_multiply_o[7:0];
                                                     mac_d <= alu_multiply_o[15:8];
                                                 end
+                                                alu_command   <= 3'd1;                // Reuse adder3 in 2-input mode
+                                                alu_t4_a      <= mac_b;
+                                                alu_t4_b      <= alu_multiply_o[7:0]; // Bypass mac_c reg (same cycle)
+                                                alu_t1_a      <= mac_carry;
                                                 execute_stage <= 2'b10; //mac B+C & pump in stage 2
                                             end else begin
                                                 execute_stage <= 2'b10; //masked writeback in stage 2
@@ -2369,11 +2360,12 @@ always @(posedge clk or negedge rst_n) begin
                                     if (exec_cmd == 4'b0100) begin
                                         // mac: kick A out (masked by exec_p2[0]), A <= B+C, B <= D
                                         if (write_allow) begin
-                                            write_any_reg_4t(exec_p2[0],1'b1,exec_p2[3:1],mac_a);
-                                            mac_a     <= mac_sum;
+                                            write_any_reg_4t(exec_p2[0], 1'b1, exec_p2[3:1], mac_a);
+                                            mac_a     <= alu_t4_o;
                                             mac_b     <= mac_d;
-                                            mac_carry <= mac_cout;
-                                            if ((exec_p0[0] || exec_p1[0] || exec_p2[0]) && mask_4t_singleuse) am_buff_4t <= 8'h55;
+                                            mac_carry <= alu_t1_o;
+                                            if ((exec_p0[0] || exec_p1[0] || exec_p2[0]) && mask_4t_singleuse)
+                                                am_buff_4t <= 8'h55;
                                         end
                                     end else if (write_allow) begin
                                         case (exec_cmd)

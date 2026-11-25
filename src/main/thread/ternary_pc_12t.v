@@ -56,7 +56,7 @@ module ternary_pc_12t (
     assign overflow = carry[12];
 
     // Sequential State Update (Resolves in 1 Clock Cycle)
-    always @(posedge clk or negedge rst_n) begin
+    always @(posedge clk) begin
         if (!rst_n) begin
             pc_reg <= ZERO_12T; // Reset to canonical 0 (24'hAAAAAA)
         end else if (w_enable) begin

@@ -114,9 +114,6 @@ module logic_container(
     wire [2:0]  cmd_w;
     wire [2:0]  tw_cmd_w;
     wire [2:0]  shift_cmd_w;
-    wire cmd_ready_w;
-    wire res_ready_w;
-
     wire [7:0]  t4_a_w;
     wire [7:0]  t4_b_w;
     wire [7:0]  t4_c_w;
@@ -133,7 +130,7 @@ module logic_container(
 
     // Per-thread Bus / Debug arrays
     wire req_show_reg, req_set_pc, req_mem_access, is_write_mem;
-    wire pipe_full_rej, req_new_cmd;
+    wire pipe_full_rej;
     wire [23:0] addr_out_w    ;
     wire [15:0] ext_addr_w    ;
     wire [23:0] d_out_w       ;
@@ -262,7 +259,8 @@ native_wrapper_sim native_alu(
                 .a_ctr_overflow             (ovl_a_ctr_overflow),
                 .p_ctr_overflow             (ovl_p_ctr_overflow),
                 .reg_overflow               (ovl_reg_overflow),
-                .offending_id               (offending_id_w)
+                .offending_id               (offending_id_w),
+                .is_micro                   (is_ucode)
             );
 
 //reinforcement of canonical zero as 2'b10

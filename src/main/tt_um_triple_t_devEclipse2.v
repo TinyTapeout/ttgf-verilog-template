@@ -52,7 +52,7 @@ module tt_um_triple_t_devEclipse2 (
     wire [1:0] reg_read_stage_wire;
     wire [4:0] reg_addr_wire;
     wire       is_read_wire;
-    wire [2:0] reg_handover_done_wire;
+    wire reg_handover_done_wire;
     wire [7:0] ovl_dbg_dout_wire;
 
     wire       o_microcode_fence_t0_wire;
