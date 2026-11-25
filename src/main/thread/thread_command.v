@@ -399,7 +399,7 @@ localparam [2:0]
     
     //shared read ports
     wire [23:0] shared_rd_12t = read_any_reg_12t(
-        rd_addr_12t, sel_cmd1, alias_addr_12t, am_buff_12t,
+        rd_addr_12t, using_macroop_1, alias_addr_12t, am_buff_12t,
         sp0_trib0, sp0_trib1, sp0_trib2, sp1_trib0, sp1_trib1, sp1_trib2,
         spf_trib0, spf_trib1, spf_trib2, mac_a, mac_b, mac_d,
         pc_r_data, gp_reg_6, gp_reg_7, gp_reg_8,
