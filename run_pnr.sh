@@ -8,10 +8,27 @@ LOG_DIR="$SCRIPT_DIR/pnr_logs"
 mkdir -p "$LOG_DIR"
 LOG_FILE="$LOG_DIR/harden_$(date +%Y%m%d_%H%M%S).log"
 
-# Automatically wrap execution inside a persistent tmux session so SSH disconnects don't kill PnR
+# Automatically wrap execution inside a persistent tmux session
 if [ -z "${TMUX:-}" ]; then
     exec tmux new -As "$SESSION_NAME" "bash '$SCRIPT_DIR/$(basename "$0")' --in-tmux"
 fi
+
+# Trap any exit (error or completion) so the tmux window stays open for inspection
+on_exit() {
+    local exit_code=$?
+    echo "" | tee -a "$LOG_FILE"
+    echo "==========================================" | tee -a "$LOG_FILE"
+    if [ $exit_code -ne 0 ]; then
+        echo "[$(date)] PnR FAILED with exit code $exit_code" | tee -a "$LOG_FILE"
+    else
+        echo "[$(date)] PnR FINISHED SUCCESSFULLY" | tee -a "$LOG_FILE"
+    fi
+    echo "Log saved to: $LOG_FILE" | tee -a "$LOG_FILE"
+    echo "Dropping into interactive shell so you can inspect logs (type 'exit' to close)."
+    echo "==========================================" | tee -a "$LOG_FILE"
+    exec bash
+}
+trap on_exit EXIT
 
 cd "$SCRIPT_DIR"
 
@@ -31,9 +48,8 @@ echo "==========================================" | tee -a "$LOG_FILE"
 # Validate src/config.json syntax before starting
 python3 -m json.tool src/config.json > /dev/null
 
+# Sync info.yaml tile dimensions into src/user_config.json automatically
+./tt/tt_tool.py --pdk gf180mcuD --create-user-config 2>&1 | tee -a "$LOG_FILE"
+
 # Run Tiny Tapeout / LibreLane hardening on gf180mcuD
 ./tt/tt_tool.py --pdk gf180mcuD --harden 2>&1 | tee -a "$LOG_FILE"
-
-echo "==========================================" | tee -a "$LOG_FILE"
-echo "[$(date)] PnR FINISHED SUCCESSFULLY" | tee -a "$LOG_FILE"
-echo "==========================================" | tee -a "$LOG_FILE"
