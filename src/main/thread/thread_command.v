@@ -1856,13 +1856,13 @@ always @(posedge clk or negedge rst_n) begin
                                             //read extended register (the extended register is basically just ram stored on another fpga)
                                             //param 1 Local reg addr 12T
                                             //param 2 Extended reg addr 12t
-                                            start_bus_tx(TX_MEM_READ, {16'hAAAA, exec_p2, 4'hA}, 24'hAAAAAA);
+                                            start_bus_tx(TX_MEM_READ, {16'h0000, exec_p2, 4'hA}, 24'hAAAAAA);
                                         end
                                         4'b1001: begin
                                             //write extended register
                                             //param 1 Local reg addr 12T
                                             //param 2 Extended reg addr 12t
-                                            if (write_allow) start_bus_tx(TX_MEM_WRITE, {16'hAAAA, exec_p2, 4'hA}, shared_rd_12t);
+                                            if (write_allow) start_bus_tx(TX_MEM_WRITE, {16'h0000, exec_p2, 4'hA}, shared_rd_12t);
                                             else             execute_done <= 1'b1;
                                             //if (write_allow)
                                             //     start_bus_tx(TX_MEM_WRITE, mem_addr_24b, mem_data_24b);
