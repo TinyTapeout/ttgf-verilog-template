@@ -86,10 +86,8 @@
 "GRT_RESIZER_TIMING_OPTIMIZATIONS": 1,
 
   "RSZ_DONT_USE_CELLS": [
-    "gf180mcu_fd_sc_mcu7t5v0__dlyb_1",
     "gf180mcu_fd_sc_mcu7t5v0__dlyb_2",
     "gf180mcu_fd_sc_mcu7t5v0__dlyb_4",
-    "gf180mcu_fd_sc_mcu7t5v0__dlya_1",
     "gf180mcu_fd_sc_mcu7t5v0__dlya_2",
     "gf180mcu_fd_sc_mcu7t5v0__dlya_4"
   ],
