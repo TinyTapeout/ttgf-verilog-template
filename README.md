@@ -13,7 +13,7 @@ technically more efficient than a binary chip but i'm the one designing it so no
 pretty innovative if you ask me
 
 
-can access up to ~1.5GB of ram, but the very poorly thought out design leaves much to be desired
+can access up to ~9.7GB of ram, but the very poorly thought out design leaves much to be desired
 
 has it's own isa and microcode architecture, with 7+1 modes designed to run in conjunction with an fpga to act as the chipset/ bridge, or can act standalone by reading spi flash
 
