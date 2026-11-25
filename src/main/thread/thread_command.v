@@ -2034,8 +2034,8 @@ always @(posedge clk or negedge rst_n) begin
                                             end
                                             execute_done <= 1'b1;
                                         end
-                                        4'b1000: begin
-                                            case ({exec_p0[0], exec_p1[0]})
+                                        4'b1000,4'b1001,4'b1010: begin
+                                            case (exec_cmd[1:0])
                                                 2'b00:   alu_command <= 3'd3; // Tritwise 1
                                                 2'b01:   alu_command <= 3'd4; // Tritwise 2
                                                 2'b10:   alu_command <= 3'd5; // Tritwise 3
@@ -2045,7 +2045,8 @@ always @(posedge clk or negedge rst_n) begin
                                             alu_t1_a          <= shared_rd_1t_a;
                                             alu_t1_b          <= shared_rd_1t_b;
                                             execute_stage     <= 2'b01;
-                                        end                                       
+                                        end
+                                        
                                         4'b1011: begin
                                             /*
                                             4 trit imm conversion
