@@ -17,7 +17,7 @@
 
   "//": "CLOCK_PERIOD - Increase this in case you are getting setup time violations.",
   "//": "The value is in nanoseconds, so 20ns == 50MHz.",
-  "CLOCK_PERIOD": 40,
+  "CLOCK_PERIOD": 200,
 
   "//": "Hold slack margin - Increase them in case you are getting hold violations.",
   "PL_RESIZER_HOLD_SLACK_MARGIN": 0.1,
@@ -95,7 +95,8 @@
   "DESIGN_REPAIR_MAX_CAP_PCT": 30,
   "HOLD_SLACK_MARGIN": 0.0,
   "DESIGN_REPAIR_MAX_WIRE_LENGTH": 0,
-  "RSZ_DONT_TOUCH_RX": ".*clk.*",
+  "RSZ_DONT_TOUCH_RX": ".*(rst|reset).*",
+  "RUN_POST_GRT_RESIZER_TIMING": false,
   "SYNTH_STRATEGY": "DELAY 0",
   "SYNTH_MAX_FANOUT": 12
 }
