@@ -45,6 +45,7 @@ echo "Working Dir: $SCRIPT_DIR" | tee -a "$LOG_FILE"
 echo "Logging to:  $LOG_FILE" | tee -a "$LOG_FILE"
 echo "==========================================" | tee -a "$LOG_FILE"
 
+
 # Validate src/config.json syntax before starting
 python3 -m json.tool src/config.json > /dev/null
 
