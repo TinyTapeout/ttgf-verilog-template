@@ -382,10 +382,17 @@ class TripleTDriver:
 
     async def ovl_clear_cmd_buf(self):
         await self.ovl_cmd(OVL_CLR_CMD_BUF)
-        # Wait until controller_state returns to state_idle (uo_out[2:0] == 0)
+        # Wait until controller_state returns to state_idle (uo_out[2:0] == 0).
+        # Note: when new_error_flag (uo_out[6]) is 1, uo_out[2:0] is muxed to
+        # offending_error_id instead of controller_state; cmd_buf_clr_ack completes
+        # within 1-2 cycles, so wait 3 clocks and return cleanly.
         for _ in range(self.timeout):
             await ReadOnly()
-            if (safe_int(self.dut.uo_out) & 0x07) == 0:
+            uo = safe_int(self.dut.uo_out)
+            if (uo >> 6) & 1:
+                await ClockCycles(self.dut.clk, 3)
+                return
+            if (uo & 0x07) == 0:
                 await ClockCycles(self.dut.clk, 1)
                 return
             await ClockCycles(self.dut.clk, 1)
@@ -1165,9 +1172,9 @@ async def test_06_microcode_sectors_and_flow(dut):
     drv = TripleTDriver(dut, ucode_rom=rom)
     await drv.reset()
     await drv.ovl_clear_cmd_buf()
-
-    await drv.send_direct_uop(0x0, 0x7)
-    await drv.send_direct_uop(0x2, 0xD, (TRIT_ZRO << 2) | 0b00, 0x3)
+    # Pre-initialize all 24 registers (GLS X-safe for cmd_reg_1..5 before final ovl_dump_regs)
+    await drv.ovl_write_regs({})
+    await drv.run_until_quiet()
 
     # 1. Run Macro-op 112 (sector 112..191 + cond branch + 0xFF timeout)
     drv.shown_regs.clear()
@@ -1191,9 +1198,9 @@ async def test_06_microcode_sectors_and_flow(dut):
 
     # 3. Probe ternary counter hops (0010:1011 act imm, 0010:1010 prm imm, 0001:1001 reg hop)
     #    Verify each updates action_ctr/param_ctr cleanly into [0..80] with no X/deadlock
-    await drv.send_direct_uop(0x2, 0xB, 0xA, 0x5)  # imm hop action_ctr
-    await drv.send_direct_uop(0x2, 0xA, 0xA, 0x5)  # imm hop param_ctr
-    await drv.send_direct_uop(0xB, 0xA, 0x9, (0 << 1) | 0)  # sp0_t0 = 0xA9
+    await drv.send_direct_uop(0x2, 0xB, 0x0, 0x5)  # imm hop action_ctr (safe in all t2b encodings)
+    await drv.send_direct_uop(0x2, 0xA, 0x0, 0x5)  # imm hop param_ctr
+    await drv.send_direct_uop(0xB, 0x0, 0x1, (0 << 1) | 0)  # sp0_t0 = 0x01
     await drv.send_direct_uop(0x1, 0x9, (0 << 1) | 0)       # reg hop action_ctr
     await drv.send_direct_uop(0x1, 0x9, (0 << 1) | 1)       # reg hop param_ctr
     regs = await drv.ovl_dump_regs()
