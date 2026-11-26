@@ -17,7 +17,7 @@
 
   "//": "CLOCK_PERIOD - Increase this in case you are getting setup time violations.",
   "//": "The value is in nanoseconds, so 20ns == 50MHz.",
-  "CLOCK_PERIOD": 60,
+  "CLOCK_PERIOD": 80,
 
   "//": "Hold slack margin - Increase them in case you are getting hold violations.",
   "PL_RESIZER_HOLD_SLACK_MARGIN": 0.1,
@@ -78,8 +78,8 @@
   "SYNTH_CLOCK_GATING": true,
   "PL_TIME_DRIVEN": true,
   "PL_ROUTABILITY_DRIVEN": true,
-  "CTS_SINK_CLUSTERING_SIZE": 32,
-  "CTS_SINK_CLUSTERING_MAX_DIAMETER": 70,
+  "CTS_SINK_CLUSTERING_SIZE": 48,
+  "CTS_SINK_CLUSTERING_MAX_DIAMETER": 80,
   "CTS_CLK_BUFFERS": [
     "gf180mcu_fd_sc_mcu7t5v0__clkbuf_2",
     "gf180mcu_fd_sc_mcu7t5v0__clkbuf_4",
