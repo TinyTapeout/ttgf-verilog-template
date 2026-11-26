@@ -11,17 +11,16 @@ PROJECT_SOURCES = \
 	main/tt_um_core_commander.v \
 	main/ternary_to_unsigned_binary_logic_convert_4t.v \
 	main/logic_container.v \
-	main/thread/microcode.v \
 	main/thread/ternary_pc_4t.v \
 	main/thread/ternary_pc_12t.v \
 	main/thread/thread_command.v \
-	main/alu/alu.v \
 	main/alu/native_wrapper_sim.v \
-	main/alu/bt_add_4t.v \
-	main/alu/bt_add3_4t.v \
-	main/alu/bt_fa_1t.v \
-	main/alu/bt_fa3_1t.v \
-	main/alu/bt_mul_4t.v
+	main/alu/simulated/bt_add_4t.v \
+	main/alu/simulated/bt_add3_4t.v \
+	main/alu/simulated/bt_fa_1t.v \
+	main/alu/simulated/bt_fa3_1t.v \
+	main/alu/simulated/bt_mul_4t.v
+
 
 ifneq ($(GATES),yes)
 
