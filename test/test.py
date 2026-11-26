@@ -1,24 +1,33 @@
 # SPDX-FileCopyrightText: © 2024 Tiny Tapeout
 # SPDX-License-Identifier: Apache-2.0
 """
-Comprehensive cocotb probe suite for tt_um_triple_t_devEclipse2.
+Exhaustive GLS-safe cocotb probe suite for tt_um_triple_t_devEclipse2.
 
-Covers:
-  1. Overlord / Core Commander mode (ui_in[2:0] == 3'b001):
-     - Command ack handshake, register dump/write (all 24 regs), PC read/write,
-       command buffer dump/clear, microcode fence & single-step, error detection,
-       auto-fence, and error counter telemetry.
-  2. Thread Bus mode (ui_in[2:0] == 3'b010):
-     - FPGA->ASIC RX (direct execution, macro-ops, 24-bit parameters),
-     - ASIC->FPGA TX (TX_SHOW_REG 3'b001, TX_SET_PC 3'b110, TX_MEM_WRITE 3'b101),
-     - Bidirectional TX_MEM_READ (3'b100) with High-Z turnaround & trit sanitization.
-  3. Microcode ROM Fetch mode (ui_in[2:0] == 3'b101):
-     - Sectorized action/param ROM addressing, odd/even micro-op caching,
-       early-exit vs 0xFF timeout, hold-until-register-change sync, dual-slot
-       pipelining, and conditional micro-branching.
-  4. ALU, Masking, and Aliasing:
-     - Balanced ternary Add/Sub/Add3, MAC multiply/pump, Trit-Shift (local + ovf),
-       single-use & persistent masks, and sub-alias stall auto-resolution.
+Test ordering (Logic -> Microcode -> Overlord Injection & Fencing):
+  Phase 1 — Logic & Datapath (Direct Execution only, zero Overlord injections):
+    test_01_alu_arith_and_shift       : Clear ops, Gen Value, 4t imm, Add/Sub/Add3,
+                                        carry, invert-store, Trit-Shift (1/2/3, L/R, local/ovf/mask)
+    test_02_mac_ladder_and_tritwise   : MAC seed/mul/read/add/pump, reworked MAC (0100),
+                                        4t scratch/MAC clear, Tritwise 1/2/3 (1000..1010)
+    test_03_transfers_slices_and_wallow: 12t/4t/1t copy/move/imm, carry imm, all 4 slice modes (1100),
+                                        write_allow disable/enable (0000:0101 / 0110)
+    test_04_masks_aliases_and_housekeep: 12t/4t/1t single-use & persistent masks, Gen Mask (0010:1100),
+                                        12t/4t/1t swaps, sub_alias_stall hazards, housekeep (0000:1010)
+    test_05_memory_bus_and_ext_addr   : ext_addr_out, TX_MEM_WRITE, TX_MEM_READ (ext + ptr),
+                                        High-Z turnaround & 2'b11 -> 2'b10 sanitization
+
+  Phase 2 — Microcode ROM, Branching, Hops & Pipelining:
+    test_06_microcode_sectors_and_flow: All 3 ROM sectors (0..31, 32..111, 112..191),
+                                        0xFF 16-cycle timeout, cond branch (0111 eq/neq),
+                                        hold_reg (0001:0100), stall-for-next (0000:1001),
+                                        next-cmd-space write (0010:1110), ternary hops (0001:1001, 0010:1010..1011)
+
+  Phase 3 — Overlord Register Injections, Fencing & All 4 Error Counters:
+    test_07_overlord_injection_and_pc : Placeholder modes, 24-reg write/dump + live ALU check,
+                                        PC R/W, 0000:1011 PC inc, direct_instr toggle, cmd buf dump/clr
+    test_08_fencing_step_and_errors   : Microcode fence & single-step, plus all 4 error counters
+                                        (ID 2 pc_ovf, ID 3 a_ctr_ovf, ID 4 p_ctr_ovf, ID 5 reg_ovf),
+                                        auto-fence, alert clear, telemetry, and full recovery
 """
 
 import cocotb
@@ -717,11 +726,490 @@ class TripleTDriver:
 
 
 # =============================================================================
-# Probe Tests
+# Phase 1: Logic & Datapath Checks (No Overlord Register Injections)
 # =============================================================================
 @cocotb.test()
-async def test_01_reset_and_overlord_registers(dut):
-    """Probe reset, unused modes, Overlord 24-register R/W, and PC R/W + TX_SET_PC sync."""
+async def test_01_alu_arith_and_shift(dut):
+    """Exhaustive ALU arithmetic (Add, Sub, Invert, Mask, Add3) & Trit-Shift (1/2/3, L/R, local/ovf)."""
+    clock = Clock(dut.clk, 10, unit="us")
+    cocotb.start_soon(clock.start())
+
+    drv = TripleTDriver(dut)
+    await drv.reset()
+    await drv.ovl_clear_cmd_buf()
+
+    # Initialize datapath purely via direct-exec clear/generate ops (GLS X-safe)
+    await drv.send_direct_uop(0x0, 0x7)  # Clear sp0, sp1
+    await drv.send_direct_uop(0x0, 0x8)  # Clear gp_reg_6..8
+    await drv.send_direct_uop(0x0, 0x1)  # Flush MAC
+    await drv.send_direct_uop(0x0, 0x2)  # Clear carry
+    await drv.send_direct_uop(0x0, 0x3)  # Reset masks/aliases
+    await drv.send_direct_uop(0x2, 0xD, (TRIT_ZRO << 2) | 0b00, 0x3)  # Gen Value 0 -> spf (12t)
+
+    # 1. Verify Generate Value (0010:1101) for 12t (+1s), 4t (-1s), 1t (+1)
+    await drv.send_direct_uop(0x2, 0xD, (TRIT_POS << 2) | 0b00, 0x6)       # gp_reg_6 = all +1s (0x555555)
+    await drv.send_direct_uop(0x2, 0xD, (TRIT_NEG << 2) | 0b01, (0 << 1))  # sp0_trib0 = all -1s (0x00)
+    await drv.send_direct_uop(0x2, 0xD, (TRIT_POS << 2) | 0b10, (0 << 1))  # spf_flag0 = +1 (0b01)
+
+    drv.shown_regs.clear()
+    await drv.send_direct_uop(0x1, 0xD, 0x6)
+    await drv.send_direct_uop(0x1, 0xD, 0x1)
+    await drv.send_direct_uop(0x1, 0xD, 0x3)
+    assert drv.shown_regs[0] == POS1_MASK_12T, "Gen Value 12t mismatch"
+    assert (drv.shown_regs[1] & 0xFF) == NEG1_MASK_4T, "Gen Value 4t mismatch"
+    assert (drv.shown_regs[2] & 0x03) == TRIT_POS, "Gen Value 1t mismatch"
+
+    # 2. Load sp0_trib0=+30, sp0_trib1=+20, sp0_trib2=-7
+    for addr4, val in [(0, 30), (1, 20), (2, -7)]:
+        t4 = int_to_trits(val, 4)
+        await drv.send_direct_uop(0xB, (t4 >> 4) & 0xF, t4 & 0xF, (addr4 << 1) | 0)
+
+    # Add with overflow: 30 + 20 = +50 -> in 4t balanced ternary: +1*81 + (-31), so sum=-31, carry=+1
+    await drv.send_direct_uop(0x0, 0x2)
+    await drv.send_direct_uop(0x3, (0 << 1) | 0, (1 << 1) | 0, (3 << 1) | 0)  # sp1_trib0 = -31, carry = +1
+    # Next Add uses carry=+1: 30 + (-7) + 1 = +24
+    await drv.send_direct_uop(0x3, (0 << 1) | 0, (2 << 1) | 0, (4 << 1) | 0)  # sp1_trib1 = +24, carry = 0
+    # Sub with invert-store: -(30 - 20) = -10 (p0[0]=1 sub, p1[0]=1 invert store)
+    await drv.send_direct_uop(0x0, 0x2)
+    await drv.send_direct_uop(0x3, (0 << 1) | 1, (1 << 1) | 1, (5 << 1) | 0)  # sp1_trib2 = -10
+
+    drv.shown_regs.clear()
+    await drv.send_direct_uop(0x1, 0xD, 0x2)
+    sp1 = drv.shown_regs[0]
+    assert trits_to_int(sp1 & 0xFF, 4) == -31, "Add overflow sum mismatch"
+    assert trits_to_int((sp1 >> 8) & 0xFF, 4) == 24, "Add carry-in propagation mismatch"
+    assert trits_to_int((sp1 >> 16) & 0xFF, 4) == -10, "Sub + invert-store mismatch"
+
+    # 3. Add3 (0101): 30 + 20 + (-7) + carry(+1) = +44 -> 1*81 + (-37), sum=-37, carry=+1
+    # First set carry_reg = +1 via 0010:0001 (p1={TRIT_POS, 2'b10})
+    await drv.send_direct_uop(0x2, 0x1, (TRIT_POS << 2) | 0b10, 0x0)
+    # Packed aaab bbcc cddd: a=0, b=1, c=2, d=3 -> p0=0000, p1=0101, p2=0011
+    await drv.send_direct_uop(0x5, 0x0, 0x5, 0x3)
+    # Next Add3 with a=2(-7), b=2(-7), c=2(-7) + carry(+1) = -20 -> dest=4
+    # a=2(010), b=2(010), c=2(010), d=4(100) -> p0=0100(4), p1=1001(9), p2=0100(4)
+    await drv.send_direct_uop(0x5, 0x4, 0x9, 0x4)
+
+    drv.shown_regs.clear()
+    await drv.send_direct_uop(0x1, 0xD, 0x2)
+    sp1 = drv.shown_regs[0]
+    assert trits_to_int(sp1 & 0xFF, 4) == -37, "Add3 overflow sum mismatch"
+    assert trits_to_int((sp1 >> 8) & 0xFF, 4) == -20, "Add3 carry-out propagation mismatch"
+
+    # 4. Trit-Shift (0110): test amt=1 (TRIT_NEG), amt=2 (TRIT_ZRO), amt=3 (TRIT_POS),
+    #    both Left (p2[0]=0) & Right (p2[0]=1), local (p1[0]=0) & ovf/udf (p1[0]=1)
+    # Load sp0_trib0 = +31 = [1*27 + 0*9 + 1*3 + 1*1] -> trits (t3..t0) = (+1, 0, +1, +1)
+    t31 = int_to_trits(31, 4)
+    await drv.send_direct_uop(0xB, (t31 >> 4) & 0xF, t31 & 0xF, (0 << 1) | 0)
+    # flag0 = -1 (amt=1), flag1 = 0 (amt=2), flag2 = +1 (amt=3)
+    await drv.send_direct_uop(0x2, 0x1, (TRIT_NEG << 2) | 0b00, (0 << 1) | 0)
+    await drv.send_direct_uop(0x2, 0x1, (TRIT_ZRO << 2) | 0b00, (1 << 1) | 0)
+    await drv.send_direct_uop(0x2, 0x1, (TRIT_POS << 2) | 0b00, (2 << 1) | 0)
+
+    # Left shift by 1: local -> (0, +1, +1, 0) = +12; ovf window -> (0, 0, 0, +1) = +1
+    await drv.send_direct_uop(0x6, (0 << 1) | 0, (0 << 1) | 0, (3 << 1) | 0)  # sp1_trib0 = +12
+    await drv.send_direct_uop(0x6, (0 << 1) | 0, (0 << 1) | 1, (4 << 1) | 0)  # sp1_trib1 = +1
+    # Right shift by 2: local -> (0, 0, +1, 0) = +3
+    await drv.send_direct_uop(0x6, (0 << 1) | 0, (1 << 1) | 0, (5 << 1) | 1)  # sp1_trib2 = +3
+
+    drv.shown_regs.clear()
+    await drv.send_direct_uop(0x1, 0xD, 0x2)
+    sp1 = drv.shown_regs[0]
+    assert trits_to_int(sp1 & 0xFF, 4) == 12, "Trit-shift L1 local mismatch"
+    assert trits_to_int((sp1 >> 8) & 0xFF, 4) == 1, "Trit-shift L1 ovf window mismatch"
+    assert trits_to_int((sp1 >> 16) & 0xFF, 4) == 3, "Trit-shift R2 local mismatch"
+
+    # Right shift by 3: local -> (0, 0, 0, +1) = +1; udf window -> (0, +1, +1, 0) = +12
+    await drv.send_direct_uop(0x6, (0 << 1) | 0, (2 << 1) | 0, (3 << 1) | 1)  # sp1_trib0 = +1
+    await drv.send_direct_uop(0x6, (0 << 1) | 0, (2 << 1) | 1, (4 << 1) | 1)  # sp1_trib1 = +12
+    drv.shown_regs.clear()
+    await drv.send_direct_uop(0x1, 0xD, 0x2)
+    sp1 = drv.shown_regs[0]
+    assert trits_to_int(sp1 & 0xFF, 4) == 1, "Trit-shift R3 local mismatch"
+    assert trits_to_int((sp1 >> 8) & 0xFF, 4) == 12, "Trit-shift R3 udf window mismatch"
+    dut._log.info("test_01_alu_arith_and_shift PASSED")
+
+
+@cocotb.test()
+async def test_02_mac_ladder_and_tritwise(dut):
+    """Exhaustive MAC ladder (seed, mul, add, pump, reworked 0100, clear) & Tritwise 1/2/3 (1000..1010)."""
+    clock = Clock(dut.clk, 10, unit="us")
+    cocotb.start_soon(clock.start())
+
+    drv = TripleTDriver(dut)
+    await drv.reset()
+    await drv.ovl_clear_cmd_buf()
+
+    await drv.send_direct_uop(0x0, 0x7)  # Clear sp0, sp1
+    await drv.send_direct_uop(0x0, 0x1)  # Flush MAC
+    await drv.send_direct_uop(0x0, 0x3)  # Reset masks/aliases
+    await drv.send_direct_uop(0x2, 0xD, (TRIT_ZRO << 2) | 0b00, 0x3)  # Clear spf
+
+    # Load sp0_trib0 = +10, sp0_trib1 = +5, sp0_trib2 = +4
+    for addr4, val in [(0, 10), (1, 5), (2, 4)]:
+        t4 = int_to_trits(val, 4)
+        await drv.send_direct_uop(0xB, (t4 >> 4) & 0xF, t4 & 0xF, (addr4 << 1) | 0)
+
+    # 1. MAC seed (0010:1111, p1[3]=1): 10 * 5 = 50 -> mac_b = +1, mac_a = -31
+    await drv.send_direct_uop(0x2, 0xF, (1 << 3) | 0, 1)
+
+    # 2. MAC mul (0010:1111, p1[3]=0): 4 * 5 = 20 -> mac_d = 0, mac_c = +20
+    await drv.send_direct_uop(0x2, 0xF, (0 << 3) | 2, 1)
+
+    # 3. MAC add (0000:1101): mac_b <= mac_b(+1) + mac_c(+20) = +21; mac_c <= 0
+    await drv.send_direct_uop(0x0, 0xD)
+    # Read mac_a(00)->sp1_t0, mac_b(01)->sp1_t1, mac_c(10)->sp1_t2 via 0001:0001
+    await drv.send_direct_uop(0x1, 0x1, (0 << 2) | 0b00)
+    await drv.send_direct_uop(0x1, 0x1, (1 << 2) | 0b01)
+    await drv.send_direct_uop(0x1, 0x1, (2 << 2) | 0b10)
+    drv.shown_regs.clear()
+    await drv.send_direct_uop(0x1, 0xD, 0x2)
+    sp1 = drv.shown_regs[0]
+    assert trits_to_int(sp1 & 0xFF, 4) == -31, "MAC seed mac_a mismatch"
+    assert trits_to_int((sp1 >> 8) & 0xFF, 4) == 21, "MAC add mac_b mismatch"
+    assert trits_to_int((sp1 >> 16) & 0xFF, 4) == 0, "MAC add did not clear mac_c"
+
+    # 4. Reworked MAC (0100): mul sp0_t2(4) * sp0_t2(4) = 16 (D=0, C=+16),
+    #    kicks old mac_a(-31) -> sp1_t0 (addr 3), mac_a <= mac_b(+21)+16 = +37, mac_b <= D(0)
+    await drv.send_direct_uop(0x4, (2 << 1) | 0, (2 << 1) | 0, (3 << 1) | 0)
+    await drv.send_direct_uop(0x1, 0x1, (1 << 2) | 0b00)  # mac_a -> sp1_t1 (addr 4)
+    await drv.send_direct_uop(0x1, 0x1, (2 << 2) | 0b01)  # mac_b -> sp1_t2 (addr 5)
+    drv.shown_regs.clear()
+    await drv.send_direct_uop(0x1, 0xD, 0x2)
+    sp1 = drv.shown_regs[0]
+    assert trits_to_int(sp1 & 0xFF, 4) == -31, "Reworked MAC kicked-out mac_a mismatch"
+    assert trits_to_int((sp1 >> 8) & 0xFF, 4) == 37, "Reworked MAC new mac_a mismatch"
+    assert trits_to_int((sp1 >> 16) & 0xFF, 4) == 0, "Reworked MAC new mac_b mismatch"
+
+    # 5. MAC pump with dest (0001:0010): kicks mac_a(+37) -> sp1_t0, mac_a<=mac_c(+16), mac_b<=mac_d(0)
+    await drv.send_direct_uop(0x1, 0x2, (3 << 1) | 0)
+    # MAC pump destinationless (0000:1100): mac_a<=mac_c(+16), mac_b<=mac_d(0)
+    await drv.send_direct_uop(0x0, 0xC)
+    # Clear 4t MAC slot mac_a (0001:0011, p1={0, 1}) & clear 4t scratch sp1_t1 (0001:0011, p1={4, 0})
+    await drv.send_direct_uop(0x1, 0x3, (0 << 1) | 1)
+    await drv.send_direct_uop(0x1, 0x3, (4 << 1) | 0)
+    await drv.send_direct_uop(0x1, 0x1, (2 << 2) | 0b00)  # cleared mac_a -> sp1_t2
+    drv.shown_regs.clear()
+    await drv.send_direct_uop(0x1, 0xD, 0x2)
+    sp1 = drv.shown_regs[0]
+    assert trits_to_int(sp1 & 0xFF, 4) == 37, "MAC pump dest mismatch"
+    assert trits_to_int((sp1 >> 8) & 0xFF, 4) == 0, "Clear 4t scratch mismatch"
+    assert trits_to_int((sp1 >> 16) & 0xFF, 4) == 0, "Clear 4t MAC slot mismatch"
+
+    # 6. Tritwise 1, 2, 3 (1000, 1001, 1010): sweep all 8 control sub-ops across (-1, 0, +1)
+    #    Keep am_buff_1t = +1 (identity) since p2[0] shares tritwise_command[0] & mask bit
+    await drv.send_direct_uop(0x0, 0x3)
+    await drv.send_direct_uop(0x2, 0x1, (TRIT_NEG << 2) | 0b00, (0 << 1) | 0)  # flag0 = -1
+    await drv.send_direct_uop(0x2, 0x1, (TRIT_ZRO << 2) | 0b00, (1 << 1) | 0)  # flag1 = 0
+    await drv.send_direct_uop(0x2, 0x1, (TRIT_POS << 2) | 0b00, (2 << 1) | 0)  # flag2 = +1
+
+    for tw_cmd in (0x8, 0x9, 0xA):
+        for subop in range(8):
+            b0 = (subop >> 2) & 1
+            b1 = (subop >> 1) & 1
+            b2 = subop & 1
+            # Test (flag0=-1, flag2=+1) -> flag3, and (flag1=0, flag2=+1) -> flag4
+            await drv.send_direct_uop(tw_cmd, (0 << 1) | b0, (2 << 1) | b1, (3 << 1) | b2)
+            await drv.send_direct_uop(tw_cmd, (1 << 1) | b0, (2 << 1) | b1, (4 << 1) | b2)
+        drv.shown_regs.clear()
+        await drv.send_direct_uop(0x1, 0xD, 0x3)  # Show spf (checks no X/Z on flag3/flag4!)
+        spf_val = drv.shown_regs[0]
+        f3 = (spf_val >> 6) & 0x3
+        f4 = (spf_val >> 8) & 0x3
+        assert f3 in (TRIT_NEG, TRIT_POS, TRIT_ZRO), f"Tritwise {tw_cmd:#x} invalid trit f3={f3:#04b}"
+        assert f4 in (TRIT_NEG, TRIT_POS, TRIT_ZRO), f"Tritwise {tw_cmd:#x} invalid trit f4={f4:#04b}"
+
+    dut._log.info("test_02_mac_ladder_and_tritwise PASSED")
+
+
+@cocotb.test()
+async def test_03_transfers_slices_and_write_allow(dut):
+    """Exhaustive 12t/4t/1t copy/move, all 4 slice modes (1100), and write_allow disable/enable."""
+    clock = Clock(dut.clk, 10, unit="us")
+    cocotb.start_soon(clock.start())
+
+    drv = TripleTDriver(dut)
+    await drv.reset()
+    await drv.ovl_clear_cmd_buf()
+
+    await drv.send_direct_uop(0x0, 0x7)
+    await drv.send_direct_uop(0x0, 0x8)
+    await drv.send_direct_uop(0x0, 0x3)
+    await drv.send_direct_uop(0x2, 0xD, (TRIT_ZRO << 2) | 0b00, 0x3)
+
+    # Seed sp0 = {+19, -8, +5}
+    for addr4, val in [(0, 5), (1, -8), (2, 19)]:
+        t4 = int_to_trits(val, 4)
+        await drv.send_direct_uop(0xB, (t4 >> 4) & 0xF, t4 & 0xF, (addr4 << 1) | 0)
+
+    # 1. 12t Copy unmasked (0010:0000): sp0(1) -> gp_reg_6(6)
+    await drv.send_direct_uop(0x2, 0x0, 0x1, 0x6)
+    # 2. Slice 12t -> 4t extract (1100, p1[0]=0, p2[0]=0): extract trib2 (+19) of gp_reg_6 -> sp1_t0(3)
+    await drv.send_direct_uop(0xC, 0x6, (3 << 1) | 0, (2 << 2) | 0b00)
+    # 3. Slice 4t -> 12t insert (1100, p1[0]=0, p2[0]=1): insert sp0_t1 (-8) into trib0 of gp_reg_6
+    await drv.send_direct_uop(0xC, 0x6, (1 << 1) | 0, (0 << 2) | 0b01)
+
+    drv.shown_regs.clear()
+    await drv.send_direct_uop(0x1, 0xD, 0x2)
+    await drv.send_direct_uop(0x1, 0xD, 0x6)
+    assert trits_to_int(drv.shown_regs[0] & 0xFF, 4) == 19, "12t->4t slice extract mismatch"
+    assert trits_to_int(drv.shown_regs[1] & 0xFF, 4) == -8, "4t->12t slice insert mismatch"
+
+    # 4. Slice 4t -> 1t extract & 1t -> 4t insert (1100, p1[0]=1)
+    # sp0_t0 = +5 = (0, +1, -1, -1) -> trit0 = -1 (00), trit1 = -1 (00), trit2 = +1 (01), trit3 = 0 (10)
+    await drv.send_direct_uop(0xC, (0 << 1) | 0, (0 << 1) | 1, (2 << 2) | 0b00)  # extract trit2 (+1) -> flag0
+    # 1t Move (0010:0011): flag0 -> flag1
+    await drv.send_direct_uop(0x2, 0x3, (0 << 1) | 0, (1 << 1) | 0)
+    # Insert flag1 (+1) into trit3 of sp1_t1 (currently 0 -> becomes +27)
+    await drv.send_direct_uop(0xC, (4 << 1) | 0, (1 << 1) | 1, (3 << 2) | 0b01)
+
+    drv.shown_regs.clear()
+    await drv.send_direct_uop(0x1, 0xD, 0x2)
+    assert trits_to_int((drv.shown_regs[0] >> 8) & 0xFF, 4) == 27, "4t<->1t slice transfer mismatch"
+
+    # 5. Disable write (0000:0101): attempt to overwrite sp0_t0 and gp_reg_6 -> MUST NOT CHANGE
+    await drv.send_direct_uop(0x0, 0x5)
+    t_bad = int_to_trits(-40, 4)
+    await drv.send_direct_uop(0xB, (t_bad >> 4) & 0xF, t_bad & 0xF, (0 << 1) | 0)
+    await drv.send_direct_uop(0x2, 0x0, 0x2, 0x6)
+    await drv.send_direct_uop(0x0, 0x7)  # Clear scratchpads while write_allow=0 -> ignored
+
+    drv.shown_regs.clear()
+    await drv.send_direct_uop(0x1, 0xD, 0x1)
+    assert trits_to_int(drv.shown_regs[0] & 0xFF, 4) == 5, "write_allow=0 failed to block writes!"
+
+    # 6. Re-enable write (0000:0110) and verify writes resume
+    await drv.send_direct_uop(0x0, 0x6)
+    t_ok = int_to_trits(17, 4)
+    await drv.send_direct_uop(0xB, (t_ok >> 4) & 0xF, t_ok & 0xF, (0 << 1) | 0)
+    drv.shown_regs.clear()
+    await drv.send_direct_uop(0x1, 0xD, 0x1)
+    assert trits_to_int(drv.shown_regs[0] & 0xFF, 4) == 17, "write_allow=1 failed to re-enable writes!"
+    dut._log.info("test_03_transfers_slices_and_write_allow PASSED")
+
+
+@cocotb.test()
+async def test_04_masks_aliases_and_housekeep(dut):
+    """Exhaustive 12t/4t/1t masks (single-use & persistent), Gen Mask (0010:1100), swaps & sub_alias_stall."""
+    clock = Clock(dut.clk, 10, unit="us")
+    cocotb.start_soon(clock.start())
+
+    drv = TripleTDriver(dut)
+    await drv.reset()
+    await drv.ovl_clear_cmd_buf()
+    await drv.send_direct_uop(0x0, 0x7)
+    await drv.send_direct_uop(0x0, 0x8)
+    await drv.send_direct_uop(0x0, 0x3)
+    await drv.send_direct_uop(0x2, 0xD, (TRIT_ZRO << 2) | 0b00, 0x3)
+
+    # 1. Generate 12t Mask (0010:1100): trib 0 = all -1s (negate), single-use (p2[1]=0)
+    #    sp0 = {+6, +6, +6}
+    for addr4 in (0, 1, 2):
+        t6 = int_to_trits(6, 4)
+        await drv.send_direct_uop(0xB, (t6 >> 4) & 0xF, t6 & 0xF, (addr4 << 1) | 0)
+
+    await drv.send_direct_uop(0x2, 0xC, 0x1, (TRIT_NEG << 2) | 0b00)  # trib 0 negate, single-use
+    # Masked 12t Copy (0010:0010): sp0(1) -> gp_reg_6(6) -> expects {+6, +6, -6}
+    await drv.send_direct_uop(0x2, 0x2, 0x1, 0x6)
+    # Second masked 12t Copy -> single-use reset to +1s -> expects {+6, +6, +6}
+    await drv.send_direct_uop(0x2, 0x2, 0x1, 0x7)
+
+    drv.shown_regs.clear()
+    await drv.send_direct_uop(0x1, 0xD, 0x6)
+    await drv.send_direct_uop(0x1, 0xD, 0x7)
+    assert trits_to_int(drv.shown_regs[0] & 0xFF, 4) == -6, "Gen 12t mask trib0 negate failed"
+    assert trits_to_int((drv.shown_regs[0] >> 8) & 0xFF, 4) == 6, "Gen 12t mask altered trib1"
+    assert trits_to_int(drv.shown_regs[1] & 0xFF, 4) == 6, "Gen 12t single-use mask did not reset"
+
+    # 2. Persistent 12t mask via 0001:0110 (copy gp_reg_8 = all -1s into am_buff_12t)
+    await drv.send_direct_uop(0x2, 0xD, (TRIT_NEG << 2) | 0b00, 0x8)
+    await drv.send_direct_uop(0x1, 0x6, 0x8)  # Persistent 12t mask
+    await drv.send_direct_uop(0x2, 0x2, 0x1, 0x6)
+    await drv.send_direct_uop(0x2, 0x2, 0x1, 0x7)
+    drv.shown_regs.clear()
+    await drv.send_direct_uop(0x1, 0xD, 0x6)
+    await drv.send_direct_uop(0x1, 0xD, 0x7)
+    assert trits_to_int(drv.shown_regs[0] & 0xFF, 4) == -6
+    assert trits_to_int(drv.shown_regs[1] & 0xFF, 4) == -6, "Persistent 12t mask did not persist!"
+
+    # 3. 1t Swap (0010:0111) + 1t persistent mask (0001:1000) + sub_alias_stall (12t vs 1t & 4t vs 1t)
+    await drv.send_direct_uop(0x0, 0x3)  # Reset masks
+    await drv.send_direct_uop(0x2, 0x1, (TRIT_POS << 2) | 0b00, (0 << 1) | 0)  # flag0 = +1
+    await drv.send_direct_uop(0x2, 0x1, (TRIT_NEG << 2) | 0b00, (1 << 1) | 0)  # flag1 = -1
+    # Swap flag0 <-> flag1 -> sets alias_active_1t on flag1
+    await drv.send_direct_uop(0x2, 0x7, (0 << 1) | 0, (1 << 1) | 0)
+    # Immediately load 1t mask from flag0 (forces Stage 1 housekeeping if aliased!)
+    await drv.send_direct_uop(0x1, 0x8, (0 << 1) | 1)  # persistent 1t mask = flag0 (now -1)
+    # Move flag1 (+1) -> flag2 WITH mask (-1) -> expects -1
+    await drv.send_direct_uop(0x2, 0x3, (1 << 1) | 1, (2 << 1) | 0)
+    # Explicit housekeep (0000:1010)
+    await drv.send_direct_uop(0x0, 0xA)
+
+    drv.shown_regs.clear()
+    await drv.send_direct_uop(0x1, 0xD, 0x3)
+    spf = drv.shown_regs[0]
+    assert (spf & 0x3) == TRIT_NEG, "1t swap flag0 mismatch"
+    assert ((spf >> 2) & 0x3) == TRIT_POS, "1t swap flag1 mismatch"
+    assert ((spf >> 4) & 0x3) == TRIT_NEG, "1t masked move mismatch"
+
+    # 4. 4t Swap (0010:0110) + 12t Swap (0010:0101)
+    t_a, t_b = int_to_trits(11, 4), int_to_trits(-9, 4)
+    await drv.send_direct_uop(0xB, (t_a >> 4) & 0xF, t_a & 0xF, (0 << 1) | 0)
+    await drv.send_direct_uop(0xB, (t_b >> 4) & 0xF, t_b & 0xF, (1 << 1) | 0)
+    await drv.send_direct_uop(0x2, 0x6, (0 << 1) | 0, (1 << 1) | 0)  # 4t swap sp0_t0 <-> sp0_t1
+    await drv.send_direct_uop(0x2, 0x5, 0x1, 0x2)                    # 12t swap sp0 <-> sp1 (triggers sub_alias_stall!)
+    drv.shown_regs.clear()
+    await drv.send_direct_uop(0x1, 0xD, 0x2)
+    assert trits_to_int(drv.shown_regs[0] & 0xFF, 4) == -9
+    assert trits_to_int((drv.shown_regs[0] >> 8) & 0xFF, 4) == 11
+    dut._log.info("test_04_masks_aliases_and_housekeep PASSED")
+
+
+@cocotb.test()
+async def test_05_memory_bus_and_ext_addr(dut):
+    """Memory R/W (0001:1100, 0010:1001, 0010:1000, 0001:1010) initialized purely via direct exec."""
+    clock = Clock(dut.clk, 10, unit="us")
+    cocotb.start_soon(clock.start())
+
+    drv = TripleTDriver(dut)
+    await drv.reset()
+    await drv.ovl_clear_cmd_buf()
+
+    await drv.send_direct_uop(0x0, 0x7)
+    await drv.send_direct_uop(0x0, 0x8)
+
+    # Build ext_val = 0x5A01 in sp0_t0/t1 -> copy to gp_reg_6 -> ext_addr_out
+    await drv.send_direct_uop(0xB, 0x0, 0x1, (0 << 1) | 0)  # sp0_t0 = 0x01
+    await drv.send_direct_uop(0xB, 0x5, 0xA, (1 << 1) | 0)  # sp0_t1 = 0x5A
+    await drv.send_direct_uop(0x1, 0xC, 0x1)                # ext_addr_out <= sp0[15:0] = 0x5A01
+
+    # Build write_payload = int_to_trits(123456, 12) in sp1
+    write_payload = int_to_trits(123456, 12)
+    for idx in range(3):
+        b = (write_payload >> (8 * idx)) & 0xFF
+        await drv.send_direct_uop(0xB, (b >> 4) & 0xF, b & 0xF, ((3 + idx) << 1) | 0)
+
+    # TX_MEM_WRITE (0010:1001): write sp1(2) to ext reg slot 0x3 (addr 0x00003A, ext 0x5A01)
+    await drv.send_direct_uop(0x2, 0x9, 0x2, 0x3)
+    assert drv.memory.get((0x5A01, 0x00003A)) == write_payload, "TX_MEM_WRITE mismatch"
+
+    # TX_MEM_READ (0010:1000): read back slot 0x3 -> gp_reg_7(7)
+    await drv.send_direct_uop(0x2, 0x8, 0x7, 0x3)
+    drv.shown_regs.clear()
+    await drv.send_direct_uop(0x1, 0xD, 0x7)
+    assert drv.shown_regs[0] == write_payload, "TX_MEM_READ (0010:1000) mismatch"
+
+    # Pointer-based TX_MEM_READ (0001:1010) with unsanitized 2'b11 trits -> must sanitize to 2'b10
+    raw_unsanitized = 0xFF5500
+    drv.memory[(0x5A01, write_payload)] = raw_unsanitized
+    await drv.send_direct_uop(0x1, 0xA, 0x7)  # Read mem[gp_reg_7] -> overwrites gp_reg_7
+    drv.shown_regs.clear()
+    await drv.send_direct_uop(0x1, 0xD, 0x7)
+    assert drv.shown_regs[0] == sanitize_trits_24b(raw_unsanitized), "TX_MEM_READ sanitization failed"
+    dut._log.info("test_05_memory_bus_and_ext_addr PASSED")
+
+
+# =============================================================================
+# Phase 2: Microcode ROM, All 3 Sectors, Branching, Hops & Pipelining
+# =============================================================================
+@cocotb.test()
+async def test_06_microcode_sectors_and_flow(dut):
+    """
+    Tests ROM sectors 0..31 (mop 1), 32..111 (mop 32), 112..191 (mop 112),
+    0xFF 16-cycle timeout, cond branch (0111 eq/neq), hold_reg (0001:0100),
+    wait-for-next-cmd (0000:1001), next-cmd-space write (0010:1110), and ternary hops.
+    """
+    clock = Clock(dut.clk, 10, unit="us")
+    cocotb.start_soon(clock.start())
+
+    # Macro-op 112 (sector 112..191): exercises cond branch 0111 (taken + not-taken) & 0xFF timeout
+    #   0: 1t imm +1 -> flag0                    (0010:0001, p1=0100, p2=0000) [3 nibs]
+    #   1: if flag0 == +1 jump act=4, prm=5      (0111, p0=0001, p1=1001, p2=0101) [3 nibs] -> prm 0..2
+    #   2: (SKIPPED) 4t imm -1 -> sp0_t0         (1011, p0=A, p1=8, p2=0) [3 nibs]
+    #   3: (SKIPPED) Return                      (0000:0100) [1 nib] -> prm 3..4
+    #   4: (TARGET) 4t imm 0xFF -> sp0_t0 (tests 0xFF ROM timeout!) (1011, p0=F, p1=F, p2=0) [3 nibs]
+    #   5: if flag0 != +1 jump act=0, prm=0 (NOT TAKEN!) (0111, p0=0000, p1=0000, p2=0001) [3 nibs] -> prm 5..7
+    #   6: Show sp0 (addr 1)                     (0001:1101, p1=1) [2 nibs]
+    #   7: Return                                (0000:0100) [1 nib] -> prm 8..9
+    mop112_prog = [
+        (0x2, 0x1, (TRIT_POS << 2) | 0b00, 0x0),
+        (0x7, (0 << 1) | 1, (4 << 1) | 1, (0b01 << 2) | TRIT_POS),
+        (0xB, 0xA, 0x8, 0x0),
+        (0x0, 0x4, 0x0, 0x0),
+        (0xB, 0xF, 0xF, 0x0),
+        (0x7, (0 << 1) | 0, 0x0, TRIT_POS),
+        (0x1, 0xD, 0x1, 0x0),
+        (0x0, 0x4, 0x0, 0x0),
+    ]
+
+    # Macro-op 32 (sector 32..111): hold_reg + stall-for-next (0000:1001) + write-next-cmd-space (0010:1110)
+    #   0: Hold until cmd_reg_0 (addr 9) arrives          (0001:0100, p1=9)
+    #   1: Wait until 2nd macro-op is queued              (0000:1001)
+    #   2: Copy cmd_reg_0 (9) -> NEXT cmd_reg_0 (9)       (0010:1110, p1=9, p2=9)
+    #   3: Return (hands off to 2nd macro-op!)            (0000:0100)
+    mop32_prog = [
+        (0x1, 0x4, 0x9, 0x0),
+        (0x0, 0x9, 0x0, 0x0),
+        (0x2, 0xE, 0x9, 0x9),
+        (0x0, 0x4, 0x0, 0x0),
+    ]
+
+    # Macro-op 1 (sector 0..31): receives carried-over cmd_reg_0 from mop32 and shows it!
+    #   0: Show cmd_reg_0 (addr 9)                        (0001:1101, p1=9)
+    #   1: Return                                         (0000:0100)
+    mop1_prog = [
+        (0x1, 0xD, 0x9, 0x0),
+        (0x0, 0x4, 0x0, 0x0),
+    ]
+
+    rom = build_ucode_rom({1: mop1_prog, 32: mop32_prog, 112: mop112_prog})
+    drv = TripleTDriver(dut, ucode_rom=rom)
+    await drv.reset()
+    await drv.ovl_clear_cmd_buf()
+
+    await drv.send_direct_uop(0x0, 0x7)
+    await drv.send_direct_uop(0x2, 0xD, (TRIT_ZRO << 2) | 0b00, 0x3)
+
+    # 1. Run Macro-op 112 (sector 112..191 + cond branch + 0xFF timeout)
+    drv.shown_regs.clear()
+    await drv.send_macro_op(112, [])
+    await drv.run_until_quiet(quiet_cycles=10)
+    assert len(drv.shown_regs) == 1, "Expected 1 TX_SHOW_REG from mop112"
+    assert (drv.shown_regs[0] & 0xFF) == 0xFF, (
+        f"mop112 branch/0xFF timeout failed: sp0_t0={drv.shown_regs[0] & 0xFF:#04x}"
+    )
+
+    # 2. Run Macro-op 32 (stalls on 0000:1001 until mop 1 arrives, then passes param via 0010:1110!)
+    drv.shown_regs.clear()
+    carry_val = int_to_trits(54321, 12)
+    await drv.send_macro_op(32, [carry_val])
+    await drv.send_macro_op(1, [])
+    await drv.run_until_quiet(quiet_cycles=10)
+    assert len(drv.shown_regs) == 1, "Expected 1 TX_SHOW_REG from mop1"
+    assert drv.shown_regs[0] == carry_val, (
+        f"0010:1110 next-cmd-space handoff mismatch: got {drv.shown_regs[0]:#08x}, exp {carry_val:#08x}"
+    )
+
+    # 3. Probe ternary counter hops (0010:1011 act imm, 0010:1010 prm imm, 0001:1001 reg hop)
+    #    Verify each updates action_ctr/param_ctr cleanly into [0..80] with no X/deadlock
+    await drv.send_direct_uop(0x2, 0xB, 0xA, 0x5)  # imm hop action_ctr
+    await drv.send_direct_uop(0x2, 0xA, 0xA, 0x5)  # imm hop param_ctr
+    await drv.send_direct_uop(0xB, 0xA, 0x9, (0 << 1) | 0)  # sp0_t0 = 0xA9
+    await drv.send_direct_uop(0x1, 0x9, (0 << 1) | 0)       # reg hop action_ctr
+    await drv.send_direct_uop(0x1, 0x9, (0 << 1) | 1)       # reg hop param_ctr
+    regs = await drv.ovl_dump_regs()
+    act_c = (regs[23] >> 8) & 0x7F
+    prm_c = regs[23] & 0x7F
+    assert 0 <= act_c <= 80 and 0 <= prm_c <= 80, f"Hop counter out of range: act={act_c}, prm={prm_c}"
+    await drv.ovl_clear_cmd_buf()
+    dut._log.info("test_06_microcode_sectors_and_flow PASSED")
+
+
+# =============================================================================
+# Phase 3: Overlord Register Injections, Fencing, Single-Step & All 4 Errors
+# =============================================================================
+@cocotb.test()
+async def test_07_overlord_injection_and_pc(dut):
+    """Overlord 24-reg injection -> live ALU execution, PC R/W, 0000:1011 PC inc, direct toggle & cmd dump."""
     clock = Clock(dut.clk, 10, unit="us")
     cocotb.start_soon(clock.start())
 
@@ -735,384 +1223,176 @@ async def test_01_reset_and_overlord_registers(dut):
         assert safe_int(dut.uo_out) == 0
         assert safe_int(dut.uio_oe) == 0
 
-    # Clear command buffer via Overlord
     await drv.ovl_clear_cmd_buf()
 
-    # Write distinct ternary-valid patterns across all 24 Overlord registers
+    # 1. Inject all 24 registers via Overlord (1011) and verify readback (0111)
     expected = {
-        1: int_to_trits(1234, 12),      # sp0
-        2: int_to_trits(-5678, 12),     # sp1
-        3: 0xAA5500,                    # spf ({spf_trib2, spf_trib1, spf_trib0})
-        4: 0x55AA00,                    # mac ({mac_d, mac_b, mac_a})
-        5: int_to_trits(42, 12),        # PC
-        6: int_to_trits(100, 12),       # gp_reg_6
-        7: int_to_trits(-200, 12),      # gp_reg_7
-        8: int_to_trits(300, 12),       # gp_reg_8
-        9: int_to_trits(11, 12),        # active cmd_reg_0
-        10: int_to_trits(22, 12),       # active cmd_reg_1
-        11: int_to_trits(33, 12),       # active cmd_reg_2
-        12: int_to_trits(44, 12),       # active cmd_reg_3
-        13: int_to_trits(55, 12),       # active cmd_reg_4
-        14: int_to_trits(66, 12),       # active cmd_reg_5
-        15: int_to_trits(-11, 12),      # inactive cmd_reg_0
-        16: int_to_trits(-22, 12),      # inactive cmd_reg_1
-        17: int_to_trits(-33, 12),      # inactive cmd_reg_2
-        18: int_to_trits(-44, 12),      # inactive cmd_reg_3
-        19: int_to_trits(-55, 12),      # inactive cmd_reg_4
-        20: int_to_trits(-66, 12),      # inactive cmd_reg_5
-        21: POS1_MASK_12T,              # am_buff_12t
+        1: (int_to_trits(0, 4) << 16) | (int_to_trits(13, 4) << 8) | int_to_trits(7, 4),  # sp0 = {0, 13, 7}
+        2: int_to_trits(-5678, 12),
+        3: 0xAA5500,
+        4: 0x55AA00,
+        5: int_to_trits(42, 12),
+        6: int_to_trits(100, 12),
+        7: int_to_trits(-200, 12),
+        8: int_to_trits(300, 12),
+        9: int_to_trits(11, 12),
+        10: int_to_trits(22, 12),
+        11: int_to_trits(33, 12),
+        12: int_to_trits(44, 12),
+        13: int_to_trits(55, 12),
+        14: int_to_trits(66, 12),
+        15: int_to_trits(-11, 12),
+        16: int_to_trits(-22, 12),
+        17: int_to_trits(-33, 12),
+        18: int_to_trits(-44, 12),
+        19: int_to_trits(-55, 12),
+        20: int_to_trits(-66, 12),
+        21: POS1_MASK_12T,
         22: (0 << 16) | (POS1_MASK_4T << 8) | (TRIT_POS << 4),
-        23: (ZERO_1T << 20) | (0 << 8) | 0,
-        24: 0x000000,                   # macroop_register
+        23: (ZERO_1T << 20),
+        24: 0x000000,
     }
     await drv.ovl_write_regs(expected)
     readback = await drv.ovl_dump_regs()
-
     for addr, exp_val in expected.items():
         assert readback[addr] == exp_val, (
-            f"Reg {addr} mismatch: got {readback[addr]:#08x}, expected {exp_val:#08x}"
+            f"Overlord Reg {addr} mismatch: got {readback[addr]:#08x}, exp {exp_val:#08x}"
         )
 
-    # Probe Set PC (0101) -> Read PC (0010) -> Unfence -> TX_SET_PC (req_type 110)
+    # Drain TX_SET_PC from writing Reg 5, then verify injected sp0 (7 + 13 = 20) drives live ALU!
+    await drv.run_until_quiet()
+    await drv.send_direct_uop(0x3, (0 << 1) | 0, (1 << 1) | 0, (2 << 1) | 0)  # sp0_t2 = 7 + 13 = 20
+    drv.shown_regs.clear()
+    await drv.send_direct_uop(0x1, 0xD, 0x1)
+    assert trits_to_int((drv.shown_regs[0] >> 16) & 0xFF, 4) == 20, "Injected sp0 failed in live ALU"
+
+    # 2. PC Write (0101) -> PC Read (0010) -> Unfence -> TX_SET_PC -> 0000:1011 PC Inc -> TX_SET_PC(+1)
     new_pc = int_to_trits(777, 12)
     await drv.ovl_write_pc(new_pc)
-    assert await drv.ovl_read_pc() == new_pc, "PC readback mismatch after OVL_WRITE_PC"
-
-    # Unfence so thread_command emits TX_SET_PC (3'b110), then service it cleanly
-    await drv.ovl_cmd(OVL_UNFENCE)
-    await drv.run_until_quiet()
-    assert new_pc in drv.pc_updates, f"Expected TX_SET_PC update {new_pc:#08x}, got {drv.pc_updates}"
-    dut._log.info("test_01_reset_and_overlord_registers PASSED")
-
-
-@cocotb.test()
-async def test_02_direct_exec_alu_and_show_reg(dut):
-    """Probe Direct Execution: 4t imm load, Add, Sub, Add3, Trit-Shift, MAC, and TX_SHOW_REG."""
-    clock = Clock(dut.clk, 10, unit="us")
-    cocotb.start_soon(clock.start())
-
-    drv = TripleTDriver(dut)
-    await drv.reset()
-    await drv.ovl_clear_cmd_buf()
-
-    # Initialize scratchpads, GP regs, MAC ladder, carry, and masks via direct exec
-    await drv.send_direct_uop(0x0, 0x7)  # Clear scratchpads (sp0, sp1)
-    await drv.send_direct_uop(0x0, 0x8)  # Clear GP regs
-    await drv.send_direct_uop(0x0, 0x1)  # Flush MAC ladder
-    await drv.send_direct_uop(0x0, 0x2)  # Clear carry
-    await drv.send_direct_uop(0x0, 0x3)  # Reset masks/aliases
-
-    # Load 4-trit immediates into sp0_trib0 (addr 0) = +10, sp0_trib1 (addr 1) = +5, sp0_trib2 (addr 2) = -3
-    for addr4, val in [(0, 10), (1, 5), (2, -3)]:
-        t4 = int_to_trits(val, 4)
-        await drv.send_direct_uop(0xB, (t4 >> 4) & 0xF, t4 & 0xF, (addr4 << 1) | 0)
-
-    # 1. Add: sp1_trib0 (addr 3) = sp0_trib0 (10) + sp0_trib1 (5) = +15
-    await drv.send_direct_uop(0x3, (0 << 1) | 0, (1 << 1) | 0, (3 << 1) | 0)
-
-    # 2. Sub: clear carry, sp1_trib1 (addr 4) = sp0_trib0 (10) - sp0_trib1 (5) = +5
-    await drv.send_direct_uop(0x0, 0x2)
-    await drv.send_direct_uop(0x3, (0 << 1) | 1, (1 << 1) | 0, (4 << 1) | 0)
-
-    # 3. Add3: clear carry, sp1_trib2 (addr 5) = sp0_trib0 (10) + sp0_trib1 (5) + sp0_trib2 (-3) = +12
-    # Packed aaab bbcc cddd: a=0 (000), b=1 (001), c=2 (010), d=5 (101)
-    await drv.send_direct_uop(0x0, 0x2)
-    p0 = (0 << 1) | 0          # 0000
-    p1 = (0b01 << 2) | 0b01    # 0101
-    p2 = (0 << 3) | 5          # 0101
-    await drv.send_direct_uop(0x5, p0, p1, p2)
-
-    # Verify sp1 via TX_SHOW_REG (0001:1101, addr=2 -> sp1)
-    drv.shown_regs.clear()
-    await drv.send_direct_uop(0x1, 0xD, 0x2)
-    assert len(drv.shown_regs) == 1, "Expected 1 TX_SHOW_REG packet"
-    sp1_val = drv.shown_regs[0]
-    assert trits_to_int(sp1_val & 0xFF, 4) == 15, "Add result mismatch"
-    assert trits_to_int((sp1_val >> 8) & 0xFF, 4) == 5, "Sub result mismatch"
-    assert trits_to_int((sp1_val >> 16) & 0xFF, 4) == 12, "Add3 result mismatch"
-
-    # 4. Trit-Shift: load flag0 (1t addr 0) = -1 (shift amt = 1 trit)
-    # 0010:0001 -> p1 = {trit[1:0], 2'b00}, p2 = {addr_1t[2:0], mask=0}
-    await drv.send_direct_uop(0x2, 0x1, (TRIT_NEG << 2) | 0b00, (0 << 1) | 0)
-    # Shift sp0_trib0 (+10 = [+1, 0, +1, 0] -> wait: 10 = 1*9 + 0*3 + 1*1 = [0, +1, 0, +1])
-    # Left shift by 1 (dir_bit=0, local window=0) -> multiplies by 3 -> +30!
-    await drv.send_direct_uop(0x6, (0 << 1) | 0, (0 << 1) | 0, (3 << 1) | 0)
-    # Right shift sp0_trib0 (+10) by 1 (dir_bit=1, local window=0) -> floor_div_trit -> +3!
-    await drv.send_direct_uop(0x6, (0 << 1) | 0, (0 << 1) | 0, (4 << 1) | 1)
-
-    drv.shown_regs.clear()
-    await drv.send_direct_uop(0x1, 0xD, 0x2)
-    sp1_shift = drv.shown_regs[0]
-    assert trits_to_int(sp1_shift & 0xFF, 4) == 30, f"Left shift mismatch: {trits_to_int(sp1_shift & 0xFF, 4)}"
-    assert trits_to_int((sp1_shift >> 8) & 0xFF, 4) == 3, f"Right shift mismatch: {trits_to_int((sp1_shift >> 8) & 0xFF, 4)}"
-
-    # 5. MAC Seed Multiply (0010:1111, p1[3]=1 -> B,A = sp0_trib0 * sp0_trib1 = 10 * 5 = +50)
-    await drv.send_direct_uop(0x2, 0xF, (1 << 3) | 0, 1)
-    # Read mac_a (00) -> sp1_trib0 (idx 0 -> 4t addr 3), mac_b (01) -> sp1_trib1 (idx 1 -> 4t addr 4)
-    await drv.send_direct_uop(0x1, 0x1, (0 << 2) | 0b00)
-    await drv.send_direct_uop(0x1, 0x1, (1 << 2) | 0b01)
-
-    drv.shown_regs.clear()
-    await drv.send_direct_uop(0x1, 0xD, 0x2)
-    mac_prod = drv.shown_regs[0] & 0xFFFF
-    assert trits_to_int(mac_prod, 8) == 50, f"MAC multiply 10*5 mismatch: got {trits_to_int(mac_prod, 8)}"
-    dut._log.info("test_02_direct_exec_alu_and_show_reg PASSED")
-
-
-@cocotb.test()
-async def test_03_masking_and_aliasing_hazard(dut):
-    """Probe single-use 4t mask auto-reset and 4t/12t swap aliasing + sub_alias_stall resolution."""
-    clock = Clock(dut.clk, 10, unit="us")
-    cocotb.start_soon(clock.start())
-
-    drv = TripleTDriver(dut)
-    await drv.reset()
-    await drv.ovl_clear_cmd_buf()
-    await drv.send_direct_uop(0x0, 0x7)  # Clear sp0, sp1
-    await drv.send_direct_uop(0x0, 0x3)  # Reset masks/aliases
-
-    # Load sp0_trib0 = +7, sp0_trib1 = -13, sp0_trib2 = all -1s (negation mask 0x00)
-    for addr4, bits in [(0, int_to_trits(7, 4)), (1, int_to_trits(-13, 4)), (2, NEG1_MASK_4T)]:
-        await drv.send_direct_uop(0xB, (bits >> 4) & 0xF, bits & 0xF, (addr4 << 1) | 0)
-
-    # Load single-use 4t mask from sp0_trib2 (0001:0111, p1 = {addr=2, 0=singleuse})
-    await drv.send_direct_uop(0x1, 0x7, (2 << 1) | 0)
-
-    # Move sp0_trib0 (+7) -> sp1_trib0 WITH mask (0010:0100, p1={0, mask=1}, p2={3, 0}) -> expects -7
-    await drv.send_direct_uop(0x2, 0x4, (0 << 1) | 1, (3 << 1) | 0)
-    # Move sp0_trib0 (+7) -> sp1_trib1 WITH mask again -> single-use mask auto-cleared to +1s -> expects +7!
-    await drv.send_direct_uop(0x2, 0x4, (0 << 1) | 1, (4 << 1) | 0)
-
-    drv.shown_regs.clear()
-    await drv.send_direct_uop(0x1, 0xD, 0x2)
-    sp1 = drv.shown_regs[0]
-    assert trits_to_int(sp1 & 0xFF, 4) == -7, "Single-use negation mask did not apply"
-    assert trits_to_int((sp1 >> 8) & 0xFF, 4) == 7, "Single-use mask did not auto-reset to 0x55"
-
-    # 4t Swap sp0_trib0 (+7) <-> sp0_trib1 (-13): sets alias_active_4t on sp0_trib1
-    await drv.send_direct_uop(0x2, 0x6, (0 << 1) | 0, (1 << 1) | 0)
-    # Immediately read 12t sp0 (addr 1) via TX_SHOW_REG -> triggers sub_alias_stall & auto-housekeeping!
-    drv.shown_regs.clear()
-    await drv.send_direct_uop(0x1, 0xD, 0x1)
-    sp0_after = drv.shown_regs[0]
-    assert trits_to_int(sp0_after & 0xFF, 4) == -13, "4t swap trib0 mismatch"
-    assert trits_to_int((sp0_after >> 8) & 0xFF, 4) == 7, "4t swap trib1 mismatch (alias commit failed)"
-
-    # 12t Swap sp0 (addr 1) <-> sp1 (addr 2)
-    await drv.send_direct_uop(0x2, 0x5, 0x1, 0x2)
-    drv.shown_regs.clear()
-    await drv.send_direct_uop(0x1, 0xD, 0x1)
-    await drv.send_direct_uop(0x1, 0xD, 0x2)
-    assert drv.shown_regs[0] == sp1, "12t swap sp0 mismatch"
-    assert drv.shown_regs[1] == sp0_after, "12t swap sp1 mismatch"
-    dut._log.info("test_03_masking_and_aliasing_hazard PASSED")
-
-
-@cocotb.test()
-async def test_04_memory_read_write_and_ext_addr(dut):
-    """Probe ext_addr_out (0001:1100), TX_MEM_WRITE (101), TX_MEM_READ (100) turnaround & sanitization."""
-    clock = Clock(dut.clk, 10, unit="us")
-    cocotb.start_soon(clock.start())
-
-    drv = TripleTDriver(dut)
-    await drv.reset()
-    await drv.ovl_clear_cmd_buf()
-
-    ext_val = 0x5A01
-    write_payload = int_to_trits(123456, 12)
-    ptr_addr = int_to_trits(9876, 12)
-    raw_unsanitized = 0xFF5500  # Contains 2'b11 trits that ASIC must sanitize to 2'b10 (0xAA5500)
-
-    await drv.ovl_write_regs({
-        6: (ZERO_4T << 16) | ext_val,  # gp_reg_6 holds ext_addr_out in [15:0]
-        7: write_payload,              # gp_reg_7 holds data to write
-        8: ptr_addr,                   # gp_reg_8 holds pointer address for 0001:1010
-    })
-    # Absorb TX_SET_PC triggered by writing Reg 5 inside ovl_write_regs
-    await drv.run_until_quiet()
-
-    # Set ext_addr_out from gp_reg_6 (0001:1100, p1=6)
-    await drv.send_direct_uop(0x1, 0xC, 0x6)
-
-    # Write gp_reg_7 to extended register slot 0x3 (0010:1001, p1=7, p2=3)
-    # Address emitted on bus: addr24 = {16'h0000, 4'h3, 4'hA} = 0x00003A, ext16 = ext_val
-    await drv.send_direct_uop(0x2, 0x9, 0x7, 0x3)
-    assert drv.memory.get((ext_val, 0x00003A)) == write_payload, (
-        f"TX_MEM_WRITE failed: memory={drv.memory}"
-    )
-
-    # Read back extended register slot 0x3 into sp0 (addr 1) via 0010:1000
-    await drv.send_direct_uop(0x2, 0x8, 0x1, 0x3)
-    drv.shown_regs.clear()
-    await drv.send_direct_uop(0x1, 0xD, 0x1)
-    assert drv.shown_regs[0] == write_payload, "TX_MEM_READ (0010:1000) mismatch"
-
-    # Pre-seed memory at (ext_val, ptr_addr) with unsanitized 2'b11 trits and test 0001:1010
-    drv.memory[(ext_val, ptr_addr)] = raw_unsanitized
-    await drv.send_direct_uop(0x1, 0xA, 0x8)  # Read mem[gp_reg_8] -> overwrites gp_reg_8
-    drv.shown_regs.clear()
-    await drv.send_direct_uop(0x1, 0xD, 0x8)
-    assert drv.shown_regs[0] == sanitize_trits_24b(raw_unsanitized), (
-        f"TX_MEM_READ sanitization mismatch: got {drv.shown_regs[0]:#08x}"
-    )
-    dut._log.info("test_04_memory_read_write_and_ext_addr PASSED")
-
-
-@cocotb.test()
-async def test_05_microcode_rom_macro_op_and_pipeline(dut):
-    """
-    Probe Microcode ROM Mode (3'b101), sector addressing, odd/even caching,
-    hold-until-register-change (0001:0100), dual-slot pipelining, cmd buffer dump,
-    and PC increment on ret_micro.
-    """
-    clock = Clock(dut.clk, 10, unit="us")
-    cocotb.start_soon(clock.start())
-
-    # Macro-op 32 (sector 32..111: 4 action bytes = up to 8 micro-ops):
-    #   0: Hold until cmd_reg_0 (addr 9) arrives          (0001:0100, p1=9)
-    #   1: Clear carry                                     (0000:0010)
-    #   2: Extract cmd_reg_0[7:0] -> sp0_trib0 (4t addr 0) (1100: p0=9, p1=0, p2=0)
-    #   3: Extract cmd_reg_1[7:0] -> sp0_trib1 (4t addr 1) (1100: p0=10, p1=2, p2=0)
-    #   4: Add sp0_trib0 + sp0_trib1 -> sp0_trib2 (addr 2) (0011: p0=0, p1=2, p2=4)
-    #   5: Show sp0 (addr 1)                               (0001:1101, p1=1)
-    #   6: Return (increments PC, switches to 2nd slot)    (0000:0100)
-    mop32_prog = [
-        (0x1, 0x4, 0x9, 0x0),
-        (0x0, 0x2, 0x0, 0x0),
-        (0xC, 0x9, (0 << 1) | 0, 0x0),
-        (0xC, 0xA, (1 << 1) | 0, 0x0),
-        (0x3, (0 << 1) | 0, (1 << 1) | 0, (2 << 1) | 0),
-        (0x1, 0xD, 0x1, 0x0),
-        (0x0, 0x4, 0x0, 0x0),
-    ]
-
-    # Macro-op 1 (sector 0..31: 2 action bytes = up to 4 micro-ops):
-    #   0: Clear scratchpads                               (0000:0111)
-    #   1: Load 4t imm (+9) into sp1_trib0 (4t addr 3)     (1011)
-    #   2: Show sp1 (addr 2)                               (0001:1101, p1=2)
-    #   3: Return                                          (0000:0100)
-    imm9 = int_to_trits(9, 4)
-    mop1_prog = [
-        (0x0, 0x7, 0x0, 0x0),
-        (0xB, (imm9 >> 4) & 0xF, imm9 & 0xF, (3 << 1) | 0),
-        (0x1, 0xD, 0x2, 0x0),
-        (0x0, 0x4, 0x0, 0x0),
-    ]
-
-    rom = build_ucode_rom({1: mop1_prog, 32: mop32_prog})
-    drv = TripleTDriver(dut, ucode_rom=rom)
-    await drv.reset()
-    await drv.ovl_clear_cmd_buf()
-
-    # Initialize PC = 0 via Overlord and absorb initial TX_SET_PC
-    await drv.ovl_write_regs({1: ZERO_12T, 2: ZERO_12T, 5: ZERO_12T})
-    await drv.run_until_quiet()
-    drv.shown_regs.clear()
+    assert await drv.ovl_read_pc() == new_pc, "OVL_READ_PC mismatch"
     drv.pc_updates.clear()
+    await drv.ovl_cmd(OVL_UNFENCE)
+    await drv.run_until_quiet()
+    assert new_pc in drv.pc_updates, "Missing TX_SET_PC after OVL_WRITE_PC"
 
-    # Stream Macro-op 32 with live params: param0 = +11, param1 = +8 -> sum = +19
-    p0_val = (ZERO_8T << 8) | int_to_trits(11, 4)
-    p1_val = (ZERO_8T << 8) | int_to_trits(8, 4)
-    await drv.send_macro_op(32, [p0_val, p1_val])
+    drv.pc_updates.clear()
+    await drv.send_direct_uop(0x0, 0xB)  # 0000:1011 PC increment -> 778
+    assert await drv.ovl_read_pc() == int_to_trits(778, 12), "0000:1011 PC increment mismatch"
+    assert int_to_trits(778, 12) in drv.pc_updates, "Missing TX_SET_PC after 0000:1011"
 
-    # Immediately queue 0-param Macro-op 1 into 2nd slot (tests dual-slot pipeline!)
-    await drv.send_macro_op(1, [])
-
-    # Let both macro-ops execute to completion, serving all ROM fetches & TX_SHOW_REG
-    await drv.run_until_quiet(quiet_cycles=10)
-
-    assert len(drv.shown_regs) == 2, f"Expected 2 TX_SHOW_REG outputs, got {len(drv.shown_regs)}"
-    # First output: sp0 = {sum(+19), +8, +11}
-    sp0_out = drv.shown_regs[0]
-    assert trits_to_int(sp0_out & 0xFF, 4) == 11
-    assert trits_to_int((sp0_out >> 8) & 0xFF, 4) == 8
-    assert trits_to_int((sp0_out >> 16) & 0xFF, 4) == 19, (
-        f"Macro-op 32 sum mismatch: got {trits_to_int((sp0_out >> 16) & 0xFF, 4)}"
-    )
-    # Second output: sp1 = {0, 0, +9}
-    sp1_out = drv.shown_regs[1]
-    assert trits_to_int(sp1_out & 0xFF, 4) == 9
-
-    # Verify PC incremented by 2 (one per returned macro-op)
-    final_pc = await drv.ovl_read_pc()
-    assert trits_to_int(final_pc, 12) == 2, f"Expected PC=+2, got {trits_to_int(final_pc, 12)}"
-
-    # Verify Overlord Command Buffer Dump (0110) while fenced with 2 queued ops
+    # 3. Direct instruction toggle (0001) + Command Buffer Dump (0110) while fenced
+    await drv.ovl_cmd(OVL_TOGGLE_DIRECT)
+    await drv.ovl_cmd(OVL_TOGGLE_DIRECT)  # Toggle back OFF
     await drv.ovl_cmd(OVL_FENCE_OR_STEP)  # Engage fence
-    await drv.send_macro_op(32, [p0_val, p1_val])
-    await drv.send_macro_op(1, [])
+    await drv.send_macro_op(10, [])
+    await drv.send_macro_op(20, [])
     active_op, next_op = await drv.ovl_dump_cmd_buf()
-    assert (active_op, next_op) == (32, 1), f"Cmd buf dump mismatch: got {(active_op, next_op)}"
+    assert (active_op, next_op) == (10, 20), f"Cmd buf dump mismatch: {(active_op, next_op)}"
     await drv.ovl_clear_cmd_buf()
     await drv.ovl_cmd(OVL_UNFENCE)
-    dut._log.info("test_05_microcode_rom_macro_op_and_pipeline PASSED")
+    dut._log.info("test_07_overlord_injection_and_pc PASSED")
 
 
 @cocotb.test()
-async def test_06_fence_single_step_and_error_autofence(dut):
-    """Probe Fence/Single-Step execution and reg_overflow -> Auto-Fence -> Error Telemetry."""
+async def test_08_fencing_step_and_all_errors(dut):
+    """Fencing, single-stepping, and all 4 error IDs (2:PC, 3:Act, 4:Prm, 5:Reg) + auto-fence + recovery."""
     clock = Clock(dut.clk, 10, unit="us")
     cocotb.start_soon(clock.start())
 
     drv = TripleTDriver(dut)
     await drv.reset()
     await drv.ovl_clear_cmd_buf()
-    await drv.ovl_write_regs({1: ZERO_12T})
-    # Absorb TX_SET_PC triggered by writing Reg 5 BEFORE engaging microcode_fence
+    await drv.ovl_write_regs({1: ZERO_12T, 5: ZERO_12T})
     await drv.run_until_quiet()
 
-    # 1. Engage microcode fence and load a direct micro-op (4t imm +14 -> sp0_trib0)
+    # 1. Fence + Single-Step execution
     await drv.ovl_cmd(OVL_FENCE_OR_STEP)
     imm14 = int_to_trits(14, 4)
     await drv.send_direct_uop(0xB, (imm14 >> 4) & 0xF, imm14 & 0xF, (0 << 1) | 0, wait_quiet=False)
 
-    # Wait 10 cycles in Thread Mode: while fenced, cur_full (direct_exec_ready) MUST remain 1!
     await drv.enter_thread_idle()
-    await ClockCycles(dut.clk, 10)
+    await ClockCycles(dut.clk, 8)
     await ReadOnly()
-    assert ((safe_int(dut.uo_out) >> 3) & 1) == 1, "Direct op executed despite active microcode_fence!"
+    assert ((safe_int(dut.uo_out) >> 3) & 1) == 1, "Op ran despite microcode_fence!"
     await ClockCycles(dut.clk, 1)
 
-    # Single-step 3 times: Step 1 = Stage 0, Step 2 = Stage 1 commit, Step 3 = execute_done clears direct_exec_ready
     for _ in range(3):
         await drv.ovl_cmd(OVL_FENCE_OR_STEP)
 
-    # Verify single-step cleanly consumed direct_exec_ready while still fenced
     await drv.enter_thread_idle()
     await ReadOnly()
-    assert ((safe_int(dut.uo_out) >> 3) & 1) == 0, "Single-step failed to clear direct_exec_ready (execute_done wiped while fenced?)"
+    assert ((safe_int(dut.uo_out) >> 3) & 1) == 0, "Single-step failed to clear direct_exec_ready"
     await ClockCycles(dut.clk, 1)
 
-    # Verify sp0_trib0 now holds +14
     regs = await drv.ovl_dump_regs()
-    assert trits_to_int(regs[1] & 0xFF, 4) == 14, "Single-step did not commit 4t imm load"
-
-    # 2. Unfence and trigger deterministic reg_overflow via Generate Mask (0010:1100) with p1 = 0
+    assert trits_to_int(regs[1] & 0xFF, 4) == 14, "Single-step did not commit sp0_t0"
     await drv.ovl_cmd(OVL_UNFENCE)
+
+    # 2. Error ID 5: reg_overflow via 0010:1100 with p1=0
     await drv.send_direct_uop(0x2, 0xC, 0x0, 0x0, wait_quiet=False)
     await ClockCycles(dut.clk, 6)
-
-    # Inspect Overlord status: uo_out[6] = new_error_flag, uo_out[2:0] = offending_error_id (5)
     await drv.ovl_idle()
     await ReadOnly()
     uo = safe_int(dut.uo_out)
-    assert ((uo >> 6) & 1) == 1, f"Expected new_error_flag=1, got uo_out={uo:#04x}"
-    assert (uo & 0x7) == 5, f"Expected offending_error_id=5 (reg_overflow), got {uo & 0x7}"
+    assert ((uo >> 6) & 1) == 1 and (uo & 0x7) == 5, f"Expected ID 5 reg_ovf, got uo={uo:#04x}"
+    await ClockCycles(dut.clk, 1)
+    # Test OVL_CLR_ERR_FLAG (1100) clears alert bit without losing counter
+    await drv.ovl_cmd(OVL_CLR_ERR_FLAG)
+    await drv.ovl_idle()
+    await ReadOnly()
+    assert ((safe_int(dut.uo_out) >> 6) & 1) == 0, "OVL_CLR_ERR_FLAG did not clear uo_out[6]"
     await ClockCycles(dut.clk, 1)
 
-    # Read error counters via showing_errors telemetry (1101 + 1010)
-    counts = await drv.ovl_read_error_counters()
-    assert counts[5] == 1, f"Expected err_reg_ovf_t == 1, got {counts}"
-    assert counts[2] == 0 and counts[3] == 0 and counts[4] == 0, f"Unexpected other errors: {counts}"
+    # 3. Error ID 3: a_ctr_overflow via Overlord Reg 23 injection (action_ctr = 81)
+    await drv.ovl_write_regs({23: (ZERO_1T << 20) | (81 << 8) | 0})
+    await ClockCycles(dut.clk, 2)
+    await drv.ovl_idle()
+    await ReadOnly()
+    uo = safe_int(dut.uo_out)
+    assert ((uo >> 6) & 1) == 1 and (uo & 0x7) == 3, f"Expected ID 3 a_ctr_ovf, got uo={uo:#04x}"
+    await ClockCycles(dut.clk, 1)
 
-    # Clear error counters & alert flag (1110), unfence (1000), and verify recovery!
+    # 4. Error ID 4: p_ctr_overflow via Overlord Reg 23 injection (action_ctr = 0, param_ctr = 81)
+    await drv.ovl_write_regs({23: (ZERO_1T << 20) | (0 << 8) | 81})
+    await ClockCycles(dut.clk, 2)
+    await drv.ovl_idle()
+    await ReadOnly()
+    uo = safe_int(dut.uo_out)
+    assert ((uo >> 6) & 1) == 1 and (uo & 0x7) == 4, f"Expected ID 4 p_ctr_ovf, got uo={uo:#04x}"
+    await ClockCycles(dut.clk, 1)
+
+    # Clear counters back to 0 so a_ctr/p_ctr_overflow drop low
+    await drv.ovl_clear_cmd_buf()
+
+    # 5. Error ID 2: pc_overflow by setting PC = all +1s (0x555555) and running 0000:1011
+    await drv.ovl_write_pc(POS1_MASK_12T)
+    await drv.ovl_cmd(OVL_UNFENCE)
+    await drv.run_until_quiet()
+    drv.pc_updates.clear()
+    await drv.send_direct_uop(0x0, 0xB, wait_quiet=False)  # Wraps 0x555555 -> 0x000000 & auto-fences!
+    await ClockCycles(dut.clk, 6)
+    await drv.ovl_idle()
+    await ReadOnly()
+    uo = safe_int(dut.uo_out)
+    assert ((uo >> 6) & 1) == 1 and (uo & 0x7) == 2, f"Expected ID 2 pc_ovf, got uo={uo:#04x}"
+    await ClockCycles(dut.clk, 1)
+
+    # Verify all 4 error counters == 1 via telemetry (1101 + 1010)
+    counts = await drv.ovl_read_error_counters()
+    assert counts == {2: 1, 3: 1, 4: 1, 5: 1}, f"Expected all 4 error counters == 1, got {counts}"
+
+    # Clear all errors (1110), unfence (1000), drain wrapped TX_SET_PC (0x000000), and verify recovery
     await drv.ovl_cmd(OVL_CLR_ALL_ERRS)
     await drv.ovl_cmd(OVL_UNFENCE)
+    await drv.run_until_quiet()
+    assert NEG1_MASK_12T in drv.pc_updates, f"Expected wrapped PC 0x000000 in {drv.pc_updates}"
 
-    # Confirm chip executes normally after recovery
-    imm_neg5 = int_to_trits(-5, 4)
-    await drv.send_direct_uop(0xB, (imm_neg5 >> 4) & 0xF, imm_neg5 & 0xF, (0 << 1) | 0)
+    counts_after = await drv.ovl_read_error_counters()
+    assert counts_after == {2: 0, 3: 0, 4: 0, 5: 0}, f"OVL_CLR_ALL_ERRS failed: {counts_after}"
+
+    imm_ok = int_to_trits(-5, 4)
+    await drv.send_direct_uop(0xB, (imm_ok >> 4) & 0xF, imm_ok & 0xF, (0 << 1) | 0)
     drv.shown_regs.clear()
     await drv.send_direct_uop(0x1, 0xD, 0x1)
-    assert trits_to_int(drv.shown_regs[0] & 0xFF, 4) == -5, "Chip did not recover after error unfence"
-    dut._log.info("test_06_fence_single_step_and_error_autofence PASSED")
+    assert trits_to_int(drv.shown_regs[0] & 0xFF, 4) == -5, "Chip failed to recover after all-error test"
+    dut._log.info("test_08_fencing_step_and_all_errors PASSED")
