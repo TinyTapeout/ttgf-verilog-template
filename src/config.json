@@ -73,7 +73,7 @@
   "MAGIC_WRITE_LEF_PINONLY": 1,
 
   "//": "own testing",
-  "SYNTH_STRATEGY": "AREA 4",
+  "SYNTH_STRATEGY": "AREA 3",
   "SYNTH_MAX_FANOUT": 10,
   "SYNTH_CLOCK_GATING": true,
   "PL_TIME_DRIVEN": true,
