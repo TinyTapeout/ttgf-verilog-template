@@ -184,9 +184,15 @@ def build_ucode_rom(programs: dict) -> dict:
     return rom
 
 
-def safe_int(sig) -> int:
-    """Convert cocotb LogicArray to int, failing cleanly if X/Z."""
-    return int(sig.value)
+def safe_int(sig, ctx: str = "") -> int:
+    """Convert cocotb LogicArray to int, reporting raw bitstring & context if X/Z."""
+    val = sig.value
+    try:
+        return int(val)
+    except ValueError as exc:
+        name = getattr(sig, "_name", "sig")
+        info = f" ({ctx})" if ctx else ""
+        raise ValueError(f"{name}={val.binstr!r}{info}: {exc}") from exc
 
 
 # =============================================================================
@@ -262,8 +268,12 @@ class TripleTDriver:
             # 2. Wait 1 extra cycle while keeping fpga_ack=0 for debug_reg_cache -> dbg_dout settle
             await ClockCycles(self.dut.clk, 1)
             await ReadOnly()
-            assert safe_int(self.dut.uio_oe) == 0xFF, "Expected ASIC to drive uio_oe=0xFF on Overlord read"
-            out.append(safe_int(self.dut.uio_out))
+            uo_dbg = safe_int(self.dut.uo_out, f"ovl_read idx={idx}")
+            reg_id = uo_dbg & 0x1F
+            assert safe_int(self.dut.uio_oe, f"ovl_read idx={idx} reg={reg_id}") == 0xFF, (
+                f"Expected ASIC to drive uio_oe=0xFF on Overlord read (idx={idx}, reg={reg_id})"
+            )
+            out.append(safe_int(self.dut.uio_out, f"ovl_read idx={idx} reg={reg_id} byte={idx % 3}"))
 
             # 3. Assert fpga_ack = 1 and wait for bus_ready == 0
             await ClockCycles(self.dut.clk, 1)
@@ -430,11 +440,12 @@ class TripleTDriver:
         self.dut.uio_in.value = 0
         await ClockCycles(self.dut.clk, 1)
 
-    async def _service_asic_tx_3b(self) -> int:
+    async def _service_asic_tx_3b(self, enter_tx: bool = True) -> int:
         """Handle TX_SHOW_REG (001) or TX_SET_PC (110): 3 bytes ASIC -> FPGA."""
-        # Enter BUS_ASIC_TX via hs_rise (0 -> 1)
-        self.dut.ui_in.value = self._thr_ui(phase_3b=0, is_cmd=0, hs=1)
-        await ClockCycles(self.dut.clk, 1)
+        if enter_tx:
+            # Enter BUS_ASIC_TX via hs_rise (0 -> 1)
+            self.dut.ui_in.value = self._thr_ui(phase_3b=0, is_cmd=0, hs=1)
+            await ClockCycles(self.dut.clk, 1)
 
         vals = []
         for idx in range(3):
@@ -451,11 +462,12 @@ class TripleTDriver:
         await ClockCycles(self.dut.clk, 1)
         return vals[0] | (vals[1] << 8) | (vals[2] << 16)
 
-    async def _service_mem_write(self):
+    async def _service_mem_write(self, enter_tx: bool = True):
         """Handle TX_MEM_WRITE (101): 5-byte addr then 3-byte data ASIC -> FPGA."""
-        # Enter BUS_ASIC_TX (mem_data_phase=0)
-        self.dut.ui_in.value = self._thr_ui(phase_3b=0, is_cmd=0, hs=1)
-        await ClockCycles(self.dut.clk, 1)
+        if enter_tx:
+            # Enter BUS_ASIC_TX (mem_data_phase=0)
+            self.dut.ui_in.value = self._thr_ui(phase_3b=0, is_cmd=0, hs=1)
+            await ClockCycles(self.dut.clk, 1)
 
         addr_bytes = []
         for idx in range(5):
@@ -489,11 +501,12 @@ class TripleTDriver:
         self.dut.ui_in.value = self._thr_ui(phase_3b=0, is_cmd=0, hs=0)
         await ClockCycles(self.dut.clk, 1)
 
-    async def _service_mem_read(self):
+    async def _service_mem_read(self, enter_tx: bool = True):
         """Handle TX_MEM_READ (100): 5-byte addr -> High-Z Turnaround -> 3-byte data FPGA -> ASIC."""
-        # Enter BUS_ASIC_TX
-        self.dut.ui_in.value = self._thr_ui(phase_3b=0, is_cmd=0, hs=1)
-        await ClockCycles(self.dut.clk, 1)
+        if enter_tx:
+            # Enter BUS_ASIC_TX
+            self.dut.ui_in.value = self._thr_ui(phase_3b=0, is_cmd=0, hs=1)
+            await ClockCycles(self.dut.clk, 1)
 
         addr_bytes = []
         for idx in range(5):
@@ -597,7 +610,8 @@ class TripleTDriver:
     async def send_rx_frame(self, is_cmd: int, param_idx: int, payload: list):
         """
         Execute an FPGA -> ASIC RX transfer (1-byte cmd, 2-byte direct payload, or 3-byte param).
-        Automatically services any pending ASIC requests before starting.
+        Automatically services any pending ASIC requests before starting, and retries cleanly
+        if the ASIC asserts a request (e.g., REQ_UCODE) on the same clock edge as hs_rise.
         """
         await self.enter_thread_idle()
         for _ in range(self.timeout):
@@ -609,22 +623,42 @@ class TripleTDriver:
                 await ClockCycles(self.dut.clk, 1)
                 await self.service_once()
                 continue
-            if not full:
-                break
+            if full:
+                await ClockCycles(self.dut.clk, 1)
+                continue
+
+            # Step 1: Attempt BUS_IDLE -> BUS_RX_WAIT via hs_rise (0 -> 1)
             await ClockCycles(self.dut.clk, 1)
+            self.dut.ui_in.value = self._thr_ui(phase_3b=param_idx, is_cmd=is_cmd, hs=1)
+            await ClockCycles(self.dut.clk, 1)
+            await ReadOnly()
+            uo2 = safe_int(self.dut.uo_out)
+            dp = (uo2 >> 1) & 0x3
+            req2 = (uo2 >> 4) & 0x7
+            if dp == 0b00:
+                break
+
+            # Collision: ASIC asserted a request on the exact hs_rise cycle!
+            if req2 in (REQ_SHOW_REG, REQ_SET_PC, REQ_MEM_READ, REQ_MEM_WRITE):
+                # hs_rise already transitioned logic_container into BUS_ASIC_TX
+                await ClockCycles(self.dut.clk, 1)
+                if req2 == REQ_SHOW_REG:
+                    self.shown_regs.append(await self._service_asic_tx_3b(enter_tx=False))
+                elif req2 == REQ_SET_PC:
+                    self.pc_updates.append(await self._service_asic_tx_3b(enter_tx=False))
+                elif req2 == REQ_MEM_WRITE:
+                    await self._service_mem_write(enter_tx=False)
+                elif req2 == REQ_MEM_READ:
+                    await self._service_mem_read(enter_tx=False)
+            else:
+                # REQ_UCODE (or cur_full) kept logic_container in BUS_IDLE; lower hs=0 and retry
+                await ClockCycles(self.dut.clk, 1)
+                await self.enter_thread_idle()
         else:
             uo = safe_int(self.dut.uo_out)
             raise AssertionError(
                 f"Timeout waiting for RX ready (req={(uo >> 4) & 7:#05b}, full={(uo >> 3) & 1}, dp={(uo >> 1) & 3:#04b})"
             )
-
-        # Step 1: BUS_IDLE -> BUS_RX_WAIT via hs_rise (0 -> 1)
-        await ClockCycles(self.dut.clk, 1)
-        self.dut.ui_in.value = self._thr_ui(phase_3b=param_idx, is_cmd=is_cmd, hs=1)
-        await ClockCycles(self.dut.clk, 1)
-        await ReadOnly()
-        dp = (safe_int(self.dut.uo_out) >> 1) & 0x3
-        assert dp == 0b00, f"Expected data_phase=00 in BUS_RX_WAIT, got {dp:#04b}"
 
         # Step 2: BUS_RX_WAIT -> BUS_RX_STRM via hs_fall (1 -> 0)
         await ClockCycles(self.dut.clk, 1)
