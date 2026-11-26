@@ -13,11 +13,11 @@
 
   "//": "PL_TARGET_DENSITY_PCT - You can increase this if Global Placement fails with error GPL-0302.",
   "//": "Users have reported that values up to 80 worked well for them.",
-  "PL_TARGET_DENSITY_PCT": 40,
+  "PL_TARGET_DENSITY_PCT": 45,
 
   "//": "CLOCK_PERIOD - Increase this in case you are getting setup time violations.",
   "//": "The value is in nanoseconds, so 20ns == 50MHz.",
-  "CLOCK_PERIOD": 80,
+  "CLOCK_PERIOD": 60,
 
   "//": "Hold slack margin - Increase them in case you are getting hold violations.",
   "PL_RESIZER_HOLD_SLACK_MARGIN": 0.1,
@@ -89,7 +89,13 @@
 "GRT_OVERFLOW_ITERS": 100,
 "RUN_POST_GRT_DESIGN_REPAIR": true,
 "RUN_POST_GRT_RESIZER_TIMING": true,
-"DESIGN_REPAIR_MAX_SLEW_PCT": 15,
-"DESIGN_REPAIR_MAX_CAP_PCT": 15,
-"DESIGN_REPAIR_MAX_WIRE_LENGTH": 300
+"DESIGN_REPAIR_MAX_SLEW_PCT": 20,
+"DESIGN_REPAIR_MAX_CAP_PCT": 20,
+"DESIGN_REPAIR_MAX_WIRE_LENGTH": 600,
+"RSZ_DONT_USE_CELLS": [
+  "gf180mcu_fd_sc_mcu7t5v0__buf_8",
+  "gf180mcu_fd_sc_mcu7t5v0__buf_16"
+],
+"SYNTH_SHARE_RESOURCES": true,
+"SYNTH_ABC_AREA": true
 }

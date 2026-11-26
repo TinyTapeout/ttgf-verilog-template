@@ -1235,7 +1235,9 @@ always @(posedge clk) begin
                 end
 
                 ST_WAIT_PRM2: begin
-                    if (!data_arrived) begin
+                    if (!is_micro) begin
+                        wait_cnt <= 4'd0;
+                    end else if (!data_arrived) begin
                         wait_cnt <= wait_cnt + 4'd1;
                     end else begin
                         wait_cnt             <= 4'd0;
