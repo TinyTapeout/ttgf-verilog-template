@@ -1151,7 +1151,6 @@ always @(posedge clk) begin
         mask_1t_singleuse     <= 1'b0;
     end else begin
         reg_ovf_r <= 1'b0;
-        execute_done <= 1'b0;
         can_execute_this_clock = 1'b0; // non blocking temp var
         pc_inc_enable         <= 1'b0;
         pc_w_enable           <= 1'b0;
@@ -1283,6 +1282,10 @@ always @(posedge clk) begin
                 direct_exec_active <= 1'b0;
                 direct_exec_ready <= 1'b0;
                 hold_reg_active <= 1'b0;
+                macroop_pipe_full  <= 1'b0;
+                loading_second_slot <= 1'b0;
+                execute_stage      <= 2'b00;
+                execute_done       <= 1'b0;
                 ucode_req          <= 1'b0;
                 ucode_data_ready   <= 1'b0;
                 has_cached_odd     <= 1'b0;
@@ -1456,23 +1459,22 @@ always @(posedge clk) begin
                         //if no micro op or no alu, do nothing
 
                         //check if the logic leading up to micro op handling is sound
-
-                        if (pc_tx_pending && execute_stage == 2'b00) begin
-                            pc_tx_pending <= 1'b0;
-                            start_bus_tx(TX_SET_PC, 24'hAAAAAA, pc_r_data); //d_out + request_set_pc, waits for data_done in Stage 1
-                        end
-                        else if(execute_done) begin // execute done refers to the micro instruction
+                        
+                        if(execute_done) begin // execute done refers to the micro instruction
                             //request new from microcode
                             //if there was a jump previously, use a flush and make sure action counter and param counter are visible
                             // then command_req_new is inverted to show new request
                             if (direct_exec_ready) begin
                                 direct_exec_ready <= 1'b0; // Consumed direct micro-op; don't poke microcode
-                            end else if (!ucode_req) begin
+                            end else if (!ucode_req && (threadstate != THREAD_EMPTY)) begin
                                 ucode_data_ready  <= 1'b0;
                                 ucode_req         <= 1'b1;
                             end
                             execute_done <= 1'b0;
-                        end else if(exec_valid && execute_stage == 2'b0) begin
+                        end else if (pc_tx_pending && execute_stage == 2'b00) begin
+                            pc_tx_pending <= 1'b0;
+                            start_bus_tx(TX_SET_PC, 24'hAAAAAA, pc_r_data); //d_out + request_set_pc, waits for data_done in Stage 1
+                        end else if (exec_valid && execute_stage == 2'b0) begin
 
                             if (hold_stall || sub_alias_stall) begin
                                 do_housekeeping = 1'b1; // Stall until hold_reg_addr is written
@@ -2080,7 +2082,7 @@ always @(posedge clk) begin
                             //data masking stage
                             //write stage
                             
-                        end else if(exec_valid) begin
+                        end else if(execute_stage != 2'b00) begin
                             //this is for multi stage execution
                             //at most you have 4 stages because reasons (its harder to mess up in 4 cycles)
                             //during this time you can still request microcode
@@ -2108,8 +2110,7 @@ always @(posedge clk) begin
                                         end
                                         execute_stage <= 2'b00;
                                         execute_done  <= 1'b1;
-                                    end
-                                    else if (request_show_reg || request_set_pc || request_memory_access) begin
+                                    end else if (request_show_reg || request_set_pc || request_memory_access) begin
                                         //bus wait
                                         if (data_done) begin
                                             if (request_memory_access && !is_write_memory && write_allow) begin
@@ -2159,6 +2160,7 @@ always @(posedge clk) begin
                                             is_write_memory       <= 1'b0;
                                             execute_stage         <= 2'b00;
                                             execute_done          <= 1'b1;
+                                            execute_done          <= !request_set_pc;
                                         end
                                     end 
                                     else if ((exec_cmd == 4'b0010 && exec_p0 == 4'b1111) ||

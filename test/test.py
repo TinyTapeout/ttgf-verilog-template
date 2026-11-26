@@ -1,7 +1,5 @@
 # SPDX-FileCopyrightText: © 2024 Tiny Tapeout
 # SPDX-License-Identifier: Apache-2.0
-# SPDX-FileCopyrightText: © 2024 Tiny Tapeout
-# SPDX-License-Identifier: Apache-2.0
 """
 Comprehensive cocotb probe suite for tt_um_triple_t_devEclipse2.
 
@@ -75,6 +73,10 @@ POS1_MASK_12T = 0x555555
 NEG1_MASK_4T  = 0x00
 NEG1_MASK_12T = 0x000000
 
+
+# =============================================================================
+# Balanced Ternary & Microcode ROM Helpers
+# =============================================================================
 def int_to_trits(val: int, width: int) -> int:
     """Encode signed integer into 2-bit override balanced ternary (LSB = trit 0)."""
     max_val = (3 ** width - 1) // 2
@@ -587,7 +589,10 @@ class TripleTDriver:
                 await ClockCycles(self.dut.clk, 1)
                 if idle_streak >= quiet_cycles:
                     return
-        raise AssertionError("Timeout in run_until_quiet (possible deadlock or runaway microcode)")
+        uo = safe_int(self.dut.uo_out)
+        raise AssertionError(
+            f"Timeout in run_until_quiet (req={(uo >> 4) & 7:#05b}, full={(uo >> 3) & 1}, dp={(uo >> 1) & 3:#04b})"
+        )
 
     async def send_rx_frame(self, is_cmd: int, param_idx: int, payload: list):
         """
@@ -608,7 +613,10 @@ class TripleTDriver:
                 break
             await ClockCycles(self.dut.clk, 1)
         else:
-            raise AssertionError("Timeout waiting for RX ready (req==0 and cur_full==0)")
+            uo = safe_int(self.dut.uo_out)
+            raise AssertionError(
+                f"Timeout waiting for RX ready (req={(uo >> 4) & 7:#05b}, full={(uo >> 3) & 1}, dp={(uo >> 1) & 3:#04b})"
+            )
 
         # Step 1: BUS_IDLE -> BUS_RX_WAIT via hs_rise (0 -> 1)
         await ClockCycles(self.dut.clk, 1)
@@ -886,6 +894,8 @@ async def test_04_memory_read_write_and_ext_addr(dut):
         7: write_payload,              # gp_reg_7 holds data to write
         8: ptr_addr,                   # gp_reg_8 holds pointer address for 0001:1010
     })
+    # Absorb TX_SET_PC triggered by writing Reg 5 inside ovl_write_regs
+    await drv.run_until_quiet()
 
     # Set ext_addr_out from gp_reg_6 (0001:1100, p1=6)
     await drv.send_direct_uop(0x1, 0xC, 0x6)
@@ -1014,6 +1024,8 @@ async def test_06_fence_single_step_and_error_autofence(dut):
     await drv.reset()
     await drv.ovl_clear_cmd_buf()
     await drv.ovl_write_regs({1: ZERO_12T})
+    # Absorb TX_SET_PC triggered by writing Reg 5 BEFORE engaging microcode_fence
+    await drv.run_until_quiet()
 
     # 1. Engage microcode fence and load a direct micro-op (4t imm +14 -> sp0_trib0)
     await drv.ovl_cmd(OVL_FENCE_OR_STEP)
@@ -1027,9 +1039,15 @@ async def test_06_fence_single_step_and_error_autofence(dut):
     assert ((safe_int(dut.uo_out) >> 3) & 1) == 1, "Direct op executed despite active microcode_fence!"
     await ClockCycles(dut.clk, 1)
 
-    # Single-step 4 times (Stage 0 -> Stage 1 commit -> execute_done clears direct_exec_ready)
-    for _ in range(4):
+    # Single-step 3 times: Step 1 = Stage 0, Step 2 = Stage 1 commit, Step 3 = execute_done clears direct_exec_ready
+    for _ in range(3):
         await drv.ovl_cmd(OVL_FENCE_OR_STEP)
+
+    # Verify single-step cleanly consumed direct_exec_ready while still fenced
+    await drv.enter_thread_idle()
+    await ReadOnly()
+    assert ((safe_int(dut.uo_out) >> 3) & 1) == 0, "Single-step failed to clear direct_exec_ready (execute_done wiped while fenced?)"
+    await ClockCycles(dut.clk, 1)
 
     # Verify sp0_trib0 now holds +14
     regs = await drv.ovl_dump_regs()
