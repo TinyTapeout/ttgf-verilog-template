@@ -19,9 +19,10 @@ PROJECT_SOURCES = \
 	main/alu/simulated/bt_add3_4t.v \
 	main/alu/simulated/bt_fa_1t.v \
 	main/alu/simulated/bt_fa3_1t.v \
-	main/alu/simulated/bt_mul_4t.v
-
-
+	main/alu/simulated/bt_mul_4t.v \
+	main/alu/simulated/tritwise_1.v \
+	main/alu/simulated/tritwise_2.v \
+	main/alu/simulated/tritwise_3.v 
 ifneq ($(GATES),yes)
 
 # RTL simulation:
