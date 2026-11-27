@@ -1,0 +1,188 @@
+* NGSPICE file created from 5v0_mult_1t.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 nti in VSS VSS nfet_06v0 ad=6.336n pd=0.32m as=6.478n ps=0.255m w=72 l=578
+X1 VDD_3V3_1 in nti VDD_3V3_1 pfet_06v0 ad=12.81n pd=0.349m as=12.688n ps=0.348m w=244 l=100
+X2 VDD_3V3_1 in inv VDD_3V3_1 pfet_06v0 ad=13.616n pd=0.392m as=9.696n ps=0.394m w=96 l=150
+X3 VSS in inv VSS nfet_06v0 ad=6.478n pd=0.255m as=12.7n ps=0.454m w=127 l=120
+X4 nti in VDD_3V3_1 VDD_3V3_1 pfet_06v0 ad=12.688n pd=0.348m as=13.616n ps=0.392m w=244 l=100
+X5 nti in VDD_3V3_1 VDD_3V3_1 pfet_06v0 ad=27.328n pd=0.712m as=12.81n ps=0.349m w=244 l=100
+X6 mux2_mult_custom_0/a_896_593# sign mux2_mult_custom_0/a_124_24# VDD_3V3_0 pfet_06v0 ad=2.952n pd=0.171m as=6.396n ps=0.227m w=123 l=100
+X7 VSS mux2_mult_custom_0/a_124_24# mux_res VSS nfet_06v0 ad=8.72n pd=0.304m as=14.432n ps=0.504m w=164 l=120
+X8 mux2_mult_custom_0/a_124_24# sign mux2_mult_custom_0/a_504_104# VSS nfet_06v0 ad=3.744n pd=0.176m as=1.728n ps=0.12m w=72 l=120
+X9 VDD_3V3_0 mux2_mult_custom_0/a_124_24# mux_res VDD_3V3_0 pfet_06v0 ad=17.193n pd=0.437m as=21.472n ps=0.664m w=244 l=100
+X10 VDD_3V3_0 inv mux2_mult_custom_0/a_896_593# VDD_3V3_0 pfet_06v0 ad=6.396n pd=0.227m as=2.952n ps=0.171m w=123 l=100
+X11 mux2_mult_custom_0/a_592_407# sign VSS VSS nfet_06v0 ad=6.336n pd=0.32m as=3.744n ps=0.176m w=72 l=120
+X12 mux2_mult_custom_0/a_504_104# original VSS VSS nfet_06v0 ad=1.728n pd=0.12m as=8.72n ps=0.304m w=72 l=120
+X13 mux2_mult_custom_0/a_592_407# sign VDD_3V3_0 VDD_3V3_0 pfet_06v0 ad=10.824n pd=0.422m as=6.396n ps=0.227m w=123 l=100
+X14 mux2_mult_custom_0/a_537_593# original VDD_3V3_0 VDD_3V3_0 pfet_06v0 ad=3.382n pd=0.178m as=17.193n ps=0.437m w=123 l=100
+X15 VSS inv mux2_mult_custom_0/a_896_104# VSS nfet_06v0 ad=3.744n pd=0.176m as=1.728n ps=0.12m w=72 l=120
+X16 mux2_mult_custom_0/a_896_104# mux2_mult_custom_0/a_592_407# mux2_mult_custom_0/a_124_24# VSS nfet_06v0 ad=1.728n pd=0.12m as=3.744n ps=0.176m w=72 l=120
+X17 mux2_mult_custom_0/a_124_24# mux2_mult_custom_0/a_592_407# mux2_mult_custom_0/a_537_593# VDD_3V3_0 pfet_06v0 ad=6.396n pd=0.227m as=3.382n ps=0.178m w=123 l=100
+X18 a_n1011_n1581# nor VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X19 a_n1011_n1581# nor VDD_3V3_0 VDD_3V3_0 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X20 original inv VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=0.10536u ps=3.904m w=164 l=120
+X21 original inv VDD_3V3_1 VDD_3V3_1 pfet_06v0 ad=21.472n pd=0.664m as=0.13882u ps=4.048m w=244 l=100
+X22 mux_res nor res_alt VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X23 nor gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# VDD_3V3_1 pfet_06v0 ad=21.472n pd=0.664m as=16.348n ps=0.378m w=244 l=100
+X24 VSS gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z nor VSS nfet_06v0 ad=9.944n pd=0.402m as=5.876n ps=0.217m w=113 l=120
+X25 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# over VDD_3V3_1 VDD_3V3_1 pfet_06v0 ad=16.348n pd=0.378m as=21.472n ps=0.664m w=244 l=100
+X26 nor over VSS VSS nfet_06v0 ad=5.876n pd=0.217m as=9.944n ps=0.402m w=113 l=120
+X27 VDD_3V3_1 original gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# VDD_3V3_1 pfet_06v0 ad=16.23n pd=0.411m as=6.24n ps=0.224m w=120 l=100
+X28 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# VDD_3V3_1 VDD_3V3_1 pfet_06v0 ad=21.384n pd=0.662m as=16.23n ps=0.411m w=243 l=100
+X29 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# VSS VSS nfet_06v0 ad=14.344n pd=0.502m as=9.362n ps=0.311m w=163 l=120
+X30 VSS original gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_244_159# VSS nfet_06v0 ad=9.362n pd=0.311m as=2.336n ps=0.137m w=73 l=120
+X31 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_244_159# nti gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# VSS nfet_06v0 ad=2.336n pd=0.137m as=6.424n ps=0.322m w=73 l=120
+X32 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# nti VDD_3V3_1 VDD_3V3_1 pfet_06v0 ad=6.24n pd=0.224m as=10.56n ps=0.416m w=120 l=100
+X33 res_alt a_n1011_n1581# VDD_1V65 VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+C0 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# over 0.00898f
+C1 nti over 0
+C2 nor VDD_3V3_1 0.11021f
+C3 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# VDD_1V65 0
+C4 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# in 0.00106f
+C5 nor gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z 0.43324f
+C6 a_n1011_n1581# VDD_3V3_0 0.46299f
+C7 res_alt VDD_1V65 0.02277f
+C8 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# VDD_3V3_1 0.01452f
+C9 a_n1011_n1581# original 0.00331f
+C10 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# nor 0.05938f
+C11 nti VDD_3V3_1 0.57863f
+C12 nti gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z 0
+C13 mux2_mult_custom_0/a_592_407# VDD_3V3_1 0.0016f
+C14 VDD_3V3_0 over 0.00261f
+C15 a_n1011_n1581# sign 0
+C16 res_alt nor 0.06349f
+C17 a_n1011_n1581# inv 0.00166f
+C18 nor VDD_1V65 0.06647f
+C19 nor in 0.00802f
+C20 original over 0
+C21 a_n1011_n1581# mux_res 0.06936f
+C22 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_244_159# gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z 0
+C23 nti gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# 0.26623f
+C24 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z VDD_3V3_0 0.00161f
+C25 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_244_159# 0.00424f
+C26 res_alt mux2_mult_custom_0/a_124_24# 0
+C27 nti VDD_1V65 0
+C28 nti in 0.45854f
+C29 mux2_mult_custom_0/a_124_24# VDD_1V65 0
+C30 mux2_mult_custom_0/a_124_24# in 0.00813f
+C31 original VDD_3V3_1 0.69134f
+C32 in mux2_mult_custom_0/a_592_407# 0.0051f
+C33 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z original 0.01481f
+C34 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# VDD_3V3_0 0.00285f
+C35 sign VDD_3V3_1 0.00354f
+C36 inv VDD_3V3_1 0.33293f
+C37 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# nor 0.02636f
+C38 nti nor 0.03752f
+C39 mux2_mult_custom_0/a_124_24# nor 0.01819f
+C40 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# original 0.29576f
+C41 a_n1011_n1581# res 0.18714f
+C42 nor mux2_mult_custom_0/a_592_407# 0
+C43 res_alt VDD_3V3_0 0.00128f
+C44 VDD_1V65 VDD_3V3_0 0.01106f
+C45 in VDD_3V3_0 0.00551f
+C46 nor gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_244_159# 0
+C47 mux2_mult_custom_0/a_504_104# nor 0
+C48 res_alt original 0
+C49 VDD_1V65 original 0.0012f
+C50 in original 0.16601f
+C51 mux2_mult_custom_0/a_896_104# nor 0
+C52 mux2_mult_custom_0/a_124_24# mux2_mult_custom_0/a_592_407# 0.02837f
+C53 nor VDD_3V3_0 0.22145f
+C54 in sign 0.0025f
+C55 inv in 0.17009f
+C56 mux2_mult_custom_0/a_537_593# mux2_mult_custom_0/a_124_24# 0.00556f
+C57 nti gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_244_159# 0
+C58 mux_res res_alt 0.01751f
+C59 mux2_mult_custom_0/a_124_24# mux2_mult_custom_0/a_896_593# 0.00106f
+C60 mux2_mult_custom_0/a_504_104# mux2_mult_custom_0/a_124_24# 0.00317f
+C61 mux_res VDD_1V65 0
+C62 mux_res in 0.00189f
+C63 nor original 0.0598f
+C64 mux2_mult_custom_0/a_537_593# mux2_mult_custom_0/a_592_407# 0
+C65 mux2_mult_custom_0/a_592_407# mux2_mult_custom_0/a_896_593# 0
+C66 mux2_mult_custom_0/a_124_24# mux2_mult_custom_0/a_896_104# 0.00101f
+C67 nti VDD_3V3_0 0
+C68 mux2_mult_custom_0/a_124_24# VDD_3V3_0 0.49108f
+C69 nor sign 0
+C70 mux2_mult_custom_0/a_896_104# mux2_mult_custom_0/a_592_407# 0.00166f
+C71 inv nor 0
+C72 mux2_mult_custom_0/a_592_407# VDD_3V3_0 0.35858f
+C73 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# original 0
+C74 mux_res nor 0.06956f
+C75 nti original 0.16888f
+C76 mux2_mult_custom_0/a_124_24# original 0.32843f
+C77 mux2_mult_custom_0/a_537_593# VDD_3V3_0 0.00245f
+C78 mux2_mult_custom_0/a_896_593# VDD_3V3_0 0.005f
+C79 mux2_mult_custom_0/a_592_407# original 0.07104f
+C80 mux2_mult_custom_0/a_537_593# original 0
+C81 original mux2_mult_custom_0/a_896_593# 0
+C82 mux2_mult_custom_0/a_504_104# original 0
+C83 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_244_159# original 0
+C84 mux2_mult_custom_0/a_124_24# sign 0.12833f
+C85 nti inv 0.00236f
+C86 mux2_mult_custom_0/a_124_24# inv 0.00505f
+C87 mux2_mult_custom_0/a_592_407# sign 0.22431f
+C88 res_alt res 0.00974f
+C89 mux_res mux2_mult_custom_0/a_124_24# 0.09045f
+C90 res VDD_1V65 0.00695f
+C91 inv mux2_mult_custom_0/a_592_407# 0.30177f
+C92 mux2_mult_custom_0/a_896_104# original 0.00154f
+C93 mux2_mult_custom_0/a_537_593# sign 0
+C94 mux2_mult_custom_0/a_896_593# sign 0.00276f
+C95 original VDD_3V3_0 0.23752f
+C96 res nor 0.00235f
+C97 sign VDD_3V3_0 0.4897f
+C98 inv VDD_3V3_0 0.21635f
+C99 mux_res VDD_3V3_0 0.07871f
+C100 original sign 0.22468f
+C101 inv original 0.4393f
+C102 a_n1011_n1581# VDD_3V3_1 0.00102f
+C103 mux_res original 0.00644f
+C104 a_n1011_n1581# gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z 0.00228f
+C105 nti res 0
+C106 mux2_mult_custom_0/a_124_24# res 0
+C107 inv sign 0.35803f
+C108 mux_res inv 0
+C109 VDD_3V3_1 over 0.2741f
+C110 a_n1011_n1581# gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# 0
+C111 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z over 0.02124f
+C112 res VDD_3V3_0 0.41444f
+C113 a_n1011_n1581# res_alt 0.04991f
+C114 a_n1011_n1581# VDD_1V65 0.12271f
+C115 a_n1011_n1581# in 0
+C116 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z VDD_3V3_1 0.27507f
+C117 res original 0.00136f
+C118 a_n1011_n1581# nor 0.31531f
+C119 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# VDD_3V3_1 0.25656f
+C120 mux_res res 0.03547f
+C121 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z 0.13951f
+C122 nor over 0.20682f
+C123 in VDD_3V3_1 0.87095f
+C124 a_n1011_n1581# nti 0.00378f
+C125 a_n1011_n1581# mux2_mult_custom_0/a_124_24# 0.01016f
+C126 in gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z 0
+C127 a_n1011_n1581# mux2_mult_custom_0/a_592_407# 0
+C128 VDD_1V65 VSS 0.19169f
+C129 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_244_159# VSS 0.00145f ; **FLOATING
+C130 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# VSS 0.40188f ; **FLOATING
+C131 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z VSS 0.38119f
+C132 over VSS 0.2603f
+C133 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# VSS 0 ; **FLOATING
+C134 res_alt VSS 0.03802f
+C135 nor VSS 1.11737f
+C136 res VSS 0.01506f
+C137 a_n1011_n1581# VSS 0.49258f ; **FLOATING
+C138 VDD_3V3_1 VSS 5.45127f
+C139 mux_res VSS 0.06097f
+C140 inv VSS 0.76229f
+C141 sign VSS 0.45549f
+C142 original VSS 1.08391f
+C143 VDD_3V3_0 VSS 5.20529f
+C144 mux2_mult_custom_0/a_896_104# VSS 0.00302f ; **FLOATING
+C145 mux2_mult_custom_0/a_504_104# VSS 0 ; **FLOATING
+C146 mux2_mult_custom_0/a_592_407# VSS 0.49093f ; **FLOATING
+C147 mux2_mult_custom_0/a_124_24# VSS 0.49915f ; **FLOATING
+C148 nti VSS 0.2478f
+C149 in VSS 0.9676f

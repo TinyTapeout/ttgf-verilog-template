@@ -1,0 +1,84 @@
+timestamp 1793773640
+version 8.3
+tech gf180mcuD
+style ngspice()
+scale 1000 1 0.5
+resistclasses 1000000 3250000 6300 7000 6300 7000 7300 1000000 60000 185000 60000 185000 6300 7000 6300 7000 6800 7300 350000 310000 1000000 90 90 90 90 60
+use not_internal_mod not_internal_0 1 0 -504 0 1 -112
+use half_gate_0 half_tgate_0 -1 0 534 0 1 -112
+use half_gate_0 gf180mcu_fd_sc_mcu7t5v0__inv_1_0 1 0 -58 0 1 -112
+port "input_B" 2 -10 -180 392 -67 m2
+port "input_B" 2 -10 -180 -3 -40 m2
+port "input_B" 2 82 -180 392 13 m2
+port "select" 5 -302 168 334 315 m2
+port "input_A" 1 50 385 348 647 m2
+port "result" 3 56 670 504 840 m1
+port "result" 3 56 -392 504 -222 m1
+port "VDD_3V3" 6 -504 612 -56 732 m1
+port "VSS" 4 -504 -172 -69 -52 m1
+node "input_B" 2 612.809 82 -180 m2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 63966 1416 159290 3596 0 0 0 0 0 0
+node "m1_144_167#" 4 5.4039 144 167 m1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 366 250 0 0 0 0 0 0 0 0
+node "m1_n249_167#" 0 112.546 -249 167 m1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 41480 924 0 0 0 0 0 0 0 0
+node "select" 1 317.178 -302 168 m2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 20221 986 117981 2016 0 0 0 0 0 0
+node "input_A" 2 319.735 50 385 m2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 29784 1106 129059 2466 0 0 0 0 0 0
+node "result" 1 694.72 56 -392 m1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 228140 4086 0 0 0 0 0 0 0 0
+node "VDD_3V3" 1782 282.444 -504 612 m1 22006 618 0 0 0 0 0 0 12544 448 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 58232 1240 0 0 0 0 0 0 0 0
+substrate "VSS" 7 0 -504 -172 m1 0 0 0 0 0 0 0 0 0 0 12544 448 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 58318 1242 0 0 0 0 0 0 0 0
+cap "result" "input_A" 201.978
+cap "m1_n249_167#" "input_A" 16.836
+cap "result" "m1_n249_167#" 1.80175
+cap "select" "input_A" 131.028
+cap "result" "select" 151.238
+cap "VDD_3V3" "input_A" 8.37825
+cap "result" "VDD_3V3" 32.3984
+cap "input_A" "m1_144_167#" 0.187672
+cap "result" "m1_144_167#" 65.3566
+cap "select" "m1_n249_167#" 132.326
+cap "input_B" "input_A" 252.702
+cap "result" "input_B" 274.617
+cap "VDD_3V3" "m1_n249_167#" 13.2026
+cap "m1_n249_167#" "m1_144_167#" 57.4705
+cap "input_B" "m1_n249_167#" 26.9908
+cap "VDD_3V3" "select" 14.4563
+cap "select" "m1_144_167#" 7.73678
+cap "input_B" "select" 60.0075
+cap "input_B" "m1_144_167#" 0.118399
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_56_472#" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_124_24#" 55.9167
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_56_472#" "half_tgate_0/a_124_24#" 29.1502
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_244_68#" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_36_68#" -38.7373
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_56_472#" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_36_68#" -0.773862
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_124_24#" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/w_n86_352#" 10.2302
+cap "half_tgate_0/a_124_24#" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/w_n86_352#" 2.06016
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_56_472#" "not_internal_0/a_36_68#" 0.154645
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_36_68#" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/w_n86_352#" 30.4936
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/w_n86_352#" "not_internal_0/a_36_68#" -15.8518
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_56_472#" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_244_68#" -39.9252
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_244_68#" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/w_n86_352#" -1.96129
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_124_24#" "half_tgate_0/a_124_24#" 19.9737
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_56_472#" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/w_n86_352#" 24.7913
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_36_68#" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_124_24#" 63.3251
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_36_68#" "half_tgate_0/a_124_24#" 21.3851
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_124_24#" "not_internal_0/a_36_68#" -5.11352
+cap "half_tgate_0/a_124_24#" "not_internal_0/a_36_68#" -7.43505
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_36_68#" "not_internal_0/a_36_68#" 4.09205
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_244_68#" "half_tgate_0/a_124_24#" -47.5809
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_244_68#" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_124_24#" -12.1454
+merge "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_36_68#" "half_tgate_0/a_56_472#" -234.335 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -16146 -886 0 0 0 0 0 0 0 0
+merge "half_tgate_0/a_56_472#" "input_B"
+merge "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/w_n86_352#" "half_tgate_0/w_n86_352#" -1292.2 -342774 -3824 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -53760 -1136 0 0 0 0 0 0 0 0
+merge "half_tgate_0/w_n86_352#" "not_internal_0/a_56_472#"
+merge "not_internal_0/a_56_472#" "not_internal_0/w_n86_352#"
+merge "not_internal_0/w_n86_352#" "VDD_3V3"
+merge "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSUBS" "half_tgate_0/VSUBS" -225.91 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -53760 -1136 0 0 0 0 0 0 0 0
+merge "half_tgate_0/VSUBS" "not_internal_0/VSUBS"
+merge "not_internal_0/VSUBS" "not_internal_0/a_36_68#"
+merge "not_internal_0/a_36_68#" "VSS"
+merge "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_124_24#" "m1_144_167#" -228.84 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -9028 -880 0 0 0 0 0 0 0 0
+merge "m1_144_167#" "not_internal_0/a_244_68#"
+merge "not_internal_0/a_244_68#" "m1_n249_167#"
+merge "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_244_68#" "half_tgate_0/a_244_68#" -472.366 0 0 0 0 0 0 0 0 -11808 -472 -17568 -632 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -74932 -2550 0 0 0 0 0 0 0 0
+merge "half_tgate_0/a_244_68#" "result"
+merge "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/a_56_472#" "half_tgate_0/a_36_68#" -259.05 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -17940 -964 0 0 0 0 0 0 0 0
+merge "half_tgate_0/a_36_68#" "input_A"
+merge "half_tgate_0/a_124_24#" "not_internal_0/a_124_24#" -236.293 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -20221 -986 0 0 0 0 0 0 0 0
+merge "not_internal_0/a_124_24#" "select"

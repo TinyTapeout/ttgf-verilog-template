@@ -1,0 +1,23 @@
+* NGSPICE file created from 5v0_tg_sc.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSS gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X1 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VNW gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VNW pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X2 out gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I In gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X3 out gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN In gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VNW pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+C0 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN In 0.13807f
+C1 In gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I 0.08812f
+C2 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VNW In 0.05889f
+C3 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I 0.22844f
+C4 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VNW gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN 0.48467f
+C5 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VNW gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I 0.25989f
+C6 In out 0.08894f
+C7 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN out 0.01813f
+C8 out gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I 0.0221f
+C9 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VNW out 0.04292f
+C10 out gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSS 0.13587f
+C11 In gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSS 0.09856f
+C12 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSS 0.24891f
+C13 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VNW gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSS 2.06179f
+C14 gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSS 0.88456f

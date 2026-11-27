@@ -1,0 +1,104 @@
+timestamp 1794885715
+version 8.3
+tech gf180mcuD
+style ngspice()
+scale 1000 1 0.5
+resistclasses 1000000 3250000 6300 7000 6300 7000 7300 1000000 60000 185000 60000 185000 6300 7000 6300 7000 6800 7300 350000 310000 1000000 90 90 90 90 60
+use not_internal_4 not_internal_4_0 1 0 -1658 0 1 -2180
+use gf180mcu_fd_sc_mcu7t5v0__nor2_1 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0 1 0 -3336 0 1 -2180
+use inverter_pair_short inverter_pair_short_0 1 0 -2398 0 1 -2124
+port "VSS" 4 -3336 -2240 -1210 -2120 m1
+port "in" 2 -2504 -1888 -2297 -1708 m1
+port "sign" 1 -2266 -1791 -1405 -1735 m2
+port "sign" 1 -2266 -1959 -2210 -1735 m2
+port "sign" 1 -2740 -1959 -2210 -1903 m2
+port "sign" 1 -2740 -1959 -2684 -1791 m2
+port "sign" 1 -3134 -1847 -2684 -1791 m2
+port "over" 3 -3088 -1708 -2849 -1644 m1
+port "VDD_3V3" 5 -3336 -1456 -1210 -1336 m1
+node "VSS" 2 892.758 -3336 -2240 m1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 255120 4492 0 0 0 0 0 0 0 0
+node "m1_n1773_n1900#" 1 73.8676 -1773 -1900 m1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 12690 634 0 0 0 0 0 0 0 0
+node "in" 0 109.468 -2504 -1888 m1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 37260 774 0 0 0 0 0 0 0 0
+node "m1_n2919_n1822#" 0 58.0736 -2919 -1822 m1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 16048 608 0 0 0 0 0 0 0 0
+node "sign" 4 815.588 -3134 -1847 m2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 15555 744 132216 4756 0 0 0 0 0 0
+node "over" 0 71.3691 -3088 -1708 m1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 15296 606 0 0 0 0 0 0 0 0
+node "VDD_3V3" 2 893.258 -3336 -1456 m1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 255120 4492 0 0 0 0 0 0 0 0
+substrate "VSUBS" 0 0 -1073741817 -1073741817 space 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+cap "m1_n1773_n1900#" "VSS" 26.0434
+cap "in" "VSS" 18.8874
+cap "in" "m1_n1773_n1900#" 1.3793
+cap "VDD_3V3" "VSS" 34.5963
+cap "m1_n2919_n1822#" "VSS" 16.5987
+cap "VDD_3V3" "m1_n1773_n1900#" 14.1321
+cap "sign" "VSS" 73.4558
+cap "VDD_3V3" "in" 17.3264
+cap "in" "m1_n2919_n1822#" 8.15034
+cap "sign" "m1_n1773_n1900#" 18.2455
+cap "sign" "in" 70.6103
+cap "over" "VSS" 8.51558
+cap "VDD_3V3" "m1_n2919_n1822#" 11.6753
+cap "VDD_3V3" "sign" 53.5627
+cap "sign" "m1_n2919_n1822#" 37.1508
+cap "VDD_3V3" "over" 27.1977
+cap "m1_n2919_n1822#" "over" 39.3867
+cap "sign" "over" 14.5782
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/ZN" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VDD" -24.886
+cap "inverter_pair_short_0/pti" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A2" 35.0117
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VDD" -23.632
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A2" 3.07831
+cap "inverter_pair_short_0/in" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1" 0.130516
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/ZN" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1" 11.8602
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1" -13.1432
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" "inverter_pair_short_0/in" 2.59195
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/ZN" -7.44776
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/ZN" "inverter_pair_short_0/in" 3.14049
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VDD" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A2" -2.94143
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1" 10.75
+cap "inverter_pair_short_0/in" "inverter_pair_short_0/pti" -0.651442
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS" -5.89999
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/ZN" -8.51558
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472#" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A2" 4.29781
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472#" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VDD" 0.379365
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS" "inverter_pair_short_0/in" -16.5806
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VDD" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1" -7.87177
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A2" 68.4157
+cap "inverter_pair_short_0/in" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A2" 112.886
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VDD" -63.9512
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/ZN" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A2" 33.46
+cap "inverter_pair_short_0/in" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VDD" -16.8825
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A2" 23.6693
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS" -11.9812
+cap "inverter_pair_short_0/in" "inverter_pair_short_0/pti" 6.95012
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A2" "inverter_pair_short_0/pti" 96.0305
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS" "inverter_pair_short_0/in" 1.96874
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VDD" "inverter_pair_short_0/pti" 37.0703
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" "inverter_pair_short_0/in" -1.07536
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A2" -3.56861
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A2" 20.2842
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A2" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1" 0.0789273
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VDD" -28.0246
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VDD" -30.493
+cap "inverter_pair_short_0/in" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A2" 27.4579
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS" "inverter_pair_short_0/pti" 46.4807
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW" "inverter_pair_short_0/pti" 5.21374
+cap "inverter_pair_short_0/in" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VDD" 1.47164
+cap "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VDD" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A2" 7.60962
+merge "inverter_pair_short_0/VSS" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS" -1116.87 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -277440 -5344 0 0 0 0 0 0 0 0
+merge "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VSS" "not_internal_4_0/a_36_68#"
+merge "not_internal_4_0/a_36_68#" "VSS"
+merge "inverter_pair_short_0/VDD_3V3" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VDD" -1124.03 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -301920 -5752 0 0 0 0 0 0 0 0
+merge "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VDD" "not_internal_4_0/a_56_472#"
+merge "not_internal_4_0/a_56_472#" "VDD_3V3"
+merge "inverter_pair_short_0/nti" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1" -171.743 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -13600 -672 0 0 0 0 0 0 0 0
+merge "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A1" "m1_n2919_n1822#"
+merge "inverter_pair_short_0/VSUBS" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VPW" 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+merge "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VPW" "not_internal_4_0/VSUBS"
+merge "not_internal_4_0/VSUBS" "VSUBS"
+merge "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/A2" "not_internal_4_0/a_244_68#" -340.986 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -15555 -744 0 0 0 0 0 0 0 0
+merge "not_internal_4_0/a_244_68#" "sign"
+merge "inverter_pair_short_0/in" "in" -142.417 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -37260 -774 0 0 0 0 0 0 0 0
+merge "inverter_pair_short_0/w_n556_296#" "not_internal_4_0/w_n86_352#" -1005.44 -335146 -3366 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+merge "not_internal_4_0/w_n86_352#" "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/VNW"
+merge "gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/ZN" "over" -100.479 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -15296 -606 0 0 0 0 0 0 0 0
+merge "inverter_pair_short_0/pti" "not_internal_4_0/a_124_24#" -182.537 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -3008 -346 0 0 0 0 0 0 0 0
+merge "not_internal_4_0/a_124_24#" "m1_n1773_n1900#"

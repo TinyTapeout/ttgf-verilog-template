@@ -1,0 +1,144 @@
+//the magic happens here
+module alu(
+    
+    input wire [7:0] command_word, //2 commands
+
+
+    //parameters are read by the memory controller 24 bit chunks, same as shadow registers
+    input wire [3:0] param_0,
+    input wire [3:0] param_1,
+    input wire [3:0] param_2,
+    
+    output reg command_req_new,
+    input  wire command_data_sent,
+
+    output reg command_req_new,
+    input  wire command_data_sent,
+    
+    output reg macro_op_complete,
+    output reg executed_jump,
+
+
+    //this holds the ternary logics internally 
+    //registers outside
+
+    //each micro op may still take multiple instructions to do
+    //micro ops which take multiple instructions can be worked on during housekeeping or idle
+
+);
+
+//make sure endianess lines up with ternary stuff
+assign wire [3:0] current_word = use_word0 ? command_word[3:0] : command_word [7:4];
+//instruction 1 4bits | instruction 2 4bits
+//theres no splitting when the microcode is written so...
+
+localparam  aluidle         = 2'b00, //not doing any work? well i can fix that...
+            aluwaitshadow   = 2'b01, //waiting for shadow ram
+            alubusy         = 2'b10, //alu is up to stuff
+            aluregop        = 2'b11, //alu is up to something big...
+            ;
+reg [1:0]   alustate = aluidle;
+
+reg idle = 1'b0;
+
+reg use_word0 = 1'b1;
+
+reg [1:0] param_offset = 2'b00; 
+
+
+
+localparam secondary_reg_in_use   = 4'b0001;
+localparam 4t_reg_in_use          = 4'b0010;
+localparam flag_reg_in_use        = 4'b0100;
+localparam ladder_reg_in_use      = 4'b1000;
+// localparam pc_reg_in_use          = 6'b000001; pc reg can always be swapped in microcode because it increments AFTER command complete
+
+
+//registers being used THIS clock cycle
+reg [3:0] active_registers = 4'b0;
+
+reg wr_enable <= 1'b1;
+
+
+always @(posedge clk or negedge rst_n) begin
+    //main loop
+    /*
+        if the useword at 0 is a return carat or a passed jump, then pull request_new up to high and idle
+        if the useword at 1 is anything, pull request new up to high and idle
+    */
+
+    //if theres no new command sent yet it can spend clock cycles housekeeping, or if it's waiting for data it can go operate on a different thread
+
+    //if action is 0000 or 0001 or 0010 AND first action is 0000
+    //  awaiting command                cpu idle
+    if((idle && !command_data_sent) || (param_0 == 4'b0000 && current_word > 4'b0010)) begin
+        use_word0 <= 1'b1;
+        //housekeeping 
+        //housekeeping is where aliased buffers
+        //ideally you DONT want to be housekeeping all the time
+        //because there isnt a lot to do tbh 
+    end
+    else begin
+        if(command_data_sent && command_req_new) begin
+            command_req_new <= 1'b0;
+        end
+
+        //uses ifelse to filter out the things first
+        if(current_word == 4'b0000) begin
+            //use
+            case(param_0 [2:0])
+            3'b001: begin
+                //this flushes the mac ladder
+            end
+            3'b010: begin
+                //clear carry
+            end
+            3'b100: begin
+                //return
+                command_req_new <= 1'b1;
+                alustate <= aluidle;
+                idle <= 1'b1;
+                wr_enable <= 1'b1;
+            end
+            3'b101: begin
+                //disable write
+                wr_enable <= 1'b0;
+            end
+            3'b110: begin
+                //enable write
+                wr_enable <= 1'b1;
+            end
+            endcase
+        end
+        else if (current_word == 4'b0001) begin
+            if(param_0 [3]) begin
+                //check if its the only 1000
+            end
+            else begin
+                case(param_0 [2:0])
+                // smaller multiplexer tree
+                endcase
+            end
+        end
+        else if (current_word == 4'b0010) begin
+        
+        end else begin
+            
+        end
+        //actual execution
+        //either new command data is sent
+        //if this is a return carat or a jump operation or a jump operation then pass over to here
+        if(!useword0) begin
+            //command word finished, get new
+            //for return and execute jumps use this too
+            command_req_new <= 1'b1;
+            alustate <= aluidle;
+            idle <= 1'b1;
+        end
+        else useword0 <= 1'b0;
+    end
+
+end
+
+
+endmodule

@@ -1,0 +1,183 @@
+magic
+tech gf180mcuD
+magscale 1 10
+timestamp 1793681378
+<< nwell >>
+rect -71 -409 1040 -408
+rect -71 -926 1178 -409
+<< pwell >>
+rect 228 -66 237 30
+<< mvnmos >>
+rect 294 -288 414 -124
+rect 518 -288 638 -124
+<< mvpmos >>
+rect 350 -772 450 -528
+rect 518 -772 618 -528
+<< mvndiff >>
+rect 199 -174 294 -124
+rect 199 -275 212 -174
+rect 258 -275 294 -174
+rect 199 -288 294 -275
+rect 414 -173 518 -124
+rect 414 -274 443 -173
+rect 489 -274 518 -173
+rect 414 -288 518 -274
+rect 638 -202 726 -124
+rect 638 -248 667 -202
+rect 713 -248 726 -202
+rect 638 -288 726 -248
+<< mvpdiff >>
+rect 262 -581 350 -528
+rect 262 -721 275 -581
+rect 321 -721 350 -581
+rect 262 -772 350 -721
+rect 450 -772 518 -528
+rect 618 -581 706 -528
+rect 618 -721 647 -581
+rect 693 -721 706 -581
+rect 618 -772 706 -721
+<< mvndiffc >>
+rect 212 -275 258 -174
+rect 443 -274 489 -173
+rect 667 -248 713 -202
+<< mvpdiffc >>
+rect 275 -721 321 -581
+rect 647 -721 693 -581
+<< mvpsubdiff >>
+rect -297 4 -142 29
+rect -297 -116 -280 4
+rect -158 -116 -142 4
+rect -297 -134 -142 -116
+<< mvnsubdiff >>
+rect -307 726 -152 748
+rect -307 606 -292 726
+rect -170 606 -152 726
+rect -307 585 -152 606
+rect -25 -718 130 -697
+rect -25 -838 -10 -718
+rect 112 -838 130 -718
+rect -25 -860 130 -838
+<< mvpsubdiffcont >>
+rect -280 -116 -158 4
+<< mvnsubdiffcont >>
+rect -292 606 -170 726
+rect -10 -838 112 -718
+<< polysilicon >>
+rect 294 -124 414 -72
+rect 518 -124 638 -80
+rect 294 -322 414 -288
+rect 294 -397 307 -322
+rect 396 -397 414 -322
+rect 294 -442 414 -397
+rect 518 -339 638 -288
+rect 294 -452 450 -442
+rect 350 -528 450 -452
+rect 518 -479 559 -339
+rect 605 -442 638 -339
+rect 605 -479 618 -442
+rect 518 -528 618 -479
+rect 350 -816 450 -772
+rect 518 -816 618 -772
+<< polycontact >>
+rect 307 -397 396 -322
+rect 559 -479 605 -339
+<< metal1 >>
+rect -295 606 -292 693
+rect -170 606 -168 693
+rect -295 595 -168 606
+rect -70 435 22 447
+rect -70 210 -64 435
+rect 17 210 22 435
+rect 69 236 534 403
+rect -70 197 22 210
+rect 228 -66 848 4
+rect 237 -116 848 -66
+rect -280 -174 269 -168
+rect -280 -275 212 -174
+rect 258 -275 269 -174
+rect 443 -173 509 -162
+rect 489 -274 509 -173
+rect -280 -392 168 -275
+rect 307 -322 396 -310
+rect 307 -409 396 -397
+rect 443 -456 509 -274
+rect 667 -202 713 -116
+rect 667 -288 713 -248
+rect -168 -541 509 -456
+rect 555 -338 620 -296
+rect 555 -339 876 -338
+rect 555 -479 559 -339
+rect 605 -479 876 -339
+rect 555 -496 620 -479
+rect -168 -581 323 -541
+rect -168 -626 275 -581
+rect -168 -733 -59 -626
+rect -13 -718 114 -707
+rect -13 -838 -10 -718
+rect 112 -780 114 -718
+rect 160 -721 275 -626
+rect 321 -721 323 -581
+rect 160 -733 323 -721
+rect 647 -581 693 -562
+rect 275 -780 321 -779
+rect 647 -780 693 -721
+rect 112 -838 908 -780
+rect -13 -900 908 -838
+<< via1 >>
+rect -64 210 17 435
+rect 594 329 1044 414
+rect 310 -397 393 -322
+rect 927 -479 984 -310
+<< metal2 >>
+rect -70 435 22 447
+rect -70 210 -64 435
+rect 17 210 22 435
+rect 580 414 1059 417
+rect 580 329 594 414
+rect 1044 329 1059 414
+rect 580 326 1059 329
+rect -70 178 22 210
+rect -70 110 382 178
+rect 307 -310 382 110
+rect 923 -310 988 326
+rect 307 -322 396 -310
+rect 307 -397 310 -322
+rect 393 -397 396 -322
+rect 307 -409 396 -397
+rect 923 -479 927 -310
+rect 984 -479 988 -310
+rect 923 -496 988 -479
+use 5v0_nti_sc_f  5v0_nti_sc_f_0
+timestamp 1793089189
+transform -1 0 209 0 1 0
+box -253 -142 589 814
+use 5v0_pti_sc  5v0_pti_sc_0
+timestamp 1793027373
+transform 1 0 383 0 1 0
+box -253 -142 925 814
+use not_internal  gf180mcu_fd_sc_mcu7t5v0__inv_1_0
+timestamp 1793632077
+transform -1 0 1130 0 -1 -56
+box -86 -86 534 870
+<< labels >>
+flabel metal1 s 667 -288 713 -116 0 FreeSans 400 180 0 0 VSS
+port 6 nsew ground bidirectional abutment
+flabel metal1 s 555 -496 620 -296 0 FreeSans 400 180 0 0 I
+port 1 nsew default input
+rlabel metal1 -280 -392 168 -168 1 VDD_1V65
+port 7 n signal bidirectional
+rlabel metal1 -168 -733 -59 -456 1 ternary_output
+port 8 n signal bidirectional
+rlabel space -295 -116 1223 4 1 VSS
+port 6 n ground bidirectional
+rlabel metal2 307 -322 382 178 1 nti_test_point
+port 10 n signal bidirectional
+rlabel metal2 923 -310 988 329 1 pti_test_point
+port 11 n signal bidirectional
+rlabel nwell 112 -900 1130 -780 1 VDD_3V3
+port 9 n power bidirectional
+rlabel metal1 605 -479 876 -338 1 not_test_point
+port 12 n signal output
+rlabel metal1 69 236 534 403 1 ternary_input
+port 13 n signal bidirectional
+<< end >>

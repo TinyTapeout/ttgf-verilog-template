@@ -1,0 +1,154 @@
+* Ternary Adder Full Truth-Table Testbench (5V0 Domain)
+* Tests 3 ternary_input states (0V, 2.5V, 5.0V) x 4 (ctrl_over, ctrl_sign) states
+
+* 1. PDK Models (GF180MCU)
+.include "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice"
+.lib "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice" typical
+
+* 2. Include your Magic-extracted netlist
+.include "5v0_half_adder_selector_sc_v2.spice"
+
+* 3. Subcircuit Instantiation (Uncomment and verify pin order ONLY if your .spice file uses .subckt)
+* Xdut ternary_input ctrl_sign ctrl_over ternary_output VDD_3V3 VDD_1V65 VSS 5v0_add_q_sc_v0
+
+* 4. Power Rails (5.0V full rail, 2.5V half rail, 0.0V ground)
+Vdd VDD_3V3  0 DC 5.0
+Vss VSS      0 DC 0.0
+
+* ==============================================================================
+* 4. Hardcoded Ternary Data Inputs (4 cycles of 15ns = 60ns total)
+* ==============================================================================
+
+* 4A. in_reg: Standard input sweep (0.0V -> 2.5V -> 5.0V per 15ns cycle)
+Vin_reg in_reg 0 PWL(
+* --- Cycle 1: ctrl_over=0, ctrl_sign=0 ---
++  0.0n  0.0   5.0n  0.0
++  5.1n  2.5  10.0n  2.5
++ 10.1n  5.0  15.0n  5.0
+* --- Cycle 2: ctrl_over=0, ctrl_sign=1 ---
++ 15.1n  0.0  20.0n  0.0
++ 20.1n  2.5  25.0n  2.5
++ 25.1n  5.0  30.0n  5.0
+* --- Cycle 3: ctrl_over=1, ctrl_sign=0 ---
++ 30.1n  0.0  35.0n  0.0
++ 35.1n  2.5  40.0n  2.5
++ 40.1n  5.0  45.0n  5.0
+* --- Cycle 4: ctrl_over=1, ctrl_sign=1 ---
++ 45.1n  0.0  50.0n  0.0
++ 50.1n  2.5  55.0n  2.5	
++ 55.1n  5.0  60.0n  5.0
++ )
+
+* 4B. in_upstep (CLAMPED: 0.0V->2.5V, 2.5V->5.0V, 5.0V->5.0V)
+Vin_up in_upstep 0 PWL(
+* --- Cycle 1 ---
++  0.0n  2.5   5.0n  2.5
++  5.1n  5.0  10.0n  5.0
++ 10.1n  5.0  15.0n  5.0
+* --- Cycle 2 ---
++ 15.1n  2.5  20.0n  2.5
++ 20.1n  5.0  25.0n  5.0
++ 25.1n  5.0  30.0n  5.0
+* --- Cycle 3 ---
++ 30.1n  2.5  35.0n  2.5
++ 35.1n  5.0  40.0n  5.0
++ 40.1n  5.0  45.0n  5.0
+* --- Cycle 4 ---
++ 45.1n  2.5  50.0n  2.5
++ 50.1n  5.0  55.0n  5.0
++ 55.1n  5.0  60.0n  5.0
++ )
+
+* 4C. in_downstep (CLAMPED: 0.0V->0.0V, 2.5V->0.0V, 5.0V->2.5V)
+Vin_down in_downstep 0 PWL(
+* --- Cycle 1 ---
++  0.0n  0.0   5.0n  0.0
++  5.1n  0.0  10.0n  0.0
++ 10.1n  2.5  15.0n  2.5
+* --- Cycle 2 ---
++ 15.1n  0.0  20.0n  0.0
++ 20.1n  0.0  25.0n  0.0
++ 25.1n  2.5  30.0n  2.5
+* --- Cycle 3 ---
++ 30.1n  0.0  35.0n  0.0
++ 35.1n  0.0  40.0n  0.0
++ 40.1n  2.5  45.0n  2.5
+* --- Cycle 4 ---
++ 45.1n  0.0  50.0n  0.0
++ 50.1n  0.0  55.0n  0.0
++ 55.1n  2.5  60.0n  2.5
++ )
+
+* ------------------------------------------------------------------------------
+* OPTIONAL: CYCLIC / MODULAR UPSTEP & DOWNSTEP (Uncomment and comment 4B/4C above
+* if your upstepper/downstepper wraps around instead of clamping)
+* ------------------------------------------------------------------------------
+* Vin_up in_upstep 0 PWL(
+* +  0.0n 2.5  5.0n 2.5   5.1n 5.0 10.0n 5.0  10.1n 0.0 15.0n 0.0
+* + 15.1n 2.5 20.0n 2.5  20.1n 5.0 25.0n 5.0  25.1n 0.0 30.0n 0.0
+* + 30.1n 2.5 35.0n 2.5  35.1n 5.0 40.0n 5.0  40.1n 0.0 45.0n 0.0
+* + 45.1n 2.5 50.0n 2.5  50.1n 5.0 55.0n 5.0  55.1n 0.0 60.0n 0.0 )
+*
+* Vin_down in_downstep 0 PWL(
+* +  0.0n 5.0  5.0n 5.0   5.1n 0.0 10.0n 0.0  10.1n 2.5 15.0n 2.5
+* + 15.1n 5.0 20.0n 5.0  20.1n 0.0 25.0n 0.0  25.1n 2.5 30.0n 2.5
+* + 30.1n 5.0 35.0n 5.0  35.1n 0.0 40.0n 0.0  40.1n 2.5 45.0n 2.5
+* + 45.1n 5.0 50.0n 5.0  50.1n 0.0 55.0n 0.0  55.1n 2.5 60.0n 2.5 )
+
+* ==============================================================================
+* 5. Selector Control Signals (4 Combinations of ctrl_over & ctrl_sign)
+* ==============================================================================
+
+* Medium axis: ctrl_sign toggles every 15ns (0V for 15ns, 5V for 15ns)
+Vsign ctrl_sign 0 PWL(
++  0.0n  0.0  15.0n  0.0
++ 15.1n  5.0  30.0n  5.0
++ 30.1n  0.0  45.0n  0.0
++ 45.1n  5.0  60.0n  5.0
++ )
+
+* Slow axis: ctrl_over toggles at 30ns (0V for 30ns, 5V for 30ns)
+Vover ctrl_over 0 PWL(
++  0.0n  0.0  30.0n  0.0
++ 30.1n  5.0  60.0n  5.0
++ )
+
+* Output capacitive load
+CLoad ternary_output 0 10ff
+
+* ==============================================================================
+* 6. Automated Verification Measurements
+* ==============================================================================
+.meas tran sel_O0_S0_st0 FIND v(ternary_output) AT=2.5n
+.meas tran sel_O0_S0_st1 FIND v(ternary_output) AT=7.5n
+.meas tran sel_O0_S0_st2 FIND v(ternary_output) AT=12.5n
+
+.meas tran sel_O0_S1_st0 FIND v(ternary_output) AT=17.5n
+.meas tran sel_O0_S1_st1 FIND v(ternary_output) AT=22.5n
+.meas tran sel_O0_S1_st2 FIND v(ternary_output) AT=27.5n
+
+.meas tran sel_O1_S0_st0 FIND v(ternary_output) AT=32.5n
+.meas tran sel_O1_S0_st1 FIND v(ternary_output) AT=37.5n
+.meas tran sel_O1_S0_st2 FIND v(ternary_output) AT=42.5n
+
+.meas tran sel_O1_S1_st0 FIND v(ternary_output) AT=47.5n
+.meas tran sel_O1_S1_st1 FIND v(ternary_output) AT=52.5n
+.meas tran sel_O1_S1_st2 FIND v(ternary_output) AT=57.5n
+
+* ==============================================================================
+* 7. Simulation & Plotting Commands
+* ==============================================================================
+.tran 10p 60n
+.op
+
+.control
+run
+* Plot 1: Output compared against the 3 hardcoded selector inputs
+plot v(result) v(in_reg) v(in_upstep) v(in_downstep) v(res_stage0)
+plot v(in_upstep) v(in_downstep) v(res_stage0)
+plot v(res_stage0) v(result) v(in_reg)
+* Plot 2: Control signals
+plot v(ctrl_over) v(ctrl_sign)
+.endc
+
+.end

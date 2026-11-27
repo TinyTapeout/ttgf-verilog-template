@@ -1,0 +1,38 @@
+* Ternary Adder Full Truth-Table Testbench (5V0 Domain)
+* Tests 3 ternary_input states (0V, 2.5V, 5.0V) x 4 (ctrl_over, ctrl_sign) states
+
+* 1. PDK Models (GF180MCU)
+.include "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice"
+.lib "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice" typical
+
+* 2. Include your Magic-extracted netlist
+.include "5v0_add_ccal_sc_r1_v2.spice"
+
+Vdd VDD_3V3  0 DC 5.0
+Vss VSS      0 DC 0.0
+Vin_sign   in_sign   0 PULSE(0.0 5.0 0 100p 100p  4.9n  10n)
+Vin_over   in_over   0 PULSE(0.0 5.0 0 100p 100p  9.9n  20n)
+Vctrl_sign ctrl_sign 0 PULSE(0.0 5.0 0 100p 100p 19.9n  40n)
+Vctrl_over ctrl_over 0 PULSE(0.0 5.0 0 100p 100p 39.9n  80n)
+
+
+* 6. Output capacitive load
+CLoad_sign res_sign 0 10ff
+CLoad_over res_over 0 10ff
+
+* 7. Simulation & Plotting Commands
+.tran 10p 80n
+.op
+
+.control
+run
+
+* Plot inputs (stacked visually by adding voltage offsets for readability)
+plot v(ctrl_over)+16 v(ctrl_sign)+11 v(in_over)+6 v(in_sign)
+
+* Plot outputs
+plot v(res_sign) v(res_over)
+
+plot i(Vss)
+.endc
+.end

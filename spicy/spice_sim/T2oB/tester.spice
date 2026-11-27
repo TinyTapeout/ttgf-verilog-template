@@ -1,0 +1,38 @@
+* secure ternary to binary conversion O-Ternary Test (5V0)
+
+
+.include "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice"
+.lib "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice" typical
+
+* 2. Include your Magic-extracted netlist
+.include "5v0_t2b_ov_sc_v1.spice"
+
+* Absolute power rails for transistor gates and bulk/wells
+Vdd VDD_3V3 0 DC 5.0
+Vss VSS 0 DC 0.0
+Vin_0 in 0 PWL(
++   0.0n   0.0
++   5.0n   0.0
++   5.1n   2.5
++  10.0n   2.5
++  10.1n   5.0
++  15.0n   5.0
++  15.1n   2.5
++  20.0n   2.5
++  20.1n   0.0
++  25.0n   0.0
++ )
+
+CLoad over 0 10ff
+CLoad2 sign 0 10ff
+
+* 6. Simulation Commands
+.tran 1p 25n
+.op
+.control
+run
+plot v(sign)+14 v(over)+7 v(in)
+plot v(inverter_pair_short_0/nti) v(sign)
+.endc
+.end
+

@@ -1,0 +1,79 @@
+* NGSPICE file created from 5v0_half_adder_selector_sc.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 m1_n9_n292# m1_n239_179# in_downstep VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X1 m1_n9_n292# m1_n239_179# in_upstep VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X2 m1_n239_179# ctrl_sign VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X3 m1_n239_179# ctrl_sign VDD_3V3 VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X4 m1_n9_n292# ctrl_sign in_upstep VSS nfet_06v0 ad=31.489n pd=1.041m as=14.432n ps=0.504m w=164 l=120
+X5 m1_n9_n292# ctrl_sign in_downstep VDD_3V3 pfet_06v0 ad=46.849n pd=1.361m as=21.472n ps=0.664m w=244 l=100
+X6 result ctrl_over m1_n9_n292# VSS nfet_06v0 ad=17.057n pd=0.537m as=0 ps=0 w=164 l=120
+X7 result ctrl_over in_reg VDD_3V3_uq0 pfet_06v0 ad=25.377n pd=0.697m as=21.472n ps=0.664m w=244 l=100
+X8 m1_n244_n517# ctrl_over VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=28.864n ps=1.008m w=164 l=120
+X9 m1_n244_n517# ctrl_over VDD_3V3_uq0 VDD_3V3_uq0 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X10 result m1_n244_n517# in_reg VSS nfet_06v0 ad=0 pd=0 as=14.432n ps=0.504m w=164 l=120
+X11 result m1_n244_n517# m1_n9_n292# VDD_3V3_uq0 pfet_06v0 ad=0 pd=0 as=0 ps=0 w=244 l=100
+C0 VDD_3V3_uq0 ctrl_sign 0
+C1 m1_n239_179# VDD_3V3_uq0 0.00103f
+C2 in_downstep ctrl_sign 0.14263f
+C3 m1_n244_n517# ctrl_sign 0.01628f
+C4 ctrl_over ctrl_sign 0.01302f
+C5 in_downstep m1_n239_179# 0.09818f
+C6 m1_n9_n292# ctrl_sign 0.22345f
+C7 in_upstep ctrl_sign 0.08621f
+C8 5v0_tgate_sel_2_sc_1/input_A ctrl_sign 0
+C9 m1_n239_179# m1_n244_n517# 0.00541f
+C10 in_downstep VDD_3V3_uq0 0
+C11 ctrl_over m1_n239_179# 0.00486f
+C12 m1_n239_179# in_reg 0
+C13 m1_n239_179# m1_n9_n292# 0.18379f
+C14 m1_n239_179# in_upstep 0.07502f
+C15 VDD_3V3_uq0 m1_n244_n517# 0.23373f
+C16 ctrl_over VDD_3V3_uq0 0.38476f
+C17 VDD_3V3 ctrl_sign 0.34341f
+C18 in_reg VDD_3V3_uq0 0.0303f
+C19 m1_n9_n292# VDD_3V3_uq0 0.06705f
+C20 5v0_tgate_sel_2_sc_1/input_A VDD_3V3_uq0 0.03098f
+C21 result VDD_3V3_uq0 0.01786f
+C22 m1_n239_179# VDD_3V3 0.26871f
+C23 in_downstep m1_n244_n517# 0.02742f
+C24 in_downstep ctrl_over 0.00163f
+C25 in_downstep in_reg 0.00615f
+C26 in_downstep m1_n9_n292# 0.17288f
+C27 in_downstep in_upstep 0.25015f
+C28 in_downstep 5v0_tgate_sel_2_sc_1/input_A 0
+C29 ctrl_over m1_n244_n517# 0.37702f
+C30 in_downstep result 0
+C31 in_reg m1_n244_n517# 0.11418f
+C32 ctrl_over in_reg 0.06818f
+C33 m1_n9_n292# m1_n244_n517# 0.14285f
+C34 ctrl_over m1_n9_n292# 0.05031f
+C35 5v0_tgate_sel_2_sc_1/input_A m1_n244_n517# 0.07353f
+C36 ctrl_over 5v0_tgate_sel_2_sc_1/input_A 0.01944f
+C37 in_reg in_upstep 0.00165f
+C38 m1_n9_n292# in_reg 0.2436f
+C39 m1_n9_n292# in_upstep 0.12896f
+C40 m1_n9_n292# 5v0_tgate_sel_2_sc_1/input_A 0.00385f
+C41 5v0_tgate_sel_2_sc_1/input_A in_upstep 0
+C42 result m1_n244_n517# 0.2082f
+C43 ctrl_over result 0.16286f
+C44 in_downstep VDD_3V3 0.04186f
+C45 result in_reg 0.15483f
+C46 result m1_n9_n292# 0.07822f
+C47 ctrl_over VDD_3V3 0.00148f
+C48 m1_n9_n292# VDD_3V3 0.01666f
+C49 VDD_3V3 in_upstep 0.1781f
+C50 m1_n239_179# ctrl_sign 0.30291f
+C51 5v0_tgate_sel_2_sc_1/input_A VSS 0
+C52 ctrl_over VSS 0.55758f
+C53 in_reg VSS 0.52668f
+C54 result VSS 0.02264f
+C55 m1_n244_n517# VSS 0.34224f ; **FLOATING
+C56 VDD_3V3_uq0 VSS 2.07393f
+C57 m1_n239_179# VSS 0.2822f ; **FLOATING
+C58 m1_n9_n292# VSS 0.4658f ; **FLOATING
+C59 in_downstep VSS 0.2519f
+C60 ctrl_sign VSS 0.56927f
+C61 VDD_3V3 VSS 2.06281f
+C62 in_upstep VSS 0.3541f

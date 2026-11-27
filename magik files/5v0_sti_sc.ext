@@ -1,0 +1,172 @@
+timestamp 1793097846
+version 8.3
+tech gf180mcuD
+style ngspice()
+scale 1000 1 0.5
+resistclasses 1000000 3250000 6300 7000 6300 7000 7300 1000000 60000 185000 60000 185000 6300 7000 6300 7000 6800 7300 350000 310000 1000000 90 90 90 90 60
+use gf180mcu_fd_sc_mcu7t5v0__inv_1 gf180mcu_fd_sc_mcu7t5v0__inv_1_1 1 0 602 0 -1 -82
+use gf180mcu_fd_sc_mcu7t5v0__inv_1 gf180mcu_fd_sc_mcu7t5v0__inv_1_0 1 0 168 0 1 -82
+use 5v0_pti_sc 5v0_pti_sc_0 1 0 -139 0 -1 -138
+use 5v0_nti_sc_f 5v0_nti_sc_f_0 1 0 -139 0 1 -26
+parameters nfet_10v0_asym l=l w=w a1=as p1=ps a2=ad p2=pd
+parameters nfet_06v0_dss l=l w=w a1=as p1=ps a2=ad p2=pd l1=s_sab l2=d_sab
+parameters nfet_06v0 l=l w=w a1=as p1=ps a2=ad p2=pd
+parameters pfet_10v0_asym l=l w=w a1=as p1=ps a2=ad p2=pd
+parameters pfet_06v0_dss l=l w=w a1=as p1=ps a2=ad p2=pd l1=s_sab l2=d_sab
+parameters pfet_06v0 l=l w=w a1=as p1=ps a2=ad p2=pd
+port "ternary_input" 3 -392 210 -32 420 m1
+port "VDD_1V65" 1 540 24 652 150 m1
+port "ternary_output" 4 975 -760 1265 -484 m1
+node "m1_48_197#" 0 128.251 48 197 m1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 42706 914 0 0 0 0 0 0 0 0
+node "ternary_input" 1 629.245 -392 210 m1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 99525 1760 106035 2188 0 0 0 0 0 0
+node "a_n350_n804#" 7 88.2693 -350 -804 mvnnd 0 0 0 0 0 0 0 0 12810 454 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 14606 486 0 0 0 0 0 0 0 0
+node "a_1013_n294#" 8 186.974 1013 -294 mvndif 0 0 0 0 0 0 0 0 9240 386 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 75066 1702 0 0 0 0 0 0 0 0
+node "a_1101_n434#" 21 285.515 1101 -434 p 0 0 0 0 0 0 0 0 0 0 0 0 39480 898 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 17482 762 0 0 0 0 0 0 0 0
+node "a_869_21#" 16 0 869 21 mvndif 0 0 0 0 0 0 0 0 6450 358 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+node "VDD_1V65" 9 59.8004 540 24 m1 0 0 0 0 0 0 0 0 12513 452 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 26334 670 0 0 0 0 0 0 0 0
+node "a_919_n59#" 25 688.654 919 -59 p 0 0 0 0 0 0 0 0 0 0 0 0 44640 984 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 97960 2322 88351 2614 0 0 0 0 0 0
+node "ternary_output" 52 808.962 975 -760 m1 0 0 0 0 0 0 0 0 21753 838 13261 476 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 233488 4144 112942 2646 0 0 0 0 0 0
+node "a_661_450#" 12 117.141 661 450 mvpdif 0 0 0 0 0 0 0 0 0 0 13112 474 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 65106 1540 0 0 0 0 0 0 0 0
+node "a_749_n58#" 51 254.043 749 -58 p 0 0 0 0 0 0 0 0 0 0 0 0 81080 1722 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 59424 1170 0 0 0 0 0 0 0 0
+node "w_128_270#" 2112 1700.08 128 270 nw 566692 3224 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+node "w_n418_440#" 2535 188.968 -418 440 nw 34649 826 0 0 0 0 0 0 12810 454 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 18225 640 0 0 0 0 0 0 0 0
+substrate "a_n473_n143#" 8 0 -473 -143 mvppd 0 0 0 0 0 0 0 0 0 0 14632 484 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 21692 606 0 0 0 0 0 0 0 0
+cap "a_919_n59#" "ternary_output" 151.404
+cap "w_128_270#" "a_749_n58#" 255.03
+cap "ternary_output" "a_869_21#" 4.4817
+cap "ternary_output" "ternary_input" 4.26901
+cap "a_919_n59#" "VDD_1V65" 57.721
+cap "a_919_n59#" "w_128_270#" 86.2882
+cap "VDD_1V65" "a_869_21#" 2.57242
+cap "VDD_1V65" "ternary_input" 0.439671
+cap "w_128_270#" "ternary_input" 15.6702
+cap "w_n418_440#" "a_749_n58#" 0.213003
+cap "VDD_1V65" "ternary_output" 10.3802
+cap "w_128_270#" "ternary_output" 112.663
+cap "a_1013_n294#" "a_1101_n434#" 93.2809
+cap "w_n418_440#" "ternary_input" 31.1005
+cap "a_1013_n294#" "a_749_n58#" 11.6968
+cap "m1_48_197#" "a_749_n58#" 70.812
+cap "w_n418_440#" "ternary_output" 0.312375
+cap "a_919_n59#" "a_1013_n294#" 59.0928
+cap "a_919_n59#" "m1_48_197#" 10.2394
+cap "w_n418_440#" "w_128_270#" 9.42646
+cap "a_1013_n294#" "a_869_21#" 2.93714
+cap "a_1013_n294#" "ternary_input" 0.267142
+cap "ternary_input" "m1_48_197#" 44.5372
+cap "a_661_450#" "a_749_n58#" 63.6431
+cap "a_1013_n294#" "ternary_output" 260.65
+cap "a_661_450#" "a_919_n59#" 13.4897
+cap "w_128_270#" "a_1013_n294#" 1.4577
+cap "a_n350_n804#" "a_919_n59#" 2.44182
+cap "w_128_270#" "m1_48_197#" 40.2412
+cap "a_n350_n804#" "ternary_input" 0.882716
+cap "a_661_450#" "ternary_output" 111.407
+cap "a_919_n59#" "a_1101_n434#" 17.8295
+cap "ternary_input" "a_1101_n434#" 0.289504
+cap "a_661_450#" "w_128_270#" 103.345
+cap "a_919_n59#" "a_749_n58#" 214.764
+cap "ternary_output" "a_1101_n434#" 182
+cap "a_869_21#" "a_749_n58#" 0.0581223
+cap "ternary_input" "a_749_n58#" 3.14126
+cap "w_128_270#" "a_1101_n434#" 2.62711
+cap "ternary_output" "a_749_n58#" 29.7249
+cap "a_919_n59#" "a_869_21#" 2.12028
+cap "a_661_450#" "w_n418_440#" 4.93141
+cap "a_919_n59#" "ternary_input" 36.1401
+cap "VDD_1V65" "a_749_n58#" 111.155
+device msubckt nfet_06v0 1101 -294 1102 -293 l=120 w=105 "a_n473_n143#" "a_1101_n434#" 240 0 "a_1013_n294#" 105 9240,386 "ternary_output" 105 9240,386
+device msubckt nfet_06v0 919 21 920 22 l=120 w=129 "a_n473_n143#" "a_919_n59#" 240 0 "a_869_21#" 129 3225,179 "ternary_output" 129 12513,452
+device msubckt nfet_06v0 749 21 750 22 l=120 w=129 "a_n473_n143#" "a_749_n58#" 240 0 "VDD_1V65" 129 12513,452 "a_869_21#" 129 3225,179
+device msubckt pfet_06v0 749 450 750 451 l=100 w=149 "w_128_270#" "a_749_n58#" 200 0 "a_661_450#" 149 13112,474 "ternary_output" 149 13261,476
+cap "5v0_nti_sc_f_0/ternary_input" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/I" 42.1256
+cap "5v0_nti_sc_f_0/ternary_input" "VDD_1V65" -0.406468
+cap "5v0_nti_sc_f_0/ternary_input" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS" 165.879
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS" -48.1489
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/I" -0.0250904
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/ZN" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VDD" -14.1551
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN" 30.3069
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/I" 19.5838
+cap "VDD_1V65" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN" 60.211
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/ZN" "ternary_output" 66.4454
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VDD" -35.4801
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VDD" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/I" 81.9698
+cap "5v0_nti_sc_f_0/ternary_input" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD" 55.6231
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS" "ternary_output" 0.0751902
+cap "ternary_output" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/I" -7.27999
+cap "5v0_nti_sc_f_0/ternary_input" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN" 2.99373
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN" -14.3098
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/ZN" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS" 13.1345
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/ZN" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/I" 5.15388
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS" 66.2826
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/I" 9.09557
+cap "5v0_nti_sc_f_0/ternary_input" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VDD" 56.3658
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/I" 170.843
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VDD" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN" 0.546293
+cap "VDD_1V65" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS" 117.79
+cap "VDD_1V65" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/I" -15.5453
+cap "5v0_nti_sc_f_0/ternary_input" "ternary_output" -0.602592
+cap "5v0_nti_sc_f_0/ternary_input" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/ZN" 0.579003
+cap "ternary_output" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN" 2.51986
+cap "5v0_nti_sc_f_0/ternary_input" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I" -0.751495
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD" -11.0993
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/ZN" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN" 0.568788
+cap "a_869_21#" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS" 0.0114021
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN" -55.2809
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD" "ternary_output" -3.55839
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/I" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS" -1.4144
+cap "5v0_nti_sc_f_0/ternary_input" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS" -0.0573509
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VDD" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS" -9.61749
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/ZN" "ternary_output" 70.8626
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I" "ternary_output" 0.980757
+cap "ternary_output" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS" 3.23237
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VDD" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/I" 4.41292
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/ZN" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS" 15.4311
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/I" "ternary_output" -6.814
+cap "5v0_nti_sc_f_0/ternary_input" "ternary_output" 0.23526
+cap "ternary_output" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN" 2.74927
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VDD" "ternary_output" 93.4448
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/I" 1.33227e-15
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/ZN" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/I" -0.251154
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/ZN" "5v0_nti_sc_f_0/ternary_input" -0.0531271
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/ZN" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VDD" 17.5109
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN" 22.2979
+cap "5v0_nti_sc_f_0/ternary_input" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN" 0.487175
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I" 0.749882
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN" "ternary_output" 0.445563
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD" -12.1523
+cap "5v0_nti_sc_f_0/ternary_input" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD" 26.1548
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I" 28.3394
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD" "ternary_output" 1.77636e-15
+cap "5v0_nti_sc_f_0/ternary_input" "ternary_output" 0.090114
+cap "ternary_output" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I" 0.822918
+cap "ternary_output" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD" -1.23598
+cap "ternary_output" "5v0_nti_sc_f_0/ternary_input" 0.468792
+cap "ternary_output" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN" 0.762915
+merge "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/ZN" "a_1101_n434#" -122.921 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -322 -106 0 0 0 0 0 0 0 0
+merge "5v0_pti_sc_0/VDD_3V3" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VDD" -708.276 -139860 -1576 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -11880 -568 0 0 0 0 0 0 0 0
+merge "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VDD" "5v0_pti_sc_0/ternary_output"
+merge "5v0_pti_sc_0/ternary_output" "a_n350_n804#"
+merge "a_n350_n804#" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VNW"
+merge "5v0_nti_sc_f_0/VSUBS" "5v0_nti_sc_f_0/VSS" -1024.96 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -174620 -4106 0 0 0 0 0 0 0 0
+merge "5v0_nti_sc_f_0/VSS" "5v0_pti_sc_0/ternary_input"
+merge "5v0_pti_sc_0/ternary_input" "5v0_pti_sc_0/VSS"
+merge "5v0_pti_sc_0/VSS" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VPW"
+merge "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VPW" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VPW"
+merge "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VPW" "a_n473_n143#"
+merge "a_n473_n143#" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSS"
+merge "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSS" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS"
+merge "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/VSS" "a_1013_n294#"
+merge "5v0_nti_sc_f_0/ternary_input" "5v0_pti_sc_0/a_38_33#" -435.956 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -18954 -908 0 0 0 0 0 0 0 0
+merge "5v0_pti_sc_0/a_38_33#" "ternary_input"
+merge "5v0_nti_sc_f_0/VDD_3V3" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD" -1863.61 -515927 -4730 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -26729 -1118 0 0 0 0 0 0 0 0
+merge "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD" "a_661_450#"
+merge "a_661_450#" "5v0_nti_sc_f_0/w_n253_296#"
+merge "5v0_nti_sc_f_0/w_n253_296#" "w_n418_440#"
+merge "w_n418_440#" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VNW"
+merge "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VNW" "w_128_270#"
+merge "5v0_pti_sc_0/a_188_416#" "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/I" -538.214 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -39016 -1720 0 0 0 0 0 0 0 0
+merge "gf180mcu_fd_sc_mcu7t5v0__inv_1_1/I" "a_919_n59#"
+merge "5v0_nti_sc_f_0/ternary_output" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I" -258.915 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -20436 -836 0 0 0 0 0 0 0 0
+merge "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I" "m1_48_197#"
+merge "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN" "a_749_n58#" -162.759 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -8646 -394 0 0 0 0 0 0 0 0

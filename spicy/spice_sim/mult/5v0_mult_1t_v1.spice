@@ -1,0 +1,169 @@
+* NGSPICE file created from 5v0_mult_1t.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 inverter_pair_short_0/pti in VSS VSS nfet_06v0 ad=6.336n pd=0.32m as=6.478n ps=0.255m w=72 l=578
+X1 VDD_3V3_1 in inverter_pair_short_0/pti VDD_3V3_1 pfet_06v0 ad=12.81n pd=0.349m as=12.688n ps=0.348m w=244 l=100
+X2 VDD_3V3_1 in inverter_pair_short_0/nti VDD_3V3_1 pfet_06v0 ad=13.616n pd=0.392m as=9.696n ps=0.394m w=96 l=150
+X3 VSS in inverter_pair_short_0/nti VSS nfet_06v0 ad=6.478n pd=0.255m as=12.7n ps=0.454m w=127 l=120
+X4 inverter_pair_short_0/pti in VDD_3V3_1 VDD_3V3_1 pfet_06v0 ad=12.688n pd=0.348m as=13.616n ps=0.392m w=244 l=100
+X5 inverter_pair_short_0/pti in VDD_3V3_1 VDD_3V3_1 pfet_06v0 ad=27.328n pd=0.712m as=12.81n ps=0.349m w=244 l=100
+X6 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN over gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_448_472# VDD_3V3_1 pfet_06v0 ad=21.472n pd=0.664m as=15.128n ps=0.368m w=244 l=100
+X7 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN over VSS VSS nfet_06v0 ad=8.184n pd=0.362m as=4.836n ps=0.197m w=93 l=120
+X8 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_244_472# inverter_pair_short_0/nti VDD_3V3_1 VDD_3V3_1 pfet_06v0 ad=12.688n pd=0.348m as=21.472n ps=0.664m w=244 l=100
+X9 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_448_472# inverter_pair_short_0/pti gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_244_472# VDD_3V3_1 pfet_06v0 ad=15.128n pd=0.368m as=12.688n ps=0.348m w=244 l=100
+X10 VSS inverter_pair_short_0/pti gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN VSS nfet_06v0 ad=4.836n pd=0.197m as=4.836n ps=0.197m w=93 l=120
+X11 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN inverter_pair_short_0/nti VSS VSS nfet_06v0 ad=4.836n pd=0.197m as=8.184n ps=0.362m w=93 l=120
+X12 mux_mutliplier_custom_0/a_896_593# sign mux_mutliplier_custom_0/a_124_24# VDD_3V3_0 pfet_06v0 ad=2.952n pd=0.171m as=6.396n ps=0.227m w=123 l=100
+X13 VSS mux_mutliplier_custom_0/a_124_24# tg_component_0/a_244_68# VSS nfet_06v0 ad=8.72n pd=0.304m as=14.432n ps=0.504m w=164 l=120
+X14 mux_mutliplier_custom_0/a_124_24# sign mux_mutliplier_custom_0/a_504_104# VSS nfet_06v0 ad=3.744n pd=0.176m as=1.728n ps=0.12m w=72 l=120
+X15 VDD_3V3_0 mux_mutliplier_custom_0/a_124_24# tg_component_0/a_244_472# VDD_3V3_0 pfet_06v0 ad=17.193n pd=0.437m as=21.472n ps=0.664m w=244 l=100
+X16 VDD_3V3_0 inverter_pair_short_0/pti mux_mutliplier_custom_0/a_896_593# VDD_3V3_0 pfet_06v0 ad=6.396n pd=0.227m as=2.952n ps=0.171m w=123 l=100
+X17 mux_mutliplier_custom_0/a_592_407# sign VSS VSS nfet_06v0 ad=6.336n pd=0.32m as=3.744n ps=0.176m w=72 l=120
+X18 mux_mutliplier_custom_0/a_504_104# mux_mutliplier_custom_0/I1 VSS VSS nfet_06v0 ad=1.728n pd=0.12m as=8.72n ps=0.304m w=72 l=120
+X19 mux_mutliplier_custom_0/a_592_407# sign VDD_3V3_0 VDD_3V3_0 pfet_06v0 ad=10.824n pd=0.422m as=6.396n ps=0.227m w=123 l=100
+X20 mux_mutliplier_custom_0/a_537_593# mux_mutliplier_custom_0/I1 VDD_3V3_0 VDD_3V3_0 pfet_06v0 ad=3.382n pd=0.178m as=17.193n ps=0.437m w=123 l=100
+X21 VSS inverter_pair_short_0/pti mux_mutliplier_custom_0/a_896_104# VSS nfet_06v0 ad=3.744n pd=0.176m as=1.728n ps=0.12m w=72 l=120
+X22 mux_mutliplier_custom_0/a_896_104# mux_mutliplier_custom_0/a_592_407# mux_mutliplier_custom_0/a_124_24# VSS nfet_06v0 ad=1.728n pd=0.12m as=3.744n ps=0.176m w=72 l=120
+X23 mux_mutliplier_custom_0/a_124_24# mux_mutliplier_custom_0/a_592_407# mux_mutliplier_custom_0/a_537_593# VDD_3V3_0 pfet_06v0 ad=6.396n pd=0.227m as=3.382n ps=0.178m w=123 l=100
+X24 m2_n772_n1518# gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X25 m2_n772_n1518# gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN VDD_3V3_0 VDD_3V3_0 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X26 mux_mutliplier_custom_0/I1 inverter_pair_short_0/pti VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=84.604n ps=3.234m w=164 l=120
+X27 mux_mutliplier_custom_0/I1 inverter_pair_short_0/pti VDD_3V3_1 VDD_3V3_1 pfet_06v0 ad=21.472n pd=0.664m as=95.796n ps=2.81m w=244 l=100
+X28 tg_component_0/a_244_68# m2_n772_n1518# res VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X29 res m2_n772_n1518# VDD_1V65 VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+C0 in sign 0.00584f
+C1 in gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN 0.00434f
+C2 over m2_n772_n1518# 0.00178f
+C3 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_244_472# gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN 0.0018f
+C4 mux_mutliplier_custom_0/I1 mux_mutliplier_custom_0/a_504_104# 0
+C5 inverter_pair_short_0/nti in 0.17102f
+C6 inverter_pair_short_0/nti gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_244_472# 0.01909f
+C7 in res 0
+C8 mux_mutliplier_custom_0/a_124_24# mux_mutliplier_custom_0/I1 0.32284f
+C9 VDD_3V3_1 m2_n772_n1518# 0.00552f
+C10 VDD_3V3_0 sign 0.4897f
+C11 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN VDD_3V3_0 0.38474f
+C12 mux_mutliplier_custom_0/a_592_407# mux_mutliplier_custom_0/a_537_593# 0
+C13 inverter_pair_short_0/nti VDD_3V3_0 0
+C14 res VDD_3V3_0 0.5796f
+C15 inverter_pair_short_0/pti VDD_1V65 0.01479f
+C16 over gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN 0.29122f
+C17 inverter_pair_short_0/nti over 0
+C18 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_448_472# gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN 0.00621f
+C19 VDD_3V3_1 sign 0.00107f
+C20 VDD_1V65 mux_mutliplier_custom_0/a_504_104# 0
+C21 mux_mutliplier_custom_0/a_537_593# mux_mutliplier_custom_0/I1 0
+C22 VDD_3V3_1 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN 0.11983f
+C23 in VDD_3V3_0 0.0042f
+C24 inverter_pair_short_0/pti mux_mutliplier_custom_0/a_504_104# 0
+C25 VDD_1V65 mux_mutliplier_custom_0/a_124_24# 0.0025f
+C26 VDD_3V3_1 inverter_pair_short_0/nti 0.3952f
+C27 inverter_pair_short_0/pti mux_mutliplier_custom_0/a_124_24# 0.01004f
+C28 over in 0
+C29 res tg_component_0/a_244_472# 0.02381f
+C30 mux_mutliplier_custom_0/a_124_24# mux_mutliplier_custom_0/a_504_104# 0.00317f
+C31 mux_mutliplier_custom_0/I1 m2_n772_n1518# 0.00797f
+C32 VDD_3V3_1 in 0.87292f
+C33 VDD_3V3_1 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_244_472# 0.00689f
+C34 mux_mutliplier_custom_0/a_592_407# sign 0.22431f
+C35 over VDD_3V3_0 0.00126f
+C36 mux_mutliplier_custom_0/a_592_407# gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN 0
+C37 mux_mutliplier_custom_0/a_896_593# sign 0.00276f
+C38 VDD_3V3_1 VDD_3V3_0 0
+C39 tg_component_0/a_244_68# mux_mutliplier_custom_0/I1 0.00146f
+C40 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_448_472# over 0.01262f
+C41 mux_mutliplier_custom_0/I1 sign 0.2236f
+C42 mux_mutliplier_custom_0/I1 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN 0.00241f
+C43 mux_mutliplier_custom_0/a_592_407# mux_mutliplier_custom_0/a_896_104# 0.00166f
+C44 VDD_3V3_0 tg_component_0/a_244_472# 0.00384f
+C45 mux_mutliplier_custom_0/a_537_593# mux_mutliplier_custom_0/a_124_24# 0.00556f
+C46 VDD_3V3_1 over 0.18631f
+C47 inverter_pair_short_0/nti mux_mutliplier_custom_0/I1 0.00314f
+C48 mux_mutliplier_custom_0/I1 res 0.00354f
+C49 mux_mutliplier_custom_0/a_592_407# in 0.00591f
+C50 VDD_1V65 m2_n772_n1518# 0.15921f
+C51 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_448_472# VDD_3V3_1 0.01448f
+C52 inverter_pair_short_0/pti m2_n772_n1518# 0.01297f
+C53 mux_mutliplier_custom_0/a_592_407# VDD_3V3_0 0.35858f
+C54 mux_mutliplier_custom_0/a_896_104# mux_mutliplier_custom_0/I1 0.00142f
+C55 mux_mutliplier_custom_0/a_124_24# m2_n772_n1518# 0.02775f
+C56 mux_mutliplier_custom_0/I1 in 0.05905f
+C57 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_244_472# mux_mutliplier_custom_0/I1 0
+C58 mux_mutliplier_custom_0/a_896_593# VDD_3V3_0 0.005f
+C59 VDD_1V65 tg_component_0/a_244_68# 0.0015f
+C60 VDD_1V65 sign 0
+C61 inverter_pair_short_0/pti tg_component_0/a_244_68# 0.00111f
+C62 VDD_1V65 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN 0.1364f
+C63 inverter_pair_short_0/pti sign 0.36108f
+C64 inverter_pair_short_0/pti gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN 0.08019f
+C65 VDD_1V65 inverter_pair_short_0/nti 0.0029f
+C66 VDD_1V65 res 0.02271f
+C67 mux_mutliplier_custom_0/I1 VDD_3V3_0 0.23272f
+C68 inverter_pair_short_0/pti inverter_pair_short_0/nti 0.31888f
+C69 inverter_pair_short_0/pti res 0.00215f
+C70 mux_mutliplier_custom_0/a_592_407# VDD_3V3_1 0
+C71 tg_component_0/a_244_68# mux_mutliplier_custom_0/a_124_24# 0.00127f
+C72 mux_mutliplier_custom_0/a_504_104# gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN 0
+C73 mux_mutliplier_custom_0/a_124_24# sign 0.12833f
+C74 mux_mutliplier_custom_0/a_124_24# gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN 0.02079f
+C75 VDD_1V65 mux_mutliplier_custom_0/a_896_104# 0
+C76 mux_mutliplier_custom_0/a_124_24# res 0.04019f
+C77 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_448_472# mux_mutliplier_custom_0/I1 0
+C78 VDD_1V65 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_244_472# 0
+C79 inverter_pair_short_0/pti in 0.53128f
+C80 inverter_pair_short_0/pti gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_244_472# 0.00719f
+C81 VDD_3V3_1 mux_mutliplier_custom_0/I1 0.16237f
+C82 mux_mutliplier_custom_0/a_896_104# mux_mutliplier_custom_0/a_124_24# 0.00101f
+C83 VDD_1V65 VDD_3V3_0 0.00169f
+C84 inverter_pair_short_0/pti VDD_3V3_0 0.22224f
+C85 mux_mutliplier_custom_0/a_124_24# in 0.00624f
+C86 mux_mutliplier_custom_0/a_592_407# mux_mutliplier_custom_0/a_896_593# 0
+C87 mux_mutliplier_custom_0/a_537_593# sign 0
+C88 VDD_1V65 over 0.00253f
+C89 inverter_pair_short_0/pti over 0.08043f
+C90 mux_mutliplier_custom_0/a_124_24# VDD_3V3_0 0.48649f
+C91 mux_mutliplier_custom_0/a_592_407# mux_mutliplier_custom_0/I1 0.07191f
+C92 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_448_472# VDD_1V65 0.00239f
+C93 inverter_pair_short_0/pti gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_448_472# 0.01525f
+C94 VDD_1V65 VDD_3V3_1 0.00284f
+C95 inverter_pair_short_0/pti VDD_3V3_1 0.93779f
+C96 mux_mutliplier_custom_0/a_896_593# mux_mutliplier_custom_0/I1 0
+C97 m2_n772_n1518# gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN 0.33692f
+C98 inverter_pair_short_0/nti m2_n772_n1518# 0.0174f
+C99 m2_n772_n1518# res 0.25018f
+C100 inverter_pair_short_0/pti tg_component_0/a_244_472# 0
+C101 VDD_3V3_1 mux_mutliplier_custom_0/a_124_24# 0.0014f
+C102 mux_mutliplier_custom_0/a_537_593# VDD_3V3_0 0.00245f
+C103 mux_mutliplier_custom_0/a_592_407# VDD_1V65 0
+C104 mux_mutliplier_custom_0/a_124_24# tg_component_0/a_244_472# 0
+C105 inverter_pair_short_0/pti mux_mutliplier_custom_0/a_592_407# 0.30304f
+C106 tg_component_0/a_244_68# gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN 0
+C107 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN sign 0
+C108 tg_component_0/a_244_68# res 0.00643f
+C109 inverter_pair_short_0/nti gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN 0.03626f
+C110 res gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN 0.19544f
+C111 inverter_pair_short_0/nti res 0
+C112 mux_mutliplier_custom_0/a_592_407# mux_mutliplier_custom_0/a_124_24# 0.02837f
+C113 m2_n772_n1518# VDD_3V3_0 0.16765f
+C114 VDD_1V65 mux_mutliplier_custom_0/I1 0.00446f
+C115 inverter_pair_short_0/pti mux_mutliplier_custom_0/I1 0.42404f
+C116 mux_mutliplier_custom_0/a_896_593# mux_mutliplier_custom_0/a_124_24# 0.00106f
+C117 res VSS 0.06671f
+C118 VDD_1V65 VSS 0.19819f
+C119 m2_n772_n1518# VSS 0.52122f ; **FLOATING
+C120 tg_component_0/a_244_68# VSS 0.01042f ; **FLOATING
+C121 tg_component_0/a_244_472# VSS 0 ; **FLOATING
+C122 mux_mutliplier_custom_0/I1 VSS 0.70861f
+C123 sign VSS 0.44493f
+C124 VDD_3V3_0 VSS 4.50165f
+C125 mux_mutliplier_custom_0/a_896_104# VSS 0.00302f ; **FLOATING
+C126 mux_mutliplier_custom_0/a_504_104# VSS 0 ; **FLOATING
+C127 mux_mutliplier_custom_0/a_592_407# VSS 0.49094f ; **FLOATING
+C128 mux_mutliplier_custom_0/a_124_24# VSS 0.53899f ; **FLOATING
+C129 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN VSS 0.86574f
+C130 over VSS 0.215f
+C131 inverter_pair_short_0/pti VSS 1.16325f
+C132 inverter_pair_short_0/nti VSS 0.32961f
+C133 VDD_3V3_1 VSS 4.42258f
+C134 in VSS 0.9643f

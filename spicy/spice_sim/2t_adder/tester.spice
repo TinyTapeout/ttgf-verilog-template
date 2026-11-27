@@ -1,0 +1,109 @@
+* ==============================================================================
+* 2-Trit Exhaustive Adder Testbench (324 States @ 50 MHz = 6.48us Total)
+* ==============================================================================
+* Inputs:
+*   A[1:0] : in_A_0 (LSB, 3^0), in_A_1 (MSB, 3^1)      -> 9 states (-4 to +4)
+*   B[1:0] : in_B_0 (LSB, 3^0), in_B_1 (MSB, 3^1)      -> 9 states (-4 to +4)
+*   Cin    : 5v0_addf_sc_rev2_0/in_C_sign
+*            5v0_addf_sc_rev2_0/in_C_over              -> 4 states (-1, +1, 0, 0)
+* Outputs:
+*   Sum[1:0] : res_0 (3^0 = 1), res_1 (3^1 = 3)
+*   Cout     : 5v0_addf_sc_rev2_1/carry_sign
+*              5v0_addf_sc_rev2_1/carry_over           -> (3^2 = 9)
+* ==============================================================================
+
+* 1. PDK Models (GF180MCU)
+.include "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice"
+.lib "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice" typical
+
+* 2. Include your 2-Trit Adder Extracted Netlist (Update filename if needed!)
+.include "5v0_2t_adder_v4.spice"
+
+* 3. Power Supplies
+Vdd  VDD_3V3    0 DC 5.0
+Vdd1  VDD_3V3_1    0 DC 5.0
+Vhf  VDD_1V65   0 DC 2.5
+Vhf1 VDD_1V65_1 0 DC 2.5
+Vhf2 VDD_1V65_2 0 DC 2.5
+Vss  VSS        0 DC 0.0
+Vss1  VSS_1        0 DC 0.0
+
+* 4. Exhaustive 2-Trit + Cin Stimulus Generators (20ns base period = 50 MHz)
+* ------------------------------------------------------------------------------
+* in_A_0 (A LSB, weight 1): steps 0V -> 2.5V -> 5.0V every 20ns (60ns period)
+Vin_A0a in_A_0_int 0          PULSE(0.0 2.5 20n   250p 250p 39.75n   60n)
+Vin_A0b in_A_0     in_A_0_int PULSE(0.0 2.5 40n   250p 250p 19.75n   60n)
+
+* in_A_1 (A MSB, weight 3): steps every 60ns (180ns period)
+Vin_B0a in_B_0_int 0          PULSE(0.0 2.5 60n   250p 250p 119.75n  180n)
+Vin_B0b in_B_0     in_B_0_int PULSE(0.0 2.5 120n  250p 250p 59.75n   180n)
+
+* in_B_0 (B LSB, weight 1): steps every 180ns (540ns period)
+Vin_A1a in_A_1_int 0          PULSE(0.0 2.5 180n  250p 250p 359.75n  540n)
+Vin_A1b in_A_1     in_A_1_int PULSE(0.0 2.5 360n  250p 250p 179.75n  540n)
+
+* in_B_1 (B MSB, weight 3): steps every 540ns (1620ns period)
+Vin_B1a in_B_1_int 0          PULSE(0.0 2.5 540n  250p 250p 1079.75n 1620n)
+Vin_B1b in_B_1     in_B_1_int PULSE(0.0 2.5 1080n 250p 250p 539.75n  1620n)
+
+* Carry-In: Driven onto 5v0_addf_sc_rev2_0/in_C_sign & in_C_over
+* Also aliased to c_in_sign / c_in_over via 0V bridges for clean .control math
+Vin_C_sign in_C_sign 0 PULSE(0.0 5.0 1620n 250p 250p 1619.75n 3240n)
+Vin_C_over in_C_over 0 PULSE(0.0 5.0 3240n 250p 250p 3239.75n 6480n)
+
+* 6. Output Capacitive Loads (10fF per output)
+CLoad_r0    res_0      0 10ff
+CLoad_r1    res_1      0 10ff
+CLoad_csign c_out_sign 0 10ff
+CLoad_cover c_out_over 0 10ff
+
+* 7. Simulation Control (6480ns = all 324 states @ 20ns/state)
+.tran 100p 6480n
+.op
+
+.control
+  run
+
+  * ============================================================================
+  * 2-TRIT HUMAN-READABLE BALANCED TERNARY DECODER (-13 to +13)
+  * ============================================================================
+  * Decode Inputs (0V -> -1, 2.5V -> 0, 5V -> +1):
+  let a0  = (v(in_A_0) > 3.75) - (v(in_A_0) < 1.25)
+  let a1  = (v(in_A_1) > 3.75) - (v(in_A_1) < 1.25)
+  let b0  = (v(in_B_0) > 3.75) - (v(in_B_0) < 1.25)
+  let b1  = (v(in_B_1) > 3.75) - (v(in_B_1) < 1.25)
+  let cin = (v(in_C_over) < 2.5) * ((v(in_C_sign) > 2.5) - (v(in_C_sign) <= 2.5))
+
+  * Decode Outputs (res_0, res_1, and 5v0_addf_sc_rev2_1/carry_*):
+  let r0   = (v(res_0) > 3.75) - (v(res_0) < 1.25)
+  let r1   = (v(res_1) > 3.75) - (v(res_1) < 1.25)
+  let cout = (v(carry_over) < 2.5) * ((v(carry_sign) > 2.5) - (v(carry_sign) <= 2.5))
+
+  * Combine into signed Base-10 Integers (-13 to +13):
+  * Value = r0*(3^0) + r1*(3^1) + cout*(3^2) = r0 + 3*r1 + 9*cout
+  let val_A      = a0 + 3*a1
+  let val_B      = b0 + 3*b1
+  let Expected   = val_A + val_B + cin
+  let Actual     = r0 + 3*r1 + 9*cout
+  let Math_Error = Actual - Expected
+
+  * ============================================================================
+  * PLOT 1: Expected vs Actual 2-Trit Integer (-13 to +13) & Error
+  * ============================================================================
+  plot Expected Actual Math_Error title "2-Trit Exhaustive Check: Expected vs Actual (-13 to +13) & Error" xlabel "Time (s)" ylabel "Decimal Value"
+
+  * ============================================================================
+  * PLOT 2: Decoded Output Trits (r0 @ 0, r1 @ +4, cout @ +8)
+  * ============================================================================
+  plot r0 (r1+4) (cout+8) title "Decoded 2-Trit Outputs: r0 (0), r1 (+4), Cout (+8)" xlabel "Time (s)" ylabel "Trit State (-1, 0, +1)"
+
+  * ============================================================================
+  * PLOT 3: Stacked Analog Waveforms (Inputs + Outputs)
+  * ============================================================================
+  plot v(in_A_0) v(in_A_1)+7 v(in_B_0)+14 v(in_B_1)+21 v(in_C_sign)+28 v(in_C_over)+35 v(res_0)+42 v(res_1)+49 v(carry_sign)+56 v(carry_over)+63 title "2-Trit Adder Stacked Analog Waveforms (7V Offset)" xlabel "Time (s)" ylabel "Stacked Voltage (V)"
+  plot v(in_A_0) v(in_A_1)+7 v(in_B_0)+14 v(in_B_1)+21 v(res_0)+42 v(res_1)+49 v(carry_sign)+56 v(carry_over)+63 title "2-Trit Adder Analog Waveforms (7V Offset)" 
+  plot v(in_A_0) v(in_B_0)+7 v(res_0)+14 v(in_C_sign)+21 v(in_C_over)+28 v(carry_interim_over)+35 v(carry_interim_sign)+42 
+xlabel "Time (s)" ylabel "Stacked Voltage (V)"
+plot i(Vss) i(Vss1)
+.endc
+.end

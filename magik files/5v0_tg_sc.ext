@@ -1,0 +1,60 @@
+timestamp 1793086088
+version 8.3
+tech gf180mcuD
+style ngspice()
+scale 1000 1 0.5
+resistclasses 1000000 3250000 6300 7000 6300 7000 7300 1000000 60000 185000 60000 185000 6300 7000 6300 7000 6800 7300 350000 310000 1000000 90 90 90 90 60
+use gf180mcu_fd_sc_mcu7t5v0__inv_1 gf180mcu_fd_sc_mcu7t5v0__inv_1_0 1 0 -620 0 1 -1
+parameters nfet_10v0_asym l=l w=w a1=as p1=ps a2=ad p2=pd
+parameters nfet_06v0_dss l=l w=w a1=as p1=ps a2=ad p2=pd l1=s_sab l2=d_sab
+parameters nfet_06v0 l=l w=w a1=as p1=ps a2=ad p2=pd
+parameters pfet_10v0_asym l=l w=w a1=as p1=ps a2=ad p2=pd
+parameters pfet_06v0_dss l=l w=w a1=as p1=ps a2=ad p2=pd l1=s_sab l2=d_sab
+parameters pfet_06v0 l=l w=w a1=as p1=ps a2=ad p2=pd
+port "out" 8 253 316 366 433 m1
+port "In" 7 -18 317 95 434 m1
+node "m1_n364_233#" 3 59.9377 -364 233 m1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2961 630 0 0 0 0 0 0 0 0
+node "a_124_n37#" 21 696.938 124 -37 p 0 0 0 0 0 0 0 0 0 0 0 0 37560 866 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 28128 1044 77736 2108 0 0 0 0 0 0
+node "out" 32 135.871 253 316 m1 0 0 0 0 0 0 0 0 14432 504 21472 664 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 43251 1370 0 0 0 0 0 0 0 0
+node "In" 32 98.5572 -18 317 m1 0 0 0 0 0 0 0 0 14432 504 21472 664 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 40811 1510 0 0 0 0 0 0 0 0
+node "a_144_428#" 32 247 144 428 p 0 0 0 0 0 0 0 0 0 0 0 0 41700 1034 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 50509 1702 0 0 0 0 0 0 0 0
+node "a_n212_731#" 7 33.6363 -212 731 mvnnd 0 0 0 0 0 0 0 0 11124 422 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6612 326 0 0 0 0 0 0 0 0
+node "w_n86_352#" 1197 964.295 -86 352 nw 321160 2276 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+substrate "a_n168_73#" 9 0 -168 73 mvppd 0 0 0 0 0 0 0 0 0 0 10283 408 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 13058 496 0 0 0 0 0 0 0 0
+cap "w_n86_352#" "a_144_428#" 186.136
+cap "a_124_n37#" "a_144_428#" 28.5764
+cap "a_n212_731#" "a_144_428#" 74.947
+cap "w_n86_352#" "out" 42.9212
+cap "a_124_n37#" "out" 21.7573
+cap "In" "m1_n364_233#" 5.91555
+cap "m1_n364_233#" "a_144_428#" 6.17118
+cap "w_n86_352#" "a_124_n37#" 21.4512
+cap "a_n212_731#" "a_124_n37#" 1.60806
+cap "w_n86_352#" "a_n212_731#" 0.496212
+cap "m1_n364_233#" "a_124_n37#" 8.40675
+cap "In" "a_144_428#" 107.881
+cap "In" "out" 88.9422
+cap "a_144_428#" "out" 18.1333
+cap "In" "w_n86_352#" 44.5967
+cap "In" "a_124_n37#" 92.1205
+device msubckt nfet_06v0 124 68 125 69 l=120 w=164 "a_n168_73#" "a_124_n37#" 240 0 "In" 164 14432,504 "out" 164 14432,504
+device msubckt pfet_06v0 144 472 145 473 l=100 w=244 "w_n86_352#" "a_144_428#" 200 0 "In" 244 21472,664 "out" 244 21472,664
+cap "In" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN" 24.2743
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I" 41.7937
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD" "out" -7.10543e-15
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD" "In" 14.2921
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I" 52.9266
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN" 117.952
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSS" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I" 58.4827
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSS" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN" 19.7567
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSS" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD" -9.52642
+cap "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I" "out" 0.341678
+cap "In" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I" -3.99775
+merge "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/ZN" "m1_n364_233#" -242.173 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -5183 -846 0 0 0 0 0 0 0 0
+merge "m1_n364_233#" "a_144_428#"
+merge "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VPW" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSS" -55.9656 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -144 -102 0 0 0 0 0 0 0 0
+merge "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VSS" "a_n168_73#"
+merge "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/I" "a_124_n37#" -150.277 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -154 0 0 0 0 0 0 0 0
+merge "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VDD" "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VNW" -82.417 0 -1034 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2432 -216 0 0 0 0 0 0 0 0
+merge "gf180mcu_fd_sc_mcu7t5v0__inv_1_0/VNW" "a_n212_731#"
+merge "a_n212_731#" "w_n86_352#"

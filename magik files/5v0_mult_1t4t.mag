@@ -1,0 +1,31 @@
+magic
+tech gf180mcuD
+magscale 1 10
+timestamp 1795002557
+<< error_s >>
+rect -7045 -1714 -6881 -1709
+rect -6530 -1716 -6433 -1709
+rect -4162 -1714 -3998 -1709
+rect -3647 -1716 -3550 -1709
+rect -1279 -1714 -1115 -1709
+rect -764 -1716 -667 -1709
+<< metal2 >>
+rect -8532 -1779 183 -1765
+rect -8532 -1821 293 -1779
+use 5v0_mult_1t_tile  5v0_mult_1t_b_0
+timestamp 1795002467
+transform 1 0 2 0 1 -10
+box -3813 -2124 1164 798
+use 5v0_mult_1t_tile  5v0_mult_1t_tile_0
+timestamp 1795002467
+transform 1 0 -2881 0 1 -10
+box -3813 -2124 1164 798
+use 5v0_mult_1t_tile  5v0_mult_1t_tile_1
+timestamp 1795002467
+transform 1 0 -5764 0 1 -10
+box -3813 -2124 1164 798
+use 5v0_mult_1t_tile  5v0_mult_1t_tile_2
+timestamp 1795002467
+transform 1 0 -8647 0 1 -10
+box -3813 -2124 1164 798
+<< end >>

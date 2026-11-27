@@ -1,0 +1,182 @@
+* NGSPICE file created from 5v0_mult_1t_b.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 nti in VSS VSS nfet_06v0 ad=6.336n pd=0.32m as=6.478n ps=0.255m w=72 l=578
+X1 VDD_3V3_1 in nti VDD_3V3_1 pfet_06v0 ad=12.81n pd=0.349m as=12.688n ps=0.348m w=244 l=100
+X2 VDD_3V3_1 in I0 VDD_3V3_1 pfet_06v0 ad=13.616n pd=0.392m as=9.696n ps=0.394m w=96 l=150
+X3 VSS in I0 VSS nfet_06v0 ad=6.478n pd=0.255m as=12.7n ps=0.454m w=127 l=120
+X4 nti in VDD_3V3_1 VDD_3V3_1 pfet_06v0 ad=12.688n pd=0.348m as=13.616n ps=0.392m w=244 l=100
+X5 nti in VDD_3V3_1 VDD_3V3_1 pfet_06v0 ad=27.328n pd=0.712m as=12.81n ps=0.349m w=244 l=100
+X6 a_n1011_n1581# nor VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X7 a_n1011_n1581# nor VNW VNW pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X8 I1 I0 VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=0.10536u ps=3.904m w=164 l=120
+X9 I1 I0 VDD_3V3_1 VDD_3V3_1 pfet_06v0 ad=21.472n pd=0.664m as=0.13882u ps=4.048m w=244 l=100
+X10 nor gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# VDD_3V3_1 pfet_06v0 ad=21.472n pd=0.664m as=16.348n ps=0.378m w=244 l=100
+X11 VSS gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z nor VSS nfet_06v0 ad=9.944n pd=0.402m as=5.876n ps=0.217m w=113 l=120
+X12 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# over VDD_3V3_1 VDD_3V3_1 pfet_06v0 ad=16.348n pd=0.378m as=21.472n ps=0.664m w=244 l=100
+X13 nor over VSS VSS nfet_06v0 ad=5.876n pd=0.217m as=9.944n ps=0.402m w=113 l=120
+X14 VDD_3V3_1 I1 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# VDD_3V3_1 pfet_06v0 ad=16.23n pd=0.411m as=6.24n ps=0.224m w=120 l=100
+X15 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# VDD_3V3_1 VDD_3V3_1 pfet_06v0 ad=21.384n pd=0.662m as=16.23n ps=0.411m w=243 l=100
+X16 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# VSS VSS nfet_06v0 ad=14.344n pd=0.502m as=9.362n ps=0.311m w=163 l=120
+X17 VSS I1 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_244_159# VSS nfet_06v0 ad=9.362n pd=0.311m as=2.336n ps=0.137m w=73 l=120
+X18 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_244_159# nti gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# VSS nfet_06v0 ad=2.336n pd=0.137m as=6.424n ps=0.322m w=73 l=120
+X19 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# nti VDD_3V3_1 VDD_3V3_1 pfet_06v0 ad=6.24n pd=0.224m as=10.56n ps=0.416m w=120 l=100
+X20 In a_n1011_n1581# VDD_1V65 VSS nfet_06v0 ad=8.528n pd=0.268m as=14.432n ps=0.504m w=164 l=120
+X21 a_209_n1430# a_n95_n2014# a_n563_n1613# VSS nfet_06v0 ad=1.728n pd=0.12m as=3.744n ps=0.176m w=72 l=120
+X22 VNW I0 a_209_n1970# VNW pfet_06v0 ad=6.396n pd=0.227m as=2.952n ps=0.171m w=123 l=100
+X23 a_n563_n1613# S a_n183_n1430# VSS nfet_06v0 ad=3.744n pd=0.176m as=1.728n ps=0.12m w=72 l=120
+X24 a_n183_n1430# I1 VSS VSS nfet_06v0 ad=1.728n pd=0.12m as=8.72n ps=0.304m w=72 l=120
+X25 a_n563_n1613# a_n95_n2014# a_n150_n1970# VNW pfet_06v0 ad=6.396n pd=0.227m as=3.382n ps=0.178m w=123 l=100
+X26 a_n95_n2014# S VNW VNW pfet_06v0 ad=10.824n pd=0.422m as=6.396n ps=0.227m w=123 l=100
+X27 VNW a_n563_n1613# Z VNW pfet_06v0 ad=17.193n pd=0.437m as=15.128n ps=0.368m w=244 l=100
+X28 VSS a_n563_n1613# Z VSS nfet_06v0 ad=8.72n pd=0.304m as=8.528n ps=0.268m w=164 l=120
+X29 Z a_n1011_n1581# In VNW pfet_06v0 ad=15.128n pd=0.368m as=21.472n ps=0.664m w=244 l=100
+X30 a_n95_n2014# S VSS VSS nfet_06v0 ad=6.336n pd=0.32m as=3.744n ps=0.176m w=72 l=120
+X31 a_n150_n1970# I1 VNW VNW pfet_06v0 ad=3.382n pd=0.178m as=17.193n ps=0.437m w=123 l=100
+X32 Z nor In VSS nfet_06v0 ad=8.528n pd=0.268m as=8.528n ps=0.268m w=164 l=120
+X33 a_209_n1970# S a_n563_n1613# VNW pfet_06v0 ad=2.952n pd=0.171m as=6.396n ps=0.227m w=123 l=100
+X34 VSS I0 a_209_n1430# VSS nfet_06v0 ad=3.744n pd=0.176m as=1.728n ps=0.12m w=72 l=120
+C0 I1 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_244_159# 0
+C1 nor I1 0.0598f
+C2 nor gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# 0.02636f
+C3 I0 S 0.35803f
+C4 VDD_3V3_1 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z 0.27507f
+C5 nor VDD_1V65 0.06647f
+C6 a_n1011_n1581# gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# 0
+C7 a_n1011_n1581# I0 0.00166f
+C8 S VNW 0.4895f
+C9 nor In 0.07706f
+C10 over VNW 0.00261f
+C11 nti gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_244_159# 0
+C12 I1 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# 0.29576f
+C13 nti nor 0.03752f
+C14 nor Z 0.06956f
+C15 a_n1011_n1581# VNW 0.45743f
+C16 I0 I1 0.4393f
+C17 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# VDD_1V65 0
+C18 I1 VNW 0.23744f
+C19 I0 In 0
+C20 a_n1011_n1581# S 0
+C21 VNW VDD_1V65 0.01106f
+C22 nti gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# 0.26623f
+C23 nti I0 0.00236f
+C24 I0 Z 0
+C25 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_244_159# 0
+C26 VNW In 0.42683f
+C27 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z nor 0.43324f
+C28 S I1 0.22468f
+C29 nti VNW 0
+C30 Z VNW 0.07663f
+C31 a_n150_n1970# a_n95_n2014# 0
+C32 over I1 0
+C33 over gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# 0.00898f
+C34 a_n95_n2014# in 0.0051f
+C35 a_n1011_n1581# I1 0.00331f
+C36 a_n150_n1970# a_n563_n1613# 0.00556f
+C37 a_n563_n1613# in 0.00813f
+C38 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# 0.13951f
+C39 a_n1011_n1581# VDD_1V65 0.12271f
+C40 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# I1 0
+C41 VDD_3V3_1 in 0.87095f
+C42 a_n1011_n1581# In 0.29914f
+C43 a_n95_n2014# a_n563_n1613# 0.02837f
+C44 I1 VDD_1V65 0.0012f
+C45 nti over 0
+C46 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z VNW 0.00161f
+C47 a_n1011_n1581# nti 0.00378f
+C48 a_n1011_n1581# Z 0.06732f
+C49 VDD_3V3_1 a_n95_n2014# 0.0016f
+C50 I1 In 0.00159f
+C51 In VDD_1V65 0.02972f
+C52 a_n95_n2014# a_209_n1430# 0.00166f
+C53 nti I1 0.16888f
+C54 Z I1 0.00644f
+C55 a_n563_n1613# a_209_n1430# 0.00101f
+C56 nti VDD_1V65 0
+C57 Z VDD_1V65 0
+C58 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z over 0.02124f
+C59 nti In 0
+C60 Z In 0.0589f
+C61 a_n1011_n1581# gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z 0.00228f
+C62 nor in 0.00802f
+C63 a_209_n1970# a_n95_n2014# 0
+C64 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z I1 0.01481f
+C65 a_n563_n1613# a_n183_n1430# 0.00317f
+C66 a_209_n1970# a_n563_n1613# 0.00106f
+C67 nor a_n95_n2014# 0
+C68 nor a_n563_n1613# 0.01819f
+C69 in gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# 0.00106f
+C70 VDD_3V3_1 nor 0.11021f
+C71 I0 in 0.17009f
+C72 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z nti 0
+C73 nor a_209_n1430# 0
+C74 a_n150_n1970# VNW 0.00245f
+C75 VNW in 0.00551f
+C76 I0 a_n95_n2014# 0.30177f
+C77 I0 a_n563_n1613# 0.00505f
+C78 VDD_3V3_1 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# 0.25656f
+C79 a_n95_n2014# VNW 0.35821f
+C80 a_n150_n1970# S 0
+C81 VDD_3V3_1 I0 0.33293f
+C82 a_n563_n1613# VNW 0.49108f
+C83 S in 0.0025f
+C84 nor a_n183_n1430# 0
+C85 VDD_3V3_1 VNW 0.00136f
+C86 a_n1011_n1581# in 0
+C87 a_n95_n2014# S 0.22431f
+C88 nor gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_244_159# 0
+C89 a_n563_n1613# S 0.12833f
+C90 a_n150_n1970# I1 0
+C91 a_n1011_n1581# a_n95_n2014# 0
+C92 I1 in 0.16601f
+C93 VDD_3V3_1 S 0.00354f
+C94 a_n1011_n1581# a_n563_n1613# 0.01016f
+C95 VDD_3V3_1 over 0.2741f
+C96 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_244_159# gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# 0.00424f
+C97 a_n95_n2014# I1 0.07104f
+C98 VDD_3V3_1 a_n1011_n1581# 0.00102f
+C99 nor gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# 0.05938f
+C100 a_n563_n1613# I1 0.32843f
+C101 nor I0 0
+C102 a_209_n1970# VNW 0.005f
+C103 nti in 0.45854f
+C104 Z in 0.00189f
+C105 a_n563_n1613# VDD_1V65 0
+C106 VDD_3V3_1 I1 0.69134f
+C107 VDD_3V3_1 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# 0.01452f
+C108 nor VNW 0.23236f
+C109 a_n563_n1613# In 0.00134f
+C110 I1 a_209_n1430# 0.00154f
+C111 a_209_n1970# S 0.00276f
+C112 a_n563_n1613# Z 0.09045f
+C113 nor S 0
+C114 VDD_3V3_1 nti 0.57863f
+C115 VNW gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# 0.00285f
+C116 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z in 0
+C117 I0 VNW 0.2163f
+C118 nor over 0.20682f
+C119 a_n1011_n1581# nor 0.31216f
+C120 I1 a_n183_n1430# 0
+C121 a_209_n1970# I1 0
+C122 S VSS 0.46225f
+C123 Z VSS 0.05909f
+C124 In VSS 0.06694f
+C125 VDD_1V65 VSS 0.19002f
+C126 a_209_n1430# VSS 0.00302f ; **FLOATING
+C127 a_n183_n1430# VSS 0 ; **FLOATING
+C128 a_n95_n2014# VSS 0.482f ; **FLOATING
+C129 a_n563_n1613# VSS 0.47356f ; **FLOATING
+C130 I0 VSS 0.76233f
+C131 in VSS 0.96759f
+C132 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_244_159# VSS 0.00145f ; **FLOATING
+C133 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/a_36_159# VSS 0.40188f ; **FLOATING
+C134 gf180mcu_fd_sc_mcu7t5v0__and2_1_0/Z VSS 0.38119f
+C135 over VSS 0.2603f
+C136 gf180mcu_fd_sc_mcu7t5v0__nor2_1_0/a_224_472# VSS 0 ; **FLOATING
+C137 I1 VSS 1.08379f
+C138 VDD_3V3_1 VSS 5.44991f
+C139 a_n1011_n1581# VSS 0.49026f ; **FLOATING
+C140 nor VSS 1.10557f
+C141 VNW VSS 4.77418f
+C142 nti VSS 0.2478f

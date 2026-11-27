@@ -1,0 +1,117 @@
+magic
+tech gf180mcuD
+magscale 1 10
+timestamp 1794301797
+<< mvpsubdiff >>
+rect -168 -129 -56 -116
+rect -168 -207 -153 -129
+rect -71 -207 -56 -129
+rect -168 -220 -56 -207
+<< mvpsubdiffcont >>
+rect -153 -207 -71 -129
+<< metal1 >>
+rect -504 612 -56 732
+rect 11 669 616 747
+rect 11 553 57 669
+rect 419 596 504 613
+rect 419 391 425 596
+rect 497 391 504 596
+rect 419 373 504 391
+rect -239 179 113 269
+rect 555 120 616 669
+rect -2 79 68 80
+rect -504 -129 -56 -52
+rect 56 -67 68 79
+rect -2 -79 68 -67
+rect -504 -207 -153 -129
+rect -71 -207 -56 -129
+rect 195 -153 280 34
+rect 439 -52 616 120
+rect -504 -284 -56 -207
+rect -9 -216 616 -153
+rect -9 -292 38 -216
+rect 451 -274 504 -262
+rect -354 -489 -300 -481
+rect -437 -650 -354 -504
+rect -244 -507 -191 -342
+rect 90 -507 144 -478
+rect -244 -517 145 -507
+rect -240 -647 145 -517
+rect -437 -664 -326 -650
+rect -10 -738 86 -721
+rect -10 -925 -3 -738
+rect 78 -925 86 -738
+rect 195 -902 281 -416
+rect 451 -474 504 -462
+rect 555 -729 616 -216
+rect -10 -948 86 -925
+rect -504 -1068 -56 -948
+rect 419 -952 616 -729
+<< via1 >>
+rect 425 391 497 596
+rect -357 144 -303 313
+rect -2 -67 56 79
+rect -354 -650 -300 -489
+rect -3 -925 78 -738
+rect 451 -462 504 -274
+<< metal2 >>
+rect 413 596 517 613
+rect 413 391 425 596
+rect 497 391 517 596
+rect 413 384 517 391
+rect -362 313 336 328
+rect -362 144 -357 313
+rect -303 227 336 313
+rect -303 144 -297 227
+rect -362 128 -297 144
+rect 450 91 517 384
+rect -9 79 517 91
+rect -9 -67 -2 79
+rect 56 34 517 79
+rect 56 -67 87 34
+rect -9 -90 87 -67
+rect 449 -274 516 -262
+rect 449 -462 451 -274
+rect 504 -462 516 -274
+rect -362 -489 -296 -477
+rect -362 -650 -354 -489
+rect -300 -531 -296 -489
+rect -300 -650 393 -531
+rect -362 -664 393 -650
+rect 449 -721 516 -462
+rect -11 -738 516 -721
+rect -11 -813 -3 -738
+rect -10 -925 -3 -813
+rect 78 -813 516 -738
+rect 78 -925 86 -813
+rect -10 -948 86 -925
+use tgate_custom  5v0_tgate_sel_2_sc_0
+timestamp 1793779190
+transform 1 0 0 0 1 0
+box -590 -198 620 841
+use tgate_custom  5v0_tgate_sel_2_sc_1
+timestamp 1793779190
+transform 1 0 0 0 -1 -336
+box -590 -198 620 841
+<< labels >>
+rlabel metal2 13 -169 21 -146 5 5v0_tgate_sel_2_sc_1/input_A
+port 1 n signal bidirectional
+rlabel metal1 -504 -284 -56 -52 1 VSS
+port 2 n ground bidirectional
+rlabel metal1 -504 612 -56 732 1 VDD_3V3
+port 3 n power bidirectional
+rlabel metal1 195 -902 281 -416 1 result
+port 4 n signal bidirectional
+rlabel metal2 78 -813 516 -721 1 in_reg
+port 5 n signal bidirectional
+rlabel metal2 56 34 517 91 1 in_downstep
+port 6 n signal bidirectional
+rlabel metal1 11 669 616 747 1 in_upstep
+port 7 n signal bidirectional
+rlabel metal1 -504 -1068 -56 -948 1 VDD_3V3_uq0
+port 8 n power bidirectional
+rlabel metal2 -303 227 336 328 1 ctrl_sign
+port 9 n signal bidirectional
+rlabel metal1 195 -216 280 34 1 res_stage0
+port 11 n signal bidirectional
+<< end >>

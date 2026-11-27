@@ -1,0 +1,12 @@
+* NGSPICE file created from pti.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 Y A VDD VDD pfet_06v0 ad=63n pd=1.46m as=63n ps=1.46m w=630 l=120
+X1 Y A VSS VSS nfet_06v0 ad=9n pd=0.38m as=9n ps=0.38m w=90 l=120
+C0 VDD A 0.33501f
+C1 Y A 0.08747f
+C2 VDD Y 0.18854f
+C3 Y VSS 0.30539f
+C4 A VSS 0.4574f
+C5 VDD VSS 1.82048f

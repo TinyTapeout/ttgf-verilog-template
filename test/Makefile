@@ -6,8 +6,23 @@ SIM ?= icarus
 FST ?= -fst # Use more efficient FST format
 TOPLEVEL_LANG ?= verilog
 SRC_DIR = $(PWD)/../src
-PROJECT_SOURCES = project.v
-
+PROJECT_SOURCES = \
+	main/tt_um_triple_t_devEclipse2.v \
+	main/tt_um_core_commander.v \
+	main/ternary_to_unsigned_binary_logic_convert_4t.v \
+	main/logic_container.v \
+	main/thread/ternary_pc_4t.v \
+	main/thread/ternary_pc_12t.v \
+	main/thread/thread_command.v \
+	main/alu/native_wrapper_sim.v \
+	main/alu/simulated/bt_add_4t.v \
+	main/alu/simulated/bt_add3_4t.v \
+	main/alu/simulated/bt_fa_1t.v \
+	main/alu/simulated/bt_fa3_1t.v \
+	main/alu/simulated/bt_mul_4t.v \
+	main/alu/simulated/tritwise_1.v \
+	main/alu/simulated/tritwise_2.v \
+	main/alu/simulated/tritwise_3.v 
 ifneq ($(GATES),yes)
 
 # RTL simulation:

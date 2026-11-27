@@ -1,0 +1,20 @@
+//inputs: 12Treg10, out 12Treg11,
+CPY     A10 A1  //copies to scratchpad 0, 4T 01
+CPY     B1  B7  //copies to flag 0-3
+//generates mask and applies it
+GEN     C0  B2  //generates 4t fill value
+MMSK    B2  SN  //single use mask
+CPYM    B1  B3  //copy masked
+GEN     C1  B2
+MMSK    B2  SN
+CPYM    B1  B4
+GEN     C2  B2
+MMSK    B2  SN
+CPYM    B1  B5
+GEN     C3  B2
+MMSK    B2  SN
+CPYM    B1  B6
+//moves it back and preps add
+CPY     B3  B0
+
+SWP     A2  A5

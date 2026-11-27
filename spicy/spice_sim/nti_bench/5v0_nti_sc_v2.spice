@@ -1,0 +1,13 @@
+* NGSPICE file created from 5v0_nti_sc.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 ternary_output ternary_input VDD_3V3 VDD_3V3 pfet_06v0 ad=19.68n pd=0.568m as=11.52n ps=0.432m w=120 l=467
+X1 VSS ternary_input ternary_output VSS nfet_06v0 ad=13.589n pd=0.468m as=6.667n ps=0.232m w=127 l=120
+X2 ternary_output ternary_input VSS VSS nfet_06v0 ad=6.667n pd=0.232m as=11.303n ps=0.432m w=127 l=120
+C0 ternary_output VDD_3V3 0.09499f
+C1 ternary_output ternary_input 0.26903f
+C2 ternary_input VDD_3V3 0.71251f
+C3 ternary_output VSS 0.26343f
+C4 ternary_input VSS 0.4969f
+C5 VDD_3V3 VSS 2.13042f

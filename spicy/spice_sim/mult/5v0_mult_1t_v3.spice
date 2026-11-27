@@ -1,0 +1,165 @@
+* NGSPICE file created from 5v0_mult_1t.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 inv in VSS VSS nfet_06v0 ad=6.336n pd=0.32m as=6.478n ps=0.255m w=72 l=578
+X1 VDD_3V3_1 in inv VDD_3V3_1 pfet_06v0 ad=12.81n pd=0.349m as=12.688n ps=0.348m w=244 l=100
+X2 VDD_3V3_1 in inverter_pair_short_0/nti VDD_3V3_1 pfet_06v0 ad=13.616n pd=0.392m as=9.696n ps=0.394m w=96 l=150
+X3 VSS in inverter_pair_short_0/nti VSS nfet_06v0 ad=6.478n pd=0.255m as=12.7n ps=0.454m w=127 l=120
+X4 inv in VDD_3V3_1 VDD_3V3_1 pfet_06v0 ad=12.688n pd=0.348m as=13.616n ps=0.392m w=244 l=100
+X5 inv in VDD_3V3_1 VDD_3V3_1 pfet_06v0 ad=27.328n pd=0.712m as=12.81n ps=0.349m w=244 l=100
+X6 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN over gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_448_472# VDD_3V3_1 pfet_06v0 ad=21.472n pd=0.664m as=15.128n ps=0.368m w=244 l=100
+X7 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN over VSS VSS nfet_06v0 ad=8.184n pd=0.362m as=4.836n ps=0.197m w=93 l=120
+X8 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_244_472# inverter_pair_short_0/nti VDD_3V3_1 VDD_3V3_1 pfet_06v0 ad=12.688n pd=0.348m as=21.472n ps=0.664m w=244 l=100
+X9 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_448_472# inv gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_244_472# VDD_3V3_1 pfet_06v0 ad=15.128n pd=0.368m as=12.688n ps=0.348m w=244 l=100
+X10 VSS inv gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN VSS nfet_06v0 ad=4.836n pd=0.197m as=4.836n ps=0.197m w=93 l=120
+X11 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN inverter_pair_short_0/nti VSS VSS nfet_06v0 ad=4.836n pd=0.197m as=8.184n ps=0.362m w=93 l=120
+X12 m2_n772_n1518# gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X13 m2_n772_n1518# gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN VDD_3V3_0 VDD_3V3_0 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X14 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_896_593# sign gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_124_24# VDD_3V3_0 pfet_06v0 ad=2.952n pd=0.171m as=6.396n ps=0.227m w=123 l=100
+X15 VSS gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_124_24# gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/Z VSS nfet_06v0 ad=8.72n pd=0.304m as=14.432n ps=0.504m w=164 l=120
+X16 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_124_24# sign gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_504_104# VSS nfet_06v0 ad=3.744n pd=0.176m as=1.728n ps=0.12m w=72 l=120
+X17 VDD_3V3_0 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_124_24# gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/Z VDD_3V3_0 pfet_06v0 ad=17.193n pd=0.437m as=21.472n ps=0.664m w=244 l=100
+X18 VDD_3V3_0 inv gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_896_593# VDD_3V3_0 pfet_06v0 ad=6.396n pd=0.227m as=2.952n ps=0.171m w=123 l=100
+X19 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_592_407# sign VSS VSS nfet_06v0 ad=6.336n pd=0.32m as=3.744n ps=0.176m w=72 l=120
+X20 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_504_104# original VSS VSS nfet_06v0 ad=1.728n pd=0.12m as=8.72n ps=0.304m w=72 l=120
+X21 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_592_407# sign VDD_3V3_0 VDD_3V3_0 pfet_06v0 ad=10.824n pd=0.422m as=6.396n ps=0.227m w=123 l=100
+X22 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_537_593# original VDD_3V3_0 VDD_3V3_0 pfet_06v0 ad=3.382n pd=0.178m as=17.193n ps=0.437m w=123 l=100
+X23 VSS inv gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_896_104# VSS nfet_06v0 ad=3.744n pd=0.176m as=1.728n ps=0.12m w=72 l=120
+X24 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_896_104# gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_592_407# gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_124_24# VSS nfet_06v0 ad=1.728n pd=0.12m as=3.744n ps=0.176m w=72 l=120
+X25 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_124_24# gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_592_407# gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_537_593# VDD_3V3_0 pfet_06v0 ad=6.396n pd=0.227m as=3.382n ps=0.178m w=123 l=100
+X26 original inv VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=84.604n ps=3.234m w=164 l=120
+X27 original inv VDD_3V3_1 VDD_3V3_1 pfet_06v0 ad=21.472n pd=0.664m as=95.796n ps=2.81m w=244 l=100
+X28 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/Z m2_n772_n1518# res VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X29 res m2_n772_n1518# VDD_1V65 VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+C0 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_537_593# sign 0
+C1 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/Z gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN 0.05857f
+C2 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN res 0.18936f
+C3 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_537_593# gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_124_24# 0.00556f
+C4 VDD_1V65 sign 0
+C5 VDD_3V3_1 in 0.87292f
+C6 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_504_104# 0
+C7 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/Z original 0.00501f
+C8 VDD_3V3_1 over 0.18631f
+C9 original res 0.00235f
+C10 sign gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_124_24# 0.12833f
+C11 VDD_1V65 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_124_24# 0.00229f
+C12 original gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_504_104# 0
+C13 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_592_407# 0
+C14 m2_n772_n1518# VDD_3V3_0 0.168f
+C15 original gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_896_104# 0.00143f
+C16 in inv 0.53128f
+C17 over inv 0.08043f
+C18 original gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_592_407# 0.06799f
+C19 inverter_pair_short_0/nti m2_n772_n1518# 0.0174f
+C20 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_537_593# VDD_3V3_0 0.00245f
+C21 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/Z inv 0.00324f
+C22 VDD_3V3_1 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_592_407# 0.00151f
+C23 inv res 0.00172f
+C24 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN m2_n772_n1518# 0.33692f
+C25 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_244_472# VDD_1V65 0
+C26 sign VDD_3V3_0 0.4897f
+C27 VDD_1V65 VDD_3V3_0 0.00169f
+C28 m2_n772_n1518# original 0.00739f
+C29 in over 0
+C30 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_124_24# VDD_3V3_0 0.49338f
+C31 inverter_pair_short_0/nti VDD_1V65 0.0029f
+C32 inv gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_592_407# 0.29828f
+C33 VDD_3V3_1 m2_n772_n1518# 0.00552f
+C34 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/Z in 0.00276f
+C35 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_537_593# original 0
+C36 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN sign 0
+C37 VDD_1V65 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN 0.1364f
+C38 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_448_472# VDD_1V65 0.00239f
+C39 original sign 0.22547f
+C40 VDD_1V65 original 0.00425f
+C41 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_124_24# 0.00823f
+C42 m2_n772_n1518# inv 0.01297f
+C43 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/Z res 0.10859f
+C44 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_896_593# gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_592_407# 0
+C45 in gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_592_407# 0.00382f
+C46 original gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_124_24# 0.32289f
+C47 VDD_3V3_1 sign 0.00206f
+C48 VDD_1V65 VDD_3V3_1 0.00284f
+C49 inverter_pair_short_0/nti gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_244_472# 0.01909f
+C50 inverter_pair_short_0/nti VDD_3V3_0 0
+C51 VDD_3V3_1 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_124_24# 0.00255f
+C52 inv sign 0.35205f
+C53 VDD_1V65 inv 0.01475f
+C54 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_244_472# gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN 0.0018f
+C55 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN VDD_3V3_0 0.38407f
+C56 m2_n772_n1518# over 0.00178f
+C57 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_896_104# gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_592_407# 0.00166f
+C58 inv gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_124_24# 0.01021f
+C59 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_244_472# original 0
+C60 original VDD_3V3_0 0.2317f
+C61 inverter_pair_short_0/nti gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN 0.03626f
+C62 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/Z m2_n772_n1518# 0.05806f
+C63 m2_n772_n1518# res 0.2493f
+C64 inverter_pair_short_0/nti original 0.00314f
+C65 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_244_472# VDD_3V3_1 0.00689f
+C66 VDD_3V3_1 VDD_3V3_0 0
+C67 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_448_472# gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN 0.00621f
+C68 sign gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_896_593# 0.00276f
+C69 in sign 0.00584f
+C70 VDD_1V65 over 0.00253f
+C71 inverter_pair_short_0/nti VDD_3V3_1 0.3952f
+C72 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN original 0.00226f
+C73 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_448_472# original 0
+C74 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_896_593# gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_124_24# 0.00106f
+C75 in gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_124_24# 0.00334f
+C76 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_244_472# inv 0.00719f
+C77 inv VDD_3V3_0 0.22438f
+C78 VDD_1V65 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/Z 0.00219f
+C79 VDD_1V65 res 0.02271f
+C80 VDD_3V3_1 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN 0.11983f
+C81 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_448_472# VDD_3V3_1 0.01448f
+C82 inverter_pair_short_0/nti inv 0.31888f
+C83 VDD_1V65 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_504_104# 0
+C84 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/Z gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_124_24# 0.09193f
+C85 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_537_593# gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_592_407# 0
+C86 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_124_24# res 0.00144f
+C87 VDD_3V3_1 original 0.16223f
+C88 VDD_1V65 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_896_104# 0
+C89 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_504_104# gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_124_24# 0.00317f
+C90 sign gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_592_407# 0.22431f
+C91 VDD_1V65 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_592_407# 0
+C92 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN inv 0.08012f
+C93 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_448_472# inv 0.01525f
+C94 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_896_104# gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_124_24# 0.00101f
+C95 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_896_593# VDD_3V3_0 0.005f
+C96 in VDD_3V3_0 0.00602f
+C97 over VDD_3V3_0 0.00126f
+C98 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_124_24# gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_592_407# 0.02837f
+C99 original inv 0.41927f
+C100 inverter_pair_short_0/nti in 0.17102f
+C101 inverter_pair_short_0/nti over 0
+C102 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/Z VDD_3V3_0 0.08792f
+C103 VDD_3V3_1 inv 0.93801f
+C104 res VDD_3V3_0 0.46172f
+C105 VDD_1V65 m2_n772_n1518# 0.15921f
+C106 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN in 0.00434f
+C107 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN over 0.29122f
+C108 m2_n772_n1518# gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_124_24# 0.01024f
+C109 inverter_pair_short_0/nti res 0
+C110 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/a_448_472# over 0.01262f
+C111 original gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_896_593# 0
+C112 in original 0.05746f
+C113 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_592_407# VDD_3V3_0 0.35858f
+C114 res VSS 0.05158f
+C115 VDD_1V65 VSS 0.19837f
+C116 m2_n772_n1518# VSS 0.52261f ; **FLOATING
+C117 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/Z VSS 0.06381f
+C118 gf180mcu_fd_sc_mcu7t5v0__nor3_1_0/ZN VSS 0.86888f
+C119 VDD_3V3_1 VSS 4.42509f
+C120 inv VSS 1.17122f
+C121 sign VSS 0.45131f
+C122 original VSS 0.69374f
+C123 VDD_3V3_0 VSS 4.56779f
+C124 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_896_104# VSS 0.00302f ; **FLOATING
+C125 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_504_104# VSS 0 ; **FLOATING
+C126 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_592_407# VSS 0.49094f ; **FLOATING
+C127 gf180mcu_fd_sc_mcu7t5v0__mux2_1_0/a_124_24# VSS 0.50121f ; **FLOATING
+C128 over VSS 0.215f
+C129 inverter_pair_short_0/nti VSS 0.32961f
+C130 in VSS 0.97392f

@@ -1,0 +1,68 @@
+magic
+tech gf180mcuD
+magscale 1 10
+timestamp 1794899899
+<< nwell >>
+rect -478 494 547 1012
+<< pwell >>
+rect 223 475 547 494
+rect 223 466 331 475
+rect 451 466 547 475
+rect 223 165 547 466
+<< mvnmos >>
+rect 331 210 451 374
+<< mvndiff >>
+rect 243 334 331 374
+rect 243 253 256 334
+rect 302 253 331 334
+rect 243 210 331 253
+rect 451 331 539 374
+rect 451 250 480 331
+rect 526 250 539 331
+rect 451 210 539 250
+<< mvndiffc >>
+rect 256 253 302 334
+rect 480 250 526 331
+<< mvpdiffc >>
+rect 256 666 302 806
+<< polysilicon >>
+rect 331 453 451 466
+rect 331 407 351 453
+rect 437 407 451 453
+rect 331 374 451 407
+rect 331 165 451 210
+<< polycontact >>
+rect 351 407 437 453
+<< metal1 >>
+rect 256 806 302 817
+rect 302 666 305 712
+rect 256 655 305 666
+rect 259 362 305 655
+rect 351 453 437 465
+rect 351 387 437 399
+rect 256 334 307 362
+rect 245 253 256 334
+rect 302 253 313 334
+rect 245 249 313 253
+rect 469 331 540 342
+rect 469 250 480 331
+rect 526 250 540 331
+rect 469 249 540 250
+<< via1 >>
+rect 351 407 437 453
+rect 351 399 437 407
+<< metal2 >>
+rect 121 527 142 584
+rect 213 527 413 594
+rect 346 465 413 527
+rect 346 453 439 465
+rect 121 439 135 443
+rect 121 387 195 439
+rect 346 399 351 453
+rect 437 399 439 453
+rect 346 387 439 399
+use tg_component_cut  tg_component_cut_0
+timestamp 1794880704
+transform 1 0 -17 0 1 142
+box -86 -86 534 760
+<< end >>

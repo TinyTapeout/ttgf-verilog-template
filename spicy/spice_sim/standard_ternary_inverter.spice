@@ -1,0 +1,18 @@
+* NGSPICE file created from standard_ternary_inverter.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 M I VSS VSS nfet_06v0 ad=11.4n pd=0.31m as=19n ps=0.58m w=190 l=120
+X1 M I VDD VDD pfet_06v0 ad=33n pd=0.71m as=66n ps=1.42m w=600 l=120
+X2 Y I M VDD pfet_06v0 ad=66n pd=1.42m as=33n ps=0.71m w=600 l=120
+X3 Y I M VSS nfet_06v0 ad=19n pd=0.58m as=11.4n ps=0.31m w=190 l=120
+C0 I M 0.22171f
+C1 VDD Y 0.06314f
+C2 I Y 0.10923f
+C3 M Y 0.22679f
+C4 I VDD 0.71378f
+C5 M VDD 0.22807f
+C6 Y VSS 0.14229f ; 
+C7 M VSS 0.77519f ; 
+C8 I VSS 0.77578f ; 
+C9 VDD VSS 2.96872f ; 

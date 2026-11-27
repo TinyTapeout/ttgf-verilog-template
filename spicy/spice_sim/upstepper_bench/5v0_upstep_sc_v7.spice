@@ -1,0 +1,50 @@
+* NGSPICE file created from 5v0_upstep_sc.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 pti_test_point 5v0_nti_sc_f_0/ternary_input VSS VSS nfet_06v0 ad=6.336n pd=0.32m as=6.336n ps=0.32m w=72 l=578
+X1 5v0_pti_sc_0/VDD_3V3 5v0_nti_sc_f_0/ternary_input pti_test_point 5v0_pti_sc_0/VDD_3V3 pfet_06v0 ad=12.81n pd=0.349m as=12.688n ps=0.348m w=244 l=100
+X2 pti_test_point 5v0_nti_sc_f_0/ternary_input 5v0_pti_sc_0/VDD_3V3 5v0_pti_sc_0/VDD_3V3 pfet_06v0 ad=12.688n pd=0.348m as=21.472n ps=0.664m w=244 l=100
+X3 pti_test_point 5v0_nti_sc_f_0/ternary_input 5v0_pti_sc_0/VDD_3V3 5v0_pti_sc_0/VDD_3V3 pfet_06v0 ad=27.328n pd=0.712m as=12.81n ps=0.349m w=244 l=100
+X4 nti_test_point 5v0_nti_sc_f_0/ternary_input VSS VSS nfet_06v0 ad=12.7n pd=0.454m as=11.303n ps=0.432m w=127 l=120
+X5 nti_test_point 5v0_nti_sc_f_0/ternary_input 5v0_pti_sc_0/VDD_3V3 5v0_pti_sc_0/VDD_3V3 pfet_06v0 ad=9.696n pd=0.394m as=8.928n ps=0.378m w=96 l=150
+X6 I pti_test_point VSS VSS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X7 I pti_test_point VDD_3V3 VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X8 VDD_3V3 I a_450_n772# VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=8.296n ps=0.312m w=244 l=100
+X9 VSS I ternary_output VSS nfet_06v0 ad=14.432n pd=0.504m as=8.528n ps=0.268m w=164 l=120
+X10 a_450_n772# nti_test_point ternary_output VDD_3V3 pfet_06v0 ad=8.296n pd=0.312m as=21.472n ps=0.664m w=244 l=100
+X11 ternary_output nti_test_point VDD_1V65 VSS nfet_06v0 ad=8.528n pd=0.268m as=15.58n ps=0.518m w=164 l=120
+C0 nti_test_point I 0.03777f
+C1 a_450_n772# ternary_output 0.01185f
+C2 pti_test_point ternary_output 0.00463f
+C3 5v0_pti_sc_0/VDD_3V3 pti_test_point 0.33255f
+C4 a_450_n772# VDD_3V3 0.01274f
+C5 pti_test_point VDD_3V3 0.19669f
+C6 ternary_output VDD_1V65 0.15833f
+C7 VDD_3V3 VDD_1V65 0.00563f
+C8 nti_test_point ternary_output 0.20569f
+C9 5v0_pti_sc_0/VDD_3V3 nti_test_point 0.1138f
+C10 nti_test_point VDD_3V3 0.17053f
+C11 5v0_nti_sc_f_0/ternary_input pti_test_point 0.55109f
+C12 ternary_output I 0.14663f
+C13 5v0_nti_sc_f_0/ternary_input VDD_1V65 0.00286f
+C14 VDD_3V3 I 0.34213f
+C15 5v0_nti_sc_f_0/ternary_input nti_test_point 0.25918f
+C16 VDD_3V3 ternary_output 0.29862f
+C17 5v0_nti_sc_f_0/ternary_input I 0.00967f
+C18 pti_test_point nti_test_point 0.03383f
+C19 nti_test_point VDD_1V65 0.07284f
+C20 5v0_nti_sc_f_0/ternary_input ternary_output 0.00249f
+C21 5v0_nti_sc_f_0/ternary_input 5v0_pti_sc_0/VDD_3V3 0.91664f
+C22 a_450_n772# I 0
+C23 5v0_nti_sc_f_0/ternary_input VDD_3V3 0.00922f
+C24 pti_test_point I 0.2063f
+C25 ternary_output VSS 0.19462f
+C26 VDD_1V65 VSS 0.47886f
+C27 a_450_n772# VSS 0 ; **FLOATING
+C28 5v0_pti_sc_0/VDD_3V3 VSS 2.89896f
+C29 I VSS 0.35907f
+C30 pti_test_point VSS 0.71852f
+C31 VDD_3V3 VSS 2.23408f
+C32 nti_test_point VSS 0.71669f
+C33 5v0_nti_sc_f_0/ternary_input VSS 1.07015f

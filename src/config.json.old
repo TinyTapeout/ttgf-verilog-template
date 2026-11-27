@@ -1,0 +1,90 @@
+remember to change to 5v0
+tt_025C_5v00
+
+{
+  "meta": {
+    "flow": "Classic",
+    "substituting_steps": {
+      "KLayout.Render": null
+    }
+  },
+  
+  "//": "--- STANDARD TINY TAPEOUT VARIABLES ---",
+  "PL_TARGET_DENSITY_PCT": 40,
+  "CLOCK_PERIOD": 20,
+  "PL_RESIZER_HOLD_SLACK_MARGIN": 0.1,
+  "GRT_RESIZER_HOLD_SLACK_MARGIN": 0.05,
+  "RUN_LINTER": 1,
+  "LINTER_INCLUDE_PDK_MODELS": 1,
+  "CLOCK_PORT": "clk",
+
+  "//": "these are placeholders",
+  "//": "--- CUSTOM HARD MACRO INTEGRATION (OPENLANE 2) ---",
+  "MACRO_PLACEMENT_CFG": "dir::macro_placement.cfg",
+  "MACROS": {
+    "my_ternary_macro": {
+      "gds": [
+        "dir::../gds/my_ternary_macro.gds"
+      ],
+      "lef": [
+        "dir::../lef/my_ternary_macro.lef"
+      ],
+      "vh": [
+        "dir::../src/my_ternary_macro.blackbox.v"
+      ]
+    }
+  },
+
+  "//": "--- 3.3V POWER DELIVERY NETWORK OVERRIDES ---",
+  "PDN_MACRO_CONNECTIONS": [
+    ".*u_ternary_macro VDD_3V3 VSS vdd vss"
+  ],
+  "PDN_CONNECT_MACROS_TO_GRID": true,
+  "PDN_ENABLE_GLOBAL_CONNECTIONS": true,
+  "PDN_CFG": "dir::pdn_cfg.tcl",
+
+  "//": "--- WAFER SIZING & ROUTING ---",
+  "RUN_KLAYOUT_XOR": 0,
+  "RUN_KLAYOUT_DRC": 0,
+  "DESIGN_REPAIR_BUFFER_OUTPUT_PORTS": 0,
+  "TOP_MARGIN_MULT": 1,
+  "BOTTOM_MARGIN_MULT": 1,
+  "LEFT_MARGIN_MULT": 6,
+  "RIGHT_MARGIN_MULT": 6,
+  "FP_SIZING": "absolute",
+  "GRT_ALLOW_CONGESTION": 1,
+  "FP_IO_HLENGTH": 2,
+  "FP_IO_VLENGTH": 2,
+  "FP_PDN_VPITCH": 38.87,
+  "RUN_CTS": 1,
+  "FP_PDN_MULTILAYER": 0,
+  
+
+
+  "//": "extra rules here",
+  "hooks": {
+  "pre": {
+    "OpenROAD.GlobalRouting": "dir::apply_ndr.tcl"
+  }
+  },
+
+  "//": "--- MAGIC DRC & EXTRACTION BYPASSES FOR ANALOG TERNARY LOGIC ---",
+  "MAGIC_DEF_LABELS": 0,
+  "MAGIC_WRITE_LEF_PINONLY": 1,
+  "MAGIC_EXT_ABSTRACT": true,
+  "MAGIC_EXT_ABSTRACT_CELLS": [
+    "gf180mcu_fd_sc_mcu7t5v0__.*"
+  ],
+  "MAGIC_DRC_USE_GDS": false,
+  "MAGIC_GDS_FLATGLOB": [
+    "*$$*",
+    "M1_N*",
+    "M1_P*",
+    "M2_M1*",
+    "M3_M2*",
+    "via1_*",
+    "G_ring_*"
+  ],
+  "ERROR_ON_MAGIC_DRC": false,
+  "ERROR_ON_ILLEGAL_OVERLAPS": false
+}

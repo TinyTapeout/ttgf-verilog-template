@@ -1,0 +1,92 @@
+* Ternary Full Adder Truth-Table Testbench (5V0 Domain)
+* Tests all 36 states: 4 (in_C_over, in_C_sign) x 3 (in_A) x 3 (in_B)
+* State duration = 5ns -> Total simulation time = 180ns
+
+* 1. PDK Models (GF180MCU)
+.include "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice"
+.lib "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice" typical
+
+* 2. Include your Magic-extracted netlist
+.include "5v0_addf_sc_v4.spice"
+
+* 3. Power Supplies
+Vdd  VDD_3V3    0 DC 5.0
+Vhf  VDD_1V65   0 DC 2.5
+Vhf2 VDD_1V65_2 0 DC 2.5
+Vss  VSS        0 DC 0.0
+
+* 4. Input Stimuli @ 50 MHz (20ns base period, 250ps rise/fall)
+* ----------------------------------------------------------------------
+* in_B cycles 0V -> 2.5V -> 5.0V every 20ns (60ns full ternary period)
+Vin_B1 in_B_int 0        PULSE(0.0 2.5 20n  250p 250p 39.75n  60n)
+Vin_B2 in_B     in_B_int PULSE(0.0 2.5 40n  250p 250p 19.75n  60n)
+
+* in_A cycles 0V -> 2.5V -> 5.0V every 60ns (180ns full ternary period)
+Vin_A1 in_A_int 0        PULSE(0.0 2.5 60n  250p 250p 119.75n 180n)
+Vin_A2 in_A     in_A_int PULSE(0.0 2.5 120n 250p 250p 59.75n  180n)
+
+* in_C_sign toggles every 180ns (360ns period)
+Vin_C_sign in_C_sign 0   PULSE(0.0 5.0 180n 250p 250p 179.75n 360n)
+
+* in_C_over toggles every 360ns (720ns period)
+Vin_C_over in_C_over 0   PULSE(0.0 5.0 360n 250p 250p 359.75n 720n)
+
+* 5. DUT Instantiation
+* IMPORTANT: Adjust the subcircuit name and port order below to match the 
+* .subckt line inside your "5v0_addf_sc_v0.spice" file! 
+* If your extracted netlist is flat (not a .subckt), comment out this Xdut line.
+*Xdut in_A in_B in_C_sign in_C_over sum carry_sign carry_over VDD_3V3 VDD_1V65 VDD_1V65_2 VSS 5v0_addf_sc_v0
+
+* 6. Output Capacitive Loads
+CLoad_sum   sum        0 10ff
+CLoad_csign carry_sign 0 10ff
+CLoad_cover carry_over 0 10ff
+
+* 7. Simulation & Plotting Commands
+.tran 20p 800n
+.op
+
+.control
+  run
+
+  * --- PLOT 1: Stacked Analog Waveforms (Vertical Offset by 7V per track) ---
+  * Order from bottom to top:
+  * Track 0 (0V-5V)   : in_B (3-level)
+  * Track 1 (7V-12V)  : in_A (3-level)
+  * Track 2 (14V-19V) : in_C_sign (2-level)
+  * Track 3 (21V-26V) : in_C_over (2-level, HIGH = 0)
+  * Track 4 (28V-33V) : sum (3-level output)
+  * Track 5 (35V-40V) : carry_sign (2-level output)
+  * Track 6 (42V-47V) : carry_over (2-level output)
+  
+  plot v(in_B) v(in_A)+7 v(in_C_sign)+14 v(in_C_over)+21 v(sum)+28 v(carry_sign)+35 v(carry_over)+42 title "Ternary Full Adder - Stacked I/O Waveforms (7V Vertical Offset)" xlabel "Time (s)" ylabel "Stacked Voltage Tracks"
+
+  * --- PLOT 2: Decoded Arithmetic Check ---
+  * Decodes voltages into Balanced Ternary (-1, 0, +1) to verify adder math!
+  * Assumes:
+  *   Single-wire (A, B, sum): 0V -> -1, 2.5V -> 0, 5V -> +1
+  *   Two-wire (C_in, C_out) : over > 2.5V -> 0; else sign > 2.5V -> +1, sign < 2.5V -> -1
+  *   (If your sign encoding is inverted where 0V = +1 and 5V = -1, swap the 1 and -1 in val_Cin/val_Cout)
+
+  let val_A    = (v(in_A) - 2.5) / 2.5
+  let val_B    = (v(in_B) - 2.5) / 2.5
+  let val_Cin  = (v(in_C_over) < 2.5) * ((v(in_C_sign) > 2.5) * 1 + (v(in_C_sign) <= 2.5) * (-1))
+
+  let val_Sum  = (v(sum) - 2.5) / 2.5
+  let val_Cout = (v(carry_over) < 2.5) * ((v(carry_sign) > 2.5) * 1 + (v(carry_sign) <= 2.5) * (-1))
+
+  let expected_total = val_A + val_B + val_Cin
+  let actual_total   = val_Sum + (3 * val_Cout)
+
+  plot expected_total actual_total title "Functional Verification: Expected (A+B+Cin) vs Actual (Sum + 3*Cout)" xlabel "Time (s)" ylabel "Ternary Integer Value (-3 to +3)"
+
+  * --- PLOT 3: Dynamic Supply Current ---
+  plot -i(Vdd) i(Vss) title "Supply Currents"
+
+
+plot v(int_sum_1)+24 v(in_A)+18 v(in_C_sign)+12 v(in_C_over)+6 v(5v0_addh_sc_0/carry_0_probe) v(5v0_addh_sc_0/carry_sign_probe)-6
+plot v(int_sum_1)+24 v(int_over)+18 v(int_sign)+12
+plot v(sum)+24 v(in_B)+18 v(int_sign)+12 v(int_over)+6 v(carry1_over_probe) v(carry1_sign_probe)-6
+
+.endc
+.end

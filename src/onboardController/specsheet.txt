@@ -1,0 +1,15 @@
+these are requirements for the chip
+
+operating internal clock : 20-80MHz
+
+little endian architecture
+
+
+underneath triple t is another wrapper for the alu and commander, where the bus
+is mapped to the alu, and has a secondary 8 bit wiring for the 2 error trackers
+
+when the main core is in command mode, the core pauses when it reaches an instruction requiring a memory read/ wr op
+
+
+remember to use (* keep_hierarchy = "true" *) on all analog wrapper modules and
+ (* keep = "true" *) before all analog modules

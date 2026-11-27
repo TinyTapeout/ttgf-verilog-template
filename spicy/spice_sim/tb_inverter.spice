@@ -1,0 +1,27 @@
+* Testbench for 5V0 Inverter
+
+* 1. Include the GF180 models (adjust path if your PDK_ROOT is not exported)
+.include "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice"
+.lib "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice" typical
+
+* 2. Include your Magic-extracted netlist
+.include "not_gate_first.spice"
+
+* 3. Define Power and Ground (5.0V for mv devices)
+Vdd VDD 0 DC 5.0
+Vss VSS 0 DC 0.0
+
+* 4. Define Input Stimulus (0V to 5.0V pulse)
+Vin A 0 PULSE(0 5.0 0 900p 900p 5n 10n)
+
+
+.dc Vin 0 5.0 0.01
+* 6. Simulation Commands
+.tran 1p 20n
+.op
+.control
+run
+plot v(A) v(Y)
+plot i(Vdd)
+.endc
+.end

@@ -1,0 +1,12 @@
+* NGSPICE file created from negative_ternary_inverter.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 Y A VDD VDD pfet_06v0 ad=11n pd=0.42m as=10n ps=0.4m w=100 l=400
+X1 Y A VSS VSS nfet_06v0 ad=60n pd=1.4m as=60n ps=1.4m w=600 l=120
+C0 A Y 0.13229f
+C1 A VDD 0.4237f
+C2 Y VDD 0.05265f
+C3 Y VSS 0.44687f
+C4 A VSS 0.59967f
+C5 VDD VSS 1.06687f

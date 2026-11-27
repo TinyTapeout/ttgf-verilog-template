@@ -1,0 +1,40 @@
+this is an internal document explaining how the thing works (poorly)
+
+
+the statemachine handles all ingoing and outgoing information between the bus and alu
+
+
+
+the main alu verilog file contains most of the microcode handling and stuff.
+the main alu also holds the native ternary registers as well as the swap registers and the masking registers
+swap registers also handles the aliasing of swapping registers
+the main alu is the final deciding factor on what to do during a clock cycle
+shadow registers are not part of the system
+
+
+internal bus access passes through the microcode provider before entering the alu normally
+
+
+
+some micro ops operate during housekeeping phases
+these micro ops do not require feeding, as they are internal operations
+
+housekeeping duties are an extension of the register control, and theres 1 for each thread.
+
+housekeeping operations include
+
+dealiasing data
+
+handling read/write masks
+
+the masks read first, 
+
+
+
+test
+
+all micro ops
+memory read writes
+overlord stuff
+microcode shenanigans
+math testing

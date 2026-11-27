@@ -1,0 +1,13 @@
+1. finish up core commander
+2. check for feature completion on all modules
+3. do work on logic_container
+finish up logic tester
+do work on thread_command
+check for most feature completion
+
+remember to wire up error tracking and handle core dumping
+
+check microcode delays
+
+
+enable logic tester and native macros later

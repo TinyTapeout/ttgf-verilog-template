@@ -1,0 +1,113 @@
+magic
+tech gf180mcuD
+magscale 1 10
+timestamp 1793023079
+<< nwell >>
+rect -250 296 925 814
+<< pwell >>
+rect -250 -142 925 296
+<< mvnmos >>
+rect 38 77 616 149
+<< mvpmos >>
+rect 88 416 188 660
+rect 292 416 392 660
+rect 497 416 597 660
+<< mvndiff >>
+rect -50 136 38 149
+rect -50 90 -37 136
+rect 9 90 38 136
+rect -50 77 38 90
+rect 616 136 704 149
+rect 616 90 645 136
+rect 691 90 704 136
+rect 616 77 704 90
+<< mvpdiff >>
+rect 0 609 88 660
+rect 0 469 13 609
+rect 59 469 88 609
+rect 0 416 88 469
+rect 188 609 292 660
+rect 188 469 217 609
+rect 263 469 292 609
+rect 188 416 292 469
+rect 392 609 497 660
+rect 392 469 422 609
+rect 468 469 497 609
+rect 392 416 497 469
+rect 597 609 709 660
+rect 597 469 627 609
+rect 673 469 709 609
+rect 597 416 709 469
+<< mvndiffc >>
+rect -37 90 9 136
+rect 645 90 691 136
+<< mvpdiffc >>
+rect 13 469 59 609
+rect 217 469 263 609
+rect 422 469 468 609
+rect 627 469 673 609
+<< polysilicon >>
+rect 88 660 188 704
+rect 292 660 392 704
+rect 497 660 597 704
+rect 88 367 188 416
+rect 88 330 101 367
+rect 68 227 101 330
+rect 147 227 188 367
+rect 68 202 188 227
+rect 292 276 392 416
+rect 497 311 597 416
+rect 292 211 313 276
+rect 375 211 392 276
+rect 292 202 392 211
+rect 466 276 597 311
+rect 466 211 487 276
+rect 549 243 597 276
+rect 549 211 616 243
+rect 466 202 616 211
+rect 68 199 616 202
+rect 38 149 616 199
+rect 38 33 616 77
+<< polycontact >>
+rect 101 227 147 367
+rect 313 211 375 276
+rect 487 211 549 276
+<< metal1 >>
+rect -167 668 840 788
+rect 13 609 59 668
+rect 13 450 59 469
+rect 197 609 263 622
+rect 197 469 217 609
+rect 422 609 468 668
+rect 411 469 422 583
+rect 627 609 673 622
+rect 468 469 479 583
+rect 197 417 263 469
+rect 422 463 468 469
+rect 627 417 673 469
+rect 86 367 151 384
+rect 86 227 101 367
+rect 147 276 151 367
+rect 197 326 673 417
+rect 147 227 313 276
+rect 86 211 313 227
+rect 375 211 487 276
+rect 549 211 566 276
+rect 86 184 566 211
+rect 625 224 673 326
+rect -37 136 9 176
+rect -37 4 9 90
+rect 625 136 691 224
+rect 625 90 645 136
+rect 625 50 691 90
+rect -167 -116 840 4
+<< labels >>
+rlabel metal1 625 224 673 336 1 Y
+port 7 n signal bidirectional
+rlabel metal1 -167 668 417 788 1 VDD_3V3
+port 6 n power bidirectional
+rlabel metal1 -167 -116 -87 4 1 VSS
+port 3 n ground bidirectional
+rlabel metal1 86 263 151 336 1 A
+port 2 n signal bidirectional
+<< end >>

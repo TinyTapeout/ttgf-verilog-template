@@ -1,0 +1,123 @@
+magic
+tech gf180mcuD
+magscale 1 10
+timestamp 1794894921
+<< nwell >>
+rect -4851 -713 -3290 -686
+rect -3225 -713 -3017 -687
+rect -4851 -1440 -3017 -713
+rect -3212 -4119 -2918 -3823
+rect -7980 -4424 1490 -4119
+<< metal1 >>
+rect -345 -1377 -268 -915
+rect -7452 -1475 -6567 -1417
+rect -3192 -1475 -3180 -1417
+rect -3078 -1475 -1832 -1417
+rect -1410 -1457 -1398 -1377
+rect -1280 -1457 -268 -1377
+rect -4956 -1731 -4790 -1618
+rect -4956 -2247 -4410 -1731
+rect -7443 -2475 -7012 -2376
+rect -3431 -3274 -2909 -1594
+rect -221 -2247 325 -1731
+rect -2720 -2380 -2277 -2376
+rect -2720 -2471 -2708 -2380
+rect -2587 -2471 -2277 -2380
+rect -2720 -2475 -2277 -2471
+rect -3431 -4204 -3121 -3274
+rect 1304 -4204 1416 620
+rect -5080 -4395 -5003 -4248
+rect -5080 -4618 -2037 -4395
+rect -345 -4618 -268 -4254
+rect -5898 -4702 -267 -4618
+<< via1 >>
+rect -3180 -1475 -3078 -1417
+rect -1398 -1457 -1280 -1377
+rect -2708 -2471 -2587 -2380
+<< metal2 >>
+rect -1316 705 1192 789
+rect -3627 115 -3183 199
+rect -5335 -821 -5017 -694
+rect -3271 -1235 -3183 115
+rect -600 -821 -282 -694
+rect -3271 -1301 -2817 -1235
+rect -3192 -1417 -3066 -1415
+rect -3192 -1475 -3180 -1417
+rect -3078 -1475 -3066 -1417
+rect -3192 -1477 -3066 -1475
+rect -2873 -2376 -2817 -1301
+rect -1413 -1377 -1268 -1374
+rect -1413 -1457 -1398 -1377
+rect -1280 -1457 -1268 -1377
+rect -1413 -1459 -1268 -1457
+rect -2873 -2380 -2575 -2376
+rect -2873 -2471 -2708 -2380
+rect -2587 -2471 -2575 -2380
+rect -2873 -2475 -2575 -2471
+rect -3431 -3274 -2909 -2602
+rect 1304 -3274 1826 -2602
+rect -6655 -4842 -5199 -4506
+rect -1920 -4842 -464 -4506
+<< via2 >>
+rect -3180 -1475 -3078 -1417
+rect -1398 -1457 -1280 -1377
+<< metal3 >>
+rect -4457 16 -3966 500
+rect 278 16 769 500
+rect -6440 -1301 -3271 -1236
+rect -3335 -1417 -3271 -1301
+rect -2709 -1359 -1810 -820
+rect -1705 -1301 -115 -1236
+rect -2709 -1377 -1408 -1359
+rect -3335 -1475 -3180 -1417
+rect -3078 -1475 -3068 -1417
+rect -2709 -1457 -1398 -1377
+rect -1280 -1457 -1270 -1377
+use 5v0_addf_rev2  5v0_addf_sc_rev2_0
+timestamp 1794552604
+transform 1 0 -208 0 1 -3
+box -3037 -4839 2034 852
+use 5v0_addf_rev2  5v0_addf_sc_rev2_1
+timestamp 1794552604
+transform 1 0 -4943 0 1 -3
+box -3037 -4839 2034 852
+<< labels >>
+rlabel metal1 -3431 -3274 -2909 -1594 1 VDD_3V3
+port 1 n power bidirectional
+rlabel metal1 -221 -2247 325 -1731 1 VSS
+port 3 n ground bidirectional
+rlabel metal1 -4956 -2247 -4410 -1731 1 VSS_1
+port 4 n ground bidirectional
+rlabel metal2 -5335 -821 -5017 -694 1 VDD_1V65_1
+port 6 n signal bidirectional
+rlabel metal2 -600 -821 -282 -694 1 VDD_1V65_2
+port 7 n signal bidirectional
+rlabel metal3 278 16 769 500 1 in_A_0
+port 8 n signal bidirectional
+rlabel metal3 -4457 16 -3966 500 1 in_A_1
+port 9 n signal bidirectional
+rlabel metal1 1304 -4204 1416 620 1 VDD_3V3_1
+port 12 n signal bidirectional
+rlabel metal2 -6655 -4842 -5199 -4506 1 res_1
+port 13 n signal bidirectional
+rlabel metal2 -1920 -4842 -464 -4506 1 res_0
+port 14 n signal bidirectional
+rlabel metal1 -7443 -2475 -7012 -2376 1 carry_sign
+port 16 n signal output
+rlabel metal1 -7452 -1475 -6567 -1417 1 carry_over
+port 15 n signal output
+rlabel metal1 -2720 -2475 -2277 -2376 1 carry_interim_sign
+port 17 n signal output
+rlabel metal1 -3092 -1475 -1832 -1417 1 carry_interim_over
+port 18 n signal output
+rlabel metal2 -1316 705 1192 789 1 in_C_sign
+port 19 n signal input
+rlabel metal3 -1705 -1301 -115 -1236 1 in_C_over
+port 20 n signal input
+rlabel metal2 1304 -3274 1826 -2602 1 in_B_0
+port 21 n signal bidirectional
+rlabel metal2 -3431 -3274 -2909 -2602 1 in_B_1
+port 22 n signal bidirectional
+rlabel metal1 -5080 -4702 -2037 -4395 1 VDD_1V65
+port 5 n signal bidirectional
+<< end >>

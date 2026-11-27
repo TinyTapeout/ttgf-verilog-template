@@ -1,0 +1,85 @@
+* NGSPICE file created from 5v0_add_ccal_sc_r1.ext - technology: gf180mcuD
+
+.option scale=5n
+
+X0 res_over gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# VDD_3V3 VDD_3V3 pfet_06v0 ad=12.483n pd=0.333m as=13.775n ps=0.379m w=219 l=100
+X1 gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_272_93# ctrl_over gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# VSUBS nfet_06v0 ad=2.304n pd=0.136m as=6.336n ps=0.32m w=72 l=120
+X2 VSS in_over gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_272_93# VSUBS nfet_06v0 ad=8.72n pd=0.304m as=2.304n ps=0.136m w=72 l=120
+X3 gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# VSS VSUBS nfet_06v0 ad=8.528n pd=0.268m as=8.72n ps=0.304m w=164 l=120
+X4 VDD_3V3 ctrl_over gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_930_497# VDD_3V3 pfet_06v0 ad=19.272n pd=0.614m as=22.119n ps=0.421m w=219 l=100
+X5 res_over in_over gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# VSUBS nfet_06v0 ad=16.644n pd=0.381m as=8.528n ps=0.268m w=164 l=120
+X6 gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# ctrl_over VDD_3V3 VDD_3V3 pfet_06v0 ad=5.824n pd=0.216m as=9.856n ps=0.4m w=112 l=100
+X7 gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# ctrl_over res_over VSUBS nfet_06v0 ad=14.432n pd=0.504m as=16.644n ps=0.381m w=164 l=120
+X8 VDD_3V3 in_over gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# VDD_3V3 pfet_06v0 ad=13.775n pd=0.379m as=5.824n ps=0.216m w=112 l=100
+X9 gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_930_497# in_over res_over VDD_3V3 pfet_06v0 ad=22.119n pd=0.421m as=12.483n ps=0.333m w=219 l=100
+X10 ctrl_sign ctrl_over res_sign VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=12.688n ps=0.348m w=244 l=100
+X11 res_sign a_n260_n44# ctrl_sign VSUBS nfet_06v0 ad=8.528n pd=0.268m as=14.432n ps=0.504m w=164 l=120
+X12 res_sign a_n260_n44# in_sign VDD_3V3 pfet_06v0 ad=12.688n pd=0.348m as=21.472n ps=0.664m w=244 l=100
+X13 a_n260_n44# ctrl_over VSS VSUBS nfet_06v0 ad=14.432n pd=0.504m as=14.432n ps=0.504m w=164 l=120
+X14 a_n260_n44# ctrl_over VDD_3V3 VDD_3V3 pfet_06v0 ad=21.472n pd=0.664m as=21.472n ps=0.664m w=244 l=100
+X15 in_sign ctrl_over res_sign VSUBS nfet_06v0 ad=14.432n pd=0.504m as=8.528n ps=0.268m w=164 l=120
+C0 gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# VSS 0.19834f
+C1 res_over res_sign 0
+C2 VDD_3V3 res_sign 0.01827f
+C3 gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# in_sign 0
+C4 ctrl_over in_over 0.41527f
+C5 VDD_3V3 res_over 0.2822f
+C6 VSS in_over 0.04703f
+C7 a_n260_n44# res_sign 0.15359f
+C8 gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# in_over 0.21919f
+C9 gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# ctrl_over 0.02499f
+C10 res_over a_n260_n44# 0.00625f
+C11 VDD_3V3 a_n260_n44# 0.27077f
+C12 in_sign res_sign 0.09164f
+C13 gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# VSS 0.37344f
+C14 ctrl_sign res_sign 0.10993f
+C15 in_sign res_over 0.00376f
+C16 VDD_3V3 in_sign 0.06005f
+C17 ctrl_sign res_over 0
+C18 gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# 0.00587f
+C19 VDD_3V3 ctrl_sign 0.04649f
+C20 ctrl_over res_sign 0.19078f
+C21 gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_930_497# res_over 0.03123f
+C22 in_sign a_n260_n44# 0.08421f
+C23 gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# in_over 0.05113f
+C24 VDD_3V3 gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_930_497# 0.01437f
+C25 ctrl_sign a_n260_n44# 0.07945f
+C26 ctrl_over res_over 0.54812f
+C27 VDD_3V3 ctrl_over 0.848f
+C28 VSS res_over 0.01871f
+C29 VDD_3V3 VSS 0.0238f
+C30 ctrl_sign in_sign 0.17333f
+C31 gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# res_over 0.02252f
+C32 ctrl_over a_n260_n44# 0.29056f
+C33 VDD_3V3 gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# 0.33989f
+C34 VSS a_n260_n44# 0.07124f
+C35 in_sign gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_930_497# 0
+C36 ctrl_over in_sign 0.13546f
+C37 res_over in_over 0.03042f
+C38 ctrl_sign ctrl_over 0.10149f
+C39 VDD_3V3 in_over 0.36377f
+C40 VSS in_sign 0
+C41 ctrl_sign VSS 0.02009f
+C42 gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# in_sign 0
+C43 ctrl_over gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_930_497# 0.01503f
+C44 gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# res_over 0.20744f
+C45 in_over a_n260_n44# 0
+C46 VDD_3V3 gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# 0.00435f
+C47 gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_272_93# VSS 0.00375f
+C48 ctrl_over VSS 0.1118f
+C49 in_sign in_over 0
+C50 ctrl_sign in_over 0
+C51 gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_930_497# 0
+C52 gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_272_93# gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# 0.00372f
+C53 gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# ctrl_over 0.29778f
+C54 ctrl_sign VSUBS 0.30645f
+C55 res_sign VSUBS 0.02182f
+C56 in_sign VSUBS 0.19635f
+C57 a_n260_n44# VSUBS 0.22597f ; **FLOATING
+C58 VSS VSUBS 0.59335f
+C59 res_over VSUBS 0.0473f
+C60 ctrl_over VSUBS 0.98673f
+C61 in_over VSUBS 0.3873f
+C62 VDD_3V3 VSUBS 4.3482f
+C63 gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_716_68# VSUBS 0.0174f ; **FLOATING
+C64 gf180mcu_fd_sc_mcu7t5v0__xnor2_1_0/a_64_93# VSUBS 0.26806f ; **FLOATING
